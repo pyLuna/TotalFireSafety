@@ -1,0 +1,322 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/AdminLayout.cshtml";
+    ViewBag.Dash = "active";
+}
+
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            Overview
+
+        </h2>
+
+        <h3><span id="dt"></span></h3>
+
+        <right>
+            <h4>View Summary In:</h4>
+
+            <button class="yr-drop-btn" onclick="yrFunction()">
+                <a>
+                    <span>Year</span>
+                    <span class="las la-chevron-down"></span>
+                </a>
+            </button>
+            <div class="yr-dropdown-content" id="yrDropdown">
+                <a href="#">2019</a>
+                <a href="#">2020</a>
+                <a href="#">2021</a>
+                <a href="#">2022</a>
+                <a href="#">2023</a>
+            </div>
+
+            <button class="m-drop-btn" onclick="mFunction()">
+                <a>
+                    <span>Month</span>
+                    <span class="las la-chevron-down"></span>
+                </a>
+            </button>
+            <div class="m-dropdown-content" id="mDropdown">
+                <a href="#">January</a>
+                <a href="#">February</a>
+                <a href="#">March</a>
+                <a href="#">April</a>
+                <a href="#">May</a>
+                <a href="#">June</a>
+                <a href="#">July</a>
+                <a href="#">August</a>
+                <a href="#">September</a>
+                <a href="#">October</a>
+                <a href="#">November</a>
+                <a href="#">December</a>
+            </div>
+
+            <button class="d-drop-btn" onclick="dFunction()">
+                <a>
+                    <span>Day</span>
+                    <span class="las la-chevron-down"></span>
+                </a>
+            </button>
+            <div class="d-dropdown-content" id="dDropdown">
+                <a href="#">01</a>
+                <a href="#">02</a>
+                <a href="#">03</a>
+                <a href="#">04</a>
+                <a href="#">05</a>
+                <a href="#">06</a>
+                <a href="#">07</a>
+                <a href="#">08</a>
+                <a href="#">09</a>
+                <a href="#">10</a>
+                <a href="#">11</a>
+                <a href="#">12</a>
+                <a href="#">13</a>
+                <a href="#">14</a>
+                <a href="#">15</a>
+                <a href="#">16</a>
+                <a href="#">17</a>
+                <a href="#">18</a>
+                <a href="#">19</a>
+                <a href="#">20</a>
+                <a href="#">21</a>
+                <a href="#">22</a>
+                <a href="#">23</a>
+                <a href="#">24</a>
+                <a href="#">25</a>
+                <a href="#">26</a>
+                <a href="#">27</a>
+                <a href="#">28</a>
+                <a href="#">29</a>
+                <a href="#">30</a>
+                <a href="#">31</a>
+            </div>
+
+        </right>
+    </header>
+
+    <main>
+
+        <div class="summary">
+            <center>
+                <div class="summary-title">
+                    <b>
+                        Total Fire Safety Technologies Inc. Performance
+                    </b>
+                </div>
+
+                <div class="sum-chart-card">
+                    <div class="sum-cards">
+                        <div class="sum-card-title">
+
+                            <div class="sum-card-single">
+                                <div class="sum-card-container">
+                                    <div class="sum-card-details">
+                                        <div class="cicle">
+                                            <div class="circle-container">
+                                                <div class="inv-circle-wrap">
+                                                    <div class="inv-circle">
+                                                        <div class="inv-mask inv-half">
+                                                            <div class="inv">
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="inv-mask inv-full">
+                                                            <div class="inv">
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="inv-inside-circle"> 860 </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>INVENTORY</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sum-card-title">
+                            <div class="sum-card-single">
+                                <div class="sum-card-container">
+                                    <div class="sum-card-details">
+                                        <div class="proj-circle-wrap">
+                                            <div class="proj-circle">
+                                                <div class="proj-mask proj-half">
+                                                    <div class="proj">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="proj-mask proj-full">
+                                                    <div class="proj">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="proj-inside-circle"> 75% </div>
+
+                                        </div>
+                                    </div>
+                                    <h3>PROJECTS</h3>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="sum-card-title">
+                            <div class="sum-card-single">
+                                <div class="sum-card-container">
+
+                                    <div class="sum-card-details">
+                                        <div class="pur-circle-wrap">
+                                            <div class="pur-circle">
+                                                <div class="pur-mask pur-half">
+                                                    <div class="pur">
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="pur-mask pur-full">
+                                                    <div class="pur">
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="pur-inside-circle"> 25% </div>
+
+                                        </div>
+                                    </div>
+                                    <h3>PURCHASING</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </center>
+        </div>
+
+        <div class="cards">
+            <div class="card-title">
+                <h3>Users</h3>
+                <div class="card-single">
+                    <div class="card-container">
+                        <h3>Employee</h3>
+                        <div class="card-details">
+                            <label>15</label><span>Total Employees</span>
+                            <p></p>
+                            <label class="card-active">15</label><span class="card-active">Active Employees</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-title">
+                <h3>Requisition</h3>
+                <div class="card-single">
+                    <div class="card-container">
+                        <h3>Purchase Request</h3>
+                        <div class="card-details">
+                            <label>30</label><span>Total Entries</span>
+                            <p></p>
+                            <label class="card-active">5</label><span class="card-active">New Entries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-title">
+                <h3>&nbsp;</h3>
+                <div class="card-single">
+                    <div class="card-container">
+                        <h3>Deployment Request</h3>
+                        <div class="card-details">
+                            <label>30</label><span>Total Entries</span>
+                            <p></p>
+                            <label class="card-active">5</label><span class="card-active">New Entries</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-title">
+                <h3>Purchasing</h3>
+                <div class="card-single">
+                    <div class="card-container">
+                        <h3>Purchase Orders</h3>
+                        <div class="card-details">
+                            <label>30</label><span>Total Orders</span>
+                            <p></p>
+                            <label class="card-active">5</label><span class="card-active">Order Received</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-grid">
+
+            <div class="inventory-sum">
+                <h3>Inventories</h3>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Item Categories Summary</h3>
+                        <a href="../super-admin/operations/sa-inventory/sa-inventory.html"><button> See more <span class="las la-arrow-right"></span></button></a>
+                    </div>
+                    <div class="chart-border">
+                        <div class="chart">
+                            <canvas id="barchart" width="300" height="300"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="invent-sum-text">
+                        <center>
+                            <h3>asdlgfhkjasdfh</h3>
+                        </center>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="inventory-sum">
+                <h3>&nbsp;</h3>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Most Requested Item</h3>
+                    </div>
+                    <div class="mst-items">
+
+                        <ul class="items">
+                            <li>Categorize here the most deployed items</li>
+                            <li>Categorize weekly</li>
+                            <li>Get the data from deployed items/highest number of inventory</li>
+                        </ul>
+
+                    </div>
+                    <div class="chart-border">
+                        <div class="chart">
+                            <div class="scatter">
+                                <canvas id="barcharthori" width="auto" height="auto"></canvas>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </main>
+</div>
+

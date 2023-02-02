@@ -1,0 +1,307 @@
+﻿
+@{
+    ViewBag.Title = "Export Supply";
+    Layout = "~/Views/AdminLayout.cshtml";
+}
+
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            Deployment Request / Export Document
+        </h2>
+    </header>
+
+    <main>
+
+        <div class="supp-expo-container">
+            <div class="wrapper">
+                <div class="invoice_wrapper">
+                    <div class="header">
+
+
+                        <div class="logo_invoice_wrap">
+                            <div class="logo_sec">
+                                <img src="~/Content/images/tfsti-logo-name.png" alt="code logo" style="width:80px;height:100px;">
+                                <div class="title_wrap">
+                                    <h1> TOTAL FIRESAFETY AND </h1>
+                                    <h1>TECHNOLOGIES INC.</h1>
+
+                                </div>
+                            </div>
+
+
+                            <div class="bill_total_wrap">
+                                <div class="bill_sec">
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="body">
+                            <div class="main_table">
+                                <div class="table_header">
+                                    <div class="row">
+
+                                        <div class="col col_no"></div>
+                                        <div class="col col_des"></div>
+                                        <div class="col col_des">Accountability Form</div>
+                                        <div class="col col_price"></div>
+                                        <div class="col col_qty"></div>
+                                        <div class="col col_total"></div>
+                                    </div>
+                                </div>
+
+
+                                <h2><center>PERSONAL INFORMATION</center></h2>
+
+                                <div class="table_body">
+                                    <div class="row">
+
+
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col col_no">
+
+                                        </div>
+                                        <div class="col col_des">
+                                            <p class="bold">James Cordero</p>
+                                            <p>(Requestor Name)</p>
+                                        </div>
+                                        <div class="col col_des">
+                                            <p class="bold">0012345</p>
+                                            <p>(Employee ID)</p>
+                                        </div>
+
+                                        <div class="col col_des">
+                                            <p class="bold">Office Manager</p>
+                                            <p>(Role/Position)</p>
+                                        </div>
+
+                                        <div class="col col_des">
+                                            <p class="bold">1/16/2022</p>
+                                            <p>(Date Requested)</p>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+
+
+                                        <div class="col col_no">
+
+                                        </div>
+
+                                        <div class="col col_des">
+                                            <p class="bold">SREQ234567</p>
+                                            <p>(Request ID)</p>
+                                        </div>
+
+                                        <div class="col col_des">
+                                            <p class="bold">Golden Ville Makati City</p>
+                                            <p>(Project)</p>
+                                        </div>
+
+                                        <div class="col col_des">
+                                            <p class="bold">Project Site Request</p>
+                                            <p>(Purpose)</p>
+                                        </div>
+
+
+
+                                        <div class="col col_des">
+                                            <p class="bold"></p>
+                                            <p> </p>
+                                        </div>
+                                    </div>
+
+
+
+                                    <h2><center>ITEM REQUESTED</center></h2>
+
+                                    <table style="width:100%">
+
+                                        <tr>
+                                            <th>Item ID</th>
+                                            <th>Item Name</th>
+                                            <th>Item Category</th>
+                                            <th>Item Size</th>
+                                            <th>Item Quantity</th>
+                                            <th>Item Type</th>
+                                        </tr>
+
+                                        <tr>
+                                            <td>JVV1234567</td>
+                                            <td>Gate Valve Flange Type</td>
+                                            <td>Gate Valve</td>
+                                            <td>4"</td>
+                                            <td>5 Pcs</td>
+                                            <td>Null</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>BB1234567</td>
+                                            <td>B.I PIPE</td>
+                                            <td>Others</td>
+                                            <td>1/2</td>
+                                            <td>4 Length</td>
+                                            <td>Null</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>FF123456</td>
+                                            <td>Fire Extinguisher</td>
+                                            <td>Fire Extinguisher</td>
+                                            <td>Null</td>
+                                            <td>11 Pcs</td>
+                                            <td>HFC-236 F</td>
+                                        </tr>
+
+                                    </table>
+
+                                    <br>
+
+                                    <div class="paymethod_grandtotal_wrap">
+
+                                        <div class="paymethod_sec">
+                                            <p class="bold">Released By:</p>
+                                            <p>(Signature over printed name)</p>
+                                            <p>Date Released:</p>
+                                        </div>
+
+                                        <div class="test">
+                                            <p class="bold">Received By:</p>
+                                            <p>(Signature over printed name)</p>
+                                            <p>Date Received:</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="supp-expo-footer">
+                                    <p>Thank you and Best Wishes</p>
+                                    <div class="terms">
+                                        <p class="tc bold">Terms & Coditions</p>
+                                        <p>Ang pogi mo Carlo Millonte sarap mo Carloooooooooooooooooo!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="supp-expo-save-btns">
+                        <button class="save" onclick="infoOpenPopup()">
+                            <span class="btnText">Exoprt</span>
+                            <i class="las la-print"></i>
+                        </button>
+
+                        <button class="cancel">
+                            <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                            <i class="las la-window-close"></i>
+                        </button>
+                    </div>
+
+                    <div class="info-pop-container" id="info-popup">
+                        <img src="~/Content/images/information.png">
+                        <h2>System Warning!</h2>
+                        <p>Do you want to Export this document?</p>
+                        <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
+                        <button type="button" onclick="infoClosePopup()">Cancel</button>
+                    </div>
+
+                    <div class="can-pop-container" id="can-popup">
+                        <img src="~/Content/images/warning.png">
+                        <h2>System Warning!</h2>
+                        <p>Are you sure you don't want to export this document?</p>
+                        <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+                        <button type="button" onclick="canClosePopup()">Cancel</button>
+                    </div>
+
+                    <div class="save-pop-container" id="popup">
+                        <img src="~/Content/images/printer.png">
+                        <h2>Exported!</h2>
+                        <p>Your document is already exported!</p>
+                        <button type="button" onclick="closePopup()">OK</button>
+                    </div>
+
+                    <div class="rem-pop-container" id="rem-popup">
+                        <img src="~/Content/images/remove.png">
+                        <h2>Cancel!</h2>
+                        <p>Document didn't export!</p>
+                        <button type="button" onclick="remClosePopup()">OK</button>
+                    </div>
+
+
+    </main>
+</div>
+<script>
+
+
+        let infopopup = document.getElementById("info-popup");
+
+        function infoOpenPopup() {
+            infopopup.classList.add("info-popup-show")
+        }
+
+        function infoClosePopup() {
+            infopopup.classList.remove("info-popup-show")
+        }
+
+        let popup = document.getElementById("popup");
+
+        function openPopup() {
+            popup.classList.add("open-popup-show")
+        }
+
+        function closePopup() {
+            popup.classList.remove("open-popup-show")
+        }
+
+        let canpopup = document.getElementById("can-popup");
+
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
+
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
+
+        let rempopup = document.getElementById("rem-popup");
+
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
+
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+
+        let printpopup = document.getElementById("print-popup");
+
+        function printOpenPopup() {
+            printpopup.classList.add("print-popup-show")
+        }
+
+        function printClosePopup() {
+            printpopup.classList.remove("print-popup-show")
+        }
+
+        let expopopup = document.getElementById("expo-popup");
+
+        function expoOpenPopup() {
+            expopopup.classList.add("expo-popup-show")
+        }
+
+        function expoClosePopup() {
+            expopopup.classList.remove("expo-popup-show")
+        }
+</script>
+

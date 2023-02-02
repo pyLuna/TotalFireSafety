@@ -1,0 +1,243 @@
+﻿
+@{
+    ViewBag.Title = "Supply Requisition";
+    Layout = "~/Views/AdminLayout.cshtml";
+    ViewBag.Sup = "active";
+}
+
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            Deployment Request
+        </h2>
+    </header>
+
+    <main>
+
+        <div class="upper-section">
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="text" placeholder="Search here">
+            </div>
+        </div>
+
+        <div class="deploy-grid">
+            <div class="deploy-header">
+                <h3>DEPLOYMENT REQUEST LISTS</h3>
+                <div class="deploy-buttons-style">
+                    <button class="add-btn" title="ADD NEW REQUEST"><a href="@Url.Action("AddSupply","Admin")"><span class="las la-plus-circle"></span></a></button>
+                    <button class="pri-btn" title="PRINT REPORT"> <a href="@Url.Action("PrintSupply","Admin")"><span class="las la-print"></span></a></button>
+                    <button class="expo-btn" title="EXPORT REPORT"> <a href="@Url.Action("ExportSupply","Admin")"><span class="las la-file-download"></span></a></button>
+                    <button class="deploy-sort-btn" onclick="userSortFunction()">
+                        <a>
+                            <span></span>
+                            <span class="las la-chevron-down"></span>
+                        </a>
+                    </button>
+                    <div class="deploy-sort-content" id="depSortDropdown">
+                        <a href="#">Ascending</a>
+                        <a href="#">Descending</a>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="deploy-projects">
+                <div class="deploy">
+                    <div class="deploy-body">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Request ID</td>
+                                        <td>Requestor Name</td>
+                                        <td>Employee ID</td>
+                                        <td>Date Requested</td>
+                                        <td>Status</td>
+                                        <td>Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><label>PREQ67490</label></td>
+                                        <td><label>Clarisse C. Vasques</label></td>
+                                        <td><label>008273126</label></td>
+                                        <td><label>Jan. 11, 2023</label></td>
+                                        <td><label class="stat-dec">Declined</label></td>
+                                        <td>
+                                            <div class="deploy-action-style">
+                                                <button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>
+                                                <button class="dec-btn" title="DECLINE REQUEST" onclick="canOpenPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
+                                                <button class="pri-btn" title="PRINT REPORT"> <a href="../requisition/sa-print-deploy.html"><span class="las la-print"></span></a></button>
+                                                <button class="expo-btn" title="EXPORT REPORT"> <a href="../requisition/sa-expo-deploy.html"><span class="las la-file-download"></span></a></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><label>PREQ67490</label></td>
+                                        <td><label>Clarisse C. Vasques</label></td>
+                                        <td><label>008273126</label></td>
+                                        <td><label>Jan. 11, 2023</label></td>
+                                        <td><label class="stat-appr">Approved</label></td>
+                                        <td>
+                                            <div class="deploy-action-style">
+                                                <button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>
+                                                <button class="dec-btn" title="DECLINE REQUEST" onclick="canOpenPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
+                                                <button class="pri-btn" title="PRINT REPORT"> <a href="../requisition/sa-print-deploy.html"><span class="las la-print"></span></a></button>
+                                                <button class="expo-btn" title="EXPORT REPORT"> <a href="../requisition/sa-expo-deploy.html"><span class="las la-file-download"></span></a></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><label>PREQ67490</label></td>
+                                        <td><label>Clarisse C. Vasques</label></td>
+                                        <td><label>008273126</label></td>
+                                        <td><label>Jan. 11, 2023</label></td>
+                                        <td><label class="stat-pen">Pending</label></td>
+                                        <td>
+                                            <div class="deploy-action-style">
+                                                <button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>
+                                                <button class="dec-btn" title="DECLINE REQUEST" onclick="canOpenPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
+                                                <button class="pri-btn" title="PRINT REPORT"> <a href="../requisition/sa-print-deploy.html"><span class="las la-print"></span></a></button>
+                                                <button class="expo-btn" title="EXPORT REPORT"> <a href="../requisition/sa-expo-deploy.html"><span class="las la-file-download"></span></a></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="info-pop-container" id="info-popup">
+            <img src="~/Content/images/information.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to accept employee's request?</p>
+            <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
+            <button type="button" onclick="infoClosePopup()">Cancel</button>
+        </div>
+
+        <div class="save-pop-container" id="popup">
+            <img src="~/Content/images/tick.png">
+            <h2>Accepted!</h2>
+            <p>Request has been accepted!</p>
+            <button type="button" onclick="closePopup()">OK</button>
+        </div>
+
+        <div class="can-pop-container" id="can-popup">
+            <img src="~/Content/images/warning.png">
+            <h2>System Warning!</h2>
+            <p>Are you sure you want to delete item on the list?</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
+
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="~/Content/images/remove.png">
+            <h2>Deleted!</h2>
+            <p>Item details has deleted in the list!</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
+        </div>
+
+        <div class="print-pop-container" id="print-popup">
+            <img src="~/Content/images/printer.png">
+            <h2>Print!</h2>
+            <p>Print successfully!</p>
+            <button type="button" onclick="printClosePopup()">OK</button>
+        </div>
+
+        <div class="expo-pop-container" id="expo-popup">
+            <img src="~/Content/images/export.png">
+            <h2>Export!</h2>
+            <p>Exported Successfully!</p>
+            <button type="button" onclick="expoClosePopup()">OK</button>
+        </div>
+
+    </main>
+
+</div>
+<script>
+
+        function userSortFunction() {
+            document.getElementById("depSortDropdown").classList.toggle("deploy-sort-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(e) {
+            if (!e.target.matches('.deploy-sort-btn')) {
+                var myDropdown = document.getElementById("depSortDropdown");
+                if (myDropdown.classList.contains('deploy-sort-show')) {
+                  myDropdown.classList.remove('deploy-sort-show');
+                }
+              }
+            }
+
+        let infopopup = document.getElementById("info-popup");
+
+        function infoOpenPopup() {
+            infopopup.classList.add("info-popup-show")
+        }
+
+        function infoClosePopup() {
+            infopopup.classList.remove("info-popup-show")
+        }
+
+        let popup = document.getElementById("popup");
+
+        function openPopup() {
+            popup.classList.add("open-popup-show")
+        }
+
+        function closePopup() {
+            popup.classList.remove("open-popup-show")
+        }
+
+        let canpopup = document.getElementById("can-popup");
+
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
+
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
+
+        let rempopup = document.getElementById("rem-popup");
+
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
+
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+
+        let printpopup = document.getElementById("print-popup");
+
+        function printOpenPopup() {
+            printpopup.classList.add("print-popup-show")
+        }
+
+        function printClosePopup() {
+            printpopup.classList.remove("print-popup-show")
+        }
+
+        let expopopup = document.getElementById("expo-popup");
+
+        function expoOpenPopup() {
+            expopopup.classList.add("expo-popup-show")
+        }
+
+        function expoClosePopup() {
+            expopopup.classList.remove("expo-popup-show")
+        }
+</script>

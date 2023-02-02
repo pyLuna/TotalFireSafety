@@ -1,0 +1,187 @@
+﻿
+@{
+    ViewBag.Title = "Add Purchase";
+    Layout = "~/Views/AdminLayout.cshtml";
+}
+
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            Purchasing Order / Add Record
+        </h2>
+    </header>
+
+    <main>
+        <div class="order-add-container">
+            <div class="order-form-container">
+                <form action="">
+                    <div class="request-details">
+                        <div class="order-form-header">
+                            REQUEST DETAILS
+                        </div>
+                        <div class="order-form-contents">
+                            <div class="fields">
+                                <div class="input-field">
+                                    <label><a>Name: </a>Clarisse C. Vasques </label>
+                                </div>
+                                <div class="input-field">
+                                    <label><a>Role/Position: </a>Office Manager </label>
+                                </div>
+                                <div class="input-field">
+                                    <label><a>Employee ID: </a>00001 </label>
+                                </div>
+
+                                <div class="input-field">
+                                    <label><a>Request Remarks: </a>Item for Deployment </label>
+                                </div>
+                                <div class="input-field">
+                                    <label><a>Date Requested: </a>January 11, 2023 </label>
+                                </div>
+                                <div class="input-field">
+                                    <label><a>Request ID: </a>SREQ234567 </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-details">
+                        <div class="order-form-header">
+                            ITEM DETAILS
+                        </div>
+                        <div class="order-form-contents">
+                            <div class="order-form-table">
+                                <div class="order-form-table-style">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td>Item ID</td>
+                                                    <td>Item Name</td>
+                                                    <td>Item Category</td>
+                                                    <td>Item Size</td>
+                                                    <td>Item Quantity</td>
+                                                    <td>Item Type</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td contenteditable="false"><label>PREQ67490</label></td>
+                                                    <td contenteditable="true"><label>Gate Valve Flange Type</label></td>
+                                                    <td contenteditable="true"><label>Gate Valve</label></td>
+                                                    <td contenteditable="true"><label>4"</label></td>
+                                                    <td contenteditable="true"><label>5 PCS</label></td>
+                                                    <td contenteditable="true"><label>Null</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <td contenteditable="false"><label>PREQ67490</label></td>
+                                                    <td contenteditable="true"><label>Gate Valve Flange Type</label></td>
+                                                    <td contenteditable="true"><label>Gate Valve</label></td>
+                                                    <td contenteditable="true"><label>4"</label></td>
+                                                    <td contenteditable="true"><label>5 PCS</label></td>
+                                                    <td contenteditable="true"><label>Null</label></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-add-btns">
+                        <button class="save" onclick="infoOpenPopup()">
+                            <span class="btnText">Save</span>
+                            <i class="las la-check-square"></i>
+                        </button>
+
+                        <button class="cancel">
+                            <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                            <i class="las la-window-close"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="info-pop-container" id="info-popup">
+            <img src="~/Content/images/information.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to save the user on the list?</p>
+            <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
+            <button type="button" onclick="infoClosePopup()">Cancel</button>
+        </div>
+
+        <div class="can-pop-container" id="can-popup">
+            <img src="~/Content/images/warning.png">
+            <h2>System Warning!</h2>
+            <p>Are you sure you don't want to save user on the list?</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
+
+        <div class="save-pop-container" id="popup">
+            <img src="~/Content/images/tick.png">
+            <h2>Added!</h2>
+            <p>User details has been added successfully!</p>
+            <button type="button" onclick="closePopup()">OK</button>
+        </div>
+
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="~/Content/images/remove.png">
+            <h2>Cancel!</h2>
+            <p>User details has not added in the list!</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
+        </div>
+
+
+    </main>
+</div>
+
+<script>
+
+        let infopopup = document.getElementById("info-popup");
+
+        function infoOpenPopup() {
+            infopopup.classList.add("info-popup-show")
+        }
+
+        function infoClosePopup() {
+            infopopup.classList.remove("info-popup-show")
+        }
+
+        let popup = document.getElementById("popup");
+
+        function openPopup() {
+            popup.classList.add("open-popup-show")
+        }
+
+        function closePopup() {
+            popup.classList.remove("open-popup-show")
+        }
+
+        let canpopup = document.getElementById("can-popup");
+
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
+
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
+
+        let rempopup = document.getElementById("rem-popup");
+
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
+
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+
+</script>
+

@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <link rel="shortcut icon" type="image/icon" href="~/images/tfsti-logo-noname.png" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    @Styles.Render("~/style/admin")
+</head>
+<body>
+    <input type="checkbox" id="nav-toggle">
+    <div class="sidebar">
+        <div class="user-wrapper">
+            <img src="~/images/profile.png" alt="" class="profile-user" width="40px" height="40px">
+            <div>
+                <h4>Juan Dela Cruz</h4>
+                <small>Supervisor</small>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="@Url.Action("Dashboard","Admin")" class="@ViewBag.Dash">
+                        <span class="las la-tv"></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
+                        <span class="las la-warehouse"></span>
+                        <span>Inventories</span>
+                    </a>
+                </li>
+                <button class="oper-dropdown-btn">
+                    <a>
+                        <span class="las la-caret-down"></span>
+                        <span>Requisition</span>
+                    </a>
+                </button>
+                <div class="dropdown-container">
+                <li>
+                    <a href="@Url.Action("PurchaseRequisition","Admin")" class="@ViewBag.Pur">
+                        <span class="las la-file"></span>
+                        <span>Purchasing Request</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("DeploymentRequisition","Admin")" class="@ViewBag.Dep">
+                        <span class="las la-folder"></span>
+                        <span>Deployment Request</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("SupplyRequisition","Admin")" class="@ViewBag.Sup">
+                        <span class="lar la-folder-open"></span>
+                        <span>Supply Request</span>
+                    </a>
+                </li>
+        </div>
+        <li>
+            <a href="@Url.Action("Purchasing","Admin")" class="@ViewBag.Pur1">
+                <span class="las la-dolly"></span>
+                <span>Purchasing</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Users","Admin")" class="@ViewBag.Users">
+                <span class="las la-user-tie"></span>
+                <span>Users</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="@Url.Action("Projects","Admin")" class="@ViewBag.Proj">
+                <span class="las la-pen-square"></span>
+                <span>Projects</span>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Loguout","Admin")">
+                <span class="las la-sign-out-alt"></span>
+                <span>Logout</span>
+            </a>
+        </li>
+        </ul>
+    </div>
+
+    <div class="logo-float">
+        <img src="~/images/tfsti-logo.png" alt="">
+    </div>
+
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+    <div class="footer">
+        <center>
+            <div class="footer-con">
+                <img src="~/images/codepheuse.png" alt="">
+                <h4>CodePheus | 2022</h4>
+            </div>
+        </center>
+    </div>
+    @Scripts.Render("~/script/admin")
+    @*<script>
+        `use strict`;
+        function refreshTime() {
+            const timeDisplay = document.getElementById("dt");
+            const dateString = new Date().toLocaleString();
+            const formattedString = dateString.replace(", ", " - ");
+            timeDisplay.textContent = formattedString;
+        }
+        setInterval(refreshTime, 0);
+
+
+        var dropdown = document.getElementsByClassName("oper-dropdown-bt");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+
+        /* When the user clicks on the button,
+           toggle between hiding and showing the dropdown content */
+        function yrFunction() {
+            document.getElementById("yrDropdown").classList.toggle("yr-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.yr-drop-btn')) {
+                var myDropdown = document.getElementById("yrDropdown");
+                if (myDropdown.classList.contains('yr-show')) {
+                    myDropdown.classList.remove('yr-show');
+                }
+            }
+        }
+
+        /* When the user clicks on the button,
+            toggle between hiding and showing the dropdown content */
+        function mFunction() {
+            document.getElementById("mDropdown").classList.toggle("m-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.m-drop-btn')) {
+                var myDropdown = document.getElementById("mDropdown");
+                if (myDropdown.classList.contains('m-show')) {
+                    myDropdown.classList.remove('m-show');
+                }
+            }
+        }
+
+        /* When the user clicks on the button,
+           toggle between hiding and showing the dropdown content */
+        function dFunction() {
+            document.getElementById("dDropdown").classList.toggle("d-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.d-drop-btn')) {
+                var myDropdown = document.getElementById("dDropdown");
+                if (myDropdown.classList.contains('d-show')) {
+                    myDropdown.classList.remove('d-show');
+                }
+            }
+        }
+
+    </script>*@
+</body>
+
+
+</html>

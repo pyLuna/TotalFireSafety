@@ -174,7 +174,7 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new TFSEntity())
                 {
-                    var items = _context.Inventories.Select(x => x);
+                    var items = _context.Inventories.Where(x => x.in_status=="archived");
                     /*  Serialize items into JSON Format 
                      *  example
                      *  {
@@ -183,6 +183,8 @@ namespace TotalFireSafety.Controllers
                      *      "etc"     : "etc"
                      *  }
                      */
+                    
+
                     var _jsonSerialized = JsonConvert.SerializeObject(items, Formatting.None, new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore

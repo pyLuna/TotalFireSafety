@@ -60,7 +60,7 @@ function setTable(array) {
             row += `<td id="in_code"><label>${array[i].in_code}</label></td><td name="in_name"><label>${array[i].in_name}</label></td><td name="in_category"><label>${array[i].in_category}</label></td><td name="in_type"><label>${array[i].in_type}</label></td><td name="in_size"><label>${array[i].in_size}</label></td><td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
             row += `</form>`;
             row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
-            row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
+            row += `<button class="del-btn" type="submit" form="tableList" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
             row += `</td></div>`;
             row += `</tr>`;
             table.innerHTML += row;
@@ -157,8 +157,12 @@ function exportArrayToCsv() {
     // Create a hidden link
     var link = document.createElement('a');
     link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-    link.setAttribute('download', 'data.csv');
+    link.setAttribute('download', 'Inventory.csv');
 
     //// Trigger the download
     link.click();
+}
+
+function ArchiveItem() {
+
 }

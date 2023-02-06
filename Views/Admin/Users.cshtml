@@ -20,7 +20,7 @@
             <div class="upper-section">
                 <div class="search-wrapper">
                     <span class="las la-search"></span>
-                    <input type="text" placeholder="Search here">
+                    <input type="text" placeholder="Search here" onkeyup="SearchItem(this.value)">
                 </div>
             </div>
 
@@ -37,9 +37,10 @@
                             </a>
                         </button>
                         <div class="user-filter-content" id="userFiltDropdown">
-                            <a href="#">Office Manager</a>
-                            <a href="#">Warehouse Manager</a>
-                            <a href="#">Supervisor</a>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
+                            <a href="#" onclick="SortByCategory('')">clear</a>
                         </div>
                         &nbsp;
                         <button class="user-sort-btn" onclick="userSortFunction()">
@@ -58,7 +59,7 @@
                     <div class="users">
                         <div class="user-body">
                             <div class="table-responsive" style="overflow-x: auto;">
-                                <table width="100%">
+                                <table width="100%" id="myTable">
                                     <thead>
                                         <tr>
                                             <td>ID</td>
@@ -70,45 +71,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><label>00001</label></td>
-                                            <td><label>Clarisse C. Vaquez</label></td>
-                                            <td><label>0923758923</label></td>
-                                            <td><label>Supervisor</label></td>
-                                            <td><label class="stat-act">Active</label></td>
-                                            <td>
-                                                <div class="user-action-style">
-                                                    <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>
-                                                    <button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label>00001</label></td>
-                                            <td><label>Clarisse C. Vaquez</label></td>
-                                            <td><label>0923758923</label></td>
-                                            <td><label>Supervisor</label></td>
-                                            <td><label class="stat-in">Inactive</label></td>
-                                            <td>
-                                                <div class="user-action-style">
-                                                    <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>
-                                                    <button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label>00001</label></td>
-                                            <td><label>Clarisse C. Vaquez</label></td>
-                                            <td><label>0923758923</label></td>
-                                            <td><label>Supervisor</label></td>
-                                            <td><label class="stat-act">Active</label></td>
-                                            <td>
-                                                <div class="user-action-style">
-                                                    <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>
-                                                    <button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -243,6 +206,8 @@
             </div>
         </center>
     </div>
+
+    <script src="~/Scripts/user.js"></script>
 
     <script>
 

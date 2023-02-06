@@ -210,7 +210,8 @@
     <script src="~/Scripts/user.js"></script>
 
     <script>
-
+        window.onload = function () {
+            GetAll();
 
         function userFiltFunction() {
             document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");

@@ -37,23 +37,25 @@
                             </a>
                         </button>
                         <div class="user-filter-content" id="userFiltDropdown">
-                            <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
-                            <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
-                            <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
-                            <a href="#" onclick="SortByCategory('')">clear</a>
+                            <a id="selcat"> Select Category </a>
+                                <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
+                                <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
+                                <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
+                                <a href="#" onclick="SortByCategory('')">clear</a>
+                            
+                            </div>
+                            &nbsp;
+                            <button class="user-sort-btn" onclick="userSortFunction()">
+                                <a>
+                                    <span>Sort</span>
+                                    <span class="las la-chevron-down"></span>
+                                </a>
+                            </button>
+                            <div class="user-sort-content" id="userSortDropdown">
+                                <a href="#">Ascending</a>
+                                <a href="#">Descending</a>
+                            </div>
                         </div>
-                        &nbsp;
-                        <button class="user-sort-btn" onclick="userSortFunction()">
-                            <a>
-                                <span>Sort</span>
-                                <span class="las la-chevron-down"></span>
-                            </a>
-                        </button>
-                        <div class="user-sort-content" id="userSortDropdown">
-                            <a href="#">Ascending</a>
-                            <a href="#">Descending</a>
-                        </div>
-                    </div>
                 </div>
                 <div class="user-projects">
                     <div class="users">
@@ -168,7 +170,7 @@
         </div>
 
         <div class="info-pop-container" id="info-popup">
-            <img src="../../images/information.png">
+            <img src="~/images/information.png">
             <h2>System Warning!</h2>
             <p>Do you want to save the user on the list?</p>
             <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
@@ -176,7 +178,7 @@
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="../../images/warning.png">
+            <img src="~/images/warning.png">
             <h2>System Warning!</h2>
             <p>Are you sure you don't want to save user on the list?</p>
             <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
@@ -184,29 +186,20 @@
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="../../images/tick.png">
+            <img src="~/images/tick.png">
             <h2>Added!</h2>
             <p>User details has been added successfully!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="../../images/remove.png">
+            <img src="~/images/remove.png">
             <h2>Cancel!</h2>
             <p>User details has not added in the list!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
     </main>
-
-    <div class="footer">
-        <center>
-            <div class="footer-con">
-                <img src="../../images/codepheuse.png" alt="">
-                <h4>CodePheus | 2022</h4>
-            </div>
-        </center>
-    </div>
 
     <script src="~/Scripts/user.js"></script>
 

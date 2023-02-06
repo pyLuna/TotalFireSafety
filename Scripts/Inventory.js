@@ -60,12 +60,13 @@ function setTable(array) {
             row += `<td id="in_code"><label>${array[i].in_code}</label></td><td name="in_name"><label>${array[i].in_name}</label></td><td name="in_category"><label>${array[i].in_category}</label></td><td name="in_type"><label>${array[i].in_type}</label></td><td name="in_size"><label>${array[i].in_size}</label></td><td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
             row += `</form>`;
             row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
-            row += `<button class="del-btn" type="submit" form="tableList" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
+            row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+            row += `<button class="del-btn" /*type="submit" form="tableList"*/ title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
             row += `</td></div>`;
             row += `</tr>`;
             table.innerHTML += row;
-            filtered.length = 0;
         }
+        filtered.length = 0;
 
     }
     else {
@@ -163,6 +164,30 @@ function exportArrayToCsv() {
     link.click();
 }
 
-function ArchiveItem() {
+//Descending
+function SortDescending() {
+    return fixedArray.sort((a, b) => {
+        if (a['in_name'] < b['in_name']) return 1;
+        if (a['in_name'] > b['in_name']) return -1;
+        return 0;
+    });
+}
 
+function Descend() {
+    const result = SortDescending();
+    setTable(result);
+}
+
+//Ascend
+function SortAscending() {
+    return fixedArray.sort((a, b) => {
+        if (a['in_name'] < b['in_name']) return -1;
+        if (a['in_name'] > b['in_name']) return 1;
+        return 0;
+    });
+}
+
+function Ascend() {
+    const result = SortAscending();
+    setTable(result);
 }

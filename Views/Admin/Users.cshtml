@@ -15,98 +15,234 @@
     </header>
     <main>
 
-        <div class="upper-section">
-            <div class="search-wrapper">
-                <span class="las la-search"></span>
-                <input type="text" placeholder="Search here">
-            </div>
-        </div>
+        <div class="user-con" id="user-con-blur">
 
-        <div class="user-grid">
-            <div class="user-header">
-                <h3>EMPLOYEE LIST</h3>
-                <div class="user-buttons-style">
-                    <button class="add-btn" title="ADD NEW ITEM"><a href="@Url.Action("AddUsers","Admin")"><label>Add User</label></a></button>
-                    &nbsp;
-                    <button class="user-filter-btn" onclick="userFiltFunction()">
-                        <a>
-                            <span>Filter</span>
-                            <span class="las la-chevron-down"></span>
-                        </a>
-                    </button>
-                    <div class="user-filter-content" id="userFiltDropdown">
-                        <a href="#">Office Manager</a>
-                        <a href="#">Warehouse Manager</a>
-                        <a href="#">Supervisor</a>
-                    </div>
-                    &nbsp;
-                    <button class="user-sort-btn" onclick="userSortFunction()">
-                        <a>
-                            <span>Sort</span>
-                            <span class="las la-chevron-down"></span>
-                        </a>
-                    </button>
-                    <div class="user-sort-content" id="userSortDropdown">
-                        <a href="#">Ascending</a>
-                        <a href="#">Descending</a>
-                    </div>
+            <div class="upper-section">
+                <div class="search-wrapper">
+                    <span class="las la-search"></span>
+                    <input type="text" placeholder="Search here">
                 </div>
             </div>
-            <div class="user-projects">
-                <div class="users">
-                    <div class="user-body">
-                        <div class="table-responsive" style="overflow-x: auto;">
-                            <table width="100%">
-                                <thead>
-                                    <tr>
-                                        <td>Image</td>
-                                        <td>ID</td>
-                                        <td>Name</td>
-                                        <td>Mobile No.</td>
-                                        <td>Role</td>
-                                        <td>Status</td>
-                                        <td>Action</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><img src="~/images/profile.png" alt=""></td>
-                                        <td><label>00001</label></td>
-                                        <td><label>Clarisse C. Vaquez</label></td>
-                                        <td><label>0923758923</label></td>
-                                        <td><label>Supervisor</label></td>
-                                        <td><label class="stat-act">Active</label></td>
-                                        <td>
-                                            <div class="user-action-style">
-                                                <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>
-                                                <button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+            <div class="user-grid">
+                <div class="user-header">
+                    <h3>EMPLOYEE LIST</h3>
+                    <div class="user-buttons-style">
+                        <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopup()"><a><label>Add User</label></a></button>
+                        &nbsp;
+                        <button class="user-filter-btn" onclick="userFiltFunction()">
+                            <a>
+                                <span>Filter</span>
+                                <span class="las la-chevron-down"></span>
+                            </a>
+                        </button>
+                        <div class="user-filter-content" id="userFiltDropdown">
+                            <a href="#">Office Manager</a>
+                            <a href="#">Warehouse Manager</a>
+                            <a href="#">Supervisor</a>
+                        </div>
+                        &nbsp;
+                        <button class="user-sort-btn" onclick="userSortFunction()">
+                            <a>
+                                <span>Sort</span>
+                                <span class="las la-chevron-down"></span>
+                            </a>
+                        </button>
+                        <div class="user-sort-content" id="userSortDropdown">
+                            <a href="#">Ascending</a>
+                            <a href="#">Descending</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-projects">
+                    <div class="users">
+                        <div class="user-body">
+                            <div class="table-responsive" style="overflow-x: auto;">
+                                <table width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td>ID</td>
+                                            <td>Name</td>
+                                            <td>Mobile No.</td>
+                                            <td>Role</td>
+                                            <td>Status</td>
+                                            <td>Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><label>00001</label></td>
+                                            <td><label>Clarisse C. Vaquez</label></td>
+                                            <td><label>0923758923</label></td>
+                                            <td><label>Supervisor</label></td>
+                                            <td><label class="stat-act">Active</label></td>
+                                            <td>
+                                                <div class="user-action-style">
+                                                    <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>
+                                                    <button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>00001</label></td>
+                                            <td><label>Clarisse C. Vaquez</label></td>
+                                            <td><label>0923758923</label></td>
+                                            <td><label>Supervisor</label></td>
+                                            <td><label class="stat-in">Inactive</label></td>
+                                            <td>
+                                                <div class="user-action-style">
+                                                    <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>
+                                                    <button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>00001</label></td>
+                                            <td><label>Clarisse C. Vaquez</label></td>
+                                            <td><label>0923758923</label></td>
+                                            <td><label>Supervisor</label></td>
+                                            <td><label class="stat-act">Active</label></td>
+                                            <td>
+                                                <div class="user-action-style">
+                                                    <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>
+                                                    <button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+        </div>
+
+
+
+
+        <div class="add-popup" id="add-popup">
+            <div class="add-container">
+                <div class="form-container">
+                    <form action="">
+                        <div class="details personal">
+                            <div class="form-header">
+                                ACCOUNT INFORMATION
+                            </div>
+                            <div class="form-contents">
+                                <div class="fields">
+                                    <div class="input-field">
+                                        <label>Name</label>
+                                        <input type="text" placeholder="Enter your name" required>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Contact</label>
+                                        <input type="number" placeholder="Enter your contact" required>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Employee ID</label>
+                                        <input type="number" placeholder="00-000" required>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Hired Date</label>
+                                        <input type="date" readonly>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Position</label>
+                                        <select required>
+                                            <option disabled selected>Select Position</option>
+                                            <option>Supervisor</option>
+                                            <option>Office Manager</option>
+                                            <option>Warehouse Manager</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Roles</label>
+                                        <select required>
+                                            <option disabled selected>Select Position</option>
+                                            <option>Supervisor</option>
+                                            <option>Office Manager</option>
+                                            <option>Warehouse Manager</option>
+                                            <option>Employee / Local Account</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Active Status</label>
+                                        <select required>
+                                            <option disabled selected>Select Position</option>
+                                            <option>Active</option>
+                                            <option>InActive</option>
+                                            <option>Locked</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-add-btns">
+                            <button class="save" onclick="infoOpenPopup()">
+                                <span class="btnText">Save</span>
+                                <i class="las la-check-square"></i>
+                            </button>
+
+                            <button class="cancel">
+                                <span class="btnText" onclick="canOpenPopup() + closeAddForm()">Cancel</span>
+                                <i class="las la-window-close"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-pop-container" id="info-popup">
+            <img src="../../images/information.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to save the user on the list?</p>
+            <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
+            <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="~/images/warning.png">
+            <img src="../../images/warning.png">
             <h2>System Warning!</h2>
-            <p>Do you want to remove the user on the list?</p>
+            <p>Are you sure you don't want to save user on the list?</p>
             <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
+        <div class="save-pop-container" id="popup">
+            <img src="../../images/tick.png">
+            <h2>Added!</h2>
+            <p>User details has been added successfully!</p>
+            <button type="button" onclick="closePopup()">OK</button>
+        </div>
+
         <div class="rem-pop-container" id="rem-popup">
-            <img src="~/images/remove.png">
-            <h2>Deleted!</h2>
-            <p>User removed in the list successfully!</p>
+            <img src="../../images/remove.png">
+            <h2>Cancel!</h2>
+            <p>User details has not added in the list!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
     </main>
+
+    <div class="footer">
+        <center>
+            <div class="footer-con">
+                <img src="../../images/codepheuse.png" alt="">
+                <h4>CodePheus | 2022</h4>
+            </div>
+        </center>
+    </div>
 
     <script>
 
@@ -137,6 +273,37 @@
                     myDropdown.classList.remove('user-sort-show');
                 }
             }
+        }
+
+
+
+        let addpopup = document.getElementById("add-popup");
+        function addOpenPopup() {
+            addpopup.classList.add("add-popup-show")
+        }
+
+        function addClosePopup() {
+            addpopup.classList.remove("add-popup-show")
+        }
+
+
+        let infopopup = document.getElementById("info-popup");
+        function infoOpenPopup() {
+            infopopup.classList.add("info-popup-show")
+        }
+
+        function infoClosePopup() {
+            infopopup.classList.remove("info-popup-show")
+        }
+
+        let popup = document.getElementById("popup");
+
+        function openPopup() {
+            popup.classList.add("open-popup-show")
+        }
+
+        function closePopup() {
+            popup.classList.remove("open-popup-show")
         }
 
         let canpopup = document.getElementById("can-popup");

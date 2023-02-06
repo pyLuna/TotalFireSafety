@@ -101,6 +101,42 @@ namespace TotalFireSafety.Controllers
         {
             return View();
         }
+        public ActionResult SearchEmployee()
+        {
+            try
+            {
+                var userToken = Session["access_token"].ToString();
+                var response = api_req.GetAllMethod("/Admin/Employee", userToken);
+
+                var json = JsonConvert.DeserializeObject<List<NewEmployeeModel>>(response);
+
+                JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+                Response.ContentType = "application/json"; // Set the Content-Type header
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Json(ex);
+            }
+        }
+        [HttpPost]
+        public ActionResult Users(int item)
+        {
+            var addCode = new NewEmployeeModel()
+            {
+                emp_no = item
+            };
+            var serializedModel = JsonConvert.SerializeObject(addCode);
+            var userToken = Session["access_token"].ToString();
+            var response = api_req.DeleteMethod("Admin/Employee/Delete", userToken, serializedModel);
+
+            if (response != "BadRequest")
+            {
+                var json = JsonConvert.DeserializeObject(response);
+                ViewBag.Response = json.ToString();
+            }
+            return View();
+        }
 
         //  Purchasing
         #region

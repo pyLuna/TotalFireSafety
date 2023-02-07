@@ -22,15 +22,29 @@
                 <span class="las la-search"></span>
                 <input type="text" placeholder="Search here">
             </div>
+            &nbsp;
+
+            <select required>
+                <option disabled selected>Select Category</option>
+                <option>Fittings</option>
+                <option>Gate Valves</option>
+                <option>Power Tools</option>
+                <option>Fire Extinguisher</option>
+                <option>Scaffolding</option>
+                <option>Others</option>
+            </select>
+
         </div>
+
+
 
         <div class="deploy-grid">
             <div class="deploy-header">
                 <h3>DEPLOYMENT REQUEST LISTS</h3>
                 <div class="deploy-buttons-style">
-                    <button class="add-btn" title="ADD NEW REQUEST"><a href="@Url.Action("AddDeploy","Admin")"><span class="las la-plus-circle"></span></a></button>
-                    <button class="pri-btn" title="PRINT REPORT"> <a href="@Url.Action("PrintDeply","Admin")"><span class="las la-print"></span></a></button>
-                    <button class="expo-btn" title="EXPORT REPORT"> <a href="@Url.Action("ExportDeploy","Admin")"><span class="las la-file-download"></span></a></button>
+                    <button class="add-btn" title="ADD NEW REQUEST" onclick="addOpenPopupDep()"><a><span class="las la-plus-circle"></span></a></button>
+                    <button class="pri-btn" title="PRINT REPORT"> <a href="../requisition/sa-print-deploy.html"><span class="las la-print"></span></a></button>
+                    <button class="expo-btn" title="EXPORT REPORT"> <a href="../requisition/sa-expo-deploy.html"><span class="las la-file-download"></span></a></button>
                     <button class="deploy-sort-btn" onclick="userSortFunction()">
                         <a>
                             <span></span>
@@ -116,10 +130,122 @@
             </div>
         </div>
 
+        <div class="add-popup-dep" id="add-popup-dep">
+
+            <div class="deploy-add-container">
+                <div class="deploy-form-container">
+                    <form action="">
+                        <div class="request-details">
+                            <div class="deploy-form-header">
+                                REQUEST DETAILS
+                            </div>
+                            <div class="deploy-form-contents">
+                                <div class="fields">
+                                    <div class="input-field">
+                                        <label>
+                                            <a>Name: </a>
+                                            <select required>
+                                                <option disabled selected>Select Name</option>
+                                                <option>Supervisor</option>
+                                                <option>Office Manager</option>
+                                                <option>Warehouse Manager</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Role/Position: </a>Office Manager </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Employee ID: </a>00001 </label>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label><a>Request Remarks: </a>Item for Deployment </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Date Requested: </a>January 11, 2023 </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Request ID: </a>SREQ234567 </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label></label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Project Type: </a>Fire Fire Fire </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="deploy-details">
+                            <div class="deploy-form-header">
+                                ITEM DETAILS
+                            </div>
+                            <div class="deploy-form-contents">
+                                <div class="deploy-form-table">
+                                    <div class="deploy-form-table-style">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table width="100%">
+                                                <thead>
+                                                    <tr>
+
+                                                        <td>Item Name</td>
+                                                        <td>Item Category</td>
+                                                        <td>Item Size</td>
+                                                        <td>Item Quantity</td>
+                                                        <td>Item Type</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+
+                                                        <td contenteditable="false"><label>Gate Valve Flange Type</label></td>
+                                                        <td contenteditable="false"><label>Gate Valve</label></td>
+                                                        <td contenteditable="true"><label>4"</label></td>
+                                                        <td contenteditable="true"><label>5 PCS</label></td>
+                                                        <td contenteditable="false"><label>Null</label></td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td contenteditable="false"><label>Gate Valve Flange Type</label></td>
+                                                        <td contenteditable="false"><label>Gate Valve</label></td>
+                                                        <td contenteditable="true"><label>4"</label></td>
+                                                        <td contenteditable="true"><label>5 PCS</label></td>
+                                                        <td contenteditable="false"><label>Null</label></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </form>
+                    <center>
+                        <div class="form-add-btns">
+                            <button class="save" onclick="infoOpenPopup()">
+                                <span class="btnText">Save</span>
+                                <i class="las la-check-square"></i>
+                            </button>
+
+                            <button class="cancel">
+                                <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                <i class="las la-window-close"></i>
+                            </button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+
+        </div>
 
 
         <div class="info-pop-container" id="info-popup">
-            <img src="~/Content/images/information.png">
+            <img src="../../../images/information.png">
             <h2>System Warning!</h2>
             <p>Do you want to accept employee's request?</p>
             <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
@@ -127,14 +253,14 @@
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="~/Content/images/tick.png">
+            <img src="../../../images/tick.png">
             <h2>Accepted!</h2>
             <p>Request has been accepted!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="~/Content/images/warning.png">
+            <img src="../../../images/warning.png">
             <h2>System Warning!</h2>
             <p>Are you sure you want to delete item on the list?</p>
             <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
@@ -142,21 +268,21 @@
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="~/Content/images/remove.png">
+            <img src="../../../images/remove.png">
             <h2>Deleted!</h2>
             <p>Item details has deleted in the list!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
         <div class="print-pop-container" id="print-popup">
-            <img src="~/Content/images/printer.png">
+            <img src="../../../images/printer.png">
             <h2>Print!</h2>
             <p>Print successfully!</p>
             <button type="button" onclick="printClosePopup()">OK</button>
         </div>
 
         <div class="expo-pop-container" id="expo-popup">
-            <img src="~/Content/images/export.png">
+            <img src="../../../images/export.png">
             <h2>Export!</h2>
             <p>Exported Successfully!</p>
             <button type="button" onclick="expoClosePopup()">OK</button>
@@ -167,78 +293,82 @@
 </div>
 <script>
 
-        function userSortFunction() {
-            document.getElementById("depSortDropdown").classList.toggle("deploy-sort-show");
-        }
+    function userSortFunction() {
+        document.getElementById("depSortDropdown").classList.toggle("deploy-sort-show");
+    }
 
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(e) {
-            if (!e.target.matches('.deploy-sort-btn')) {
-                var myDropdown = document.getElementById("depSortDropdown");
-                if (myDropdown.classList.contains('deploy-sort-show')) {
-                  myDropdown.classList.remove('deploy-sort-show');
-                }
-              }
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.deploy-sort-btn')) {
+            var myDropdown = document.getElementById("depSortDropdown");
+            if (myDropdown.classList.contains('deploy-sort-show')) {
+                myDropdown.classList.remove('deploy-sort-show');
             }
-
-        let infopopup = document.getElementById("info-popup");
-
-        function infoOpenPopup() {
-            infopopup.classList.add("info-popup-show")
         }
+    }
 
-        function infoClosePopup() {
-            infopopup.classList.remove("info-popup-show")
-        }
+        < !--Messege Box-- >
 
-        let popup = document.getElementById("popup");
+            let addpopupdep = document.getElementById("add-popup-dep");
+    function addOpenPopupDep() {
+        addpopupdep.classList.add("add-popup-dep-show")
+    }
 
-        function openPopup() {
-            popup.classList.add("open-popup-show")
-        }
+    function addClosePopupDep() {
+        addpopupdep.classList.remove("add-popup-dep-show")
+    }
 
-        function closePopup() {
-            popup.classList.remove("open-popup-show")
-        }
+    let infopopup = document.getElementById("info-popup");
+    function infoOpenPopup() {
+        infopopup.classList.add("info-popup-show")
+    }
 
-        let canpopup = document.getElementById("can-popup");
+    function infoClosePopup() {
+        infopopup.classList.remove("info-popup-show")
+    }
 
-        function canOpenPopup() {
-            canpopup.classList.add("can-popup-show")
-        }
+    let popup = document.getElementById("popup");
+    function openPopup() {
+        popup.classList.add("open-popup-show")
+    }
 
-        function canClosePopup() {
-            canpopup.classList.remove("can-popup-show")
-        }
+    function closePopup() {
+        popup.classList.remove("open-popup-show")
+    }
 
-        let rempopup = document.getElementById("rem-popup");
+    let canpopup = document.getElementById("can-popup");
+    function canOpenPopup() {
+        canpopup.classList.add("can-popup-show")
+    }
 
-        function remOpenPopup() {
-            rempopup.classList.add("rem-popup-show")
-        }
+    function canClosePopup() {
+        canpopup.classList.remove("can-popup-show")
+    }
 
-        function remClosePopup() {
-            rempopup.classList.remove("rem-popup-show")
-        }
+    let rempopup = document.getElementById("rem-popup");
+    function remOpenPopup() {
+        rempopup.classList.add("rem-popup-show")
+    }
 
-        let printpopup = document.getElementById("print-popup");
+    function remClosePopup() {
+        rempopup.classList.remove("rem-popup-show")
+    }
 
-        function printOpenPopup() {
-            printpopup.classList.add("print-popup-show")
-        }
+    let printpopup = document.getElementById("print-popup");
+    function printOpenPopup() {
+        printpopup.classList.add("print-popup-show")
+    }
 
-        function printClosePopup() {
-            printpopup.classList.remove("print-popup-show")
-        }
+    function printClosePopup() {
+        printpopup.classList.remove("print-popup-show")
+    }
 
-        let expopopup = document.getElementById("expo-popup");
+    let expopopup = document.getElementById("expo-popup");
+    function expoOpenPopup() {
+        expopopup.classList.add("expo-popup-show")
+    }
 
-        function expoOpenPopup() {
-            expopopup.classList.add("expo-popup-show")
-        }
-
-        function expoClosePopup() {
-            expopopup.classList.remove("expo-popup-show")
-        }
+    function expoClosePopup() {
+        expopopup.classList.remove("expo-popup-show")
+    }
 </script>
-

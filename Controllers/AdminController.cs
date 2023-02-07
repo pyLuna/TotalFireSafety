@@ -19,6 +19,7 @@ namespace TotalFireSafety.Controllers
                 var response = api_req.GetAllMethod("/Warehouse/Inventory", userToken);
 
                 var json = JsonConvert.DeserializeObject<List<Inventory>>(response);
+                json.RemoveAll(x => x.in_status == "archived");
 
                 JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 Response.ContentType = "application/json"; // Set the Content-Type header
@@ -38,6 +39,45 @@ namespace TotalFireSafety.Controllers
             }
             return View();
         }
+        [HttpPost]
+        public ActionResult AddItem(Inventory item)
+        {
+            var serializedModel = JsonConvert.SerializeObject(item);
+            var userToken = Session["access_token"].ToString();
+            var response = api_req.AddMethod("Warehouse/Inventory/Edit", userToken, serializedModel);
+
+            if (response == "BadRequest" || response == "InternalServerError")
+            {
+                ViewBag.Added = response.ToString();
+                return View();
+            }
+            var json = JsonConvert.DeserializeObject(response);
+            ViewBag.Added = json.ToString();
+            return RedirectToAction("Inventory");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteItem(string item)
+        {
+            var addCode = new Inventory()
+            {
+                in_code = item
+            };
+            var serializedModel = JsonConvert.SerializeObject(addCode);
+            var userToken = Session["access_token"].ToString();
+
+            var response = api_req.DeleteMethod("Warehouse/Inventory/Delete", userToken, serializedModel);
+
+            if (response == "BadRequest" || response == "InternalServerError")
+            {
+                //ViewBag.Removed = response.ToString();
+                return Json("error");
+            }
+            //var json = JsonConvert.DeserializeObject(response);
+            //ViewBag.Removed = "Item details has deleted in the list!";
+            //Session["removed"] = "Item details has deleted in the list!";
+            return Json("Item Deleted");
+        }
 
         //  Inventory
         public ActionResult Inventory()
@@ -48,50 +88,6 @@ namespace TotalFireSafety.Controllers
             }
             return View();
         }
-        [HttpPost]
-        public ActionResult Inventory(string item)
-        {
-            var addCode = new Inventory()
-            {
-                in_code = item
-            };
-            var serializedModel = JsonConvert.SerializeObject(addCode);
-            var userToken = Session["access_token"].ToString();
-            var response = api_req.DeleteMethod("Warehouse/Inventory/Delete", userToken, serializedModel);
-
-            if (response != "BadRequest")
-            {
-                var json = JsonConvert.DeserializeObject(response);
-                ViewBag.Response = json.ToString();
-            }
-            return View();
-        }
-        public ActionResult AddItem()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult AddItem(Inventory item)
-        {
-            try
-            {
-                var serializedModel = JsonConvert.SerializeObject(item);
-                var userToken = Session["access_token"].ToString();
-                var response = api_req.AddMethod("Warehouse/Inventory/Edit", userToken, serializedModel);
-
-                if(response != "BadRequest")
-                {
-                    var json = JsonConvert.DeserializeObject(response);
-                    ViewBag.Response = json.ToString();
-                }
-                return View();
-            }
-            catch (Exception ex)
-            {
-                return View(ex);
-            }
-        }
-
         //  Users
         public ActionResult Users()
         {

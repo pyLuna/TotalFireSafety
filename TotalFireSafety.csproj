@@ -380,7 +380,6 @@
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="Views\AdminLayout.cshtml" />
     <Content Include="Views\Admin\AddDeploy.cshtml" />
-    <Content Include="Views\Admin\AddItem.cshtml" />
     <Content Include="Views\Admin\AddPurchase.cshtml" />
     <Content Include="Views\Admin\AddSupply.cshtml" />
     <Content Include="Views\Admin\AddUsers.cshtml" />

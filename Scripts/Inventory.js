@@ -55,14 +55,12 @@ function setTable(array) {
             if (array[i].in_size === null) {
                 array[i].in_size = '';
             }
-            var row = `<tr>`;
-            row += `<form action="/Admin/Inventory?item=${array[i].in_code}" method="post" id="tableList">`;
+            var row = `<tr>`; /*onclick = "canOpenPopup()"*/
             row += `<td id="in_code"><label>${array[i].in_code}</label></td><td name="in_name"><label>${array[i].in_name}</label></td><td name="in_category"><label>${array[i].in_category}</label></td><td name="in_type"><label>${array[i].in_type}</label></td><td name="in_size"><label>${array[i].in_size}</label></td><td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
-            row += `</form>`;
             row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
-            row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>`;
-            row += `<button class="del-btn" /*type="submit" form="tableList"*/ title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
-            row += `</td></div>`;
+            row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEdit('${array[i].in_code}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+            row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick = "canOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
+            row += `</div></td>`;
             row += `</tr>`;
             table.innerHTML += row;
         }
@@ -102,12 +100,12 @@ function SearchItem(value) {
 function SortByCategory(value) {
     const category = document.querySelector('#selcat');
     //document.getElementById("myDropdown").setAttribute("style","display:none;");
-    if (value != '') {
-        category.innerHTML = value;
+    if (value != 'Clear') {
+        //category.value = value;
         SearchItem(value.toLowerCase());
     }
     else {
-        category.innerHTML = 'Select Category';
+        category.selectedIndex = 0;
         setTable(fixedArray);
     }
 }
@@ -118,6 +116,7 @@ function setField(value) {
     let quantity = document.querySelector('#itemQuant');
     let cat = document.getElementById("cat-select");
     let type = document.getElementById("type-select");
+    let code = document.querySelector('#itemCode');
 
     for (var i = 0; i < fixedArray.length; i++) {
         if (fixedArray[i].in_code == value) {
@@ -125,6 +124,7 @@ function setField(value) {
             filtered.push(fixedArray[i]);
         }
     }
+    code.value = filtered[0].in_code;
     name.value = filtered[0].in_name;
     size.value = filtered[0].in_size;
     quantity.value = filtered[0].in_quantity;
@@ -143,9 +143,14 @@ function setField(value) {
         // check if the option value exists in the valuesToCompare array
         if (filtered[0].in_type === option.value) {
             type.selectedIndex = i;
-        } 
+        }
     }
-   
+    if (filtered[0].in_type === '') {
+        type.selectedIndex = 0;
+    }
+    if (filtered[0].in_category === '') {
+        cat.selectedIndex = 0;
+    }
 }
 
 function exportArrayToCsv() {
@@ -190,4 +195,27 @@ function SortAscending() {
 function Ascend() {
     const result = SortAscending();
     setTable(result);
+}
+
+function DeleteItem() {
+    let item = localStorage.getItem("codeToDelete");
+
+    fetch('/Admin/DeleteItem?item=' + item, {
+        method: "POST"
+    })
+        .then(res => {
+            if (res.ok) {
+                // API request was successful
+                return res.json();
+            } else {
+                console.log(res.statusText);
+            }
+        })
+        .then(data => {
+            localStorage.setItem("removed","success");
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }

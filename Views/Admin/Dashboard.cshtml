@@ -15,8 +15,6 @@
 
         </h2>
 
-        <h3><span id="dt"></span></h3>
-
         <right>
             <h4>View Summary In:</h4>
 
@@ -163,7 +161,7 @@
 
                                             </div>
 
-                                            <div class="proj-inside-circle"> 75% </div>
+                                            <div class="proj-inside-circle"> 75 </div>
 
                                         </div>
                                     </div>
@@ -210,56 +208,64 @@
 
         <div class="cards">
             <div class="card-title">
-                <h3>Users</h3>
-                <div class="card-single">
-                    <div class="card-container">
-                        <h3>Employee</h3>
-                        <div class="card-details">
-                            <label>15</label><span>Total Employees</span>
-                            <p></p>
-                            <label class="card-active">15</label><span class="card-active">Active Employees</span>
+                <a href="../super-admin/administration/sa-users.html">
+                    <h3>Users</h3>
+                    <div class="card-single">
+                        <div class="card-container">
+                            <h3>Employee</h3>
+                            <div class="card-details">
+                                <label>15</label><span>Total Employees</span>
+                                <p></p>
+                                <label class="card-active">15</label><span class="card-active">Active Employees</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="card-title">
-                <h3>Requisition</h3>
-                <div class="card-single">
-                    <div class="card-container">
-                        <h3>Purchase Request</h3>
-                        <div class="card-details">
-                            <label>30</label><span>Total Entries</span>
-                            <p></p>
-                            <label class="card-active">5</label><span class="card-active">New Entries</span>
+                <a href="../super-admin/operations/requisition/sa-pur_requi.html">
+                    <h3>Requisition</h3>
+                    <div class="card-single">
+                        <div class="card-container">
+                            <h3>Purchase Request</h3>
+                            <div class="card-details">
+                                <label>30</label><span>Total Entries</span>
+                                <p></p>
+                                <label class="card-active">5</label><span class="card-active">New Entries</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="card-title">
-                <h3>&nbsp;</h3>
-                <div class="card-single">
-                    <div class="card-container">
-                        <h3>Deployment Request</h3>
-                        <div class="card-details">
-                            <label>30</label><span>Total Entries</span>
-                            <p></p>
-                            <label class="card-active">5</label><span class="card-active">New Entries</span>
+                <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
+                    <h3>Deploy</h3>
+                    <div class="card-single">
+                        <div class="card-container">
+                            <h3>Deployment Request</h3>
+                            <div class="card-details">
+                                <label>30</label><span>Total Entries</span>
+                                <p></p>
+                                <label class="card-active">5</label><span class="card-active">New Entries</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="card-title">
-                <h3>Purchasing</h3>
-                <div class="card-single">
-                    <div class="card-container">
-                        <h3>Purchase Orders</h3>
-                        <div class="card-details">
-                            <label>30</label><span>Total Orders</span>
-                            <p></p>
-                            <label class="card-active">5</label><span class="card-active">Order Received</span>
+                <a href="../super-admin/operations/sa-purchasing/sa-purchasing.html">
+                    <h3>Purchasing</h3>
+                    <div class="card-single">
+                        <div class="card-container">
+                            <h3>Purchase Orders</h3>
+                            <div class="card-details">
+                                <label>30</label><span>Total Orders</span>
+                                <p></p>
+                                <label class="card-active">5</label><span class="card-active">Order Received</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -270,20 +276,24 @@
                 <div class="card">
                     <div class="card-header">
                         <h3>Item Categories Summary</h3>
-                        <a href="../super-admin/operations/sa-inventory/sa-inventory.html"><button> See more <span class="las la-arrow-right"></span></button></a>
+
+                        <select required>
+                            <option disabled selected>Item Category</option>
+                            <option>...</option>
+                            <option>..</option>
+                        </select>
+
                     </div>
                     <div class="chart-border">
                         <div class="chart">
                             <canvas id="barchart" width="300" height="300"></canvas>
+
                         </div>
                     </div>
 
-                    <div class="invent-sum-text">
-                        <center>
-                            <h3>asdlgfhkjasdfh</h3>
-                        </center>
+                    <div class="card-headers">
+                        <a href="../super-admin/operations/sa-inventory/sa-inventory.html"><button> See more <span class="las la-arrow-right"></span></button></a>
                     </div>
-
                 </div>
             </div>
 
@@ -302,7 +312,7 @@
                         </ul>
 
                     </div>
-                    <div class="chart-border">
+                    <div class="chart-borders">
                         <div class="chart">
                             <div class="scatter">
                                 <canvas id="barcharthori" width="auto" height="auto"></canvas>
@@ -320,3 +330,83 @@
     </main>
 </div>
 
+@Scripts.Render("~/script/admin")
+
+<script>
+
+
+
+    `use strict`;
+    function refreshTime() {
+        const timeDisplay = document.getElementById("dt");
+        const dateString = new Date().toLocaleString();
+        const formattedString = dateString.replace(", ", " - ");
+        timeDisplay.textContent = formattedString;
+    }
+    setInterval(refreshTime, 0);
+
+
+    var dropdown = document.getElementsByClassName("oper-dropdown-bt");
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+
+    /* When the user clicks on the button,
+       toggle between hiding and showing the dropdown content */
+    function yrFunction() {
+        document.getElementById("yrDropdown").classList.toggle("yr-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.yr-drop-btn')) {
+            var myDropdown = document.getElementById("yrDropdown");
+            if (myDropdown.classList.contains('yr-show')) {
+                myDropdown.classList.remove('yr-show');
+            }
+        }
+    }
+
+    /* When the user clicks on the button,
+        toggle between hiding and showing the dropdown content */
+    function mFunction() {
+        document.getElementById("mDropdown").classList.toggle("m-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.m-drop-btn')) {
+            var myDropdown = document.getElementById("mDropdown");
+            if (myDropdown.classList.contains('m-show')) {
+                myDropdown.classList.remove('m-show');
+            }
+        }
+    }
+
+    /* When the user clicks on the button,
+       toggle between hiding and showing the dropdown content */
+    function dFunction() {
+        document.getElementById("dDropdown").classList.toggle("d-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.d-drop-btn')) {
+            var myDropdown = document.getElementById("dDropdown");
+            if (myDropdown.classList.contains('d-show')) {
+                myDropdown.classList.remove('d-show');
+            }
+        }
+    }
+
+</script>

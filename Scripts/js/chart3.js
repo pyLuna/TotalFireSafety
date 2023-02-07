@@ -9,13 +9,8 @@ const barcharthori = new Chart(ctx3, {
             label: 'Item Quantity',
             data: [881, 700, 500, 420, 350, 100],
             backgroundColor: [
-                '#2C74B3',
-                '#5BC0F8',
-                '#5BC0F8',
-                '#5BC0F8',
-                '#5BC0F8',
-                '#5BC0F8'    
-                
+                '#256D85'
+
             ],
             borderColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -23,13 +18,13 @@ const barcharthori = new Chart(ctx3, {
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'               
+                'rgba(255, 159, 64, 0.2)'
             ],
             borderWidth: 1,
             hoverBackgroundColor: '#fff',
             hoverBorderWidth: 1,
             hoverBorderColor: '#16215B'
-            
+
 
         }]
     },
@@ -37,6 +32,7 @@ const barcharthori = new Chart(ctx3, {
         indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
+        aspectRatio: 4 / 3,
         scales: {
             y: {
                 beginAtZero: true
@@ -44,3 +40,4 @@ const barcharthori = new Chart(ctx3, {
         }
     }
 });
+

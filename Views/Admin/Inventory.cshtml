@@ -23,29 +23,25 @@
                 <span class="las la-search"></span>
                 <input type="text" placeholder="Search here" onkeyup="SearchItem(this.value)">
             </div>
-
-            <div class="dropdown">
-                <button class="drop-btn" onclick="myFunction()">
-                    <a id="selcat"> Select Category </a>
-                    <span class="las la-chevron-circle-down"></span>
-                </button>
-                <div class="dropdown-content" id="myDropdown">
-                    <a href="#" onclick="SortByCategory(this.innerHTML)">Fittings</a>
-                    <a href="#" onclick="SortByCategory(this.innerHTML)">Gate Valves</a>
-                    <a href="#" onclick="SortByCategory(this.innerHTML)">Power Tools</a>
-                    <a href="#" onclick="SortByCategory(this.innerHTML)">Fire Extinguisher</a>
-                    <a href="#" onclick="SortByCategory(this.innerHTML)">Scaffolding</a>
-                    <a href="#" onclick="SortByCategory(this.innerHTML)">Others</a>
-                    <a href="#" onclick="SortByCategory('')">Clear</a>
-                </div>
-            </div>
+            &nbsp;
+            <select id="selcat" onchange="SortByCategory(this.value)">
+                <option disabled selected>Select Category</option>
+                <option>Fittings</option>
+                <option>Gate Valves</option>
+                <option>Power Tools</option>
+                <option>Fire Extinguisher</option>
+                <option>Scaffolding</option>
+                <option>Others</option>
+                <option>Clear</option>
+            </select>
         </div>
 
         <div class="inventory-grid">
             <div class="inventory-header" id="tableTitle">
                 <h3>INVENTORY ITEMS</h3>
                 <div class="inventory-buttons-style" id="hideBtn">
-                    <button class="add-btn" title="ADD NEW ITEM"><a href="@Url.Action("AddItem","Admin")"><span class="las la-plus-circle"></span></a></button>
+                    @*<button class="add-btn" title="ADD NEW ITEM"><a href="@Url.Action("AddItem","Admin")"><span class="las la-plus-circle"></span></a></button>*@
+                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()"><a><span class="las la-plus-circle"></span></a></button>
                     <button class="pri-btn" title="PRINT REPORT" id="printBtn" @*onclick="printOpenPopup()"*@> <a href="#"><span class="las la-print"></span></a></button>
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportTable()"> <a href="#"><span class="las la-file-download"></span></a></button>
                     <button class="inventory-sort-btn" onclick="userSortFunction()">
@@ -62,6 +58,96 @@
                 </div>
 
             </div>
+
+            <div class="add-popup-inv" id="add-popup-inv">
+                <div class="inventory-add-container">
+                    <div class="inventory-form-container">
+                        <form action="@Url.Action("AddItem","Admin")" id="addForm" method="post">
+                            <div class="details personal">
+                                <div class="inventory-form-header">
+                                    ITEM DETAILS
+                                </div>
+                                <div class="inventory-form-contents">
+                                    <div class="fields">
+                                        <div class="input-field">
+                                            <label>Item ID</label>
+                                            <input type="text" id="itemCode" placeholder="ABC-DEF-GHI">
+                                        </div>
+
+                                        <div class="input-field">
+                                            <label>Item Name</label>
+                                            <input type="text" placeholder="Item Name" id="itemName" readonly>
+                                        </div>
+
+                                        <div class="input-field">
+                                            <label>Category</label>
+                                            <select id="cat-select" readonly>
+                                                <option disabled selected>Select Category</option>
+                                                <option value="Fittings">Fittings</option>
+                                                <option value="Gate Valves">Gate Valves</option>
+                                                <option value="Power Tools">Power Tools</option>
+                                                <option value="Fire Extinguisher">Fire Extinguisher</option>
+                                                <option value="Scaffolding">Scaffolding</option>
+                                                <option value="Others">Others</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="input-field">
+                                            <label>Type</label>
+                                            <select id="type-select" readonly>
+                                                <option disabled selected>Select Type</option>
+                                                <option value="HFC-236 F">HFC-236 F</option>
+                                                <option value="Machine">Machine</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="input-field">
+                                            <label>Size</label>
+                                            <div class="input-field-size">
+                                                <input type="text" placeholder="00000" id="itemSize" readonly>
+                                                <select required>
+                                                    <option disabled selected>Measurement</option>
+                                                    <option>INCH</option>
+                                                    <option>CM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Quantity</label>
+                                            <div class="input-field-quantity">
+                                                <input type="text" placeholder="00000" id="itemQuant">
+                                                <select required readonly>
+                                                    <option disabled selected>Measurement</option>
+                                                    <option>PC/S</option>
+                                                    <option>SET</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <center>
+                                <div class="form-add-btns">
+                                    <button class="save" id="saveBtn" onclick="infoOpenPopup()">
+                                        <span class="btnText">Save</span>
+                                        <i class="las la-check-square"></i>
+                                    </button>
+
+                                    <button class="cancel">
+                                        <span class="btnText" id="cancelBtn" onclick="addClosePopupInv()">Cancel</span>
+                                        <i class="las la-window-close"></i>
+                                    </button>
+                                </div>
+                            </center>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            @*<form action="/Admin/DeleteItem?item=${array[i].in_code}" method="post" id="tableList" style="display:none">
+                <input type="text" id="firstName">
+            </form>*@
+
             <div class="inventory-projects" id="printTable">
                 <div class="inventory">
                     <div class="inventory-body">
@@ -87,38 +173,50 @@
             </div>
         </div>
 
+        <div class="info-pop-container" id="info-popup">
+            <img src="~/images/information.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to save the item on the list?</p>
+            <button type="submit" form="addForm">Yes</button>
+            <button type="button" onclick="infoClosePopup()">Cancel</button>
+        </div>
+
         <div class="can-pop-container" id="can-popup">
             <img src="~/images/warning.png">
             <h2>System Warning!</h2>
             <p>Are you sure you want to delete item on the list?</p>
-            <button type="submit" form="tableList" @*onclick="remOpenPopup() + canClosePopup()"*@>Yes</button>
+            <button type="button" onclick="DeleteItem()">Yes</button>
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
-        @if (ViewBag.Response != null)
-        {
-            <div class="rem-pop-container-show" id="rem-popup">
+            <div class="rem-pop-container" id="rem-popup">
                 <img src="~/images/remove.png">
                 <h2>Deleted!</h2>
-                <p>@ViewBag.Response</p>
+                <p>Item details has deleted in the list!</p>
                 <button type="button" onclick="remClosePopup()">OK</button>
             </div>
-        }
 
-        <div class="print-pop-container" id="print-popup">
-            <img src="~/images/printer.png">
-            <h2>Print!</h2>
-            <p>Print successfully!</p>
-            <button type="button" onclick="printClosePopup()">OK</button>
-        </div>
+            <div class="save-pop-container" id="popup">
+                <img src="~/images/tick.png">
+                <h2>Saved!</h2>
+                <p>Item has saved successfully!</p>
+                <button type="button" onclick="closePopup()">OK</button>
+            </div>
+            <div class="print-pop-container" id="print-popup">
+                <img src="~/images/printer.png">
+                <h2>Print!</h2>
+                <p>Print successfully!</p>
+                <button type="button" onclick="printClosePopup()">OK</button>
+            </div>
 
-        <div class="expo-pop-container" id="expo-popup">
-            <img src="~/images/export.png">
-            <h2>Export!</h2>
-            <p>Exported Successfully!</p>
-            <button type="button" onclick="expoClosePopup()">OK</button>
-        </div>
-    </main>
+            <div class="expo-pop-container" id="expo-popup">
+                <img src="~/images/export.png">
+                <h2>Export!</h2>
+                <p>Exported Successfully!</p>
+                <button type="button" onclick="expoClosePopup()">OK</button>
+            </div>
+
+        </main>
     <script src="~/Scripts/Inventory.js"></script>
     <script>
 
@@ -126,8 +224,49 @@
         toggle between hiding and showing the dropdown content */
 
         window.onload = function () {
+            let removed = localStorage.getItem("removed");
+
+            if (removed != null) {
+                rempopup.classList.add("rem-popup-show");
+                localStorage.clear();
+            }
             GetAll();
         }
+
+        //document.querySelector("button").addEventListener("click", function () {
+        //        let value = this.getAttribute("data-code");
+        //        localStorage.setItem("dataValue", value);
+        //    canpopup.classList.add("can-popup-show");
+        //    console.log(value);
+        //});
+
+        function openEdit(value) {
+            addpopupinv.classList.add("add-popup-inv-show");
+
+            let code = document.querySelector('#itemCode');
+            let name = document.querySelector('#itemName');
+            let size = document.querySelector('#itemSize');
+            let quantity = document.querySelector('#itemQuant');
+            let cat = document.getElementById("cat-select");
+            let type = document.getElementById("type-select");
+
+            code.removeAttribute("readonly");
+            name.removeAttribute("readonly");
+            size.removeAttribute("readonly");
+            quantity.removeAttribute("readonly");
+            cat.removeAttribute("readonly");
+            type.removeAttribute("readonly");
+
+            setField(value);
+        }
+
+        document.getElementById("saveBtn").addEventListener("click", function () {
+            event.preventDefault();
+        });
+
+        document.getElementById("cancelBtn").addEventListener("click", function () {
+            event.preventDefault();
+        });
 
         document.getElementById("printBtn").addEventListener("click", function () {
             window.print();
@@ -147,6 +286,7 @@
                 var myDropdown = document.getElementById("myDropdown");
                 if (myDropdown.classList.contains('show')) {
                     myDropdown.classList.remove('show');
+
                 }
             }
         }
@@ -164,11 +304,23 @@
                 }
             }
         }
+            //Messege Box
+
+        let addpopupinv = document.getElementById("add-popup-inv");
+        function addOpenPopupInv() {
+            addpopupinv.classList.add("add-popup-inv-show")
+        }
+
+        function addClosePopupInv() {
+            addpopupinv.classList.remove("add-popup-inv-show")
+        }
+
 
         let canpopup = document.getElementById("can-popup");
 
-        function canOpenPopup() {
-            canpopup.classList.add("can-popup-show")
+        function canOpenPopup(value) {
+            canpopup.classList.add("can-popup-show");
+            localStorage.setItem("codeToDelete", value);
         }
 
         function canClosePopup() {

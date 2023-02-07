@@ -45,6 +45,8 @@ namespace TotalFireSafety
                         "~/Scripts/js/chart2.js",
                         "~/Scripts/js/chart3.js"
                 ));
+
+            // TODO DELETE THIS SNIPPET
             // Add User JS to prevent regex and mvc conflict
             bundles.Add(new StyleBundle("~/script/adduser").Include(
                         "~/Scripts/AddUsers.js"

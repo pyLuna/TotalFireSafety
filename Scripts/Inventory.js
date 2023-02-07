@@ -219,3 +219,24 @@ function DeleteItem() {
             console.error(error);
         });
 }
+
+//function AddDeleteItem(value) {
+//    fetch('/Admin/DeleteItem?item=' + item, {
+//        method: "POST"
+//    })
+//        .then(res => {
+//            if (res.ok) {
+//                // API request was successful
+//                return res.json();
+//            } else {
+//                console.log(res.statusText);
+//            }
+//        })
+//        .then(data => {
+//            localStorage.setItem("removed", "success");
+//            window.location.reload();
+//        })
+//        .catch(error => {
+//            console.error(error);
+//        });
+//}

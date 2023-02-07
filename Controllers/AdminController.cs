@@ -52,7 +52,7 @@ namespace TotalFireSafety.Controllers
                 return View();
             }
             var json = JsonConvert.DeserializeObject(response);
-            ViewBag.Added = json.ToString();
+            Session["edit"] = json.ToString();
             return RedirectToAction("Inventory");
         }
 

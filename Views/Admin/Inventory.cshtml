@@ -226,6 +226,13 @@
         window.onload = function () {
             let removed = localStorage.getItem("removed");
 
+            let edit = @Session["edit"].ToString();
+
+            if (edit != null) {
+                rempopup.classList.add("rem-popup-show");
+                localStorage.clear();
+            }
+
             if (removed != null) {
                 rempopup.classList.add("rem-popup-show");
                 localStorage.clear();
@@ -305,6 +312,15 @@
             }
         }
             //Messege Box
+        let infopopup = document.getElementById("info-popup");
+
+        function infoOpenPopup() {
+            infopopup.classList.add("info-popup-show")
+        }
+
+        function infoClosePopup() {
+            infopopup.classList.remove("info-popup-show")
+        }
 
         let addpopupinv = document.getElementById("add-popup-inv");
         function addOpenPopupInv() {
@@ -314,7 +330,6 @@
         function addClosePopupInv() {
             addpopupinv.classList.remove("add-popup-inv-show")
         }
-
 
         let canpopup = document.getElementById("can-popup");
 

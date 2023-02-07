@@ -1,4 +1,5 @@
-﻿
+﻿@using TotalFireSafety.Models
+@Model Employee 
 @{
     ViewBag.Title = "Users";
     Layout = "~/Views/AdminLayout.cshtml";
@@ -38,24 +39,24 @@
                         </button>
                         <div class="user-filter-content" id="userFiltDropdown">
                             <a id="selcat"> Select Category </a>
-                                <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
-                                <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
-                                <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
-                                <a href="#" onclick="SortByCategory('')">clear</a>
-                            
-                            </div>
-                            &nbsp;
-                            <button class="user-sort-btn" onclick="userSortFunction()">
-                                <a>
-                                    <span>Sort</span>
-                                    <span class="las la-chevron-down"></span>
-                                </a>
-                            </button>
-                            <div class="user-sort-content" id="userSortDropdown">
-                                <a href="#" onclick="Ascend()">Ascending</a>
-                                <a href="#" onclick="Descend()">Descending</a>
-                            </div>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
+                            <a href="#" onclick="SortByCategory('')">clear</a>
+
                         </div>
+                        &nbsp;
+                        <button class="user-sort-btn" onclick="userSortFunction()">
+                            <a>
+                                <span>Sort</span>
+                                <span class="las la-chevron-down"></span>
+                            </a>
+                        </button>
+                        <div class="user-sort-content" id="userSortDropdown">
+                            <a href="#" onclick="Ascend()">Ascending</a>
+                            <a href="#" onclick="Descend()">Descending</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="user-projects">
                     <div class="users">
@@ -74,7 +75,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -176,30 +176,32 @@
             <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
+        
+    <div class="can-pop-container" id="can-popup">
+        <img src="~/images/warning.png">
+        <h2>System Warning!</h2>
+        <p>Are you sure you don't want to save user on the list?</p>
+        
+        <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button> 
+        
+        <button type="button" onclick="canClosePopup()">Cancel</button>
+    </div>
+        
+            <div class="save-pop-container" id="popup">
+                <img src="~/images/tick.png">
+                <h2>Added!</h2>
+                <p>User details has been added successfully!</p>
+                <button type="button" onclick="closePopup()">OK</button>
+            </div>
 
-        <div class="can-pop-container" id="can-popup">
-            <img src="~/images/warning.png">
-            <h2>System Warning!</h2>
-            <p>Are you sure you don't want to save user on the list?</p>
-            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
-            <button type="button" onclick="canClosePopup()">Cancel</button>
-        </div>
+            <div class="rem-pop-container" id="rem-popup">
+                <img src="~/images/remove.png">
+                <h2>Cancel!</h2>
+                <p>User details has not added in the list!</p>
+                <button type="button" onclick="remClosePopup()">OK</button>
+            </div>
 
-        <div class="save-pop-container" id="popup">
-            <img src="~/images/tick.png">
-            <h2>Added!</h2>
-            <p>User details has been added successfully!</p>
-            <button type="button" onclick="closePopup()">OK</button>
-        </div>
-
-        <div class="rem-pop-container" id="rem-popup">
-            <img src="~/images/remove.png">
-            <h2>Cancel!</h2>
-            <p>User details has not added in the list!</p>
-            <button type="button" onclick="remClosePopup()">OK</button>
-        </div>
-
-    </main>
+        </main>
 
     <script src="~/Scripts/user.js"></script>
 

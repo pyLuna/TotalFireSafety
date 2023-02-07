@@ -4,12 +4,14 @@ using Newtonsoft.Json;
 using TotalFireSafety.Models;
 using System.Collections.Generic;
 
+
 namespace TotalFireSafety.Controllers
 {
     public class AdminController : Controller
     {
         // GET: Admin
         readonly APIRequestHandler api_req = new APIRequestHandler();
+       
 
         public ActionResult FindDataOf()
         {
@@ -93,10 +95,28 @@ namespace TotalFireSafety.Controllers
         }
 
         //  Users
-        public ActionResult Users()
+       
+        [HttpPost]
+        public ActionResult Users(Employee employee)
         {
+            if(Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+
+            var serializedModel = JsonConvert.SerializeObject(employee);
+            var userToken = Session["access_token"].ToString();
+            var response = api_req.AddMethod("Admin/Employee/Add", userToken, serializedModel);
+
+            if (response != "BadRequest")
+            {
+                var json = JsonConvert.DeserializeObject(response);
+                ViewBag.Response = json.ToString();
+            }
             return View();
+
         }
+        
         public ActionResult AddUsers()
         {
             return View();
@@ -119,24 +139,7 @@ namespace TotalFireSafety.Controllers
                 return Json(ex);
             }
         }
-        [HttpPost]
-        public ActionResult Users(int item)
-        {
-            var addCode = new NewEmployeeModel()
-            {
-                emp_no = item
-            };
-            var serializedModel = JsonConvert.SerializeObject(addCode);
-            var userToken = Session["access_token"].ToString();
-            var response = api_req.DeleteMethod("Admin/Employee/Delete", userToken, serializedModel);
-
-            if (response != "BadRequest")
-            {
-                var json = JsonConvert.DeserializeObject(response);
-                ViewBag.Response = json.ToString();
-            }
-            return View();
-        }
+        
 
         //  Purchasing
         #region

@@ -109,7 +109,7 @@ namespace TotalFireSafety.Controllers
                                 emp_contact = _emp.emp_contact,
                                 emp_hiredDate = _emp.emp_hiredDate,
                                 emp_name = _emp.emp_name,
-                                emp_position = _emp.emp_position,
+                                emp_position = _emp.emp_position
                                 
 
                             };

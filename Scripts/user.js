@@ -185,3 +185,22 @@ function exportArrayToCsv() {
     //// Trigger the download
     link.click();
 }
+function Descend() {
+    const result = SortDescending();
+    setTable(result);
+}
+
+//Ascend
+function SortAscending() {
+    return fixedArray.sort((a, b) => {
+        if (a['emp_name'] < b['emp_name']) return -1;
+        if (a['emp_name'] > b['emp_name']) return 1;
+        return 0;
+    });
+}
+
+
+function Ascend() {
+    const result = SortAscending();
+    setTable(result);
+}

@@ -95,7 +95,13 @@ namespace TotalFireSafety.Controllers
         }
 
         //  Users
+        
+        public ActionResult Users()
+        {
+            return View();
+        }
        
+
         [HttpPost]
         public ActionResult Users(Employee employee)
         {
@@ -108,13 +114,14 @@ namespace TotalFireSafety.Controllers
             var userToken = Session["access_token"].ToString();
             var response = api_req.AddMethod("Admin/Employee/Add", userToken, serializedModel);
 
-            if (response != "BadRequest")
+            if (response == "BadRequest" || response == "InternalServerError")
             {
-                var json = JsonConvert.DeserializeObject(response);
-                ViewBag.Response = json.ToString();
+                ViewBag.Response = response.ToString();
+                return View();
             }
+            var json = JsonConvert.DeserializeObject(response);
+            ViewBag.Response = json.ToString();
             return View();
-
         }
         
         public ActionResult AddUsers()

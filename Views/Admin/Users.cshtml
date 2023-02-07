@@ -1,5 +1,6 @@
 ﻿@using TotalFireSafety.Models
-@Model Employee 
+@model Employee 
+
 @{
     ViewBag.Title = "Users";
     Layout = "~/Views/AdminLayout.cshtml";
@@ -91,7 +92,7 @@
         <div class="add-popup" id="add-popup">
             <div class="add-container">
                 <div class="form-container">
-                    <form action="">
+                    <form action="" method="post">
                         <div class="details personal">
                             <div class="form-header">
                                 ACCOUNT INFORMATION
@@ -100,27 +101,27 @@
                                 <div class="fields">
                                     <div class="input-field">
                                         <label>Name</label>
-                                        <input type="text" placeholder="Enter your name" required>
+                                        <input type="text" placeholder="Enter your name" name="emp_name" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Contact</label>
-                                        <input type="number" placeholder="Enter your contact" required>
+                                        <input type="number" placeholder="Enter your contact" name="emp_contact" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Employee ID</label>
-                                        <input type="number" placeholder="00-000" required>
+                                        <input type="number" placeholder="00-000" name="emp_no" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Hired Date</label>
-                                        <input type="date" readonly>
+                                        <input type="text" name="emp_hiredDate">
                                     </div>
 
                                     <div class="input-field">
                                         <label>Position</label>
-                                        <select required>
+                                        <select name="emp_position" required>
                                             <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
                                             <option>Office Manager</option>
@@ -130,7 +131,7 @@
 
                                     <div class="input-field">
                                         <label>Roles</label>
-                                        <select required>
+                                        <select name="role" required>
                                             <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
                                             <option>Office Manager</option>
@@ -141,11 +142,11 @@
 
                                     <div class="input-field">
                                         <label>Active Status</label>
-                                        <select required>
+                                        <select name="IsActive"  required>
                                             <option disabled selected>Select Position</option>
-                                            <option>Active</option>
-                                            <option>InActive</option>
-                                            <option>Locked</option>
+                                            <option value="1">Active</option>
+                                            <option value="">InActive</option>
+                                            <option value="3">Locked</option>
                                         </select>
                                     </div>
 
@@ -164,7 +165,7 @@
                                 <i class="las la-window-close"></i>
                             </button>
                         </div>
-                    </form>
+
                 </div>
             </div>
         </div>
@@ -173,35 +174,36 @@
             <img src="~/images/information.png">
             <h2>System Warning!</h2>
             <p>Do you want to save the user on the list?</p>
-            <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
+
+            <button type="submit" onclick="openPopup() + infoClosePopup()">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
-        
-    <div class="can-pop-container" id="can-popup">
-        <img src="~/images/warning.png">
-        <h2>System Warning!</h2>
-        <p>Are you sure you don't want to save user on the list?</p>
-        
-        <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button> 
-        
-        <button type="button" onclick="canClosePopup()">Cancel</button>
-    </div>
-        
-            <div class="save-pop-container" id="popup">
-                <img src="~/images/tick.png">
-                <h2>Added!</h2>
-                <p>User details has been added successfully!</p>
-                <button type="button" onclick="closePopup()">OK</button>
-            </div>
 
-            <div class="rem-pop-container" id="rem-popup">
-                <img src="~/images/remove.png">
-                <h2>Cancel!</h2>
-                <p>User details has not added in the list!</p>
-                <button type="button" onclick="remClosePopup()">OK</button>
-            </div>
+        <div class="can-pop-container" id="can-popup">
+            <img src="~/images/warning.png">
+            <h2>System Warning!</h2>
+            <p>Are you sure you don't want to save user on the list?</p>
 
-        </main>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
+
+        <div class="save-pop-container" id="popup">
+            <img src="~/images/tick.png">
+            <h2>Added!</h2>
+            <p>User details has been added successfully!</p>
+            <button type="button" onclick="closePopup()">OK</button>
+        </div>
+
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="~/images/remove.png">
+            <h2>Cancel!</h2>
+            <p>User details has not added in the list!</p>
+            <button type="submit" form="tableList" onclick="remClosePopup()">OK</button>
+        </div>
+        </form>
+    </main>
 
     <script src="~/Scripts/user.js"></script>
 

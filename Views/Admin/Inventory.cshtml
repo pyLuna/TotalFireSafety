@@ -41,7 +41,7 @@
                 <h3>INVENTORY ITEMS</h3>
                 <div class="inventory-buttons-style" id="hideBtn">
                     @*<button class="add-btn" title="ADD NEW ITEM"><a href="@Url.Action("AddItem","Admin")"><span class="las la-plus-circle"></span></a></button>*@
-                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()"><a><span class="las la-plus-circle"></span></a></button>
+                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib()"><a><span class="las la-plus-circle"></span></a></button>
                     <button class="pri-btn" title="PRINT REPORT" id="printBtn" @*onclick="printOpenPopup()"*@> <a href="#"><span class="las la-print"></span></a></button>
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportTable()"> <a href="#"><span class="las la-file-download"></span></a></button>
                     <button class="inventory-sort-btn" onclick="userSortFunction()">
@@ -104,23 +104,25 @@
                                         <div class="input-field">
                                             <label>Size</label>
                                             <div class="input-field-size">
-                                                <input type="text" placeholder="00000" name="in_size" id="itemSize" readonly>
-                                                <select required>
+                                                <input type="number" onkeyup="setHiddenSize()" placeholder="00000" id="itemSize" readonly>
+                                                <select readonly id="itemSizeMeas">
                                                     <option disabled selected>Measurement</option>
                                                     <option>INCH</option>
                                                     <option>CM</option>
                                                 </select>
+                                                <input type="text" id="hiddenSize" name="in_size" style="display:none">
                                             </div>
                                         </div>
                                         <div class="input-field">
                                             <label>Quantity</label>
                                             <div class="input-field-quantity">
-                                                <input type="text" placeholder="00000" name="in_quantity" id="itemQuant">
-                                                <select required readonly>
+                                                <input type="number" placeholder="00000" id="itemQuant">
+                                                <select readonly id="itemQuantMeas">
                                                     <option disabled selected>Measurement</option>
-                                                    <option>PC/S</option>
-                                                    <option>SET</option>
+                                                    <option value="PCS">PCS</option>
+                                                    <option value="SET">SET</option>
                                                 </select>
+                                                <input type="text" id="hiddenQuant" name="in_quantity" style="display:none">
                                             </div>
                                         </div>
                                     </div>
@@ -220,8 +222,27 @@
     <script src="~/Scripts/Inventory.js"></script>
     <script>
 
+
+
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */
+        let form = document.getElementById("addForm");
+        let cat = document.getElementById("cat-select");
+        let type = document.getElementById("type-select");
+        let name = document.querySelector('#itemName');
+        let size = document.querySelector('#itemSize');
+        let quantity = document.querySelector('#itemQuant');
+        let code = document.getElementById("itemCode");
+        let sliced = "";
+        let prevVal = "";
+
+        function insertAdd() {
+            AddValue(quantity.value, 'add');
+        }
+
+        function insertEdit() {
+            AddValue(quantity.value,'edit');
+        }
 
         function resetForm() {
             for (let i = 0; i < form.elements.length; i++) {
@@ -245,14 +266,19 @@
 
             if (removed != null) {
                 rempopup.classList.add("rem-popup-show");
-                localStorage.clear();
             }
+            localStorage.clear();
             GetAll();
         }
 
-        let code = document.getElementById("itemCode");
-        let sliced = "";
-        let prevVal = "";
+        function setAttrib() {
+            name.setAttribute("readonly", true);
+            size.setAttribute("readonly", true);
+            cat.setAttribute("readonly", true);
+            type.setAttribute("readonly", true);
+            //quantity.setAttribute("type","number")
+        }
+
         code.addEventListener("keydown", function (event) {
             // check if the entered key is a barcode scanner input
             if (event.which === 13 || event.keyCode === 13) {
@@ -276,44 +302,29 @@
                     Session["add"] = "active";
                 }
 
-                let name = document.querySelector('#itemName');
-                let size = document.querySelector('#itemSize');
-                let quantity = document.querySelector('#itemQuant');
-                let cat = document.getElementById("cat-select");
-                let type = document.getElementById("type-select");
-
-                name.setAttribute("readonly",true);
-                size.setAttribute("readonly", true);
-                cat.setAttribute("readonly", true);
-                type.setAttribute("readonly", true);
-                //quantity.setAttribute("type","number")
-
                 if (sliced.length != 0) {
                     code.value = sliced;
                 }
 
                 prevVal = code.value;
                 setField(prevVal);
-                //quantity.value = "";
+                quantity.value = null;
             }
         });
 
-        //document.querySelector("button").addEventListener("click", function () {
-        //        let value = this.getAttribute("data-code");
-        //        localStorage.setItem("dataValue", value);
-        //    canpopup.classList.add("can-popup-show");
-        //    console.log(value);
-        //});
+        function EditListener() {
+            quantity.removeEventListener("keyup", insertAdd);
+            quantity.addEventListener("keyup", insertEdit);
+        }
 
-        function openEdit(value) {
+        function AddListener() {
+            quantity.removeEventListener("keyup", insertEdit);
+            quantity.addEventListener("keyup", insertAdd);
+        }
+
+        function openEdit(value, ) {
             addpopupinv.classList.add("add-popup-inv-show");
 
-            let code = document.querySelector('#itemCode');
-            let name = document.querySelector('#itemName');
-            let size = document.querySelector('#itemSize');
-            let quantity = document.querySelector('#itemQuant');
-            let cat = document.getElementById("cat-select");
-            let type = document.getElementById("type-select");
 
             code.removeAttribute("readonly");
             name.removeAttribute("readonly");
@@ -323,6 +334,7 @@
             type.removeAttribute("readonly");
 
             setField(value);
+            EditListener();
         }
 
         document.getElementById("saveBtn").addEventListener("click", function () {
@@ -391,6 +403,7 @@
         let addpopupinv = document.getElementById("add-popup-inv");
         function addOpenPopupInv() {
             addpopupinv.classList.add("add-popup-inv-show")
+            AddListener();
         }
 
         function addClosePopupInv() {

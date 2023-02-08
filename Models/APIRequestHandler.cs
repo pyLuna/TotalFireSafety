@@ -17,8 +17,8 @@ namespace TotalFireSafety.Models
          *              http://tfsti.somee.com
          *          if returns error change the port to the corresponding port
          */
-        //public string BaseDomain = "https://localhost:44398";
-        public string BaseDomain = "http://tfsti.somee.com";
+        public string BaseDomain = "https://localhost:44398";
+        //public string BaseDomain = "http://tfsti.somee.com";
 
         public string GetAllMethod(string uri, string Token)
         {

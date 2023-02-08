@@ -113,10 +113,13 @@ function SortByCategory(value) {
 function setField(value) {
     let name = document.querySelector('#itemName');
     let size = document.querySelector('#itemSize');
+    let sizeMeas = document.querySelector('#itemSizeMeas');
     let quantity = document.querySelector('#itemQuant');
+    let quantityMeas = document.querySelector('#itemQuantMeas');
     let cat = document.getElementById("cat-select");
     let type = document.getElementById("type-select");
     let code = document.querySelector('#itemCode');
+    localStorage.clear();
 
     for (var i = 0; i < fixedArray.length; i++) {
         if (fixedArray[i].in_code == value) {
@@ -126,8 +129,41 @@ function setField(value) {
     }
     code.value = filtered[0].in_code;
     name.value = filtered[0].in_name;
-    size.value = filtered[0].in_size;
-    quantity.value = filtered[0].in_quantity;
+    //size.value = filtered[0].in_size;
+    //quantity.value = filtered[0].in_quantity;
+
+    let sizeValue = extractNum(filtered[0].in_size);
+    let quantityValue = extractNum(filtered[0].in_quantity);
+
+    if (sizeValue.num !== 0) {
+        size.value = sizeValue.num;
+        localStorage.setItem("size", sizeValue.num);
+        localStorage.setItem("sizeMeas", sizeValue.measurement);
+    } else {
+        size.value = null;
+    }
+
+    if (quantityValue.num !== 0) {
+        quantity.value = quantityValue.num;
+        localStorage.setItem("quantity", quantityValue.num);
+        localStorage.setItem("quantityMeas", quantityValue.measurement);
+    } else {
+        quantity.value = null;
+    }
+
+    for (let i = 0; i < sizeMeas.options.length; i++) {
+        let option = sizeMeas.options[i];
+        if (sizeValue.measurement == option.value) {
+            sizeMeas.selectedIndex = i;
+        }
+    }
+
+    for (let i = 0; i < quantityMeas.options.length; i++) {
+        let option = quantityMeas.options[i];
+        if (quantityValue.measurement == option.value) {
+            quantityMeas.selectedIndex = i;
+        }
+    }
 
     // loop through all the options in the select element
     for (let i = 0; i < cat.options.length; i++) {
@@ -154,7 +190,7 @@ function setField(value) {
 }
 
 function exportArrayToCsv() {
-    let newArray = [ ['Code','Name','Category','Type','Size','Quantity']];
+    let newArray = [['Code', 'Name', 'Category', 'Type', 'Size', 'Quantity']];
 
     for (var i = 0; i < fixedArray.length; i++) {
         newArray.push([fixedArray[i].in_code, fixedArray[i].in_name, fixedArray[i].in_category, fixedArray[i].in_type, fixedArray[i].in_size, fixedArray[i].in_quantity]);
@@ -212,7 +248,7 @@ function DeleteItem() {
             }
         })
         .then(data => {
-            localStorage.setItem("removed","success");
+            localStorage.setItem("removed", "success");
             window.location.reload();
         })
         .catch(error => {
@@ -220,42 +256,48 @@ function DeleteItem() {
         });
 }
 
-function updateValue(value1, value2) {
+function extractNum(value) {
     let num = 0;
-    let newString = '';
-    for (let i = 0; i < value1.length; i++) {
-        if (!isNaN(parseInt(value1[i]))) {
-            num = parseInt(value1[i]);
-            break;
-        }
-    }
-    value2 += num;
-    for (let i = 0; i < value1.length; i++) {
-        if (isNaN(parseInt(value1[i]))) {
-            newString += value1[i];
-        }
-    }
-    newString += value2;
-    return newString;
+            let measurement = '';
+            for (let i = 0; i < value.length; i++) {
+                if (!isNaN(parseInt(value[i]))) {
+                    num = num * 10 + parseInt(value[i]);
+                } else if (value[i] !== ' ') {
+                    measurement += value[i];
+                }
+            }
+            return { num, measurement };
 }
 
-//function AddDeleteItem(value) {
-//    fetch('/Admin/DeleteItem?item=' + item, {
-//        method: "POST"
-//    })
-//        .then(res => {
-//            if (res.ok) {
-//                // API request was successful
-//                return res.json();
-//            } else {
-//                console.log(res.statusText);
-//            }
-//        })
-//        .then(data => {
-//            localStorage.setItem("removed", "success");
-//            window.location.reload();
-//        })
-//        .catch(error => {
-//            console.error(error);
-//        });
-//}
+function setHiddenSize() {
+    let hiddenSize = document.getElementById("hiddenSize");
+    let size = document.getElementById("itemSize");
+    let sizeMeas = localStorage.getItem("sizeMeas");
+
+    if (sizeMeas == '\"') {
+        sizeMeas = "INCH";
+    }
+
+    console.log(hiddenSize);
+    console.log(size.value);
+    console.log(sizeMeas);
+
+}
+
+function AddValue(value,typeOf) {
+    let hiddenQuant = document.getElementById("hiddenQuant");
+    let itemQuant = document.getElementById("itemQuant").value;
+    let quant = parseInt(localStorage.getItem("quantity"));
+    let quantMeas1 = localStorage.getItem("quantityMeas");
+
+    if (typeOf !== 'edit') {
+        let num1 = Number(quant) + Number(value);
+        hiddenQuant.value = num1 + ' ' + quantMeas1;
+    }
+    else
+    {
+        hiddenQuant.value = itemQuant + ' ' +quantMeas1;
+    }
+
+    console.log(hiddenQuant.value);
+}

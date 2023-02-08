@@ -4,12 +4,14 @@ using Newtonsoft.Json;
 using TotalFireSafety.Models;
 using System.Collections.Generic;
 
+
 namespace TotalFireSafety.Controllers
 {
     public class AdminController : Controller
     {
         // GET: Admin
         readonly APIRequestHandler api_req = new APIRequestHandler();
+       
 
         public ActionResult FindDataOf()
         {
@@ -93,14 +95,58 @@ namespace TotalFireSafety.Controllers
             return View();
         }
         //  Users
+        
         public ActionResult Users()
         {
             return View();
         }
+       
+
+        [HttpPost]
+        public ActionResult Users(Employee employee)
+        {
+            if(Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+
+            var serializedModel = JsonConvert.SerializeObject(employee);
+            var userToken = Session["access_token"].ToString();
+            var response = api_req.AddMethod("Admin/Employee/Add", userToken, serializedModel);
+
+            if (response == "BadRequest" || response == "InternalServerError")
+            {
+                ViewBag.Response = response.ToString();
+                return View();
+            }
+            var json = JsonConvert.DeserializeObject(response);
+            ViewBag.Response = json.ToString();
+            return View();
+        }
+        
         public ActionResult AddUsers()
         {
             return View();
         }
+        public ActionResult SearchEmployee()
+        {
+            try
+            {
+                var userToken = Session["access_token"].ToString();
+                var response = api_req.GetAllMethod("/Admin/Employee", userToken);
+
+                var json = JsonConvert.DeserializeObject<List<NewEmployeeModel>>(response);
+
+                JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+                Response.ContentType = "application/json"; // Set the Content-Type header
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Json(ex);
+            }
+        }
+        
 
         //  Purchasing
         #region

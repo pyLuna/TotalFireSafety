@@ -62,7 +62,7 @@
             <div class="add-popup-inv" id="add-popup-inv">
                 <div class="inventory-add-container">
                     <div class="inventory-form-container">
-                        <form action="@Url.Action("AddItem","Admin")" id="addForm" method="post">
+                        <form action="@Url.Action("AddItem1", "Admin")" id="addForm" method="post">
                             <div class="details personal">
                                 <div class="inventory-form-header">
                                     ITEM DETAILS
@@ -70,18 +70,18 @@
                                 <div class="inventory-form-contents">
                                     <div class="fields">
                                         <div class="input-field">
-                                            <label>Item ID</label>
-                                            <input type="text" id="itemCode" placeholder="ABC-DEF-GHI">
+                                            <label>Item Code</label>
+                                            <input type="text" id="itemCode" name="in_code" placeholder="ABC-DEF-GHI">
                                         </div>
 
                                         <div class="input-field">
                                             <label>Item Name</label>
-                                            <input type="text" placeholder="Item Name" id="itemName" readonly>
+                                            <input type="text" placeholder="Item Name" name="in_name" id="itemName" readonly>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Category</label>
-                                            <select id="cat-select" readonly>
+                                            <select id="cat-select" name="in_category" readonly>
                                                 <option disabled selected>Select Category</option>
                                                 <option value="Fittings">Fittings</option>
                                                 <option value="Gate Valves">Gate Valves</option>
@@ -94,7 +94,7 @@
 
                                         <div class="input-field">
                                             <label>Type</label>
-                                            <select id="type-select" readonly>
+                                            <select id="type-select" name="in_type" readonly>
                                                 <option disabled selected>Select Type</option>
                                                 <option value="HFC-236 F">HFC-236 F</option>
                                                 <option value="Machine">Machine</option>
@@ -104,7 +104,7 @@
                                         <div class="input-field">
                                             <label>Size</label>
                                             <div class="input-field-size">
-                                                <input type="text" placeholder="00000" id="itemSize" readonly>
+                                                <input type="text" placeholder="00000" name="in_size" id="itemSize" readonly>
                                                 <select required>
                                                     <option disabled selected>Measurement</option>
                                                     <option>INCH</option>
@@ -115,7 +115,7 @@
                                         <div class="input-field">
                                             <label>Quantity</label>
                                             <div class="input-field-quantity">
-                                                <input type="text" placeholder="00000" id="itemQuant">
+                                                <input type="text" placeholder="00000" name="in_quantity" id="itemQuant">
                                                 <select required readonly>
                                                     <option disabled selected>Measurement</option>
                                                     <option>PC/S</option>
@@ -226,11 +226,13 @@
         window.onload = function () {
             let removed = localStorage.getItem("removed");
 
-            let edit = @Session["edit"].ToString();
+            let edit = '@Session["edit"].ToString()';
 
-            if (edit != null) {
-                rempopup.classList.add("rem-popup-show");
-                localStorage.clear();
+            if (edit != "pending") {
+                popup.classList.add("open-popup-show");
+                @{ 
+                    Session["edit"] = null;
+                }
             }
 
             if (removed != null) {
@@ -312,6 +314,14 @@
             }
         }
             //Messege Box
+        let popup = document.getElementById("popup");
+        function openPopup() {
+            popup.classList.add("open-popup-show")
+        }
+
+        function closePopup() {
+            popup.classList.remove("open-popup-show")
+        }
         let infopopup = document.getElementById("info-popup");
 
         function infoOpenPopup() {

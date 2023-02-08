@@ -40,7 +40,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddItem(Inventory item)
+        public ActionResult AddItem1(Inventory item)
         {
             var serializedModel = JsonConvert.SerializeObject(item);
             var userToken = Session["access_token"].ToString();
@@ -49,7 +49,7 @@ namespace TotalFireSafety.Controllers
             if (response == "BadRequest" || response == "InternalServerError")
             {
                 ViewBag.Added = response.ToString();
-                return View();
+                return RedirectToAction("Inventory");
             }
             var json = JsonConvert.DeserializeObject(response);
             Session["edit"] = json.ToString();
@@ -85,6 +85,10 @@ namespace TotalFireSafety.Controllers
             if (Session["emp_no"] == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            if (Session["edit"] == null)
+            {
+                Session["edit"] = "pending";
             }
             return View();
         }

@@ -11,7 +11,7 @@
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            Purchase Order
+            Purchase Request
         </h2>
     </header>
 
@@ -24,20 +24,20 @@
             </div>
         </div>
 
-        <div class="order-grid">
-            <div class="order-header">
-                <h3>PURCHASE ORDER LISTS</h3>
-                <div class="order-buttons-style">
-                    <button class="add-btn" title="ADD NEW REQUEST"><a href="@Url.Action("AddPurchase","Admin")"><span class="las la-plus-circle"></span></a></button>
-                    <button class="pri-btn" title="PRINT REPORT"> <a href="@Url.Action("ExportPurchase","Admin")"><span class="las la-print"></span></a></button>
-                    <button class="expo-btn" title="EXPORT REPORT"> <a href="@Url.Action("PrintPurchase","Admin")"><span class="las la-file-download"></span></a></button>
-                    <button class="order-sort-btn" onclick="userSortFunction()">
+        <div class="purchase-grid">
+            <div class="purchase-header">
+                <h3>PURCHASE REQUEST LISTS</h3>
+                <div class="purchase-buttons-style">
+                    <button class="add-btn" title="ADD NEW REQUEST" onclick="addOpenPopupPur()"><a><span class="las la-plus-circle"></span></a></button>
+                    <button class="pri-btn" title="PRINT REPORT" onclick="printOpenPopup()"> <a href="#"><span class="las la-print"></span></a></button>
+                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup()"> <a href="#"><span class="las la-file-download"></span></a></button>
+                    <button class="purchase-sort-btn" onclick="userSortFunction()">
                         <a>
                             <span></span>
                             <span class="las la-chevron-down"></span>
                         </a>
                     </button>
-                    <div class="order-sort-content" id="ordSortDropdown">
+                    <div class="purchase-sort-content" id="purSortDropdown">
                         <a href="#">Ascending</a>
                         <a href="#">Descending</a>
                     </div>
@@ -45,9 +45,9 @@
                 </div>
 
             </div>
-            <div class="order-projects">
-                <div class="order">
-                    <div class="order-body">
+            <div class="purchase-projects">
+                <div class="purchase">
+                    <div class="purchase-body">
                         <div class="table-responsive" style="overflow-x: auto;">
                             <table width="100%">
                                 <thead>
@@ -68,11 +68,9 @@
                                         <td><label>Jan. 11, 2023</label></td>
                                         <td><label class="stat-dec">Declined</label></td>
                                         <td>
-                                            <div class="order-action-style">
+                                            <div class="purchase-action-style">
                                                 <button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>
                                                 <button class="dec-btn" title="DECLINE REQUEST" onclick="canOpenPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
-                                                <button class="pri-btn" title="PRINT REPORT"> <a href="../sa-purchasing/sa-print-order-purchase.html"><span class="las la-print"></span></a></button>
-                                                <button class="expo-btn" title="EXPORT REPORT"> <a href="../sa-purchasing/sa-expo-order-purchase.html"><span class="las la-file-download"></span></a></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -84,11 +82,9 @@
                                         <td><label>Jan. 11, 2023</label></td>
                                         <td><label class="stat-appr">Approved</label></td>
                                         <td>
-                                            <div class="order-action-style">
+                                            <div class="purchase-action-style">
                                                 <button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>
                                                 <button class="dec-btn" title="DECLINE REQUEST" onclick="canOpenPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
-                                                <button class="pri-btn" title="PRINT REPORT"> <a href="../sa-purchasing/sa-print-order-purchase.html"><span class="las la-print"></span></a></button>
-                                                <button class="expo-btn" title="EXPORT REPORT"> <a href="sa-expo-order-purchase.html"><span class="las la-file-download"></span></a></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -100,11 +96,9 @@
                                         <td><label>Jan. 11, 2023</label></td>
                                         <td><label class="stat-pen">Pending</label></td>
                                         <td>
-                                            <div class="order-action-style">
+                                            <div class="purchase-action-style">
                                                 <button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>
                                                 <button class="dec-btn" title="DECLINE REQUEST" onclick="canOpenPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
-                                                <button class="pri-btn" title="PRINT REPORT"> <a href="../sa-purchasing/sa-print-order-purchase.html"><span class="las la-print"></span></a></button>
-                                                <button class="expo-btn" title="EXPORT REPORT"> <a href="../sa-purchasing/sa-expo-order-purchase.html"><span class="las la-file-download"></span></a></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -116,10 +110,113 @@
             </div>
         </div>
 
+        <div class="add-popup-pur" id="add-popup-pur">
+            <div class="purchase-add-container">
+                <div class="purchase-form-container">
+                    <form action="">
+                        <div class="request-details">
+                            <div class="purchase-form-header">
+                                REQUEST DETAILS
+                            </div>
+                            <div class="purchase-form-contents">
+                                <div class="fields">
+                                    <div class="input-field">
+                                        <label>
+                                            <a>Name: </a>
+                                            <select required>
+                                                <option disabled selected>Select Name</option>
+                                                <option>Supervisor</option>
+                                                <option>Office Manager</option>
+                                                <option>Warehouse Manager</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Role/Position: </a>Office Manager </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Employee ID: </a>00001 </label>
+                                    </div>
 
+                                    <div class="input-field">
+                                        <label><a>Request Remarks: </a>Item for Deployment </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Date Requested: </a>January 11, 2023 </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Request ID: </a>SREQ234567 </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="purchase-details">
+                            <div class="purchase-form-header">
+                                ITEM DETAILS
+                            </div>
+                            <div class="purchase-form-contents">
+                                <div class="purchase-form-table">
+                                    <div class="purchase-form-table-style">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table width="100%">
+                                                <thead>
+                                                    <tr>
+
+                                                        <td>Item Name</td>
+                                                        <td>Item Category</td>
+                                                        <td>Item Size</td>
+                                                        <td>Item Quantity</td>
+                                                        <td>Item Type</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td contenteditable="false"><label>Gate Valve Flange Type</label></td>
+                                                        <td contenteditable="false"><label>Gate Valve</label></td>
+                                                        <td contenteditable="true"><label>4"</label></td>
+                                                        <td contenteditable="true"><label>5 PCS</label></td>
+                                                        <td contenteditable="false"><label>Null</label></td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td contenteditable="false"><label>Gate Valve Flange Type</label></td>
+                                                        <td contenteditable="false"><label>Gate Valve</label></td>
+                                                        <td contenteditable="true"><label>4"</label></td>
+                                                        <td contenteditable="true"><label>5 PCS</label></td>
+                                                        <td contenteditable="false"><label>Null</label></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </form>
+                    <center>
+                        <div class="form-add-btns">
+                            <button class="save" onclick="infoOpenPopup()">
+                                <span class="btnText">Save</span>
+                                <i class="las la-check-square"></i>
+                            </button>
+
+                            <button class="cancel">
+                                <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                <i class="las la-window-close"></i>
+                            </button>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
 
         <div class="info-pop-container" id="info-popup">
-            <img src="~/Content/images/information.png">
+            <img src="../../../images/information.png">
             <h2>System Warning!</h2>
             <p>Do you want to accept employee's request?</p>
             <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
@@ -127,14 +224,14 @@
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="~/Content/images/tick.png">
+            <img src="../../../images/tick.png">
             <h2>Accepted!</h2>
             <p>Request has been accepted!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="~/Content/images/warning.png">
+            <img src="../../../images/warning.png">
             <h2>System Warning!</h2>
             <p>Are you sure you want to delete item on the list?</p>
             <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
@@ -142,102 +239,112 @@
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="~/Content/images/remove.png">
+            <img src="../../../images/remove.png">
             <h2>Deleted!</h2>
             <p>Item details has deleted in the list!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
         <div class="print-pop-container" id="print-popup">
-            <img src="~/Content/images/printer.png">
+            <img src="../../../images/printer.png">
             <h2>Print!</h2>
             <p>Print successfully!</p>
             <button type="button" onclick="printClosePopup()">OK</button>
         </div>
 
         <div class="expo-pop-container" id="expo-popup">
-            <img src="~/Content/images/export.png">
+            <img src="../../../images/export.png">
             <h2>Export!</h2>
             <p>Exported Successfully!</p>
             <button type="button" onclick="expoClosePopup()">OK</button>
         </div>
 
     </main>
+
 </div>
 <script>
 
-        function userSortFunction() {
-            document.getElementById("ordSortDropdown").classList.toggle("order-sort-show");
-        }
+    function userSortFunction() {
+        document.getElementById("purSortDropdown").classList.toggle("purchase-sort-show");
+    }
 
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(e) {
-            if (!e.target.matches('.order-sort-btn')) {
-                var myDropdown = document.getElementById("ordSortDropdown");
-                if (myDropdown.classList.contains('order-sort-show')) {
-                  myDropdown.classList.remove('order-sort-show');
-                }
-              }
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.purchase-sort-btn')) {
+            var myDropdown = document.getElementById("purSortDropdown");
+            if (myDropdown.classList.contains('purchase-sort-show')) {
+                myDropdown.classList.remove('purchase-sort-show');
             }
-
-        let infopopup = document.getElementById("info-popup");
-
-        function infoOpenPopup() {
-            infopopup.classList.add("info-popup-show")
         }
+    }
 
-        function infoClosePopup() {
-            infopopup.classList.remove("info-popup-show")
-        }
+        < !--Messege Box-- >
 
-        let popup = document.getElementById("popup");
+            let addpopuppur = document.getElementById("add-popup-pur");
+    function addOpenPopupPur() {
+        addpopuppur.classList.add("add-popup-pur-show")
+    }
 
-        function openPopup() {
-            popup.classList.add("open-popup-show")
-        }
+    function addClosePopupPur() {
+        addpopuppur.classList.remove("add-popup-pur-show")
+    }
 
-        function closePopup() {
-            popup.classList.remove("open-popup-show")
-        }
+    let infopopup = document.getElementById("info-popup");
+    function infoOpenPopup() {
+        infopopup.classList.add("info-popup-show")
+    }
 
-        let canpopup = document.getElementById("can-popup");
+    function infoClosePopup() {
+        infopopup.classList.remove("info-popup-show")
+    }
 
-        function canOpenPopup() {
-            canpopup.classList.add("can-popup-show")
-        }
+    let popup = document.getElementById("popup");
 
-        function canClosePopup() {
-            canpopup.classList.remove("can-popup-show")
-        }
+    function openPopup() {
+        popup.classList.add("open-popup-show")
+    }
 
-        let rempopup = document.getElementById("rem-popup");
+    function closePopup() {
+        popup.classList.remove("open-popup-show")
+    }
 
-        function remOpenPopup() {
-            rempopup.classList.add("rem-popup-show")
-        }
+    let canpopup = document.getElementById("can-popup");
 
-        function remClosePopup() {
-            rempopup.classList.remove("rem-popup-show")
-        }
+    function canOpenPopup() {
+        canpopup.classList.add("can-popup-show")
+    }
 
-        let printpopup = document.getElementById("print-popup");
+    function canClosePopup() {
+        canpopup.classList.remove("can-popup-show")
+    }
 
-        function printOpenPopup() {
-            printpopup.classList.add("print-popup-show")
-        }
+    let rempopup = document.getElementById("rem-popup");
 
-        function printClosePopup() {
-            printpopup.classList.remove("print-popup-show")
-        }
+    function remOpenPopup() {
+        rempopup.classList.add("rem-popup-show")
+    }
 
-        let expopopup = document.getElementById("expo-popup");
+    function remClosePopup() {
+        rempopup.classList.remove("rem-popup-show")
+    }
 
-        function expoOpenPopup() {
-            expopopup.classList.add("expo-popup-show")
-        }
+    let printpopup = document.getElementById("print-popup");
 
-        function expoClosePopup() {
-            expopopup.classList.remove("expo-popup-show")
-        }
+    function printOpenPopup() {
+        printpopup.classList.add("print-popup-show")
+    }
+
+    function printClosePopup() {
+        printpopup.classList.remove("print-popup-show")
+    }
+
+    let expopopup = document.getElementById("expo-popup");
+
+    function expoOpenPopup() {
+        expopopup.classList.add("expo-popup-show")
+    }
+
+    function expoClosePopup() {
+        expopopup.classList.remove("expo-popup-show")
+    }
 </script>
-

@@ -134,7 +134,7 @@
                                     </button>
 
                                     <button class="cancel">
-                                        <span class="btnText" id="cancelBtn" onclick="addClosePopupInv()">Cancel</span>
+                                        <span class="btnText" id="cancelBtn" onclick="addClosePopupInv() + resetForm()">Cancel</span>
                                         <i class="las la-window-close"></i>
                                     </button>
                                 </div>
@@ -222,6 +222,14 @@
 
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */
+
+        function resetForm() {
+            for (let i = 0; i < form.elements.length; i++) {
+                form.elements[i].value = "";
+            }
+            cat.selectedIndex = 0;
+            type.selectedIndex = 0;
+        }
 
         window.onload = function () {
             let removed = localStorage.getItem("removed");

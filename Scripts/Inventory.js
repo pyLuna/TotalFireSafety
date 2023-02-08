@@ -220,6 +220,25 @@ function DeleteItem() {
         });
 }
 
+function updateValue(value1, value2) {
+    let num = 0;
+    let newString = '';
+    for (let i = 0; i < value1.length; i++) {
+        if (!isNaN(parseInt(value1[i]))) {
+            num = parseInt(value1[i]);
+            break;
+        }
+    }
+    value2 += num;
+    for (let i = 0; i < value1.length; i++) {
+        if (isNaN(parseInt(value1[i]))) {
+            newString += value1[i];
+        }
+    }
+    newString += value2;
+    return newString;
+}
+
 //function AddDeleteItem(value) {
 //    fetch('/Admin/DeleteItem?item=' + item, {
 //        method: "POST"

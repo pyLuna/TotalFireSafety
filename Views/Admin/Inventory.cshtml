@@ -242,6 +242,54 @@
             GetAll();
         }
 
+        let code = document.getElementById("itemCode");
+        let sliced = "";
+        let prevVal = "";
+        code.addEventListener("keydown", function (event) {
+            // check if the entered key is a barcode scanner input
+            if (event.which === 13 || event.keyCode === 13) {
+                // retrieve the scanned value
+                event.preventDefault();
+
+                if (sliced.length == 0) {
+                    sliced = code.value;
+                }
+
+                if (code.value.length != prevVal.length) {
+                    if (prevVal.length != 0) {
+                        var index = 0;
+                        while (index <= prevVal.length) {
+                            index++;
+                        }
+                        sliced = code.value.slice(index - 1);
+                    }
+                }
+                @{ 
+                    Session["add"] = "active";
+                }
+
+                let name = document.querySelector('#itemName');
+                let size = document.querySelector('#itemSize');
+                let quantity = document.querySelector('#itemQuant');
+                let cat = document.getElementById("cat-select");
+                let type = document.getElementById("type-select");
+
+                name.setAttribute("readonly",true);
+                size.setAttribute("readonly", true);
+                cat.setAttribute("readonly", true);
+                type.setAttribute("readonly", true);
+                //quantity.setAttribute("type","number")
+
+                if (sliced.length != 0) {
+                    code.value = sliced;
+                }
+
+                prevVal = code.value;
+                setField(prevVal);
+                //quantity.value = "";
+            }
+        });
+
         //document.querySelector("button").addEventListener("click", function () {
         //        let value = this.getAttribute("data-code");
         //        localStorage.setItem("dataValue", value);

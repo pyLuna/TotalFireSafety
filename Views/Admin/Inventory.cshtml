@@ -81,7 +81,7 @@
 
                                         <div class="input-field">
                                             <label>Category</label>
-                                            <select id="cat-select" name="in_category" readonly>
+                                            <select id="cat-select" readonly>
                                                 <option disabled selected>Select Category</option>
                                                 <option value="Fittings">Fittings</option>
                                                 <option value="Gate Valves">Gate Valves</option>
@@ -90,15 +90,17 @@
                                                 <option value="Scaffolding">Scaffolding</option>
                                                 <option value="Others">Others</option>
                                             </select>
+                                            <input type="text" id="hiddenCategory" name="in_category" style="display:none">
                                         </div>
 
                                         <div class="input-field">
                                             <label>Type</label>
-                                            <select id="type-select" name="in_type" readonly>
+                                            <select id="type-select" readonly>
                                                 <option disabled selected>Select Type</option>
                                                 <option value="HFC-236 F">HFC-236 F</option>
                                                 <option value="Machine">Machine</option>
                                             </select>
+                                            <input type="text" id="hiddenType" name="in_type" style="display:none">
                                         </div>
 
                                         <div class="input-field">
@@ -180,6 +182,7 @@
             <h2>System Warning!</h2>
             <p>Do you want to save the item on the list?</p>
             <button type="submit" form="addForm">Yes</button>
+            @*<button type="button" onclick="submitForm()">Yes</button>*@
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
@@ -222,8 +225,6 @@
     <script src="~/Scripts/Inventory.js"></script>
     <script>
 
-
-
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */
         let form = document.getElementById("addForm");
@@ -233,8 +234,26 @@
         let size = document.querySelector('#itemSize');
         let quantity = document.querySelector('#itemQuant');
         let code = document.getElementById("itemCode");
+        let hidCategory = document.getElementById("hiddenCategory");
+        let hidType = document.getElementById("hiddenType");
         let sliced = "";
         let prevVal = "";
+
+        cat.addEventListener("change", function () {
+            var optionValue = this.options[this.selectedIndex].value;
+            hidCategory.value = optionValue;
+            AddValue(0, 'edit');
+            setHiddenSize();
+            console.log(hidCategory.value);
+        });
+
+        type.addEventListener("change", function () {
+            var optionValue = this.options[this.selectedIndex].value;
+            hidType.value = optionValue;
+            AddValue(0, 'edit');
+            setHiddenSize();
+            console.log(hidType.value);
+        });
 
         function insertAdd() {
             AddValue(quantity.value, 'add');
@@ -276,6 +295,8 @@
             size.setAttribute("readonly", true);
             cat.setAttribute("readonly", true);
             type.setAttribute("readonly", true);
+            cat.setAttribute("disabled", true);
+            type.setAttribute("disabled", true);
             //quantity.setAttribute("type","number")
         }
 
@@ -308,7 +329,8 @@
 
                 prevVal = code.value;
                 setField(prevVal);
-                quantity.value = null;
+                quantity.value = 1;
+                AddValue(quantity.value, 'add');
             }
         });
 
@@ -326,12 +348,14 @@
             addpopupinv.classList.add("add-popup-inv-show");
 
 
-            code.removeAttribute("readonly");
+            code.setAttribute("readonly",true);
             name.removeAttribute("readonly");
             size.removeAttribute("readonly");
             quantity.removeAttribute("readonly");
             cat.removeAttribute("readonly");
             type.removeAttribute("readonly");
+            cat.removeAttribute("disabled");
+            type.removeAttribute("disabled");
 
             setField(value);
             EditListener();

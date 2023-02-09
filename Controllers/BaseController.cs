@@ -39,7 +39,7 @@ namespace TotalFireSafety.Controllers
                 };
 
                 //  API Address
-                _client.BaseAddress = new Uri(requestHandler.BaseDomain);
+                _client.BaseAddress = new Uri(requestHandler.BaseDomain());
                 _client.DefaultRequestHeaders.Clear();
                 _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
                 var _result = dict.GetValues(_creds);

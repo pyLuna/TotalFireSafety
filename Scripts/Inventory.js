@@ -119,6 +119,8 @@ function setField(value) {
     let cat = document.getElementById("cat-select");
     let type = document.getElementById("type-select");
     let code = document.querySelector('#itemCode');
+    let hidCategory = document.getElementById("hiddenCategory");
+    let hidType = document.getElementById("hiddenType");
     localStorage.clear();
 
     for (var i = 0; i < fixedArray.length; i++) {
@@ -171,6 +173,8 @@ function setField(value) {
         // check if the option value exists in the valuesToCompare array
         if (filtered[0].in_category === option.value) {
             cat.selectedIndex = i;
+            hidCategory.value = filtered[0].in_category;
+            localStorage.setItem("selCategory", filtered[0].in_category);
         }
     }
 
@@ -179,6 +183,8 @@ function setField(value) {
         // check if the option value exists in the valuesToCompare array
         if (filtered[0].in_type === option.value) {
             type.selectedIndex = i;
+            hidType.value = filtered[0].in_type;
+            localStorage.setItem("selType", filtered[0].in_type);
         }
     }
     if (filtered[0].in_type === '') {
@@ -277,11 +283,12 @@ function setHiddenSize() {
     if (sizeMeas == '\"') {
         sizeMeas = "INCH";
     }
-
-    console.log(hiddenSize);
-    console.log(size.value);
-    console.log(sizeMeas);
-
+    if (sizeMeas === null || sizeMeas === "null" || sizeMeas === ' ') {
+        size.value = ' ';
+    }
+    else {
+        hiddenSize.value = size.value + ' ' + sizeMeas;
+    }
 }
 
 function AddValue(value,typeOf) {

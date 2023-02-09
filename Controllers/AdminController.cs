@@ -1,8 +1,8 @@
-﻿using System;
-using System.Web.Mvc;
-using Newtonsoft.Json;
-using TotalFireSafety.Models;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
+using TotalFireSafety.Models;
 
 namespace TotalFireSafety.Controllers
 {
@@ -33,7 +33,7 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult Dashboard()
         {
-            if(Session["emp_no"] == null)
+            if (Session["emp_no"] == null)
             {
                 return RedirectToAction("Login", "Base");
             }

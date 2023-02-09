@@ -1,9 +1,9 @@
-﻿using TotalFireSafety.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using TotalFireSafety.Models;
 
 namespace TotalFireSafety.Controllers
 {
@@ -174,7 +174,7 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new TFSEntity())
                 {
-                    var items = _context.Inventories.Where(x => x.in_status!="archived");
+                    var items = _context.Inventories.Where(x => x.in_status != "archived");
                     /*  Serialize items into JSON Format 
                      *  example
                      *  {
@@ -183,7 +183,7 @@ namespace TotalFireSafety.Controllers
                      *      "etc"     : "etc"
                      *  }
                      */
-                    
+
 
                     var _jsonSerialized = JsonConvert.SerializeObject(items, Formatting.None, new JsonSerializerSettings()
                     {

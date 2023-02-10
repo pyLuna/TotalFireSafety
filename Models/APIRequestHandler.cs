@@ -2,7 +2,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Web;
 
 namespace TotalFireSafety.Models
 {
@@ -13,19 +13,30 @@ namespace TotalFireSafety.Models
 
         /*          localhost for debugging
          *              https://localhost:44309
-         *          Change BaseDomain into tfsti when publishing this project
+         *          Change BaseDomain() into tfsti when publishing this project
          *              http://tfsti.somee.com
          *          if returns error change the port to the corresponding port
          */
-        //public string BaseDomain = "https://localhost:44398";
-        public string BaseDomain = "http://tfsti.somee.com";
+        //public string BaseDomain() = "https://localhost:44398";
+        //public string BaseDomain() = "http://tfsti.somee.com";
+        public string BaseDomain()
+        {
+            string domain;
+            domain = HttpContext.Current.Request.Url.Host;
+
+            if (domain == "localhost")
+            {
+                domain = "https://localhost:44398";
+            }
+                return domain;
+        }
 
         public string GetAllMethod(string uri, string Token)
         {
             //  Set Base Domain
             if (_client.BaseAddress == null) // to prevent error, check if the base address if empty
             {
-                _client.BaseAddress = new Uri(BaseDomain);
+                _client.BaseAddress = new Uri(BaseDomain());
             }
             //  Request Headers
             _client.DefaultRequestHeaders.Accept.Clear();
@@ -49,7 +60,7 @@ namespace TotalFireSafety.Models
         {
             if (_client.BaseAddress == null) // to prevent error, check if the base address if empty
             {
-                _client.BaseAddress = new Uri(BaseDomain);
+                _client.BaseAddress = new Uri(BaseDomain());
             }
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -72,7 +83,7 @@ namespace TotalFireSafety.Models
         {
             if (_client.BaseAddress == null) // to prevent error, check if the base address if empty
             {
-                _client.BaseAddress = new Uri(BaseDomain);
+                _client.BaseAddress = new Uri(BaseDomain());
             }
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

@@ -1,10 +1,10 @@
-﻿using TotalFireSafety.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Mvc;
+using TotalFireSafety.Models;
 
 
 namespace TotalFireSafety.Controllers
@@ -19,7 +19,7 @@ namespace TotalFireSafety.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            if(Session["emp_no"] != null)
+            if (Session["emp_no"] != null)
             {
                 return RedirectToAction("Dashboard", "Admin");
             }
@@ -39,7 +39,7 @@ namespace TotalFireSafety.Controllers
                 };
 
                 //  API Address
-                _client.BaseAddress = new Uri(requestHandler.BaseDomain);
+                _client.BaseAddress = new Uri(requestHandler.BaseDomain());
                 _client.DefaultRequestHeaders.Clear();
                 _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
                 var _result = dict.GetValues(_creds);
@@ -59,7 +59,7 @@ namespace TotalFireSafety.Controllers
                         var _user = _context.Credentials.Where(x => x.username == creds.username && x.password == creds.password).SingleOrDefault();
                         Session["access_token"] = token.access_token;
                         Session["emp_no"] = _user.emp_no;
-                        return RedirectToAction("Dashboard","Admin");
+                        return RedirectToAction("Dashboard", "Admin");
                     }
                     else
                     {

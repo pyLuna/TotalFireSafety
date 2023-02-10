@@ -1,8 +1,8 @@
-﻿using TotalFireSafety.Models;
-using Microsoft.Owin.Security.OAuth;
+﻿using Microsoft.Owin.Security.OAuth;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using TotalFireSafety.Models;
 
 namespace TotalFireSafety
 {

@@ -24,7 +24,7 @@ namespace TotalFireSafety
                         "~/Scripts/vendor/select2/select2.min.css",
                         "~/css/util.css",
                         "~/css/loginpage.css"
-                        //new CssRewriteUrlTransform()
+                //new CssRewriteUrlTransform()
                 ));
             bundles.Add(new ScriptBundle("~/scripts/login").Include(
                         "~/Scripts/vendor/jquery/jquery-3.2.1.min.js",

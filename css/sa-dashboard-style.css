@@ -16,7 +16,27 @@
 
 
 
+@media print {
+    body * {
+        visibility: hidden;
+    }
 
+    #printTable, #printTable * {
+        visibility: visible;
+    }
+
+    .inventory-buttons-style button, #hideAction, #hideActionBtn {
+        display: none;
+    }
+
+    #printTable {
+        position: absolute;
+        width: 95%;
+        height: auto;
+        left: 0%;
+        top: 0%;
+    }
+}
 
 /* 00 -  GENERAL STYLES*/
 /*//////////////////////////////////////////////////////////////////

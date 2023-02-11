@@ -16,27 +16,7 @@
 
 
 
-@media print {
-    body * {
-        visibility: hidden;
-    }
 
-    #printTable, #printTable * {
-        visibility: visible;
-    }
-
-    .inventory-buttons-style button, #hideAction, #hideActionBtn {
-        display: none;
-    }
-
-    #printTable {
-        position: absolute;
-        width: 95%;
-        height: auto;
-        left: 0%;
-        top: 0%;
-    }
-}
 
 /* 00 -  GENERAL STYLES*/
 /*//////////////////////////////////////////////////////////////////
@@ -1416,6 +1396,7 @@ right .d-drop-btn {
         outline: none;
     }
 
+
 .upper-section select {
     max-width: 100%;
     width: 170px;
@@ -1425,8 +1406,6 @@ right .d-drop-btn {
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     padding: 2px;
 }
-
-
 
 .inventory {
     background-color: #fff;
@@ -1457,8 +1436,12 @@ right .d-drop-btn {
     .inventory-header h3 {
         font-size: 1.5rem;
         color: #000;
-        margin-bottom: -40px;
+        margin-bottom: -20px;
     }
+
+.inventory-body table ::-webkit-scrollbar {
+    display: none;
+}
 
 .inventory-body table td label {
     color: #000;
@@ -1520,9 +1503,7 @@ right .d-drop-btn {
 }
 
 .inventory-body .inventory-action-style {
-    display: block;
-    margin-left: -10px;
-    margin-top: 5px;
+    display: flex;
 }
 
     .inventory-body .inventory-action-style button {
@@ -1621,7 +1602,6 @@ right .d-drop-btn {
     z-index: 0;
     margin-left: 5%;
     margin-right: 5%;
-    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
 }
 
 .add-popup-inv-show {
@@ -1631,6 +1611,56 @@ right .d-drop-btn {
 }
 
 /* END */
+
+/*ARCHIVE POPUP INVENTORY*/
+
+.arch-popup {
+    height: 50%;
+    width: 60%;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.1);
+    color: #fff;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.arch-popup-show {
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+/* END */
+
+.inventory-body .inventory-header {
+    margin-top: 0;
+    margin-bottom: 10px;
+    margin-left: 0;
+}
+
+    .inventory-body .inventory-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .inventory-body .inventory-header button {
+        margin: 0;
+        margin-left: 950px;
+        margin-top: -10px;
+        width: 50px;
+    }
+
+        .inventory-body .inventory-header button:hover {
+            color: #fff;
+            border: 1px solid var(--text-color-black);
+            background-color: #16215B;
+        }
+
 
 .inventory-add-container {
     display: grid;
@@ -1652,7 +1682,7 @@ right .d-drop-btn {
     border-radius: 6px;
     padding: 30px;
     background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
 }
 
 .inventory-form-container .inventory-form-header::before {
@@ -2003,6 +2033,33 @@ right .d-drop-btn {
     margin-right: -30px;
     display: block;
 }
+
+/*ADD POPUP PURCHASING*/
+
+.add-popup-pur {
+    height: auto;
+    width: 60%;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.1);
+    color: #fff;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
+}
+
+.add-popup-pur-show {
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+/* END */
 
 .purchase-add-container {
     display: grid;
@@ -2386,7 +2443,7 @@ right .d-drop-btn {
 
 .add-popup-dep {
     height: auto;
-    width: auto;
+    width: 60%;
     border-radius: 6px;
     position: absolute;
     top: 0;
@@ -3224,7 +3281,7 @@ right .d-drop-btn {
 
 .add-popup-sup {
     height: auto;
-    width: auto;
+    width: 60%;
     border-radius: 6px;
     position: absolute;
     top: 0;
@@ -3827,32 +3884,7 @@ right .d-drop-btn {
     display: block;
 }
 
-/*ADD POPUP PURCHASING*/
 
-.add-popup-pur {
-    height: auto;
-    width: auto;
-    border-radius: 6px;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%,-50%) scale(0.1);
-    color: #fff;
-    visibility: hidden;
-    transition: transform 0.4s, top 0.4s;
-    z-index: 0;
-    margin-left: 5%;
-    margin-right: 5%;
-    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
-}
-
-.add-popup-pur-show {
-    visibility: visible;
-    top: 50%;
-    transform: translate(-50%,-50%) scale(1);
-}
-
-/* END */
 
 .order-add-container {
     display: grid;
@@ -4967,7 +4999,8 @@ right .d-drop-btn {
 
 @media all and (max-width: 1200px) {
     main {
-        min-height: calc(120vh - 70px);
+        min-height: calc(110vh - 70px);
+        min-width: calc(90vh - 70px);
     }
 
     .cards {
@@ -4977,8 +5010,6 @@ right .d-drop-btn {
     .recent-grid {
         grid-template-columns: 2fr 1fr;
     }
-
-
 
     .inventory-grid {
         grid-template-columns: 100%;
@@ -4998,17 +5029,6 @@ right .d-drop-btn {
             margin-top: -5px;
         }
 
-    .inventory-add-container {
-        padding-top: 20px;
-    }
-
-    .order-add-container {
-        padding-top: 20px;
-    }
-
-    .expo-save-btns button {
-        width: 100px;
-    }
 
     #nav-toggle {
         display: none;
@@ -5108,7 +5128,26 @@ right .d-drop-btn {
     }
 }
 
-@media all and (max-width: 1100px) {
+@media all and (max-width: 1199px) {
+
+
+    /* SEARCH AND DROP DOWN RESPONSIVE */
+    .upper-section {
+        padding-left: 0;
+    }
+
+    .search-wrapper {
+        width: 200px;
+    }
+
+    .drp-wrapper {
+        margin-top: 1.27rem;
+    }
+
+    .upper-section select {
+        font-size: .9rem;
+    }
+    /* END */
 
     .recent-grid {
         grid-template-columns: 1fr 1fr;
@@ -5221,122 +5260,18 @@ right .d-drop-btn {
     }
 }
 
-@media all and (max-width: 800px) {
-    main {
-        min-height: calc(103vh - 70px);
-        min-width: calc(60vh - 70px);
-    }
-
-    .scatter {
-        height: 300px;
-    }
-
-    .customers {
-        margin-left: 0rem;
-        width: 100%;
-    }
+@media all and (max-width: 1280px) {
 }
 
-
 @media all and (max-width: 768px) {
+    body {
+        width: 100%;
+    }
 
     main {
-        min-height: calc(120vh - 70px);
-        min-width: calc(60vh - 70px);
+        min-height: calc(102vh - 70px);
+        min-width: calc(10vh - 70px);
     }
-
-    .cards {
-        grid-template-columns: repeat(2,1fr);
-    }
-
-    .recent-grid {
-        grid-template-columns: 100%;
-    }
-
-    .inventory-grid {
-        grid-template-columns: 100%;
-    }
-
-        .inventory-grid .current-card {
-            margin-left: 250px;
-            align-items: center;
-            max-width: 200px;
-        }
-
-    .sidebar {
-        left: -100% !important;
-    }
-
-        .sidebar .user-wrapper {
-            margin-top: -5px;
-        }
-
-    .inventory-form-.container form {
-        overflow-y: scroll;
-    }
-
-        .inventory-form-.container form::-webkit-scrollbar {
-            display: none;
-        }
-
-    .inventory-form form .fields .input-field {
-        width: calc(100% / 2 - 15px);
-    }
-
-    .purchase-form-container {
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-        overflow-x: auto;
-        margin-top: 10px;
-    }
-
-    .deploy-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: 2px;
-    }
-
-    .deploy-form-container {
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-        overflow-x: auto;
-        margin-top: 10px;
-    }
-
-    .supply-form-container {
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-        overflow-x: auto;
-        margin-top: 10px;
-    }
-
-    .order-form-container {
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-        overflow-x: auto;
-        margin-top: 10px;
-    }
-
-    .add-container {
-        grid-template-columns: 100%;
-    }
-
-    .image-container {
-        margin-bottom: 10px;
-    }
-
-    .form-container form .fields .input-field {
-        width: calc(100% / 2 - 15px);
-    }
-
-    .form-container form button {
-        width: 150px;
-    }
-
-
 
     #nav-toggle {
         display: none;
@@ -5380,6 +5315,7 @@ right .d-drop-btn {
         left: 0 !important;
     }
 
+    /* SIDEBAR STYLE RESPONSIVE */
     #nav-toggle:checked + .sidebar {
         left: 0 !important;
         z-index: 100;
@@ -5420,194 +5356,113 @@ right .d-drop-btn {
     #nav-toggle:checked ~ .main-content {
         margin-left: 0rem !important;
     }
-}
+    /* END */
 
 
-@media all and (max-width: 700px) {
-}
-
-@media all and (max-width: 699px) {
-    main {
-        min-height: calc(104vh - 70px);
-        min-width: calc(60vh - 70px);
-    }
-
+    /* DASHBOARD STYLE RESPONSIVE */
     .cards {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .recent-grid {
         grid-template-columns: 100%;
-        max-width: 100%;
     }
 
-    .scatter {
-        height: auto;
+    .inventory-grid {
+        grid-template-columns: 100%;
     }
 
-    .inventory-grid .current-card {
-        margin-left: 220px;
+        .inventory-grid .current-card {
+            margin-left: 250px;
+            align-items: center;
+            max-width: 200px;
+        }
+
+    .sidebar {
+        left: -100% !important;
     }
 
-    .new-popup {
-        width: 100%;
-    }
+        .sidebar .user-wrapper {
+            margin-top: -5px;
+        }
+    /* END */
 
-    .new-grid {
-        width: 90%;
-        margin-left: 1.9rem;
-    }
-
-    .new-info input {
-        width: 50%;
-    }
-
-    .user-add-grid {
-        width: 80%;
-        margin-left: 4rem;
+    /* SEARCH AND DROP DOWN RESPONSIVE */
+    .upper-section {
+        padding-left: 0;
     }
 
     .search-wrapper {
-        width: 220px;
+        width: 200px;
     }
 
-    .inventory-header h3 {
-        font-size: 1.3rem;
+    .drp-wrapper {
+        margin-top: 1.27rem;
     }
 
-    .purchase-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: 2px;
+    .upper-section select {
+        font-size: .9rem;
+    }
+    /* END */
+
+    /* INVENTORY STYLE RESPONSIVE */
+    .inventory-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
     }
 
-
-    .purchase-add-container form button {
-        width: 150px;
-    }
-
-    .deploy-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -35px;
-    }
-
-    .deploy-buttons-style {
-        margin-top: 50px;
-        margin-right: 250px;
-    }
-
-    .supply-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -5px;
-    }
-
-    .order-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -5px;
-    }
-
-    .add-container {
-        grid-template-columns: 100%;
-    }
-
-    .image-container {
-        margin-bottom: 10px;
-    }
-
-    .form-container form .fields .input-field {
-        width: calc(100% / 1 - 15px);
-    }
-
-    .form-container form button {
-        width: 150px;
-    }
-}
-
-@media all and (max-width: 650px) {
-    main {
-        min-height: calc(103vh - 70px);
-        min-width: calc(20vh - 70px);
-    }
-}
-
-@media all and (max-width: 600px) {
-    body {
-        width: 100%;
-    }
-
-    main {
-        min-height: calc(102vh - 70px);
-        min-width: calc(20vh - 70px);
-    }
-
-    .inventory-header h3, .purchase-header h3 {
-        font-size: 1.3rem;
-        margin-bottom: 1px;
-    }
-
-    .inventory-form-container form button {
-        margin-left: 20px;
-        width: 150px;
-    }
-
-    .purchase-header h3 {
-        font-size: 1.1rem;
-    }
-
-    .purchase-form-container {
+    .inventory-header {
         margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-        overflow-x: auto;
+        display: inline-block;
     }
 
-    .purchase-add-container form button {
-        width: 150px;
+        .inventory-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .inventory-header .inventory-buttons-style {
+            margin-left: 490px;
+        }
+
+        .inventory-header button {
+            margin-left: 2px;
+        }
+
+        .inventory-header .inventory-sort-btn {
+            margin-left: 2px;
+        }
+
+    .inventory-body table {
+        margin: 0;
     }
 
-    .deploy-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -35px;
+    .add-popup-inv {
+        left: 45%;
     }
 
-    .deploy-buttons-style {
-        margin-top: 50px;
-        margin-right: 250px;
+    .inventory-form-container .inventory-form-header {
+        font-size: 15px;
     }
 
-    .supply-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -5px;
+    .inventory-form-container form .fields .input-field {
+        width: calc(100% / 2 - 15px);
+        margin: 2px 0;
     }
-
-    .order-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -5px;
-        margin-right: 0px;
-    }
-
-    .add-container {
-        grid-template-columns: 100%;
-    }
-
-    .image-container {
-        margin-bottom: 10px;
-    }
-
-    .form-container form .fields .input-field {
-        width: calc(100% / 1 - 15px);
-    }
-
-    .form-container form button {
-        width: 150px;
-    }
+    /* END */
 }
 
-@media all and (max-width: 560px) {
+@media all and (max-width: 480px) {
 
     main {
         min-height: calc(105vh - 70px);
-        min-width: calc(20vh - 70px);
+        min-width: calc(30vh - 70px);
     }
 
     header h3 span {
         display: none;
     }
+    /* DASHBOARD STYLE */
 
     .sum-chart-card {
         padding-left: 0;
@@ -5629,20 +5484,6 @@ right .d-drop-btn {
         border-bottom: 2px solid #f0f0f0;
     }
 
-
-    .search-wrapper {
-        width: 250px;
-    }
-
-    .dropdown .drop-btn {
-        width: 200px;
-    }
-
-
-    .dropdown-content {
-        min-width: 150px;
-    }
-
     .inventory-grid .current-card {
         margin-left: 125px;
         align-items: center;
@@ -5650,123 +5491,97 @@ right .d-drop-btn {
         max-width: 50%;
     }
 
+    /* END */
+
+    /* SEARCH AND DROP DOWN RESPONSIVE */
+    .upper-section {
+        padding-left: 0;
+    }
+
     .search-wrapper {
         width: 200px;
     }
 
-    .dropdown .drop-btn a {
-        display: none;
+    .drp-wrapper {
+        margin-top: 1.27rem;
     }
 
-    .dropdown .drop-btn {
-        width: 75px;
+    .upper-section select {
+        font-size: .9rem;
+    }
+    /* END */
+
+    /* INVENTORY STYLE RESPONSIVE */
+    .inventory-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
     }
 
-    .inventory-header, .purchase-header, .deploy-header {
+    .inventory-header {
+        margin-left: 0;
         display: inline-block;
     }
 
-        .inventory-header h3, .purchase-header h3 {
-            font-size: 1.3rem;
-            margin-bottom: -35px;
+        .inventory-header h3 {
+            font-size: 1rem;
         }
 
-    .inventory-buttons-style {
-        margin-left: 200px;
-    }
-
-    .purchase-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -35px;
-        margin-right: -10px;
-    }
-
-    .purchase-buttons-style {
-        margin-top: 50px;
-        margin-left: -200px;
-    }
-
-    .purchase-add-container {
-        overflow: none;
-        margin-top: 20px;
-    }
-
-
-        .purchase-add-container form button {
-            width: 150px;
+        .inventory-header .inventory-buttons-style {
+            margin-left: 210px;
         }
 
-    .deploy-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -35px;
-        margin-right: 0px;
+        .inventory-header button {
+            margin-left: 2px;
+        }
+
+        .inventory-header .inventory-sort-btn {
+            margin-left: 2px;
+        }
+
+    .inventory-body table {
+        margin: 0;
     }
 
-    .deploy-buttons-style {
-        margin-top: 50px;
-        margin-right: 150px;
+    .add-popup-inv {
+        left: 45%;
     }
 
-    .deploy-add-container button {
-        width: 150px;
+    .inventory-form-container .inventory-form-header {
+        font-size: 15px;
     }
 
-    .supply-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -35px;
-        margin-right: 0px;
+    .inventory-form-container form {
+        width: 400px;
     }
 
-    .supply-buttons-style {
-        margin-top: 50px;
-        margin-right: 150px;
-    }
+        .inventory-form-container form .fields .input-field {
+            width: calc(100% / 2 - 15px);
+            margin: 2px 0;
+        }
+    /* END */
 
-    .supply-add-container button {
-        width: 150px;
-    }
+    /* PURCHASING REQUST STYLE RESPONSIVE */
 
-    .order-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -35px;
-        margin-right: 0px;
-    }
+    /* END */
 
-    .order-buttons-style {
-        margin-top: 50px;
-        margin-right: 150px;
-    }
+    /* DEPLOYMENT REQUST STYLE RESPONSIVE */
 
-    .order-add-container form button {
-        width: 150px;
-    }
+    /* END */
 
-    .user-header h3 {
-        font-size: 1.1rem;
-        margin-bottom: -35px;
-        margin-right: 0px;
-    }
+    /* SUPPLY REQUST STYLE RESPONSIVE */
 
-    .user-buttons-style {
-        margin-top: 50px;
-        margin-right: 150px;
-    }
+    /* END */
 
-    .add-container {
-        grid-template-columns: 100%;
-    }
+    /* PROJECTS STYLE RESPONSIVE */
 
-    .image-container {
-        margin-bottom: 10px;
-    }
+    /* END */
 
-    .form-container form .fields .input-field {
-        width: calc(100% / 1 - 15px);
-    }
+    /* USERS STYLE RESPONSIVE */
 
-    .form-container form button {
-        width: 150px;
-    }
+    /* END */
+
+
 }
 
 @media all and (max-height: 850px) {

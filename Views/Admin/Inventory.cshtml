@@ -44,11 +44,10 @@
                     <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib()"><a><span class="las la-plus-circle"></span></a></button>
                     <button class="pri-btn" title="PRINT REPORT" id="printBtn" @*onclick="printOpenPopup()"*@> <a href="#"><span class="las la-print"></span></a></button>
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportTable()"> <a href="#"><span class="las la-file-download"></span></a></button>
+                    <button class="expo-btn" title="ARCHIVE" onclick="OpenArchPopup()"> <a href="#"><span class="las la-file-archive"></span></a></button>
                     <button class="inventory-sort-btn" onclick="userSortFunction()">
-                        <a>
-                            <span></span>
-                            <span class="las la-chevron-down"></span>
-                        </a>
+                        <span></span>
+                        <span class="las la-chevron-down"></span>
                     </button>
                     <div class="inventory-sort-content" id="invSortDropdown">
                         <a href="#" onclick="Ascend()">Ascending</a>
@@ -79,7 +78,7 @@
                                             <input type="text" placeholder="Item Name" name="in_name" id="itemName" readonly>
                                         </div>
 
-                                        <div class="input-field">
+                                        <div class="drp-wrapper">
                                             <label>Category</label>
                                             <select id="cat-select" readonly>
                                                 <option disabled selected>Select Category</option>
@@ -126,6 +125,10 @@
                                                 </select>
                                                 <input type="text" id="hiddenQuant" name="in_quantity" style="display:none">
                                             </div>
+                                            <div class="input-field">
+                                                <label>Date Added</label>
+                                                <input type="text" placeholder="00/00/00" readonly>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -160,17 +163,115 @@
                                 <thead>
                                     <tr>
                                         <td>Code</td>
+                                        @*<td>Item Class</td>*@
                                         <td>Name</td>
                                         <td>Category</td>
                                         <td>Type</td>
                                         <td>Size</td>
                                         <td>Quantity</td>
+                                        <td>Class</td>
+                                        <td>Date Added</td>
                                         <td id="hideAction">Action</td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arch-popup" id="arch-popup">
+            <div class="arch-container">
+                <div class="inventory-grid">
+
+                    <div class="inventory-projects">
+                        <div class="inventory">
+                            <div class="inventory-body">
+                                <div class="inventory-header">
+                                    <h3>ARCHIVED ITEMS</h3>
+                                    <button class="ext-btn" title="EXIT" onclick="CloseArchPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
+                                </div>
+
+                                <div class="table-responsive" style="overflow-x: auto;">
+                                    <table width="100%">
+                                        <thead>
+                                            <tr>
+                                                <td>ID</td>
+                                                <td>Name</td>
+                                                <td>Category</td>
+                                                <td>Type</td>
+                                                <td>Size</td>
+                                                <td>Quantity</td>
+                                                <td>Class</td>
+                                                <td>Date Added</td>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><label>00001</label></td>
+                                                <td><label>Clarisse C. Vaquez</label></td>
+                                                <td><label>Supervisor</label></td>
+                                                <td><label>0923758923</label></td>
+                                                <td><label>12341241</label></td>
+                                                <td><label>1432143</label></td>
+                                                <td><label>Imported</label></td>
+                                                <td><label>00/00/00</label></td>
+
+
+                                            </tr>
+
+                                            <tr>
+                                                <td><label>00001</label></td>
+                                                <td><label>Clarisse C. Vaquez</label></td>
+                                                <td><label>Supervisor</label></td>
+                                                <td><label>0923758923</label></td>
+                                                <td><label>45674567474</label></td>
+                                                <td><label>123421345423</label></td>
+                                                <td><label>Local</label></td>
+                                                <td><label>00/00/00</label></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><label>00001</label></td>
+                                                <td><label>Clarisse C. Vaquez</label></td>
+                                                <td><label>Supervisor</label></td>
+                                                <td><label>0923758923</label></td>
+                                                <td><label>45674567474</label></td>
+                                                <td><label>123421345423</label></td>
+                                                <td><label>Local</label></td>
+                                                <td><label>00/00/00</label></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><label>00001</label></td>
+                                                <td><label>Clarisse C. Vaquez</label></td>
+                                                <td><label>Supervisor</label></td>
+                                                <td><label>0923758923</label></td>
+                                                <td><label>45674567474</label></td>
+                                                <td><label>123421345423</label></td>
+                                                <td><label>Local</label></td>
+                                                <td><label>00/00/00</label></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><label>00001</label></td>
+                                                <td><label>Clarisse C. Vaquez</label></td>
+                                                <td><label>Supervisor</label></td>
+                                                <td><label>0923758923</label></td>
+                                                <td><label>45674567474</label></td>
+                                                <td><label>123421345423</label></td>
+                                                <td><label>Local</label></td>
+                                                <td><label>00/00/00</label></td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -194,34 +295,34 @@
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
-            <div class="rem-pop-container" id="rem-popup">
-                <img src="~/images/remove.png">
-                <h2>Deleted!</h2>
-                <p>Item details has deleted in the list!</p>
-                <button type="button" onclick="remClosePopup()">OK</button>
-            </div>
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="~/images/remove.png">
+            <h2>Deleted!</h2>
+            <p>Item details has deleted in the list!</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
+        </div>
 
-            <div class="save-pop-container" id="popup">
-                <img src="~/images/tick.png">
-                <h2>Saved!</h2>
-                <p>Item has saved successfully!</p>
-                <button type="button" onclick="closePopup()">OK</button>
-            </div>
-            <div class="print-pop-container" id="print-popup">
-                <img src="~/images/printer.png">
-                <h2>Print!</h2>
-                <p>Print successfully!</p>
-                <button type="button" onclick="printClosePopup()">OK</button>
-            </div>
+        <div class="save-pop-container" id="popup">
+            <img src="~/images/tick.png">
+            <h2>Saved!</h2>
+            <p>Item has saved successfully!</p>
+            <button type="button" onclick="closePopup()">OK</button>
+        </div>
+        <div class="print-pop-container" id="print-popup">
+            <img src="~/images/printer.png">
+            <h2>Print!</h2>
+            <p>Print successfully!</p>
+            <button type="button" onclick="printClosePopup()">OK</button>
+        </div>
 
-            <div class="expo-pop-container" id="expo-popup">
-                <img src="~/images/export.png">
-                <h2>Export!</h2>
-                <p>Exported Successfully!</p>
-                <button type="button" onclick="expoClosePopup()">OK</button>
-            </div>
+        <div class="expo-pop-container" id="expo-popup">
+            <img src="~/images/export.png">
+            <h2>Export!</h2>
+            <p>Exported Successfully!</p>
+            <button type="button" onclick="expoClosePopup()">OK</button>
+        </div>
 
-        </main>
+    </main>
     <script src="~/Scripts/Inventory.js"></script>
     <script>
 
@@ -394,6 +495,15 @@
 
         function userSortFunction() {
             document.getElementById("invSortDropdown").classList.toggle("inventory-sort-show");
+        }
+
+        let archpopup = document.getElementById("arch-popup");
+        function OpenArchPopup() {
+            archpopup.classList.add("arch-popup-show")
+        }
+
+        function CloseArchPopup() {
+            archpopup.classList.remove("arch-popup-show")
         }
 
         // Close the dropdown if the user clicks outside of it

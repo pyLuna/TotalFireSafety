@@ -43,7 +43,7 @@
                             <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
                             <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
                             <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
-                            <a href="#" onclick="SortByCategory('')">clear</a>
+                            <a href="#" onclick="SortByCategory('')">Clear</a>
 
                         </div>
                         &nbsp;
@@ -68,9 +68,9 @@
                                         <tr>
                                             <td>ID</td>
                                             <td>Name</td>
-                                            <td>Mobile No.</td>
-                                            <td>Hired Date</td>
-                                            <td>Role</td>
+                                            <td>Date Hired</td>
+                                            <td>Contact Number</td>
+                                            <td>Position</td>
                                             <td>Status</td>
                                             <td>Action</td>
                                         </tr>
@@ -89,7 +89,7 @@
         <div class="add-popup" id="add-popup">
             <div class="add-container">
                 <div class="form-container">
-                    <form action="">
+                    <form action="@Url.Action("Users","Admin")" method="post" id="formId">
                         <div class="details personal">
                             <div class="form-header">
                                 ACCOUNT INFORMATION
@@ -98,63 +98,67 @@
                                 <div class="fields">
                                     <div class="input-field">
                                         <label>Name</label>
-                                        <input type="text" placeholder="Enter your name" required>
+                                        <input type="text" placeholder="Enter your name" id="name" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Contact</label>
-                                        <input type="number" placeholder="Enter your contact" required>
+                                        <input type="number" placeholder="Enter your contact" id="contact" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Employee ID</label>
-                                        <input type="number" placeholder="00-000" required>
+                                        <input type="number" placeholder="00-000" id="empId" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Hired Date</label>
-                                        <input type="date" readonly>
+                                        <input type="date" id="dateDisplay">
+                                        <input type="text" id="dateHired" style="display:none;" readonly>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Username</label>
-                                        <input type="text" placeholder="Enter your name" required>
+                                        <input type="text" placeholder="Enter username" id="username" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Password</label>
-                                        <input type="password" placeholder="Enter your name" required>
+                                        <input type="password" placeholder="Enter password" id="password" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Position</label>
-                                        <select required>
+                                        @*<select id="sel-pos" required>
                                             <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
                                             <option>Office Manager</option>
                                             <option>Warehouse Manager</option>
-                                        </select>
+                                        </select>*@
+                                        <input type="text" placeholder="Enter Position" id="position" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Roles</label>
-                                        <select required>
+                                        <select id="sel-roles" required>
                                             <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
                                             <option>Office Manager</option>
                                             <option>Warehouse Manager</option>
-                                            <option>Employee / Local Account</option>
+                                            <option>Local Account</option>
                                         </select>
+                                        <input type="text" id="roles" style="display:none;" readonly>
                                     </div>
 
                                     <div class="input-field">
-                                        <label>Active Status</label>
-                                        <select required>
+                                        <label>Status</label>
+                                        <select id="sel-stats" required>
                                             <option disabled selected>Select Position</option>
-                                            <option>Active</option>
-                                            <option>InActive</option>
-                                            <option>Locked</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="Locked">Locked</option>
                                         </select>
+                                        <input type="text" id="stats" style="display:none;" readonly>
                                     </div>
 
                                 </div>
@@ -162,32 +166,29 @@
                         </div>
                         <center>
                             <div class="form-add-btns">
-                                <button class="save" onclick="infoOpenPopup()">
+                                <button class="save" onclick="infoOpenPopup()" id="saveBtn">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>
 
                                 <button class="cancel">
-                                    <span class="btnText" onclick="canOpenPopup() + closeAddForm()">Cancel</span>
+                                    @*+ closeAddForm()*@
+                                    <span class="btnText" onclick="canOpenPopup() " id="canBtn">Cancel</span>
                                     <i class="las la-window-close"></i>
                                 </button>
                             </div>
                         </center>
-
-
                     </form>
                 </div>
             </div>
         </div>
 
-        <script src="~/Scripts/user.js"></script>
-
         <div class="info-pop-container" id="info-popup">
             <img src="~/images/information.png">
             <h2>System Warning!</h2>
             <p>Do you want to save the user on the list?</p>
-
-            <button type="submit" onclick="openPopup() + infoClosePopup()">Yes</button>
+            @*onclick="openPopup() + infoClosePopup()"*@
+            <button type="submit" form="formId">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
@@ -195,9 +196,7 @@
             <img src="~/images/warning.png">
             <h2>System Warning!</h2>
             <p>Are you sure you don't want to save user on the list?</p>
-
-            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
-
+            <button type="button" onclick="canClosePopup() + addClosePopup()">Yes</button>
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
@@ -207,12 +206,11 @@
             <p>User details has been added successfully!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
-        </form>
         <div class="rem-pop-container" id="rem-popup">
             <img src="~/images/remove.png">
             <h2>Cancel!</h2>
             <p>User details has not added in the list!</p>
-            <button type="submit" form="tableList" onclick="remClosePopup()">OK</button>
+            <button type="button" onclick="remClosePopup() + addClosePopup()">OK</button>
         </div>
 
     </main>
@@ -220,11 +218,17 @@
     <script src="~/Scripts/user.js"></script>
 
     <script>
+        let addpopup = document.getElementById("add-popup");
         window.onload = function () {
-            GetAll();
+            GetAllEmployeeInfo();
         }
         function userFiltFunction() {
             document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
+        }
+
+        function openEditForm(value) {
+            addpopup.classList.add("add-popup-show");
+            setField(value);
         }
 
         // Close the dropdown if the user clicks outside of it
@@ -236,6 +240,14 @@
                 }
             }
         }
+
+        document.getElementById("saveBtn").addEventListener("click", function () {
+            event.preventDefault();
+        });
+
+        document.getElementById("canBtn").addEventListener("click", function () {
+            event.preventDefault();
+        });
 
         function userSortFunction() {
             document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
@@ -251,9 +263,6 @@
             }
         }
 
-
-
-        let addpopup = document.getElementById("add-popup");
         function addOpenPopup() {
             addpopup.classList.add("add-popup-show")
         }

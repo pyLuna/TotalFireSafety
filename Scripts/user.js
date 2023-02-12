@@ -3,7 +3,7 @@ let filtered = [];
 let fixedArray = [];
 const table = document.querySelector('#myTable tbody');
 
-function GetAll() {
+function GetAllEmployeeInfo() {
 
     fetch('/Admin/SearchEmployee')
         .then(res => {
@@ -24,6 +24,10 @@ function GetAll() {
             }
         })
         .then(data => {
+            //if (typeof data === "string") {
+            //    console.log('data is string');
+            //}
+            //console.log(JSON.parse(data));
             jsonArray.push(data);
             fixArray();
             if (table !== null) {
@@ -46,35 +50,42 @@ function setTable(array) {
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
 
-            if (array[i].emp_name === null) {
-                array[i].emp_name = '';
-            }
-            if (array[i].emp_position === null) {
-                array[i].emp_position = '';
-            }
-            if (array[i].IsActive === null) {
-                array[i].IsActive = 'InActive';
+            //if (array[i].emp_name === null) {
+            //    array[i].emp_name = '';
+            //}
+            //if (array[i].emp_position === null) {
+            //    array[i].emp_position = '';
+            //}
+            //if (array[i].IsActive === null) {
+            //    array[i].IsActive = 'InActive';
 
-
+            //}
+            //if (array[i].IsActive === 1) {
+            //    array[i].IsActive = 'Active';
+            //}
+            let stats = "";
+            if (array[i].Status?.IsActive === 1) {
+                stats = "Active";
+                if (array[i].Status?.IsLocked === 1) {
+                    stats = "IsLocked";
+                }
             }
-            if (array[i].IsActive === 1) {
-                array[i].IsActive = 'Active';
+            else {
+                stats = "Inactive";
             }
 
             var row = `<tr>`;
             row += `<form action="/Admin/Users?item=${array[i].emp_no}" method="post" id="tableList">`;
-            row += `<td id="emp_no"><label>${array[i].emp_no}</label></td><td name="emp_name"><label>${array[i].emp_name}</label></td><td name="emp_contact"><label>${array[i].emp_contact}</label></td><td name="emp_hiredDate"><label>${array[i].emp_hiredDate}</label></td><td name="emp_position"><label>${array[i].emp_position}</label><td name="IsActive"><label">${array[i].IsActive}</label>`;
+            row += `<td id="emp_no"><label>${array[i].emp_no}</label></td><td name="emp_name"><label>${array[i].emp_name}</label></td><td name="emp_contact"><label>${array[i].FormattedDate}</label></td><td name="emp_hiredDate"><label>${array[i].emp_contact}</label></td><td name="emp_position"><label>${array[i].emp_position}</label><td name="IsActive"><label">${stats}</label>`;
             row += `</form>`;
             row += `<td id="hideActionBtn"><div class="user-action-style">`;
-            row += ` <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm()"> <a href="#"><span class="lar la-edit"></span></a></button>`;
-            row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
+            row += ` <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm('${array[i].emp_no}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+            //row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
             row += `</td></div>`;
             row += `</tr>`;
             table.innerHTML += row;
-            filtered.length = 0;
         }
-
-
+        filtered.length = 0;
     }
     else {
         //error handler if input value not found
@@ -83,7 +94,6 @@ function setTable(array) {
         errorMessageRow.style.textAlign = "center";
         errorMessageRow.style.fontStyle = "italic";
         errorMessageRow.innerHTML = "<td colspan='6'>Item Not found<td>";
-        //console.log(res.statusText);
         table.appendChild(errorMessageRow);
     }
 }
@@ -118,60 +128,81 @@ function SortByCategory(value) {
         setTable(fixedArray);
     }
 }
-function SortByAscending(value) {
-    const category = document.querySelector('#sortAs');
-    //document.getElementById("myDropdown").setAttribute("style","display:none;");
-    if (value != '') {
-        category.innerHTML = value;
-        SearchItem(value.toLowerCase());
-    }
-    else {
-        category.innerHTML = 'Select Category';
-        setTable(fixedArray);
-    }
-}
-
-
 
 
 function setField(value) {
-    let name = document.querySelector('#itemName');
-    let size = document.querySelector('#itemSize');
-    let quantity = document.querySelector('#itemQuant');
-    let cat = document.getElementById("cat-select");
-    let type = document.getElementById("type-select");
+    let name = document.querySelector('#name');
+    let contact = document.querySelector('#contact');
+    let empID = document.querySelector('#empId');
+    let dateDisplay = document.getElementById("dateDisplay");
+    let dateHired = document.getElementById("dateHired");
+    let username = document.getElementById("username");
+    let password = document.getElementById("password");
+    let position = document.getElementById("position");
+    let roles = document.getElementById("roles");
+    let stats = document.getElementById("stats");
+    let selroles = document.getElementById("sel-roles");
+    let selstats = document.getElementById("sel-stats");
 
     for (var i = 0; i < fixedArray.length; i++) {
-        if (fixedArray[i].in_code == value) {
+        if (fixedArray[i].emp_no == value) {
             filtered.length = 0;
             filtered.push(fixedArray[i]);
         }
     }
-    name.value = filtered[0].in_name;
-    size.value = filtered[0].in_size;
-    quantity.value = filtered[0].in_quantity;
+    console.log(filtered);
+    let statsValue = "";
+    if (filtered[0].Status?.IsActive === 1) {
+        stats = "Active";
+        if (filtered[0].Status?.IsLocked === 1) {
+            stats = "Locked";
+        }
+    }
+    else {
+        stats = "Inactive";
+    }
 
-    // loop through all the options in the select element
-    for (let i = 0; i < cat.options.length; i++) {
-        let option = cat.options[i];
+    name.value = filtered[0].emp_name;
+    contact.value = filtered[0].emp_contact;
+    empID.value = filtered[0].emp_no;
+    dateHired.value = filtered[0].FormattedDate; //  TO Check
+    username.value = filtered[0].Credential?.username;
+    password.value = filtered[0].Credential?.password;
+    position.value = filtered[0].emp_position;
+    roles.value = filtered[0].Role?.role1;
+    empID.value = filtered[0].emp_no;
+    stats.value = statsValue;
+
+    var dateString = new Date(filtered[0].FormattedDate);
+    var dateUpdate = dateString.toLocaleDateString("en-US", { day: '2-digit', month: '2-digit', year: 'numeric' });
+    var dateParts = dateUpdate.split("/");
+    var date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+
+    dateDisplay.value = date.toISOString().substr(0, 10);
+
+    selroles.selectedIndex = filtered[0].Role?.role1;
+
+     //loop through all the options in the select element
+    for (let i = 0; i < selstats.options.length; i++) {
+        let option = selstats.options[i];
         // check if the option value exists in the valuesToCompare array
-        if (filtered[0].in_category === option.value) {
-            cat.selectedIndex = i;
+        if (stats === option.value) {
+            selstats.selectedIndex = i;
         }
     }
 
-    for (let i = 0; i < type.options.length; i++) {
-        let option = type.options[i];
-        // check if the option value exists in the valuesToCompare array
-        if (filtered[0].in_type === option.value) {
-            type.selectedIndex = i;
-        }
-    }
+    //for (let i = 0; i < type.options.length; i++) {
+    //    let option = type.options[i];
+    //    // check if the option value exists in the valuesToCompare array
+    //    if (filtered[0].in_type === option.value) {
+    //        type.selectedIndex = i;
+    //    }
+    //}
 
 }
 
 function exportArrayToCsv() {
-    let newArray = [['Code', 'Name', 'Category', 'Type', 'Size', 'Quantity']];
+    let newArray = [['Employee ID', 'Name', 'Category', 'Type', 'Size', 'Quantity']];
 
     for (var i = 0; i < fixedArray.length; i++) {
         newArray.push([fixedArray[i].in_code, fixedArray[i].in_name, fixedArray[i].in_category, fixedArray[i].in_type, fixedArray[i].in_size, fixedArray[i].in_quantity]);
@@ -185,6 +216,16 @@ function exportArrayToCsv() {
     //// Trigger the download
     link.click();
 }
+
+//Descending
+function SortDescending() {
+    return fixedArray.sort((a, b) => {
+        if (a['emp_name'] < b['emp_name']) return 1;
+        if (a['emp_name'] > b['emp_name']) return -1;
+        return 0;
+    });
+}
+
 function Descend() {
     const result = SortDescending();
     setTable(result);
@@ -199,8 +240,13 @@ function SortAscending() {
     });
 }
 
-
 function Ascend() {
     const result = SortAscending();
     setTable(result);
+}
+
+function ResetForm () {
+    var form = document.getElementById("formId");
+    for (let i = 0; i < form.elements.length; i++) {
+        form.elements[i].value = "";
 }

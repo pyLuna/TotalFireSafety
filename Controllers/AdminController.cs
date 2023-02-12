@@ -41,6 +41,7 @@ namespace TotalFireSafety.Controllers
             }
             return View();
         }
+        #region
         [HttpPost]
         public ActionResult AddItem1(Inventory item)
         {
@@ -94,8 +95,9 @@ namespace TotalFireSafety.Controllers
             }
             return View();
         }
+        #endregion
+
         //  Users
-        
         public ActionResult Users()
         {
             return View();
@@ -135,7 +137,7 @@ namespace TotalFireSafety.Controllers
                 var userToken = Session["access_token"].ToString();
                 var response = api_req.GetAllMethod("/Admin/Employee", userToken);
 
-                var json = JsonConvert.DeserializeObject<List<NewEmployeeModel>>(response);
+                var json = JsonConvert.DeserializeObject<List<Employee>>(response);
 
                 JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 Response.ContentType = "application/json"; // Set the Content-Type header

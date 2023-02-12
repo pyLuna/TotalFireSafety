@@ -16,6 +16,8 @@ namespace TotalFireSafety.Models
     {
         public int emp_no { get; set; }
         public int role1 { get; set; }
+        public string status { get; set; }
+        public string date { get; set; }
     
         public virtual Employee Employee { get; set; }
     }

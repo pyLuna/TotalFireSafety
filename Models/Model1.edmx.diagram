@@ -5,16 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="2d946f0fd5b1415698f59cfb999c539b" Name="Diagram1">
-        <EntityTypeShape EntityType="TotalFireSafetyModel.Credential" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TotalFireSafetyModel.Employee" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="TotalFireSafetyModel.Inventory" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TotalFireSafetyModel.Role" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TotalFireSafetyModel.Status" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="TotalFireSafetyModel.token" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
-        <AssociationConnector Association="TotalFireSafetyModel.FK_Credentials_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="TotalFireSafetyModel.FK_Roles_Employee" ManuallyRouted="false" />
-        <AssociationConnector Association="TotalFireSafetyModel.FK_Status_Employee" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="TotalFireSafetyModel.Credential" Width="1.5" PointX="3" PointY="10.875" />
+        <EntityTypeShape EntityType="TotalFireSafetyModel.Employee" Width="1.5" PointX="0.75" PointY="10.375" />
+        <EntityTypeShape EntityType="TotalFireSafetyModel.Role" Width="1.5" PointX="3" PointY="8.125" />
+        <EntityTypeShape EntityType="TotalFireSafetyModel.Status" Width="1.5" PointX="3" PointY="13.5" />
+        <AssociationConnector Association="TotalFireSafetyModel.FK_Credentials_Employee" />
+        <AssociationConnector Association="TotalFireSafetyModel.FK_Roles_Employee" />
+        <AssociationConnector Association="TotalFireSafetyModel.FK_Status_Employee" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

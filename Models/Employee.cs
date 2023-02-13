@@ -23,7 +23,7 @@ namespace TotalFireSafety.Models
         public virtual Credential Credential { get; set; }
         public virtual Role Role { get; set; }
         public virtual Status Status { get; set; }
-        //public int Id { get; set; }
+        public string formType { get; set; }
 
         public string FormattedDate
         {

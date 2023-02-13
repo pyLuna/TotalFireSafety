@@ -647,6 +647,9 @@ namespace TotalFireSafety.Controllers
                     using (var _context = new TFSEntity())
                     {
                         var emp = _context.Employees.Where(x => x.emp_no == _emp.emp_no).SingleOrDefault();
+                        var roles = _context.Roles.Where(x => x.emp_no == _emp.emp_no).SingleOrDefault();
+                        var status = _context.Status.Where(x => x.emp_no == _emp.emp_no).SingleOrDefault();
+                        var creds = _context.Credentials.Where(x => x.emp_no == _emp.emp_no).SingleOrDefault();
                         if (emp != null)
                         {
                             emp.emp_no = _emp.emp_no;
@@ -654,6 +657,12 @@ namespace TotalFireSafety.Controllers
                             emp.emp_contact = _emp.emp_contact;
                             emp.emp_hiredDate = _emp.emp_hiredDate;
                             emp.emp_position = _emp.emp_position;
+
+                            roles.role1 = _emp.Role.role1;
+                            status.IsActive = _emp.Status.IsActive;
+                            status.IsLocked = _emp.Status.IsLocked;
+                            creds.username = _emp.Credential.username;
+                            creds.password = _emp.Credential.password;
 
                             _context.Entry(emp);
                             _context.SaveChanges();

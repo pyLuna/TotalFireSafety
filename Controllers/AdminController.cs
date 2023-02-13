@@ -47,7 +47,7 @@ namespace TotalFireSafety.Controllers
         {
             var serializedModel = JsonConvert.SerializeObject(item);
             var userToken = Session["access_token"].ToString();
-            var response = api_req.AddMethod("Warehouse/Inventory/Edit", userToken, serializedModel);
+            var response = api_req.SetMethod("Warehouse/Inventory/Edit", userToken, serializedModel);
 
             if (response == "BadRequest" || response == "InternalServerError")
             {
@@ -69,7 +69,7 @@ namespace TotalFireSafety.Controllers
             var serializedModel = JsonConvert.SerializeObject(addCode);
             var userToken = Session["access_token"].ToString();
 
-            var response = api_req.DeleteMethod("Warehouse/Inventory/Delete", userToken, serializedModel);
+            var response = api_req.SetMethod("Warehouse/Inventory/Delete", userToken, serializedModel);
 
             if (response == "BadRequest" || response == "InternalServerError")
             {
@@ -100,9 +100,25 @@ namespace TotalFireSafety.Controllers
         //  Users
         public ActionResult Users()
         {
+            Session["editUser"] = null;
             return View();
         }
        
+        //private Tuple<string,string> setUri(int isEdit)
+        //{
+        //    string uri,message;
+        //    if(isEdit == 1)
+        //    {
+        //        uri = "Admin/Employee/Update";
+        //        message = "Updated!";
+        //    }
+        //    else
+        //    {
+        //        uri = "Admin/Employee/Add";
+        //        message = "Added!";
+        //    }
+        //    return new Tuple<string, string> (uri,message);
+        //}
 
         [HttpPost]
         public ActionResult Users(Employee employee)
@@ -114,15 +130,27 @@ namespace TotalFireSafety.Controllers
 
             var serializedModel = JsonConvert.SerializeObject(employee);
             var userToken = Session["access_token"].ToString();
-            var response = api_req.AddMethod("Admin/Employee/Add", userToken, serializedModel);
-
+            string uri = "", message = "";
+            if (employee.formType == "add")
+            {
+                uri = "Admin/Employee/Add";
+                message = "Added!";
+            }
+            if (employee.formType == "edit")
+            {
+                uri = "Admin/Employee/Update";
+                message = "Updated!";
+            }
+            var response = api_req.SetMethod(uri, userToken, serializedModel);
+            ViewBag.Message = message;
             if (response == "BadRequest" || response == "InternalServerError")
             {
                 ViewBag.Response = response.ToString();
                 return View();
             }
             var json = JsonConvert.DeserializeObject(response);
-            ViewBag.Response = json.ToString();
+            ViewBag.Success = json.ToString();
+            Session["editUser"] = 0;
             return View();
         }
         

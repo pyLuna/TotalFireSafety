@@ -56,7 +56,7 @@ namespace TotalFireSafety.Models
             return result.StatusCode.ToString();
         }
 
-        public string AddMethod(string uri, string Token, string json)
+        public string SetMethod(string uri, string Token, string json)
         {
             if (_client.BaseAddress == null) // to prevent error, check if the base address if empty
             {
@@ -79,28 +79,28 @@ namespace TotalFireSafety.Models
             return result.StatusCode.ToString();
         }
 
-        public string DeleteMethod(string uri, string token, string json)
-        {
-            if (_client.BaseAddress == null) // to prevent error, check if the base address if empty
-            {
-                _client.BaseAddress = new Uri(BaseDomain());
-            }
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //public string DeleteMethod(string uri, string token, string json)
+        //{
+        //    if (_client.BaseAddress == null) // to prevent error, check if the base address if empty
+        //    {
+        //        _client.BaseAddress = new Uri(BaseDomain());
+        //    }
+        //    _client.DefaultRequestHeaders.Accept.Clear();
+        //    _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var _json = JsonConvert.DeserializeObject(json);
+        //    var _json = JsonConvert.DeserializeObject(json);
 
-            var postTask = _client.PostAsJsonAsync(uri, _json); // Request Method
-            postTask.Wait(); // wait for result
+        //    var postTask = _client.PostAsJsonAsync(uri, _json); // Request Method
+        //    postTask.Wait(); // wait for result
 
-            var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
-                return result.Content.ReadAsStringAsync().Result;
-            }
-            return result.StatusCode.ToString();
-        }
+        //    var result = postTask.Result;
+        //    if (result.IsSuccessStatusCode)
+        //    {
+        //        return result.Content.ReadAsStringAsync().Result;
+        //    }
+        //    return result.StatusCode.ToString();
+        //}
 
     }
 }

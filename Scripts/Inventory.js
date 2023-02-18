@@ -5,7 +5,7 @@ const table = document.querySelector('#myTable tbody');
 
 function GetAll() {
 
-    fetch('/Admin/FindDataOf')
+    fetch('/Admin/FindDataOf?requestType=inventory')
         .then(res => {
             if (res.ok) {
                 // API request was successful
@@ -46,13 +46,13 @@ function setTable(array) {
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
 
-            if (array[i].in_category === null) {
+            if (array[i].in_category == null) {
                 array[i].in_category = '';
             }
-            if (array[i].in_type === null) {
+            if (array[i].in_type == null) {
                 array[i].in_type = '';
             }
-            if (array[i].in_size === null) {
+            if (array[i].in_size == null || array[i].in_size == "") {
                 array[i].in_size = '';
             }
             //<td name="in_quantity"><label>${array[i].in_dateAdded}</label></td>
@@ -123,19 +123,23 @@ function setField(value) {
     let hidType = document.getElementById("hiddenType");
     localStorage.clear();
 
+    //if (value != null) {
+    //    return;
+    //}
+
     for (var i = 0; i < fixedArray.length; i++) {
-        if (fixedArray[i].in_code == value) {
+        if (fixedArray[i]?.in_code == value) {
             filtered.length = 0;
             filtered.push(fixedArray[i]);
         }
     }
-    code.value = filtered[0].in_code;
-    name.value = filtered[0].in_name;
+    //code.value = filtered[0]?.in_code;
+    name.value = filtered[0]?.in_name;
     //size.value = filtered[0].in_size;
     //quantity.value = filtered[0].in_quantity;
 
-    let sizeValue = extractNum(filtered[0].in_size);
-    let quantityValue = extractNum(filtered[0].in_quantity);
+    let sizeValue = extractNum(filtered[0]?.in_size);
+    let quantityValue = extractNum(filtered[0]?.in_quantity);
 
     if (sizeValue.num !== 0) {
         size.value = sizeValue.num;
@@ -171,7 +175,7 @@ function setField(value) {
     for (let i = 0; i < cat.options.length; i++) {
         let option = cat.options[i];
         // check if the option value exists in the valuesToCompare array
-        if (filtered[0].in_category === option.value) {
+        if (filtered[0]?.in_category === option.value) {
             cat.selectedIndex = i;
             hidCategory.value = filtered[0].in_category;
             localStorage.setItem("selCategory", filtered[0].in_category);
@@ -181,18 +185,19 @@ function setField(value) {
     for (let i = 0; i < type.options.length; i++) {
         let option = type.options[i];
         // check if the option value exists in the valuesToCompare array
-        if (filtered[0].in_type === option.value) {
+        if (filtered[0]?.in_type === option.value) {
             type.selectedIndex = i;
             hidType.value = filtered[0].in_type;
             localStorage.setItem("selType", filtered[0].in_type);
         }
     }
-    if (filtered[0].in_type === '') {
+    if (filtered[0]?.in_type === '') {
         type.selectedIndex = 0;
     }
-    if (filtered[0].in_category === '') {
+    if (filtered[0]?.in_category === '') {
         cat.selectedIndex = 0;
     }
+    setHiddenSize();
 }
 
 function exportArrayToCsv() {
@@ -265,7 +270,7 @@ function DeleteItem() {
 function extractNum(value) {
     let num = 0;
             let measurement = '';
-            for (let i = 0; i < value.length; i++) {
+            for (let i = 0; i < value?.length; i++) {
                 if (!isNaN(parseInt(value[i]))) {
                     num = num * 10 + parseInt(value[i]);
                 } else if (value[i] !== ' ') {
@@ -283,12 +288,13 @@ function setHiddenSize() {
     if (sizeMeas == '\"') {
         sizeMeas = "INCH";
     }
-    if (sizeMeas === null || sizeMeas === "null" || sizeMeas === ' ') {
-        size.value = ' ';
+    if (size.value == null || size.value == "null" || size.value == "") {
+        hiddenSize.value = null;
     }
     else {
         hiddenSize.value = size.value + ' ' + sizeMeas;
     }
+    //console.log(hiddenSize.value);
 }
 
 function AddValue(value,typeOf) {
@@ -297,14 +303,67 @@ function AddValue(value,typeOf) {
     let quant = parseInt(localStorage.getItem("quantity"));
     let quantMeas1 = localStorage.getItem("quantityMeas");
 
+
     if (typeOf !== 'edit') {
         let num1 = Number(quant) + Number(value);
         hiddenQuant.value = num1 + ' ' + quantMeas1;
     }
     else
     {
-        hiddenQuant.value = itemQuant + ' ' +quantMeas1;
+        
     }
-
     console.log(hiddenQuant.value);
+}
+
+function setQuantity() {
+    //for add
+    let newQuantity = document.getElementById("itemQuant");
+    let newMeas = document.getElementById("itemQuantMeas");
+    hiddenQuant.value = newQuantity.value + ' ' + newMeas.options[newMeas?.selectedIndex].value;
+}
+
+function GetBarcode(value) {
+    event.preventDefault();
+    fetch('/Admin/GetBarcode?itemCode=' + value,{
+        method: "POST"
+    })
+        .then(res => {
+            if (res.ok) {
+                // API request was successful
+                return res.json();
+            } else {
+                console.log(res.statusText);
+            }
+        })
+        .then(data => {
+            //console.log(data);
+            //displayBarcode(data);
+            const img = document.createElement('img');
+            // find the container element to append the image to
+            let imgContainer = document.getElementById("image-container");
+            var parsed = JSON.parse(data);
+            // set its source to the image data
+            img.setAttribute("id", "barcodeImg");
+            img.setAttribute("download", "filename.png");
+            img.src = `data:image/pmg;base64,${parsed}`;
+
+            //const container = document.getElementById('image-container');
+
+            // append the image to the container element
+            imgContainer.innerHTML = "";
+            imgContainer.appendChild(img);
+        })
+        .catch(error => {
+                imgContainer.style.display = "none";
+            //console.error(error);
+        });
+}
+
+function setDatalist() {
+    let itemList = document.getElementById('itemList');
+    fixedArray.forEach(function (item) {
+        let option = document.createElement('option');
+        option.value = item.in_code;
+        itemList.appendChild(option);
+    });
 }

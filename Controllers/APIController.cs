@@ -4,11 +4,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using TotalFireSafety.Models;
+using System.IO;
+using ZXing;
+using ZXing.QrCode;
+//using System.Web.Mvc;
+using System.Drawing;
 
 namespace TotalFireSafety.Controllers
 {
     public class APIController : ApiController
     {
+        private Tuple<Guid, Boolean> Validate(string typeOf)
+        {
+            using (var _context = new TFSEntity())
+            {
+                var newGuid = Guid.NewGuid();
+                switch (typeOf.ToLower())
+                {
+                    case "requests":
+                        var checkId = _context.Requests.Where(x => x.request_id == newGuid).SingleOrDefault();
+
+                        if (checkId == null)
+                        {
+                            return new Tuple<Guid, Boolean>(newGuid, true);
+                        }
+                        else
+                        {
+                            return Validate("requests");
+                        }
+                    case "done":
+                        return new Tuple<Guid, Boolean>(newGuid, false);
+                }
+                return Validate("done");
+            }
+        }
         //  Status
         #region
         [Authorize(Roles = "admin")]
@@ -488,14 +517,6 @@ namespace TotalFireSafety.Controllers
                     var status = _context.Status.Select(x => x).ToList();
                     var roles = _context.Roles.Select(x => x).ToList();
                     var creds = _context.Credentials.Select(x => x).ToList();
-                    //List<NewEmployeeModel> emp = users.Select(x => new NewEmployeeModel
-                    //{
-                    //    emp_no = x.emp_no,
-                    //    emp_contact = x.emp_contact,
-                    //    emp_hiredDate = x.emp_hiredDate,
-                    //    emp_name = x.emp_name,
-                    //    emp_position = x.emp_position
-                    //}).ToList();
 
                     var newList = new List<Employee>();
 
@@ -511,9 +532,6 @@ namespace TotalFireSafety.Controllers
                             emp_hiredDate = item.emp_hiredDate,
                             emp_name = item.emp_name,
                             emp_position = item.emp_position,
-                            //Credential = creds.Where(x => x.emp_no == item.emp_no).SingleOrDefault(),
-                            //Role = roles.Where(x => x.emp_no == item.emp_no).SingleOrDefault(),
-                            //Status = status.Where(x => x.emp_no == item.emp_no).SingleOrDefault()
 
                             Credential = newCreds?.emp_no == item.emp_no? new Credential { 
                                 emp_no = newCreds.emp_no,
@@ -571,14 +589,6 @@ namespace TotalFireSafety.Controllers
 
                     if (user != null)
                     {
-                        //NewEmployeeModel nem = new NewEmployeeModel()
-                        //{
-                        //    emp_no = user.emp_no,
-                        //    emp_contact = user.emp_contact,
-                        //    emp_hiredDate = user.emp_hiredDate,
-                        //    emp_name = user.emp_name,
-                        //    emp_position = user.emp_position
-                        //};
                         var _serialize = JsonConvert.SerializeObject(user, Formatting.None, new JsonSerializerSettings()
                         {
                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -616,8 +626,6 @@ namespace TotalFireSafety.Controllers
                                 emp_hiredDate = _emp.emp_hiredDate,
                                 emp_name = _emp.emp_name,
                                 emp_position = _emp.emp_position
-                                
-
                             };
 
                             _context.Employees.Add(_emp);
@@ -679,8 +687,6 @@ namespace TotalFireSafety.Controllers
             }
 
         }
-
- 
         #endregion
 
         //  INVENTORY API
@@ -695,15 +701,6 @@ namespace TotalFireSafety.Controllers
                 using (var _context = new TFSEntity())
                 {
                     var items = _context.Inventories.Where(x => x.in_status != "archived");
-                    /*  Serialize items into JSON Format 
-                     *  example
-                     *  {
-                     *      "in_code" : 1234
-                     *      "in_name" : "Fire Extinguisher"
-                     *      "etc"     : "etc"
-                     *  }
-                     */
-
 
                     var _jsonSerialized = JsonConvert.SerializeObject(items, Formatting.None, new JsonSerializerSettings()
                     {
@@ -802,7 +799,7 @@ namespace TotalFireSafety.Controllers
                             itemDB.in_type = _item.in_type;
                             itemDB.in_size = _item.in_size;
                             itemDB.in_quantity = _item.in_quantity;
-                            _context.Entry(_item);
+                            _context.Entry(itemDB);
                             _context.SaveChanges();     //  Save to Database
                             return Ok("Process Completed!");
                         }
@@ -842,6 +839,219 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [Authorize(Roles = "admin,warehouse")]
+        [Route("Warehouse/Inventory/Barcode")]
+        [HttpPost]
+        // Barcorde Generator
+        public IHttpActionResult GenerateBarcode(string value)
+        {
+            Byte[] byteArray;
+            var width = 350; // width of the Qr Code
+            var height = 100; // height of the Qr Code
+            var margin = 0;
+            var qrCodeWriter = new ZXing.BarcodeWriterPixelData
+            {
+                Format = ZXing.BarcodeFormat.CODE_128,
+                Options = new QrCodeEncodingOptions
+                {
+                    Height = height,
+                    Width = width,
+                    Margin = margin
+                }
+            };
+            var pixelData = qrCodeWriter.Write(value);
+
+            // creating a bitmap from the raw pixel data; if only black and white colors are used it makes no difference
+            // that the pixel data ist BGRA oriented and the bitmap is initialized with RGB
+            using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                    try
+                    {
+                        // we assume that the row stride of the bitmap is aligned to 4 byte multiplied by the width of the image
+                        System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
+                    }
+                    finally
+                    {
+                        bitmap.UnlockBits(bitmapData);
+                    }
+                    // save to stream as PNG
+                    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    byteArray = ms.ToArray();
+                }
+            }
+
+            // convert byte array to base64-encoded string
+            string base64String = Convert.ToBase64String(byteArray);
+
+            return Ok(base64String);
+        }
+        #endregion
+
+        //  REQUEST API
+        #region
+
+        [Authorize]
+        [Route("Requests/All")]
+        [HttpGet]
+        public IHttpActionResult AllRequests()
+        {
+            try
+            {
+                using (var _context = new TFSEntity())
+                {
+                    var requests = _context.Requests.Select(x => x).ToList();
+                    var employee = _context.Employees.Select(x => x).ToList();
+                    var inventory = _context.Inventories.Select(x => x).ToList();
+
+                    var newRequest = new List<Request>();
+
+                    foreach (var item in requests)
+                    {
+                        var newInv = inventory.Where(x => x.in_code == item.request_item).SingleOrDefault();
+                        var newEmployee = employee.Where(x => x.emp_no == item.request_employee_id).SingleOrDefault();
+                        var req = new Request()
+                        {
+                            request_id = item.request_id,
+                            request_type = item.request_type,
+                            request_date = item.request_date,
+                            request_employee_id = item.request_employee_id,
+                            request_item = item.request_item,
+                            request_item_quantity = item.request_item_quantity,
+                            request_status = item.request_status.Trim(' '),
+                            request_type_id = item.request_type_id,
+                            Employee = newEmployee?.emp_no == item.request_employee_id ? new Employee
+                            {
+                                emp_no = newEmployee.emp_no,
+                                emp_contact = newEmployee.emp_contact,
+                                emp_hiredDate = newEmployee.emp_hiredDate,
+                                emp_name = newEmployee.emp_name,
+                                emp_position = newEmployee.emp_position,
+                            } : null,
+                            Inventory = newInv?.in_code == item.request_item ? new Inventory
+                            {
+                                in_code = newInv.in_code,
+                                in_category = newInv.in_category,
+                                in_class = newInv.in_class,
+                                in_name = newInv.in_name,
+                                in_quantity = newInv.in_quantity,
+                                in_size = newInv.in_size,
+                                in_type = newInv.in_type
+                            } : null
+
+                        };
+                        newRequest.Add(req);
+                    }
+
+
+                    var _jsonSerialized = JsonConvert.SerializeObject(newRequest, Formatting.None, new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                    //  Deserialize the serialized json format to remove the escape characters like \ 
+                    var _jsonDeserialized = JsonConvert.DeserializeObject<List<Request>>(_jsonSerialized);
+
+                    return Ok(_jsonDeserialized);
+                }
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+
+        [Authorize]
+        [Route("Requests/Add")]
+        [HttpPost]
+        public IHttpActionResult AddRequests(Request req)
+        {
+            try
+            {
+                using (var _context = new TFSEntity())
+                {
+                    var checkId = _context.Requests.Where(x => x.request_id == req.request_id).SingleOrDefault();
+
+                    if(checkId == null)
+                    {
+                        return BadRequest("Please check your data.");
+                    }
+                    var newGuid = Validate("requests");
+                    if(!newGuid.Item2)
+                    {
+                        req.request_id = newGuid.Item1;
+                    }
+                    _context.Requests.Add(req);
+                    _context.SaveChanges();
+                    return Ok("Requests Added Successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [Authorize]
+        [Route("Requests/Edit")]
+        [HttpPost]
+        public IHttpActionResult EditRequests(Request req)
+        {
+            try
+            {
+                using (var _context = new TFSEntity())
+                {
+                    var request = _context.Requests.Where(x => x.request_id == req.request_id).SingleOrDefault();
+
+                    if(request == null)
+                    {
+                        return BadRequest("Request Not Found");
+                    }
+
+                    request.request_type = req.request_type;
+                    request.request_item = req.request_item;
+                    request.request_item_quantity = req.request_item_quantity;
+                    request.request_status = req.request_status;
+                    _context.Entry(request);
+                    _context.SaveChanges();
+                    return Ok("Requests Added Successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        public IHttpActionResult DeleteRequests(Guid req)
+        {
+            try
+            {
+                using (var _context = new TFSEntity())
+                {
+                    var request = _context.Requests.Where(x => x.request_id == req).SingleOrDefault();
+
+                    if (request == null)
+                    {
+                        return BadRequest("Request Not Found");
+                    }
+
+                    request.request_status = "archived";
+                    _context.Entry(request);
+                    _context.SaveChanges();
+                    return Ok("Requests Deleted Successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         #endregion
     }
 }

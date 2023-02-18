@@ -57,8 +57,10 @@ namespace TotalFireSafety.Controllers
                         var tokenresponse = result.Content.ReadAsStringAsync().Result;
                         var token = JsonConvert.DeserializeObject<TokenCatcher>(tokenresponse);
                         var _user = _context.Credentials.Where(x => x.username == creds.username && x.password == creds.password).SingleOrDefault();
+                        var _roles = _context.Roles.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
                         Session["access_token"] = token.access_token;
                         Session["emp_no"] = _user.emp_no;
+                        Session["system_role"] = _roles.role1;
                         return RedirectToAction("Dashboard", "Admin");
                     }
                     else

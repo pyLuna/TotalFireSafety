@@ -41,10 +41,10 @@
                 <h3>INVENTORY ITEMS</h3>
                 <div class="inventory-buttons-style" id="hideBtn">
                     @*<button class="add-btn" title="ADD NEW ITEM"><a href="@Url.Action("AddItem","Admin")"><span class="las la-plus-circle"></span></a></button>*@
-                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib()"><a><span class="las la-plus-circle"></span></a></button>
+                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()"><a><span class="las la-plus-circle"></span></a></button>
                     <button class="pri-btn" title="PRINT REPORT" id="printBtn" @*onclick="printOpenPopup()"*@> <a href="#"><span class="las la-print"></span></a></button>
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportTable()"> <a href="#"><span class="las la-file-download"></span></a></button>
-                    <button class="expo-btn" title="ARCHIVE" onclick="OpenArchPopup()"> <a href="#"><span class="las la-file-archive"></span></a></button>
+                    @*<button class="expo-btn" title="ARCHIVE" onclick="OpenArchPopup()"> <a href="#"><span class="las la-file-archive"></span></a></button>*@
                     <button class="inventory-sort-btn" onclick="userSortFunction()">
                         <span></span>
                         <span class="las la-chevron-down"></span>
@@ -53,24 +53,33 @@
                         <a href="#" onclick="Ascend()">Ascending</a>
                         <a href="#" onclick="Descend()">Descending</a>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="add-popup-inv" id="add-popup-inv">
                 <div class="inventory-add-container">
+                    @*Barcode Container*@
+
                     <div class="inventory-form-container">
                         <form action="@Url.Action("AddItem1", "Admin")" id="addForm" method="post">
                             <div class="details personal">
                                 <div class="inventory-form-header">
                                     ITEM DETAILS
+                                    <div class="inventory-buttons-style">
+                                        <button class="add-btn" id="addnewitem" title="ADD NEW ITEM" "><a>Add Item</a></button>
+                                    </div>
                                 </div>
+                                <div class="img-wrapper" id="image-container" style="display:none">
+                                    @*<img id="imgContainer" alt="barcode">*@
+                                </div>
+                                <input type="text" id="formType" name="formType" style="display:none">
                                 <div class="inventory-form-contents">
                                     <div class="fields">
                                         <div class="input-field">
-                                            <label>Item Code</label>
-                                            <input type="text" id="itemCode" name="in_code" placeholder="ABC-DEF-GHI">
+                                            <label>Item Code</label> @*oninput="dataListOption(this.value)"*@
+                                            <input type="text" id="itemCode" oninput="dataListOption(this.value)" list="itemList" name="in_code" placeholder="ABC-DEF-GHI">
+                                            <datalist id="itemList">
+                                            </datalist>
                                         </div>
 
                                         <div class="input-field">
@@ -105,7 +114,8 @@
                                         <div class="input-field">
                                             <label>Size</label>
                                             <div class="input-field-size">
-                                                <input type="number" onkeyup="setHiddenSize()" placeholder="00000" id="itemSize" readonly>
+                                                @*onkeyup="setHiddenSize()"*@
+                                                <input type="number" placeholder="00000" id="itemSize" readonly>
                                                 <select readonly id="itemSizeMeas">
                                                     <option disabled selected>Measurement</option>
                                                     <option>INCH</option>
@@ -117,6 +127,7 @@
                                         <div class="input-field">
                                             <label>Quantity</label>
                                             <div class="input-field-quantity">
+                                                @*onchange="AddValue(this.options[this.selectedIndex].value,'edit'*@
                                                 <input type="number" placeholder="00000" id="itemQuant">
                                                 <select readonly id="itemQuantMeas">
                                                     <option disabled selected>Measurement</option>
@@ -125,17 +136,13 @@
                                                 </select>
                                                 <input type="text" id="hiddenQuant" name="in_quantity" style="display:none">
                                             </div>
-                                            @*<div class="input-field">
-                                                <label>Date Added</label>
-                                                <input type="text" placeholder="00/00/00" readonly>
-                                            </div>*@
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <center>
                                 <div class="form-add-btns">
-                                    <button class="save" id="saveBtn" onclick="infoOpenPopup()">
+                                    <button class="save" id="saveBtn" onclick="infoOpenPopup() + setQuantity()">
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>
                                     </button>
@@ -150,10 +157,6 @@
                     </div>
                 </div>
             </div>
-
-            @*<form action="/Admin/DeleteItem?item=${array[i].in_code}" method="post" id="tableList" style="display:none">
-                <input type="text" id="firstName">
-            </form>*@
 
             <div class="inventory-projects" id="printTable">
                 <div class="inventory">
@@ -183,112 +186,16 @@
             </div>
         </div>
 
-        <div class="arch-popup" id="arch-popup">
-            <div class="arch-container">
-                <div class="inventory-grid">
-
-                    <div class="inventory-projects">
-                        <div class="inventory">
-                            <div class="inventory-body">
-                                <div class="inventory-header">
-                                    <h3>ARCHIVED ITEMS</h3>
-                                    <button class="ext-btn" title="EXIT" onclick="CloseArchPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
-                                </div>
-
-                                <div class="table-responsive" style="overflow-x: auto;">
-                                    <table width="100%">
-                                        <thead>
-                                            <tr>
-                                                <td>ID</td>
-                                                <td>Name</td>
-                                                <td>Category</td>
-                                                <td>Type</td>
-                                                <td>Size</td>
-                                                <td>Quantity</td>
-                                                <td>Class</td>
-                                                <td>Date Added</td>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><label>00001</label></td>
-                                                <td><label>Clarisse C. Vaquez</label></td>
-                                                <td><label>Supervisor</label></td>
-                                                <td><label>0923758923</label></td>
-                                                <td><label>12341241</label></td>
-                                                <td><label>1432143</label></td>
-                                                <td><label>Imported</label></td>
-                                                <td><label>00/00/00</label></td>
-
-
-                                            </tr>
-
-                                            <tr>
-                                                <td><label>00001</label></td>
-                                                <td><label>Clarisse C. Vaquez</label></td>
-                                                <td><label>Supervisor</label></td>
-                                                <td><label>0923758923</label></td>
-                                                <td><label>45674567474</label></td>
-                                                <td><label>123421345423</label></td>
-                                                <td><label>Local</label></td>
-                                                <td><label>00/00/00</label></td>
-
-                                            </tr>
-                                            <tr>
-                                                <td><label>00001</label></td>
-                                                <td><label>Clarisse C. Vaquez</label></td>
-                                                <td><label>Supervisor</label></td>
-                                                <td><label>0923758923</label></td>
-                                                <td><label>45674567474</label></td>
-                                                <td><label>123421345423</label></td>
-                                                <td><label>Local</label></td>
-                                                <td><label>00/00/00</label></td>
-
-                                            </tr>
-                                            <tr>
-                                                <td><label>00001</label></td>
-                                                <td><label>Clarisse C. Vaquez</label></td>
-                                                <td><label>Supervisor</label></td>
-                                                <td><label>0923758923</label></td>
-                                                <td><label>45674567474</label></td>
-                                                <td><label>123421345423</label></td>
-                                                <td><label>Local</label></td>
-                                                <td><label>00/00/00</label></td>
-
-                                            </tr>
-                                            <tr>
-                                                <td><label>00001</label></td>
-                                                <td><label>Clarisse C. Vaquez</label></td>
-                                                <td><label>Supervisor</label></td>
-                                                <td><label>0923758923</label></td>
-                                                <td><label>45674567474</label></td>
-                                                <td><label>123421345423</label></td>
-                                                <td><label>Local</label></td>
-                                                <td><label>00/00/00</label></td>
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="info-pop-container" id="info-popup">
-            <img src="~/images/information.png">
+            <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
             <p>Do you want to save the item on the list?</p>
             <button type="submit" form="addForm">Yes</button>
-            @*<button type="button" onclick="submitForm()">Yes</button>*@
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="~/images/warning.png">
+            <img src="@Url.Content("~/images/warning.png")">
             <h2>System Warning!</h2>
             <p>Are you sure you want to delete item on the list?</p>
             <button type="button" onclick="DeleteItem()">Yes</button>
@@ -296,35 +203,36 @@
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="~/images/remove.png">
+            <img src="@Url.Content("~/images/remove.png")">
             <h2>Deleted!</h2>
             <p>Item details has deleted in the list!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="~/images/tick.png">
+            <img src="@Url.Content("~/images/tick.png")">
             <h2>Saved!</h2>
             <p>Item has saved successfully!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
         <div class="print-pop-container" id="print-popup">
-            <img src="~/images/printer.png">
+            <img src="@Url.Content("~/images/printer.png")">
             <h2>Print!</h2>
             <p>Print successfully!</p>
             <button type="button" onclick="printClosePopup()">OK</button>
         </div>
 
         <div class="expo-pop-container" id="expo-popup">
-            <img src="~/images/export.png">
+            <img src="@Url.Content("~/images/export.png")">
             <h2>Export!</h2>
             <p>Exported Successfully!</p>
             <button type="button" onclick="expoClosePopup()">OK</button>
         </div>
 
     </main>
-    <script src="~/Scripts/Inventory.js"></script>
-    <script>
+</div>
+<script src="@Url.Content("~/Scripts/Inventory.js")"></script>
+<script>
 
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */
@@ -332,13 +240,60 @@
         let cat = document.getElementById("cat-select");
         let type = document.getElementById("type-select");
         let name = document.querySelector('#itemName');
+        let itemQuantMeas = document.querySelector('#itemQuantMeas');
+        let sizeMeas = document.querySelector('#itemSizeMeas');
         let size = document.querySelector('#itemSize');
         let quantity = document.querySelector('#itemQuant');
         let code = document.getElementById("itemCode");
         let hidCategory = document.getElementById("hiddenCategory");
         let hidType = document.getElementById("hiddenType");
+        let addnewitem = document.getElementById("addnewitem");
+        let imgContainer = document.getElementById("image-container");
+        let newNum = "";
         let sliced = "";
         let prevVal = "";
+
+        addnewitem.addEventListener("click", addNewItem);
+        size.addEventListener("keyup", setHiddenSize);
+
+        function dataListOption(value) {
+            processBarcode();
+        }
+
+        function addNewItem() {
+            let formType = document.getElementById("formType");
+            formType.value = "add";
+            size.removeEventListener("keyup", setHiddenSize);
+            code.removeEventListener("keyup", processBarcode);
+            quantity.removeEventListener("keyup", insertAdd);
+            quantity.removeEventListener("keyup", insertEdit);
+
+            code.removeAttribute("readonly");
+
+            code.addEventListener("keyup", NewCodeListener);
+            quantity.addEventListener("keyup", setQuantity);
+            size.addEventListener("keyup", setSize);
+            removeAttrib();
+        }
+
+        function setSize() {
+            let hiddenSize = document.getElementById("hiddenSize");
+
+            hiddenSize.value = size.value + " " + sizeMeas.options[sizeMeas.selectedIndex].value;
+            console.log(hiddenSize.value);
+        }
+
+        function NewCodeListener() {
+            let itemCode = code.value;
+
+            if (itemCode == null || itemCode == "") {
+                imgContainer.style.display = "none";
+            }
+            else {
+                GetBarcode(itemCode);
+                imgContainer.style.display = "block";
+            }
+        }
 
         cat.addEventListener("change", function () {
             var optionValue = this.options[this.selectedIndex].value;
@@ -356,7 +311,7 @@
             console.log(hidType.value);
         });
 
-        function insertAdd() {
+    function insertAdd() {
             AddValue(quantity.value, 'add');
         }
 
@@ -379,7 +334,7 @@
 
             if (edit != "pending") {
                 popup.classList.add("open-popup-show");
-                @{ 
+                @{
                     Session["edit"] = null;
                 }
             }
@@ -394,19 +349,24 @@
         function setAttrib() {
             name.setAttribute("readonly", true);
             size.setAttribute("readonly", true);
+            itemQuantMeas.setAttribute("readonly", true);
+            sizeMeas.setAttribute("readonly", true);
             cat.setAttribute("readonly", true);
             type.setAttribute("readonly", true);
             cat.setAttribute("disabled", true);
             type.setAttribute("disabled", true);
+            itemQuantMeas.setAttribute("disabled", true);
+            sizeMeas.setAttribute("disabled", true);
+            addnewitem.style.display = "block";
             //quantity.setAttribute("type","number")
         }
 
-        code.addEventListener("keydown", function (event) {
-            // check if the entered key is a barcode scanner input
-            if (event.which === 13 || event.keyCode === 13) {
-                // retrieve the scanned value
-                event.preventDefault();
+        code.addEventListener("keyup", processBarcode);
 
+        function processBarcode(event) {
+            if (event != null) {
+                if (event.which === 13 || event.keyCode === 13) {
+                // retrieve the scanned value
                 if (sliced.length == 0) {
                     sliced = code.value;
                 }
@@ -420,7 +380,7 @@
                         sliced = code.value.slice(index - 1);
                     }
                 }
-                @{ 
+                @{
                     Session["add"] = "active";
                 }
 
@@ -428,12 +388,14 @@
                     code.value = sliced;
                 }
 
-                prevVal = code.value;
-                setField(prevVal);
-                quantity.value = 1;
+                    prevVal = code.value;
+                    //quantity.value = 1;
+                }
+                setField(code.value);
                 AddValue(quantity.value, 'add');
+                event.preventDefault();
             }
-        });
+        }
 
         function EditListener() {
             quantity.removeEventListener("keyup", insertAdd);
@@ -443,26 +405,39 @@
         function AddListener() {
             quantity.removeEventListener("keyup", insertEdit);
             quantity.addEventListener("keyup", insertAdd);
+            code.removeAttribute("readonly");
         }
 
-        function openEdit(value, ) {
-            addpopupinv.classList.add("add-popup-inv-show");
-
-
-            code.setAttribute("readonly",true);
+        function removeAttrib() {
             name.removeAttribute("readonly");
             size.removeAttribute("readonly");
+            sizeMeas.removeAttribute("readonly");
             quantity.removeAttribute("readonly");
+            itemQuantMeas.removeAttribute("readonly");
             cat.removeAttribute("readonly");
             type.removeAttribute("readonly");
             cat.removeAttribute("disabled");
+            itemQuantMeas.removeAttribute("disabled");
+            sizeMeas.removeAttribute("disabled");
             type.removeAttribute("disabled");
+        }
 
+        function openEdit(value) {
+            addpopupinv.classList.add("add-popup-inv-show");
+            code.setAttribute("readonly", true);
+            removeAttrib();
             setField(value);
+            code.value = value;
+            addnewitem.style.display = "none";
+            AddValue(value, 'edit');
             EditListener();
         }
 
         document.getElementById("saveBtn").addEventListener("click", function () {
+            event.preventDefault();
+        });
+
+        document.getElementById("addnewitem").addEventListener("click", function () {
             event.preventDefault();
         });
 
@@ -585,4 +560,4 @@
             expopopup.classList.remove("expo-popup-show")
         }
 
-    </script>
+</script>

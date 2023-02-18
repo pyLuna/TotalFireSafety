@@ -211,7 +211,7 @@
         {
             <div class="save-pop-container open-popup-show" id="popup">
                 <img src="~/images/tick.png">
-                <h2>@ViewBag.Type</h2>
+                <h2>@ViewBag.Message</h2>
                 <p>User details has been added successfully!</p>
                 <button type="button" onclick="closePopup()">OK</button>
             </div>
@@ -252,22 +252,6 @@
             addpopup.classList.add("add-popup-show");
             document.getElementById("wasd").value = "add";
         });
-
-        @*function setSession(type) {
-            if (type === "add") {
-                @{
-                    //Session["addUser"] = "true";
-                    Session["editUser"] = 0;
-                }
-            }
-            if (type === "edit") {
-                           @{
-                //Session["addUser"] = "true";
-                Session["editUser"] = 1;
-             }
-            }
-            console.log(@Session["editUser"]);
-        }*@
 
         function openEditForm(value) {
             addpopup.classList.add("add-popup-show");

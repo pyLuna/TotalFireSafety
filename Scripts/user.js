@@ -41,10 +41,7 @@ function GetAllEmployeeInfo() {
             }
         })
         .then(data => {
-            //if (typeof data === "string") {
-            //    console.log('data is string');
-            //}
-            //console.log(JSON.parse(data));
+
             jsonArray.push(data);
             fixArray();
             if (table !== null) {

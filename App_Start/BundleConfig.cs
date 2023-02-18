@@ -48,9 +48,14 @@ namespace TotalFireSafety
 
             // TODO DELETE THIS SNIPPET
             // Add User JS to prevent regex and mvc conflict
-            bundles.Add(new StyleBundle("~/script/adduser").Include(
-                        "~/Scripts/AddUsers.js"
-                ));
+            //bundles.Add(new StyleBundle("~/script/adduser").Include(
+            //            "~/Scripts/AddUsers.js"
+            //    ));
+
+            //bundles.Add(new ScriptBundle("~/script/inventory").Include(
+            //            "~/Scripts/Inventory.js"
+            //    ));
+
         }
     }
 }

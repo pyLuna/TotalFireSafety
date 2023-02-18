@@ -68,6 +68,9 @@
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Owin.Security.OAuth.4.2.2\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -129,9 +132,6 @@
       <Private>True</Private>
       <HintPath>packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -140,11 +140,14 @@
       <Private>True</Private>
       <HintPath>packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>packages\ZXing.Net.0.16.8\lib\net47\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>packages\ZXing.Net.0.16.8\lib\net47\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -184,6 +187,9 @@
     <Compile Include="Models\Inventory.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Inv_Update.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LoginCredential.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -201,16 +207,15 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\NewEmployeeModel.cs" />
+    <Compile Include="Models\Request.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Status.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\token.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\TokenCatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -321,7 +326,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\AddUsers.js" />
     <Content Include="Scripts\Inventory.js" />
     <Content Include="Scripts\js\app.js" />
     <Content Include="Scripts\js\chart1.js" />
@@ -330,6 +334,7 @@
     <Content Include="Scripts\js\main.js" />
     <Content Include="Scripts\js\user.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Requisition.js" />
     <Content Include="Scripts\user.js" />
     <Content Include="Scripts\vendor\animate\animate.css" />
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap-grid.css" />
@@ -380,22 +385,12 @@
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="Views\AdminLayout.cshtml" />
-    <Content Include="Views\Admin\AddDeploy.cshtml" />
-    <Content Include="Views\Admin\AddPurchase.cshtml" />
-    <Content Include="Views\Admin\AddSupply.cshtml" />
-    <Content Include="Views\Admin\AddUsers.cshtml" />
     <Content Include="Views\Admin\Dashboard.cshtml" />
-    <Content Include="Views\Admin\DeploymentRequisition.cshtml" />
-    <Content Include="Views\Admin\ExportDeploy.cshtml" />
     <Content Include="Views\Admin\ExportPurchase.cshtml" />
-    <Content Include="Views\Admin\ExportSupply.cshtml" />
     <Content Include="Views\Admin\Inventory.cshtml" />
-    <Content Include="Views\Admin\PrintPurchase.cshtml" />
-    <Content Include="Views\Admin\PrintSupply.cshtml" />
     <Content Include="Views\Admin\Projects.cshtml" />
-    <Content Include="Views\Admin\PurchaseRequisition.cshtml" />
+    <Content Include="Views\Admin\Requisition.cshtml" />
     <Content Include="Views\Admin\Purchasing.cshtml" />
-    <Content Include="Views\Admin\SupplyRequisition.cshtml" />
     <Content Include="Views\Admin\Users.cshtml" />
     <Content Include="Views\BaseLayout.cshtml" />
     <Content Include="Views\Base\Login.cshtml" />

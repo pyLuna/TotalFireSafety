@@ -31,38 +31,64 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
-                        <span class="las la-warehouse"></span>
-                        <span>Inventories</span>
-                    </a>
-                </li>
                 <button class="oper-dropdown-btn">
                     <a>
-                        <span class="las la-caret-down"></span>
-                        <span>Requisition</span>
+                        <span class="las la-warehouse"></span>
+                        <span>Inventories</span>
                     </a>
                 </button>
                 <div class="dropdown-container">
                 <li>
-                    <a href="@Url.Action("PurchaseRequisition","Admin")" class="@ViewBag.Pur">
-                        <span class="las la-file"></span>
-                        <span>Purchasing Request</span>
+                    <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
+                        <span class="las la-cubes"></span>
+                        <span>Inventory Lists</span>
                     </a>
                 </li>
                 <li>
-                    <a href="@Url.Action("DeploymentRequisition","Admin")" class="@ViewBag.Dep">
-                        <span class="las la-folder"></span>
-                        <span>Deployment Request</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="@Url.Action("SupplyRequisition","Admin")" class="@ViewBag.Sup">
-                        <span class="lar la-folder-open"></span>
-                        <span>Supply Request</span>
+                    <a href="#">
+                        <span class="las la-archive"></span>
+                        <span>Inventory Archive</span>
                     </a>
                 </li>
         </div>
+        <li>
+            <a href="@Url.Action("Requisition","Admin")" class="@ViewBag.Req">
+                <span class="las la-file"></span>
+                <span>Requisition</span>
+            </a>
+        </li>
+        @*<li>
+            <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
+                <span class="las la-warehouse"></span>
+                <span>Inventories</span>
+            </a>
+        </li>*@
+        @*<button class="oper-dropdown-btn">
+            <a>
+                <span class="las la-caret-down"></span>
+                <span>Requisition</span>
+            </a>
+        </button>
+        <div class="dropdown-container">
+            <li>
+                <a href="@Url.Action("PurchaseRequisition","Admin")" class="@ViewBag.Pur">
+                    <span class="las la-file"></span>
+                    <span>Purchasing Request</span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("DeploymentRequisition","Admin")" class="@ViewBag.Dep">
+                    <span class="las la-folder"></span>
+                    <span>Deployment Request</span>
+                </a>
+            </li>
+            <li>
+                <a href="@Url.Action("SupplyRequisition","Admin")" class="@ViewBag.Sup">
+                    <span class="lar la-folder-open"></span>
+                    <span>Supply Request</span>
+                </a>
+            </li>
+        </div>*@
         @*<li>
             <a href="@Url.Action("Purchasing","Admin")" class="@ViewBag.Pur1">
                 <span class="las la-dolly"></span>

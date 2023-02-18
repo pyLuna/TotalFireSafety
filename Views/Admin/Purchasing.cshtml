@@ -1,8 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "Purchasing";
+    ViewBag.Title = "Requisition";
     Layout = "~/Views/AdminLayout.cshtml";
-    ViewBag.Pur1 = "active";
+    ViewBag.Req = "active";
 }
 
 <div class="main-content">
@@ -11,7 +11,7 @@
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            Purchase Request
+            Requisition
         </h2>
     </header>
 
@@ -26,7 +26,7 @@
 
         <div class="purchase-grid">
             <div class="purchase-header">
-                <h3>PURCHASE REQUEST LISTS</h3>
+                <h3>REQUEST LISTS</h3>
                 <div class="purchase-buttons-style">
                     <button class="add-btn" title="ADD NEW REQUEST" onclick="addOpenPopupPur()"><a><span class="las la-plus-circle"></span></a></button>
                     <button class="pri-btn" title="PRINT REPORT" onclick="printOpenPopup()"> <a href="#"><span class="las la-print"></span></a></button>
@@ -122,13 +122,16 @@
                                 <div class="fields">
                                     <div class="input-field">
                                         <label>
-                                            <a>Name: </a>
-                                            <select required>
-                                                <option disabled selected>Select Name</option>
-                                                <option>Supervisor</option>
-                                                <option>Office Manager</option>
-                                                <option>Warehouse Manager</option>
-                                            </select>
+                                            @*<a>Name: </a>*@
+                                            <input type="text" id="itemCode" oninput="dataListOption(this.value)" list="itemList" name="request_emp" placeholder="Name">
+                                            <datalist id="itemList">
+                                                <option value="IMP-POWT-WELD">
+                                                <option value="IMP-POWT-GROV">
+                                                <option value="IMP-FEXT-HFC">
+                                                <option value="LOC-SCAF-001">
+                                                <option value="LOC-FIT-ELB">
+                                                <option value="LOC-FIT-ACV">
+                                            </datalist>
                                         </label>
                                     </div>
                                     <div class="input-field">

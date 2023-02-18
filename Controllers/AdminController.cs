@@ -11,19 +11,40 @@ namespace TotalFireSafety.Controllers
     {
         // GET: Admin
         readonly APIRequestHandler api_req = new APIRequestHandler();
-       
+        [HttpPost]
+        public ActionResult GetBarcode(string itemCode)
+        {
+            var userToken = Session["access_token"].ToString();
+            var response = api_req.BarcodeGenerator(userToken, itemCode);
 
-        public ActionResult FindDataOf()
+            JsonResult result = Json(response, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+            Response.ContentType = "application/json"; // Set the Content-Type header
+            return result;
+        }
+
+        public ActionResult FindDataOf(string requestType)
         {
             try
             {
                 var userToken = Session["access_token"].ToString();
-                var response = api_req.GetAllMethod("/Warehouse/Inventory", userToken);
+                List<Request> requisition = new List<Request>();
+                List<Inventory> inv = new List<Inventory>();
+                string uri = "", response = "";
+                JsonResult result = null;
+                if (requestType == "inventory")
+                {
+                    uri = "/Warehouse/Inventory";
+                    response = api_req.GetAllMethod(uri, userToken);
+                    inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
+                    result = Json(inv, JsonRequestBehavior.AllowGet);
+                }
+                if (requestType == "requisition") {
+                    uri = "/Requests/All";
+                    response = api_req.GetAllMethod(uri, userToken);
+                    requisition = JsonConvert.DeserializeObject<List<Request>>(response);
+                    result = Json(requisition, JsonRequestBehavior.AllowGet);
+                }
 
-                var json = JsonConvert.DeserializeObject<List<Inventory>>(response);
-                json.RemoveAll(x => x.in_status == "archived");
-
-                JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 Response.ContentType = "application/json"; // Set the Content-Type header
                 return result;
             }
@@ -41,13 +62,23 @@ namespace TotalFireSafety.Controllers
             }
             return View();
         }
-        #region
         [HttpPost]
         public ActionResult AddItem1(Inventory item)
         {
             var serializedModel = JsonConvert.SerializeObject(item);
             var userToken = Session["access_token"].ToString();
-            var response = api_req.SetMethod("Warehouse/Inventory/Edit", userToken, serializedModel);
+            string uri;
+
+            if( item.formType == "add")
+            {
+                uri = "Warehouse/Inventory/Add";
+            }
+            else
+            {
+                uri = "Warehouse/Inventory/Edit";
+            }
+
+            var response = api_req.SetMethod(uri, userToken, serializedModel);
 
             if (response == "BadRequest" || response == "InternalServerError")
             {
@@ -73,12 +104,8 @@ namespace TotalFireSafety.Controllers
 
             if (response == "BadRequest" || response == "InternalServerError")
             {
-                //ViewBag.Removed = response.ToString();
                 return Json("error");
             }
-            //var json = JsonConvert.DeserializeObject(response);
-            //ViewBag.Removed = "Item details has deleted in the list!";
-            //Session["removed"] = "Item details has deleted in the list!";
             return Json("Item Deleted");
         }
 
@@ -95,7 +122,6 @@ namespace TotalFireSafety.Controllers
             }
             return View();
         }
-        #endregion
 
         //  Users
         public ActionResult Users()
@@ -153,11 +179,7 @@ namespace TotalFireSafety.Controllers
             Session["editUser"] = 0;
             return View();
         }
-        
-        public ActionResult AddUsers()
-        {
-            return View();
-        }
+
         public ActionResult SearchEmployee()
         {
             try
@@ -177,82 +199,21 @@ namespace TotalFireSafety.Controllers
             }
         }
         
-
-        //  Purchasing
-        #region
-        public ActionResult Purchasing()
+        public ActionResult Requisition()
         {
             return View();
         }
-        public ActionResult AddPurchase()
-        {
-            return View();
-        }
-        public ActionResult ExportPurchase()
-        {
-            return View();
-        }
-        public ActionResult PrintPurchase()
-        {
-            return View();
-        }
-        #endregion
-
-        public ActionResult PurchaseRequisition()
-        {
-            return View();
-        }
-
-        //  Deployment Requisition
-        #region
-        public ActionResult DeploymentRequisition()
-        {
-            return View();
-        }
-        public ActionResult AddDeploy()
-        {
-            return View();
-        }
-        public ActionResult ExportDeploy()
-        {
-            return View();
-        }
-        public ActionResult PrintDeploy()
-        {
-            return View();
-        }
-        #endregion
-
-        //  Supply
-        #region
-        public ActionResult SupplyRequisition()
-        {
-            return View();
-        }
-        public ActionResult AddSupply()
-        {
-            return View();
-        }
-        public ActionResult PrintSupply()
-        {
-            return View();
-        }
-        public ActionResult ExportSupply()
-        {
-            return View();
-        }
-        #endregion
 
         public ActionResult Projects()
         {
             return View();
         }
-
+        [HttpPost]
         public ActionResult Logout()
         {
 
             // DONT FORGET TO CLEAR SESSIONS, TOKENS AND OTHERS
-
+            Session.Clear();
             return RedirectToAction("Login", "Base");
         }
 

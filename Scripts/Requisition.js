@@ -1,8 +1,7 @@
 ﻿let jsonArray = [];
 let filtered = [];
 let fixedArray = [];
-let newEmployee = [];
-let Employees = [];
+let labelName = ['Position', 'Employee ID', 'Request Type', 'Request Date', 'Request ID'];
 const table = document.querySelector('#myTable tbody');
 let position = document.getElementById('position');
 let employeeId = document.getElementById('employeeId');
@@ -106,46 +105,33 @@ function setTable(array) {
 function EmployeeList() {
     fixedArray.forEach(function (item) {
         var option = document.createElement('option');
-        option.value = item.Employee.emp_no;
+        option.value = item.Employee.emp_name;
         EmployeeInput.appendChild(option);
     });
 }
 
-//function EmployeeList() {
-//    let EmployeeInput = document.getElementById("itemList");
-//    fetch('/Admin/SearchEmployee')
-//        .then(res => {
-//            if (res.ok) {
-//                // API request was successful
-//                return res.json();
-//            } else {
-//                console.log("error fetch");
-//            }
-//        })
-//        .then(data => {
-//            Employees.push(data);
-//            fixArray(Employees, false);
-//            newEmployee.forEach(function (item) {
-//                var option = document.createElement('option');
-//                option.value = item.emp_name;
-//                EmployeeInput.appendChild(option);
-//            });
-//        })
-//        .catch(error => {
-//            console.error(error);
-//        });
-//}
-
 function setForm(value,formType) {
     if (formType == "add") {
-        AddMethod(value);
+        AddForm(value);
     }
 }
 
+function getDateNow() {
+    const now = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = now.toLocaleDateString('en-US', options);
+    return formattedDate;
+}
+
 function AddForm(value) {
-    fixedArray.foreach(function (item) {
-        if (item.emp_name == value) {
-            console.log(`value ${value} is found`);
+    fixedArray.forEach(function (item) {
+        if (item.Employee.emp_name == value) {
+            var datenow = getDateNow();
+            employeeId.innerHTML = `<a style="font-weight:bold;">Employee ID:</a> ${item.Employee.emp_no}`
+            position.innerHTML = `<a style="font-weight:bold;">Position:</a> ${item.Employee.emp_position}`
+            reqtype.innerHTML = `<a style="font-weight:bold;">Request Type:</a> ${item.request_type}`
+            reqdate.innerHTML = `<a style="font-weight:bold;">Request Date:</a> ${datenow}`
+            reqid.innerHTML = `<a style="font-weight:bold;">Request ID:</a> ${item.Id}`
         }
     });
 }

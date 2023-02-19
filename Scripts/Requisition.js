@@ -3,6 +3,7 @@ let filtered = [];
 let fixedArray = [];
 let Employees = [];
 let newEmployee = [];
+let itemInv = [];
 let typeLabel = ['Deploy', 'Purchase', 'Supply'];
 const table = document.querySelector('#myTable tbody');
 let position = document.getElementById('position');
@@ -12,7 +13,45 @@ let reqdate = document.getElementById('reqdate');
 let reqid = document.getElementById('reqid');
 let EmployeeInput = document.getElementById("EmployeeInput");
 let itemList = document.getElementById("itemList");
+const formTable = document.querySelector('#formTable tbody');
 
+function GetAllItem() {
+    fetch('/Admin/FindDataOf?requestType=inventory')
+        .then(res => {
+            if (res.ok) {
+                // API request was successful
+                return res.json();
+            } else {
+                console.log("error fetch");
+            }
+        })
+        .then(data => {
+            jsonArray.length = 0;
+            jsonArray.push(data);
+            fixArray(jsonArray, 3);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+function GetAllEmployee() {
+    fetch('/Admin/SearchEmployee')
+        .then(res => {
+            if (res.ok) {
+                // API request was successful
+                return res.json();
+            } else {
+                console.log("error fetch");
+            }
+        })
+        .then(data => {
+            Employees.push(data);
+            fixArray(Employees, 2);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
 function GetAll() {
     fetch('/Admin/FindDataOf?requestType=requisition')
         .then(res => {
@@ -33,8 +72,9 @@ function GetAll() {
             }
         })
         .then(data => {
+            jsonArray.length = 0;
             jsonArray.push(data);
-            fixArray(jsonArray, true);
+            fixArray(jsonArray, 1);
             if (table !== null) {
                 setTable(fixedArray);
             }
@@ -45,14 +85,19 @@ function GetAll() {
         });
 }
 function fixArray(array, boolean) {
-    if (boolean) {
+    if (boolean == 1) {
         for (var j = 0; j < array[0].length; j++) {
             fixedArray.push(array[0][j]);
         }
     }
-    else {
+    else if (boolean == 2) {
         for (var j = 0; j < array[0].length; j++) {
             newEmployee.push(array[0][j]);
+        }
+    }
+    else {
+        for (var j = 0; j < array[0].length; j++) {
+            itemInv.push(array[0][j]);
         }
     }
 }
@@ -105,24 +150,7 @@ function setTable(array) {
     }
 }
 
-function GetAllEmployee() {
-    fetch('/Admin/SearchEmployee')
-        .then(res => {
-            if (res.ok) {
-                // API request was successful
-                return res.json();
-            } else {
-                console.log("error fetch");
-            }
-        })
-        .then(data => {
-            Employees.push(data);
-            fixArray(Employees, false);
-        })
-        .catch(error => {
-            console.error(error);
-        });
-}
+
 
 function EmployeeList() {
     newEmployee.forEach(function (item) {
@@ -148,11 +176,11 @@ function getDateNow() {
 function createOption() {
     let select = document.createElement('select');
     let option = "";
-    
-    for (var i = 0; i < typeLabel.length; i++) {
+
+    for (var i = 0; i < itemInv.length; i++) {
         //option.value = typeLabel[i];
 
-        option += `<option value="${typeLabel[i]}">${typeLabel[i]}</option>`;
+        option += `<option value="${itemInv[i]}">${itemInv[i]}</option>`;
 
         select.innerHTML = option;
     }
@@ -165,17 +193,16 @@ function AddForm(value) {
             var datenow = getDateNow();
             employeeId.innerHTML = ` ${item.emp_no}`
             position.innerHTML = ` ${item.emp_position}`
-            //reqtype.innerHTML = `<a style="font-weight:bold;">Request Type:</a> ${selectType.}`
             reqdate.innerHTML = ` ${datenow}`
-            //reqid.innerHTML = `<a style="font-weight:bold;">Request ID:</a> ${item.Id}`
         }
     });
+    createRow();
 }
 
 function setReqId(item) {
-    var value = EmployeeInput.value;
+    let value = EmployeeInput.value;
     let lastIndex = fixedArray.length - 1;
-    var str = "";
+    let str = "";
     if (item === 1) {
         str = "DEP";
     }
@@ -185,7 +212,22 @@ function setReqId(item) {
     if (item === 3) {
         str = "SUP";
     }
-    fixedArray.forEach(function (item) {
+    console.log(fixedArray[lastIndex].request_type_id);
+    let newid = Number(fixedArray[lastIndex].request_type_id) + 1;
+    reqid.innerHTML = ' ' +str + newid;
+}
 
-    });
+function createRow() {
+    var td = document.createElement('td');
+    var data = "";
+    
+    data += `<td><label></label></td>`;
+    data += `<td contenteditable="true"><label>category</label></td>`;
+    data += `<td contenteditable="true"><label>size</label></td>`;
+    data += `<td contenteditable="true"><label>quantity</label></td>`;
+    data += `<td contenteditable="true"><label>type</label></td>`;
+    data += `<td contenteditable="true"><label>class</label></td>`;
+    data += `</tr>`;
+
+    formTable.innerHTML += data;
 }

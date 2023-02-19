@@ -25,5 +25,32 @@ namespace TotalFireSafety.Models
     
         public virtual Employee Employee { get; set; }
         public virtual Inventory Inventory { get; set; }
+        public string formType { get; set; }
+
+        public string FormattedDate
+        {
+            get { return request_date.ToString("MMMM dd, yyyy"); }
+        }
+
+        public string Id
+        {
+            get
+            {
+                string newID = "";
+                if (request_type.ToLower() == "purchase")
+                {
+                    newID = "PRE" + request_type_id;
+                }
+                if (request_type.ToLower() == "deployment")
+                {
+                    newID = "DEP" + request_type_id;
+                }
+                if (request_type.ToLower() == "supply")
+                {
+                    newID = "SUP" + request_type_id;
+                }
+                return newID;
+            }
+        }
     }
 }

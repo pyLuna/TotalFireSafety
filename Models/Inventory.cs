@@ -20,7 +20,7 @@ namespace TotalFireSafety.Models
             this.Inv_Update = new HashSet<Inv_Update>();
             this.Requests = new HashSet<Request>();
         }
-        public string formType { get; set; }
+    
         public string in_code { get; set; }
         public string in_name { get; set; }
         public string in_category { get; set; }

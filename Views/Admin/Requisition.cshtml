@@ -82,27 +82,34 @@
                                 <div class="fields">
                                     <div class="input-field">
                                         <label>
-                                            <a>Name: </a>
+                                            <a>Name: </a></br>
                                             <input type="text" id="EmployeeInput" oninput="setForm(this.value,'add')" list="itemList" name="request_emp" placeholder="Name">
                                             <datalist id="itemList">
                                             </datalist>
                                         </label>
                                     </div>
                                     <div class="input-field">
-                                        <label id="position"></label>
+                                        <label id="reqtype">
+                                            <a>Request Type: </a></br><select style="height:40px;" onchange="setReqId(this.selectedIndex)">
+                                                <option readonly>Choose Type</option>
+                                                <option value="Deploy">Deploy</option>
+                                                <option value="Purchase">Purhcase</option>
+                                                <option value="Supply">Supply</option>
+                                            </select>
+                                        </label>
                                     </div>
                                     <div class="input-field">
-                                        <label id="employeeId">@*<a>Employee ID: </a>00001*@ </label>
+                                        <label>Postion:<span id="position"></span></label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label>Employee ID:<span id="employeeId"></span></label>
                                     </div>
 
                                     <div class="input-field">
-                                        <label id="reqtype">@*<a>Request Remarks: </a>Item for Deployment*@ </label>
+                                        <label>Request Date:<span id="reqdate"></span></label>
                                     </div>
                                     <div class="input-field">
-                                        <label id="reqdate">@*<a>Date Requested: </a>January 11, 2023*@ </label>
-                                    </div>
-                                    <div class="input-field">
-                                        <label id="reqid">@*<a>Request ID: </a>SREQ234567*@ </label>
+                                        <label>Request ID:<span id="reqid"></span></label>
                                     </div>
                                 </div>
                             </div>
@@ -227,6 +234,7 @@
 
     window.onload = function () {
         GetAll();
+        GetAllEmployee();
     }
 
     function userSortFunction() {

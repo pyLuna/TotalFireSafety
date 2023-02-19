@@ -1,14 +1,17 @@
 ﻿let jsonArray = [];
 let filtered = [];
 let fixedArray = [];
-let labelName = ['Position', 'Employee ID', 'Request Type', 'Request Date', 'Request ID'];
+let Employees = [];
+let newEmployee = [];
+let typeLabel = ['Deploy', 'Purchase', 'Supply'];
 const table = document.querySelector('#myTable tbody');
 let position = document.getElementById('position');
 let employeeId = document.getElementById('employeeId');
 let reqtype = document.getElementById('reqtype');
 let reqdate = document.getElementById('reqdate');
 let reqid = document.getElementById('reqid');
-let EmployeeInput = document.getElementById("itemList");
+let EmployeeInput = document.getElementById("EmployeeInput");
+let itemList = document.getElementById("itemList");
 
 function GetAll() {
     fetch('/Admin/FindDataOf?requestType=requisition')
@@ -102,11 +105,30 @@ function setTable(array) {
     }
 }
 
+function GetAllEmployee() {
+    fetch('/Admin/SearchEmployee')
+        .then(res => {
+            if (res.ok) {
+                // API request was successful
+                return res.json();
+            } else {
+                console.log("error fetch");
+            }
+        })
+        .then(data => {
+            Employees.push(data);
+            fixArray(Employees, false);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
 function EmployeeList() {
-    fixedArray.forEach(function (item) {
+    newEmployee.forEach(function (item) {
         var option = document.createElement('option');
-        option.value = item.Employee.emp_name;
-        EmployeeInput.appendChild(option);
+        option.value = item.emp_name;
+        itemList.appendChild(option);
     });
 }
 
@@ -123,15 +145,47 @@ function getDateNow() {
     return formattedDate;
 }
 
+function createOption() {
+    let select = document.createElement('select');
+    let option = "";
+    
+    for (var i = 0; i < typeLabel.length; i++) {
+        //option.value = typeLabel[i];
+
+        option += `<option value="${typeLabel[i]}">${typeLabel[i]}</option>`;
+
+        select.innerHTML = option;
+    }
+    return select;
+}
+
 function AddForm(value) {
-    fixedArray.forEach(function (item) {
-        if (item.Employee.emp_name == value) {
+    newEmployee.forEach(function (item) {
+        if (item.emp_name == value) {
             var datenow = getDateNow();
-            employeeId.innerHTML = `<a style="font-weight:bold;">Employee ID:</a> ${item.Employee.emp_no}`
-            position.innerHTML = `<a style="font-weight:bold;">Position:</a> ${item.Employee.emp_position}`
-            reqtype.innerHTML = `<a style="font-weight:bold;">Request Type:</a> ${item.request_type}`
-            reqdate.innerHTML = `<a style="font-weight:bold;">Request Date:</a> ${datenow}`
-            reqid.innerHTML = `<a style="font-weight:bold;">Request ID:</a> ${item.Id}`
+            employeeId.innerHTML = ` ${item.emp_no}`
+            position.innerHTML = ` ${item.emp_position}`
+            //reqtype.innerHTML = `<a style="font-weight:bold;">Request Type:</a> ${selectType.}`
+            reqdate.innerHTML = ` ${datenow}`
+            //reqid.innerHTML = `<a style="font-weight:bold;">Request ID:</a> ${item.Id}`
         }
+    });
+}
+
+function setReqId(item) {
+    var value = EmployeeInput.value;
+    let lastIndex = fixedArray.length - 1;
+    var str = "";
+    if (item === 1) {
+        str = "DEP";
+    }
+    if (item === 2) {
+        str = "PUR";
+    }
+    if (item === 3) {
+        str = "SUP";
+    }
+    fixedArray.forEach(function (item) {
+
     });
 }

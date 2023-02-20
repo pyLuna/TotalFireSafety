@@ -1,4 +1,5 @@
-﻿let jsonArray = [];
+﻿let tableData = [];
+let jsonArray = [];
 let filtered = [];
 let fixedArray = [];
 let Employees = [];
@@ -13,7 +14,36 @@ let reqdate = document.getElementById('reqdate');
 let reqid = document.getElementById('reqid');
 let EmployeeInput = document.getElementById("EmployeeInput");
 let itemList = document.getElementById("itemList");
+let select_type = document.getElementById("select_type");
+let table1 = document.getElementById("formTable");
+
 const formTable = document.querySelector('#formTable tbody');
+
+formTable.addEventListener("click", function (event) {
+    const target = event.target;
+
+    if (target.tagName.toLowerCase() === "a" && target.classList.contains("delete-row")) {
+        const row = target.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+});
+
+document.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        createRow();
+    }
+});
+
+const template = {
+    "request_id": "",
+    "request_type": "", 
+    "request_item": "",
+    "request_item_quantity": "",
+    "request_date": "",
+    "request_employee_id": "",
+    "request_status": "",
+    "request_type_id": ""
+};
 
 function GetAllItem() {
     fetch('/Admin/FindDataOf?requestType=inventory')
@@ -29,6 +59,7 @@ function GetAllItem() {
             jsonArray.length = 0;
             jsonArray.push(data);
             fixArray(jsonArray, 3);
+            console.log(`inventory`);
         })
         .catch(error => {
             console.error(error);
@@ -47,6 +78,7 @@ function GetAllEmployee() {
         .then(data => {
             Employees.push(data);
             fixArray(Employees, 2);
+            console.log(`Employee`);
         })
         .catch(error => {
             console.error(error);
@@ -84,6 +116,7 @@ function GetAll() {
             console.error(error);
         });
 }
+
 function fixArray(array, boolean) {
     if (boolean == 1) {
         for (var j = 0; j < array[0].length; j++) {
@@ -150,8 +183,6 @@ function setTable(array) {
     }
 }
 
-
-
 function EmployeeList() {
     newEmployee.forEach(function (item) {
         var option = document.createElement('option');
@@ -174,17 +205,23 @@ function getDateNow() {
 }
 
 function createOption() {
-    let select = document.createElement('select');
+    //let select = document.createElement('select');
+    //let option = "";
+
+    //itemInv.forEach(function (item) {
+    //    option += `<option value="${item.in_name}">${item.in_name}</option>`;
+    //    select.innerHTML = option;
+    //})
+    //select.style.border = "none";
+    //return select.outerHTML;
+    let datalist = document.createElement('datalist');
     let option = "";
-
-    for (var i = 0; i < itemInv.length; i++) {
-        //option.value = typeLabel[i];
-
-        option += `<option value="${itemInv[i]}">${itemInv[i]}</option>`;
-
-        select.innerHTML = option;
-    }
-    return select;
+    itemInv.forEach(function (item) {
+        option += `<option value="${item.in_name}">${item.in_name}</option>`;
+        datalist.innerHTML = option;
+    });
+    datalist.setAttribute('id', 'itemoption');
+    return datalist.outerHTML;
 }
 
 function AddForm(value) {
@@ -196,7 +233,6 @@ function AddForm(value) {
             reqdate.innerHTML = ` ${datenow}`
         }
     });
-    createRow();
 }
 
 function setReqId(item) {
@@ -218,16 +254,105 @@ function setReqId(item) {
 }
 
 function createRow() {
-    var td = document.createElement('td');
+    var select = createOption();
     var data = "";
-    
-    data += `<td><label></label></td>`;
-    data += `<td contenteditable="true"><label>category</label></td>`;
-    data += `<td contenteditable="true"><label>size</label></td>`;
-    data += `<td contenteditable="true"><label>quantity</label></td>`;
-    data += `<td contenteditable="true"><label>type</label></td>`;
-    data += `<td contenteditable="true"><label>class</label></td>`;
+    var increment = localStorage.getItem('increment');
+    var newNum = 0;
+
+    if (increment == null) {
+        localStorage.setItem('increment', 1);
+    } else {
+        newNum = Number(increment) + 1;
+        localStorage.setItem('increment', newNum);
+    }
+    //oninput = "setRowData(this.value,this.id)"
+    data += `<tr>`;
+    data += `<td><input id="itemInp${newNum}" type="text" list="itemoption" oninput="getInputId(this.id)" style="width:150px;height:30px;border:none;">${select}</td>`;
+    data += `<td contenteditable="false" id="itemCat${newNum}"></td>`;
+    data += `<td contenteditable="true" id="itemSize${newNum}"></td>`;
+    data += `<td contenteditable="true" id="itemQuant${newNum}"></td>`;
+    data += `<td contenteditable="false" id="itemType${newNum}"></td>`;
+    data += `<td contenteditable="false" id="itemClass${newNum}"></td>`;
+    data += `<td><a style="text-decoration:underline;" href="#" id="delBtn${newNum}" class="delete-row">Delete</a></td>`;
+    //data += `<td><button>Delete</button></td>`;
     data += `</tr>`;
 
     formTable.innerHTML += data;
+}
+
+function extractNum(value) {
+    let num = 0;
+    let measurement = '';
+    for (let i = 0; i < value?.length; i++) {
+        if (!isNaN(parseInt(value[i]))) {
+            num = num * 10 + parseInt(value[i]);
+            }
+    }
+    return num;
+}
+
+function getInputId(id) {
+    let inputId = document.getElementById(id);
+    let increment = extractNum(id);
+
+    setRowData(inputId.value, increment);
+}
+
+function setRowData(value, id) {
+
+    let itemCat = document.getElementById(`itemCat${id}`);
+    let itemType = document.getElementById(`itemType${id}`);
+    let itemQuant = document.getElementById(`itemQuant${id}`);
+    let itemClass = document.getElementById(`itemClass${id}`);
+    let itemSize = document.getElementById(`itemSize${id}`);
+    itemInv.forEach(function (item) {
+        if (item.in_name == value) {
+            itemCat.innerHTML = `${item.in_category}`;
+            itemClass.innerHTML = `${item.in_class}`;
+            itemType.innerHTML = `${item.in_type}`;
+
+            if (item.in_type == null || item.in_type == "") {
+                itemType.innerHTML = '';
+            }
+
+        }
+    });
+}
+
+function deleteAllRows() {
+    while (table1.rows.length > 1) { // Keep header row
+        table1.deleteRow(1); // Delete row at index 1 (second row)
+    }
+}
+
+function resetForm() {
+    EmployeeInput.value = "";
+    select_type.selectedIndex = 0;
+    employeeId.innerHTML = "";
+    position.innerHTML = "";
+    reqdate.innerHTML = "";
+    reqid.innerHTML = "";
+    deleteAllRows();
+}
+
+function saveRequest() {
+
+    for (var row = 1; row < table1.rows.length; row++) {
+        let rowData = [];
+        for (var cell = 0; cell < table1.rows[row].cells.length - 1; cell++) {
+            var newValue = "";
+
+            if (cell == 0) {
+                //newValue = 
+            }
+
+            rowData.push(table1.rows[row].cells[cell].textContent);
+        }
+        tableData.push(rowData);
+    }
+    console.log(tableData);
+}
+
+function setTemplateData() {
+
 }

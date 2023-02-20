@@ -28,7 +28,7 @@
             <div class="purchase-header">
                 <h3>REQUEST LISTS</h3>
                 <div class="purchase-buttons-style">
-                    <button class="add-btn" title="ADD NEW REQUEST" onclick="addOpenPopupPur() + EmployeeList()"><a><span class="las la-plus-circle"></span></a></button>
+                    <button class="add-btn" title="ADD NEW REQUEST" onclick="addOpenPopupPur() + EmployeeList() + createRow()"><a><span class="las la-plus-circle"></span></a></button>
                     <button class="pri-btn" title="PRINT REPORT" onclick="printOpenPopup()"> <a href="#"><span class="las la-print"></span></a></button>
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup()"> <a href="#"><span class="las la-file-download"></span></a></button>
                     <button class="purchase-sort-btn" onclick="userSortFunction()">
@@ -90,10 +90,10 @@
                                     </div>
                                     <div class="input-field">
                                         <label id="reqtype">
-                                            <a>Request Type: </a></br><select style="height:40px;" onchange="setReqId(this.selectedIndex)">
+                                            <a>Request Type: </a></br><select style="height:40px;" onchange="setReqId(this.selectedIndex)" id="select_type">
                                                 <option readonly>Choose Type</option>
                                                 <option value="Deploy">Deploy</option>
-                                                <option value="Purchase">Purhcase</option>
+                                                <option value="Purchase">Purchase</option>
                                                 <option value="Supply">Supply</option>
                                             </select>
                                         </label>
@@ -122,7 +122,7 @@
                             <div class="purchase-form-contents">
                                 <div class="purchase-form-table">
                                     <div class="purchase-form-table-style">
-                                        <div class="table-responsive" style="overflow-x: auto;">
+                                        <div class="table-responsive" style="overflow-x: auto;height: 300px;width: auto;" ">
                                             <table width="100%" id="formTable">
                                                 <thead>
                                                     <tr>
@@ -132,17 +132,17 @@
                                                         <td>Item Quantity</td>
                                                         <td>Item Type</td>
                                                         <td>Item Class</td>
+                                                        <td>Action</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                 </tbody>
                                             </table>
+                                            @*<a href="#" style="text-decoration:underline; float:right" onclick="createRow()">Add Row</a>*@
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
 
 
@@ -165,44 +165,44 @@
         </div>
 
         <div class="info-pop-container" id="info-popup">
-            <img src="~/images/information.png">
+            <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
-            <p>Do you want to accept employee's request?</p>
-            <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
+            <p>Do you want to save employee's request?</p>
+            <button type="button" onclick="openPopup() + infoClosePopup() + saveRequest()">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="~/images/tick.png">
+            <img src="@Url.Content("~/images/tick.png")">
             <h2>Accepted!</h2>
             <p>Request has been accepted!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="~/images/warning.png">
+            <img src="@Url.Content("~/images/warning.png")">
             <h2>System Warning!</h2>
-            <p>Are you sure you want to delete item on the list?</p>
-            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+            <p>Do you want to cancel any changes?</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup() + addClosePopupPur() + resetForm()">Yes</button>
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="~/images/remove.png">
+            <img src="@Url.Content("~/images/remove.png")">
             <h2>Deleted!</h2>
-            <p>Item details has deleted in the list!</p>
+            <p>Request Discarded!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
         <div class="print-pop-container" id="print-popup">
-            <img src="~/images/printer.png">
+            <img src="@Url.Content("~/images/printer.png")">
             <h2>Print!</h2>
             <p>Print successfully!</p>
             <button type="button" onclick="printClosePopup()">OK</button>
         </div>
 
         <div class="expo-pop-container" id="expo-popup">
-            <img src="~/images/export.png">
+            <img src="">
             <h2>Export!</h2>
             <p>Exported Successfully!</p>
             <button type="button" onclick="expoClosePopup()">OK</button>
@@ -210,13 +210,15 @@
 
     </main>
 </div>
-<script src="~/Scripts/Requisition.js"></script>
+<script src="@Url.Content("~/Scripts/Requisition.js")"></script>
 
 <script>
 
     window.onload = function () {
         GetAll();
         GetAllEmployee();
+        GetAllItem();
+        localStorage.setItem('increment', 1);
     }
 
     function userSortFunction() {

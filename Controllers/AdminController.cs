@@ -61,7 +61,7 @@ namespace TotalFireSafety.Controllers
             {
                 return RedirectToAction("Login", "Base");
             }
-
+            //Count for employees
             TFSEntity db = new TFSEntity();
             int dataCount = db.Employees.Count(); // Replace "Data" with your model class name
             ViewBag.DataCount = dataCount;
@@ -70,9 +70,21 @@ namespace TotalFireSafety.Controllers
             int Active = db.Status.Count(u => u.emp_no == 1);
             ViewBag.active = Active;
 
+            //count for circle
+            int inventoryCount = db.Inventories.Count(); // Replace "Data" with your model class name
+            ViewBag.Inventory = inventoryCount;
+
+
+
             //count request
             int purchase = db.Requests.Count(x => x.request_type == "Purchase");
             ViewBag.Purchase = purchase;
+
+            int entries = db.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "pending");
+            ViewBag.Entries = entries;
+
+            int entrieses = db.Requests.Count(x => x.request_type == "Deployment" && x.request_status == "pending");
+            ViewBag.Entrieses = entrieses;
 
             int supply = db.Requests.Count(x => x.request_type == "Supply");
             ViewBag.Supply = supply;

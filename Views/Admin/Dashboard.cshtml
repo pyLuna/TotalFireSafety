@@ -273,21 +273,21 @@
                                         if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(255, 99, 132, 0.6)' // red color
+                                                color: 'rgba(255,0,0)' // red color
                                             };
                                         } else if (item.Quantity < 500) {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(250,213,134)' // orange color
+                                                color: 'rgba(255, 165, 0)' // orange color
                                             };
                                         } else {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(150,187,124)' // default blue color
+                                                color: 'rgba(0,128,0)' // default blue color
                                             };
                                         }
                                     } else {
-                                        return { value: 0, color: 'rgba(150,187,124)' };
+                                        return { value: 0, color: '' };
                                     }
                                 });
 
@@ -296,21 +296,21 @@
                                         if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(255, 99, 132, 0.6)' // red color
+                                                color: 'rgba(255,0,0)' // red color
                                             };
                                         } else if (item.Quantity < 500) {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(255, 206, 86, 0.6)' // orange color
+                                                color: 'rgba(255, 165, 0)' // orange color
                                             };
                                         } else {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(150,187,124)' // default blue color
+                                                color: 'rgba(0,128,0)' // default blue color
                                             };
                                         }
                                     } else {
-                                        return { value: 0, color: 'rgba(150,187,124)' };
+                                        return { value: 0, color: '' };
                                     }
                                 });
 

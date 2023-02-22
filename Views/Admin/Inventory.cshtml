@@ -363,9 +363,10 @@
 
         code.addEventListener("keyup", processBarcode);
 
-        function processBarcode(event) {
-            if (event != null) {
-                if (event.which === 13 || event.keyCode === 13) {
+    function processBarcode(event) {
+        if (event != null) {
+            if (event.which === 13 || event.keyCode === 13) {
+                event.preventDefault();
                 // retrieve the scanned value
                 if (sliced.length == 0) {
                     sliced = code.value;
@@ -387,13 +388,19 @@
                 if (sliced.length != 0) {
                     code.value = sliced;
                 }
-
-                    prevVal = code.value;
-                    //quantity.value = 1;
+                prevVal = code.value;
+                //quantity.value = 1;
+            }
+            setField(code.value, 'quant');
+            AddValue(quantity.value, 'add');
+            if (name.value == "undefined" || itemCode.value == "") {
+                var c = itemCode.value;
+                resetForm();
+                if (itemCode.value != "") {
+                    itemCode.value = c;
                 }
-                setField(code.value);
-                AddValue(quantity.value, 'add');
-                event.preventDefault();
+            }
+
             }
         }
 
@@ -426,7 +433,7 @@
             addpopupinv.classList.add("add-popup-inv-show");
             code.setAttribute("readonly", true);
             removeAttrib();
-            setField(value);
+            setField(value,null);
             code.value = value;
             addnewitem.style.display = "none";
             AddValue(value, 'edit');

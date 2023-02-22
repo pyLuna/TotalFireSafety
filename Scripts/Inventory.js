@@ -110,7 +110,7 @@ function SortByCategory(value) {
     }
 }
 
-function setField(value) {
+function setField(value,typeOf) {
     let name = document.querySelector('#itemName');
     let size = document.querySelector('#itemSize');
     let sizeMeas = document.querySelector('#itemSizeMeas');
@@ -141,26 +141,23 @@ function setField(value) {
     let sizeValue = extractNum(filtered[0]?.in_size);
     let quantityValue = extractNum(filtered[0]?.in_quantity);
 
-    if (sizeValue.num !== 0) {
-        size.value = sizeValue.num;
-        localStorage.setItem("size", sizeValue.num);
-        localStorage.setItem("sizeMeas", sizeValue.measurement);
-    } else {
-        size.value = null;
-    }
+    if (typeOf == 'quant') {
+        let quantNum = quantity.value;
 
-    if (quantityValue.num !== 0) {
-        quantity.value = quantityValue.num;
-        localStorage.setItem("quantity", quantityValue.num);
-        localStorage.setItem("quantityMeas", quantityValue.measurement);
-    } else {
-        quantity.value = null;
+        if (quantNum == "") {
+            quantity.value = 1
+        }
+        else {
+            quantity.value = Number(quantity.value) + 1;
+        }
     }
-
-    for (let i = 0; i < sizeMeas.options.length; i++) {
-        let option = sizeMeas.options[i];
-        if (sizeValue.measurement == option.value) {
-            sizeMeas.selectedIndex = i;
+    else {
+        if (quantityValue.num !== 0) {
+            quantity.value = quantityValue.num;
+            localStorage.setItem("quantity", quantityValue.num);
+            localStorage.setItem("quantityMeas", quantityValue.measurement);
+        } else {
+            quantity.value = null;
         }
     }
 
@@ -170,6 +167,23 @@ function setField(value) {
             quantityMeas.selectedIndex = i;
         }
     }
+
+    if (sizeValue.num !== 0) {
+        size.value = sizeValue.num;
+        localStorage.setItem("size", sizeValue.num);
+        localStorage.setItem("sizeMeas", sizeValue.measurement);
+    } else {
+        size.value = null;
+    }
+
+    for (let i = 0; i < sizeMeas.options.length; i++) {
+        let option = sizeMeas.options[i];
+        if (sizeValue.measurement == option.value) {
+            sizeMeas.selectedIndex = i;
+        }
+    }
+
+    
 
     // loop through all the options in the select element
     for (let i = 0; i < cat.options.length; i++) {

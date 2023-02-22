@@ -1,4 +1,4 @@
-﻿
+﻿@using TotalFireSafety.Models
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/AdminLayout.cshtml";
@@ -130,7 +130,13 @@
 
                                                     </div>
 
-                                                    <div class="inv-inside-circle"> 860 </div>
+                                                    <div class="inv-inside-circle">
+                                                        <label id="Inventory"></label>
+                                                        <script>
+                                                            var inventoryCount = @ViewBag.Inventory;
+                                                            document.getElementById("Inventory").textContent = inventoryCount;
+                                                        </script>
+                                                    </div>
 
                                                 </div>
                                             </div>
@@ -184,45 +190,69 @@
 
         <div class="cards">
             <div class="card-title">
-                <a href="../super-admin/administration/sa-users.html">
+                <a href="@Url.Action("Users","Admin")">
                     <h3>Users</h3>
                     <div class="card-single">
                         <div class="card-container">
                             <h3>Employee</h3>
                             <div class="card-details">
-                                <label>15</label><span>Total Employees</span>
+                                <label id="dataCountLabel"></label><span>Total Employees</span>
+                                <script>
+                             var dataCount = @ViewBag.DataCount;
+                             document.getElementById("dataCountLabel").textContent = dataCount;
+                                </script>
                                 <p></p>
-                                <label class="card-active">15</label><span class="card-active">Active Employees</span>
+                                <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Employees</span>
+                                <script>
+                             var Active = @ViewBag.Active;
+                             document.getElementById("dataCountLabel1").textContent = Active;
+                                </script>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
             <div class="card-title">
-                <a href="../super-admin/operations/requisition/sa-pur_requi.html">
+                <a href="@Url.Action("Requisition","Admin")">
                     <h3>Requisition</h3>
                     <div class="card-single">
                         <div class="card-container">
                             <h3>Purchase Request</h3>
                             <div class="card-details">
-                                <label>30</label><span>Total Entries</span>
+                                <label id="purchase"></label><span>Total Entries</span>
+                                <script>
+                                    var purchase = @ViewBag.Purchase;
+                                    document.getElementById("purchase").textContent = purchase;
+                                </script>
                                 <p></p>
-                                <label class="card-active">5</label><span class="card-active">New Entries</span>
+                                <label class="card-active" id="entries"></label><span class="card-active">New Entries</span>
+                                <script>
+                                    var entries = @ViewBag.Entries;
+                                    document.getElementById("entries").textContent = entries;
+                                </script>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
             <div class="card-title">
-                <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
+                <a href="@Url.Action("Requisition","Admin")">
                     <h3>Deploy</h3>
                     <div class="card-single">
                         <div class="card-container">
                             <h3>Deployment Request</h3>
                             <div class="card-details">
-                                <label>30</label><span>Total Entries</span>
+                                <label id="deployment"></label><span>Total Entries</span>
+                                <script>
+                                    var deployment = @ViewBag.Deployment;
+                                    document.getElementById("deployment").textContent = deployment;
+                                </script>
                                 <p></p>
-                                <label class="card-active">5</label><span class="card-active">New Entries</span>
+                                <label class="card-active" id="entrieses">5</label><span class="card-active">New Entries</span>
+                                <script>
+                                    var entrieses = @ViewBag.Entrieses;
+                                    document.getElementById("entrieses").textContent = entrieses;
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -248,13 +278,102 @@
                     </div>
                     <div class="chart-border">
                         <div class="chart">
-                            <canvas id="barchart" width="300" height="300"></canvas>
+                            <canvas id="barchart1" width="250" height="300"></canvas>
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                            <script>
+                            var data = @Html.Raw(Json.Encode(ViewBag.Data));
+                                var importedValues = data.map(function (item) {
+                                    if (item.Category === 'Import') {
+                                        if (item.Quantity < 250) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255,0,0)' // red color
+                                            };
+                                        } else if (item.Quantity < 500) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255, 165, 0)' // orange color
+                                            };
+                                        } else {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0)' // default blue color
+                                            };
+                                        }
+                                    } else {
+                                        return { value: 0, color: 'rgba(0,128,0)' };
+                                    }
+                                });
+
+                                var localValues = data.map(function (item) {
+                                    if (item.Category === 'Local') {
+                                        if (item.Quantity < 250) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255,0,0)' 
+                                            };
+                                        } else if (item.Quantity < 500) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255, 165, 0)' 
+                                            };
+                                        } else {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0)' 
+                                            };
+                                        }
+                                    } else {
+                                        return { value: 0, color: 'rgba(0,128,0)' };
+                                    }
+                                });
+
+                                var labels = data.map(function (item) {
+                                    return item.Name;
+                                });
+
+                                var ctx = document.getElementById('barchart1').getContext('2d');
+                                var chart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Import',
+                                            data: importedValues.map(function (item) { return item.value; }),
+                                            backgroundColor: importedValues.map(function (item) { return item.color; }),
+                                            borderColor: 'rgba(54, 162, 235, 1)',
+                                            borderWidth: 1
+                                        }, {
+                                            label: 'Local',
+                                            data: localValues.map(function (item) { return item.value; }),
+                                            backgroundColor: localValues.map(function (item) { return item.color; }),
+                                            borderColor: 'rgba(255, 99, 132, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        aspectRatio: 4 / 4,
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+
+
+
+                            </script>
 
                         </div>
                     </div>
 
                     <div class="card-headers">
-                        <a href="../super-admin/operations/sa-inventory/sa-inventory.html"><button> See more <span class="las la-arrow-right"></span></button></a>
+                        <a href="@Url.Action("Inventory","Admin")"><button> See more <span class="las la-arrow-right"></span></button></a>
                     </div>
                 </div>
             </div>
@@ -269,7 +388,48 @@
                     <div class="chart-borders">
                         <div class="chart">
                             <div class="scatter">
-                                <canvas id="barcharthori" width="auto" height="auto"></canvas>
+                                <canvas id="barcharthori1" width="auto" height="auto"></canvas>
+
+                                <script>
+                                     var data = @Html.Raw(Json.Encode(ViewBag.Data));
+                                    var labels = data.map(function (item) {
+                                        return item.Name;
+                                    });
+
+                                    var values = data.map(function (item) {
+                                        return item.Quantity;
+                                    });
+
+
+                                    var ctx = document.getElementById('barcharthori1').getContext('2d');
+                                    var chart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: labels,
+                                            datasets: [{
+                                                label: 'Quantity',
+
+                                                data: values,
+                                                backgroundColor: 'rgba(37,109,133)',
+                                                borderColor: 'rgba(54, 162, 235, 1)',
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            indexAxis: 'y',
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            aspectRatio: 4 / 3,
+                                            scales: {
+                                                yAxes: [{
+                                                    ticks: {
+                                                        beginAtZero: true
+                                                    }
+                                                }]
+                                            }
+                                        }
+                                    });
+                                </script>
                             </div>
 
                         </div>

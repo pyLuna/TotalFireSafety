@@ -327,6 +327,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\chart.js" />
+    <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\Inventory.js" />
     <Content Include="Scripts\js\app.js" />
     <Content Include="Scripts\js\chart1.js" />

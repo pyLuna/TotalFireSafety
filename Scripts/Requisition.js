@@ -204,7 +204,7 @@ function getDateNow() {
     return formattedDate;
 }
 
-function createOption() {
+function createOption(num) {
     //let select = document.createElement('select');
     //let option = "";
 
@@ -220,7 +220,7 @@ function createOption() {
         option += `<option value="${item.in_name}">${item.in_name}</option>`;
         datalist.innerHTML = option;
     });
-    datalist.setAttribute('id', 'itemoption');
+    datalist.setAttribute('id', `itemoption${num}`);
     return datalist.outerHTML;
 }
 
@@ -254,26 +254,28 @@ function setReqId(item) {
 }
 
 function createRow() {
-    var select = createOption();
     var data = "";
     var increment = localStorage.getItem('increment');
     var newNum = 0;
 
-    if (increment == null) {
+    if (increment == "null") {
         localStorage.setItem('increment', 1);
+        newNum = localStorage.getItem('increment');
     } else {
         newNum = Number(increment) + 1;
         localStorage.setItem('increment', newNum);
     }
+    var select = createOption(newNum);
     //oninput = "setRowData(this.value,this.id)"
     data += `<tr>`;
-    data += `<td><input id="itemInp${newNum}" type="text" list="itemoption" oninput="getInputId(this.id)" style="width:150px;height:30px;border:none;">${select}</td>`;
+    data += `<td><input type="text" id="itemInp${newNum}" list="itemoption${newNum}" oninput="getInputId(this.id)" style="width:150px;height:30px;border:none;">${select}</td>`;
     data += `<td contenteditable="false" id="itemCat${newNum}"></td>`;
     data += `<td contenteditable="true" id="itemSize${newNum}"></td>`;
     data += `<td contenteditable="true" id="itemQuant${newNum}"></td>`;
     data += `<td contenteditable="false" id="itemType${newNum}"></td>`;
     data += `<td contenteditable="false" id="itemClass${newNum}"></td>`;
     data += `<td><a style="text-decoration:underline;" href="#" id="delBtn${newNum}" class="delete-row">Delete</a></td>`;
+    data += `<td contenteditable="false" style="display:none;" id="itemCode${newNum}"></td>`;
     //data += `<td><button>Delete</button></td>`;
     data += `</tr>`;
 
@@ -305,8 +307,10 @@ function setRowData(value, id) {
     let itemQuant = document.getElementById(`itemQuant${id}`);
     let itemClass = document.getElementById(`itemClass${id}`);
     let itemSize = document.getElementById(`itemSize${id}`);
+    let itemCode = document.getElementById(`itemCode${id}`);
     itemInv.forEach(function (item) {
         if (item.in_name == value) {
+            itemCode.innerHTML = `${item.in_code}`;
             itemCat.innerHTML = `${item.in_category}`;
             itemClass.innerHTML = `${item.in_class}`;
             itemType.innerHTML = `${item.in_type}`;
@@ -326,6 +330,7 @@ function deleteAllRows() {
 }
 
 function resetForm() {
+    localStorage.setItem('increment', null);
     EmployeeInput.value = "";
     select_type.selectedIndex = 0;
     employeeId.innerHTML = "";
@@ -336,23 +341,54 @@ function resetForm() {
 }
 
 function saveRequest() {
-
+    var increment = localStorage.getItem('increment');
+    tableData.length = 0;
     for (var row = 1; row < table1.rows.length; row++) {
         let rowData = [];
         for (var cell = 0; cell < table1.rows[row].cells.length - 1; cell++) {
             var newValue = "";
 
             if (cell == 0) {
-                //newValue = 
+                newValue = getAllRow(row-1);
+            }
+            else {
+                newValue = table1.rows[row].cells[cell].textContent
             }
 
-            rowData.push(table1.rows[row].cells[cell].textContent);
+            rowData.push(newValue);
         }
         tableData.push(rowData);
     }
     console.log(tableData);
 }
 
-function setTemplateData() {
+function setTemplate(array) {
+    let type = document.getElementById('select_type');
+    let emp_no = document.getElementById('employeeId');
+    let newRequest = [];
+    for (var i = 0; i < array.length; i++) {
+        let newObj = Object.assign({}, template);
+        newObj.request_date = getDateNow();
+        newObj.request_employee_id = document.getElementById('employeeId').innerHTML;
+        newObj.request_type = type.options[type.selectedIndex].value;
+        newObj.request_status = "pending";
+        newObj.request_item = array[i][0];
+        newObj.request_item_quantity = array[i][3];
+        newRequest.push(newObj);
+    }
+    console.log(newRequest);
+}
 
+function getAllRow(num) {
+    const rows = Array.from(table1.getElementsByTagName('tr')).slice(1);
+    var newVal = "";
+    for (var i = 0; i < rows.length; i++) {
+        const firstCell = rows[i].cells[0];
+        const textbox = firstCell.querySelector('input[type="text"]');
+        if (i === num) {
+            newVal = textbox.value;
+            break;
+        }
+    }
+    return newVal;
 }

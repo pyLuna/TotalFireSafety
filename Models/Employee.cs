@@ -32,5 +32,10 @@ namespace TotalFireSafety.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
         public string formType { get; set; }
+
+        public string FormattedDate
+        {
+            get { return emp_hiredDate.HasValue ? emp_hiredDate.Value.ToString("MMMM dd, yyyy") : ""; }
+        }
     }
 }

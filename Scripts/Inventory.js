@@ -123,10 +123,6 @@ function setField(value,typeOf) {
     let hidType = document.getElementById("hiddenType");
     localStorage.clear();
 
-    //if (value != null) {
-    //    return;
-    //}
-
     for (var i = 0; i < fixedArray.length; i++) {
         if (fixedArray[i]?.in_code == value) {
             filtered.length = 0;
@@ -141,17 +137,7 @@ function setField(value,typeOf) {
     let sizeValue = extractNum(filtered[0]?.in_size);
     let quantityValue = extractNum(filtered[0]?.in_quantity);
 
-    if (typeOf == 'quant') {
-        let quantNum = quantity.value;
-
-        if (quantNum == "") {
-            quantity.value = 1
-        }
-        else {
-            quantity.value = Number(quantity.value) + 1;
-        }
-    }
-    else {
+    if (typeOf != "quant") {
         if (quantityValue.num !== 0) {
             quantity.value = quantityValue.num;
             localStorage.setItem("quantity", quantityValue.num);
@@ -182,8 +168,6 @@ function setField(value,typeOf) {
             sizeMeas.selectedIndex = i;
         }
     }
-
-    
 
     // loop through all the options in the select element
     for (let i = 0; i < cat.options.length; i++) {
@@ -324,9 +308,8 @@ function AddValue(value,typeOf) {
     }
     else
     {
-        
+        setQuantity();
     }
-    console.log(hiddenQuant.value);
 }
 
 function setQuantity() {

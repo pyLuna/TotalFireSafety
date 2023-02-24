@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Purchase Requisition";
+    ViewBag.Title = "Requisition";
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Req = "active";
 }
@@ -20,7 +20,7 @@
         <div class="upper-section">
             <div class="search-wrapper">
                 <span class="las la-search"></span>
-                <input type="text" placeholder="Search here">
+                <input type="text" placeholder="Search here" onkeyup="SearchItem(this.value)">
             </div>
         </div>
 
@@ -168,7 +168,7 @@
             <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
             <p>Do you want to save employee's request?</p>
-            <button type="button" onclick="openPopup() + infoClosePopup() + saveRequest()">Yes</button>
+            <button type="button" onclick="saveRequest()">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
@@ -202,7 +202,7 @@
         </div>
 
         <div class="expo-pop-container" id="expo-popup">
-            <img src="">
+            <img src="@Url.Content("~/images/export.png")">
             <h2>Export!</h2>
             <p>Exported Successfully!</p>
             <button type="button" onclick="expoClosePopup()">OK</button>
@@ -219,6 +219,11 @@
         GetAllEmployee();
         GetAllItem();
         localStorage.setItem('increment', null);
+        let success = localStorage.getItem("success");
+        if (success == true) {
+            openPopup();
+            localStorage.setItem("success", null);
+        }
     }
 
     function userSortFunction() {

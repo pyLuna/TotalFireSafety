@@ -20,7 +20,7 @@ namespace TotalFireSafety.Models
             this.Inv_Update = new HashSet<Inv_Update>();
             this.Requests = new HashSet<Request>();
         }
-    
+        public string formType { get; set; }
         public string in_code { get; set; }
         public string in_name { get; set; }
         public string in_category { get; set; }
@@ -35,6 +35,5 @@ namespace TotalFireSafety.Models
         public virtual ICollection<Inv_Update> Inv_Update { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
-        public string formType { get; set; }
     }
 }

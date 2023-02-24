@@ -1,4 +1,5 @@
-﻿let tableData = [];
+﻿let codeList = [];
+let tableData = [];
 let jsonArray = [];
 let filtered = [];
 let fixedArray = [];
@@ -35,14 +36,14 @@ document.addEventListener("keypress", function (event) {
 });
 
 const template = {
-    "request_id": "",
+    "request_id": null,
     "request_type": "", 
     "request_item": "",
     "request_item_quantity": "",
     "request_date": "",
     "request_employee_id": "",
     "request_status": "",
-    "request_type_id": ""
+    "request_type_id": null
 };
 
 function GetAllItem() {
@@ -117,6 +118,24 @@ function GetAll() {
         });
 }
 
+function filterArray(value) {
+    filtered.length = 0;
+    for (var j = 0; j < fixedArray.length; j++) {
+        if (JSON.stringify(fixedArray[j]).toLowerCase().includes(value)) {
+            filtered.push(fixedArray[j]);
+        }
+    }
+}
+
+function SearchItem(value) {
+    filterArray(value.toLowerCase());
+    if (value == '') {
+        setTable(fixedArray);
+    } else {
+        setTable(filtered);
+    }
+}
+
 function fixArray(array, boolean) {
     if (boolean == 1) {
         for (var j = 0; j < array[0].length; j++) {
@@ -163,6 +182,7 @@ function setTable(array) {
             row += `<div class="purchase-action-style">`;
             row += `<button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>`;
             row += `<button class="dec-btn" title="DECLINE REQUEST" onclick="canOpenPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
+            row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEdit('${array[i].in_code}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
             row += `<button class="pri-btn" title="PRINT REPORT" > <a href="#"><span class="las la-print"></span></a></button>`;
             row += `<button class="expo-btn" title="EXPORT REPORT" > <a href="#"><span class="las la-file-download"></span></a></button>`;
             row += `</div></td>`;
@@ -347,19 +367,19 @@ function saveRequest() {
         let rowData = [];
         for (var cell = 0; cell < table1.rows[row].cells.length - 1; cell++) {
             var newValue = "";
-
+            let itemCode = document.getElementById(`itemCode${row}`)?.innerHTML;
             if (cell == 0) {
                 newValue = getAllRow(row-1);
+            codeList.push(itemCode);
             }
             else {
                 newValue = table1.rows[row].cells[cell].textContent
             }
-
             rowData.push(newValue);
         }
         tableData.push(rowData);
     }
-    console.log(tableData);
+    setTemplate(tableData);
 }
 
 function setTemplate(array) {
@@ -372,11 +392,11 @@ function setTemplate(array) {
         newObj.request_employee_id = document.getElementById('employeeId').innerHTML;
         newObj.request_type = type.options[type.selectedIndex].value;
         newObj.request_status = "pending";
-        newObj.request_item = array[i][0];
+        newObj.request_item = codeList[i];
         newObj.request_item_quantity = array[i][3];
         newRequest.push(newObj);
     }
-    console.log(newRequest);
+    sendRequest(newRequest, "add");
 }
 
 function getAllRow(num) {
@@ -391,4 +411,34 @@ function getAllRow(num) {
         }
     }
     return newVal;
+}
+
+function sendRequest(jsonData,formType) {
+    fetch("/Admin/Requisition?formType=" + formType, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.text()
+            }
+            else {
+                throw new Error('Network response was not ok');
+            }
+        })
+        .then(data => {
+            console.log('Response from server:', data);
+            window.location.reload();
+            localStorage.setItem("success", true);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function openEdit() {
+
 }

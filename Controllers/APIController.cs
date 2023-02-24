@@ -963,30 +963,50 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-
+        public Guid GetNewGuid()
+        {
+                var newId = Validate("requests");
+                if (newId.Item2)
+                {
+                    return newId.Item1;
+                }
+                else
+                {
+                    return GetNewGuid();
+                }
+        }
 
         [Authorize]
         [Route("Requests/Add")]
         [HttpPost]
-        public IHttpActionResult AddRequests(Request req)
+        public IHttpActionResult AddRequests(List<Request> req)
         {
             try
             {
                 using (var _context = new TFSEntity())
                 {
-                    var checkId = _context.Requests.Where(x => x.request_id == req.request_id).SingleOrDefault();
-
-                    if(checkId == null)
+                    if(req == null)
                     {
                         return BadRequest("Please check your data.");
                     }
-                    var newGuid = Validate("requests");
-                    if(!newGuid.Item2)
+                    foreach (var item in req)
                     {
-                        req.request_id = newGuid.Item1;
+                        var checkId = GetNewGuid();
+
+                        item.request_id = checkId;
+
+                        Request newReqs = new Request() {
+                            request_date = item.request_date,
+                            request_employee_id = item.request_employee_id,
+                            request_id = item.request_id,
+                            request_item = item.request_item,
+                            request_item_quantity = item.request_item_quantity,
+                            request_status = "pending",
+                            request_type = item.request_type,
+                        };
+                        _context.Requests.Add(newReqs);
+                        _context.SaveChanges();
                     }
-                    _context.Requests.Add(req);
-                    _context.SaveChanges();
                     return Ok("Requests Added Successfully!");
                 }
             }

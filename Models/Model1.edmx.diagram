@@ -18,7 +18,7 @@
         <EntityTypeShape EntityType="TotalFireSafetyModel.Request" Width="1.5" PointX="6" PointY="6.75" />
         <AssociationConnector Association="TotalFireSafetyModel.FK_Requests_Employee" />
         <AssociationConnector Association="TotalFireSafetyModel.FK_Requests_Inventory" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

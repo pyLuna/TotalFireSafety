@@ -38,8 +38,7 @@ namespace TotalFireSafety.Controllers
                 return Validate("done");
             }
         }
-        //  Status
-        #region
+        #region Status
         [Authorize(Roles = "admin")]
         [Route("Admin/Status")]  //  Get all Employee Route
         [HttpGet]
@@ -194,8 +193,8 @@ namespace TotalFireSafety.Controllers
             }
         }
         #endregion
-        //  Credentials
-        #region
+
+        #region Credentials
         [Authorize(Roles = "admin")]
         [Route("Admin/Credentials")]  //  Get all Employee Route
         [HttpGet]
@@ -347,9 +346,9 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        #endregion
-        //  Roles
-        #region
+        #endregion 
+        
+        #region Roles
         [Authorize(Roles = "admin")]
         [Route("Admin/Roles")]  //  Get all Employee Route
         [HttpGet]
@@ -501,8 +500,8 @@ namespace TotalFireSafety.Controllers
         }
 
         #endregion
-        //  EMPLOYEE API
-        #region
+        
+        #region Employees
         [Authorize(Roles = "admin")]
         [Route("Admin/Employee")]  //  Get all Employee Route
         [HttpGet]
@@ -688,9 +687,8 @@ namespace TotalFireSafety.Controllers
 
         }
         #endregion
-
-        //  INVENTORY API
-        #region
+        
+        #region Inventory
         [Authorize(Roles = "warehouse,admin")]
         [Route("Warehouse/Inventory")]
         [HttpGet]
@@ -891,9 +889,7 @@ namespace TotalFireSafety.Controllers
         }
         #endregion
 
-        //  REQUEST API
-        #region
-
+        #region Request
         [Authorize]
         [Route("Requests/All")]
         [HttpGet]
@@ -906,9 +902,7 @@ namespace TotalFireSafety.Controllers
                     var requests = _context.Requests.Select(x => x).ToList();
                     var employee = _context.Employees.Select(x => x).ToList();
                     var inventory = _context.Inventories.Select(x => x).ToList();
-
                     var newRequest = new List<Request>();
-
                     foreach (var item in requests)
                     {
                         var newInv = inventory.Where(x => x.in_code == item.request_item).SingleOrDefault();
@@ -941,19 +935,15 @@ namespace TotalFireSafety.Controllers
                                 in_size = newInv.in_size,
                                 in_type = newInv.in_type
                             } : null
-
                         };
                         newRequest.Add(req);
                     }
-
-
                     var _jsonSerialized = JsonConvert.SerializeObject(newRequest, Formatting.None, new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
                     //  Deserialize the serialized json format to remove the escape characters like \ 
                     var _jsonDeserialized = JsonConvert.DeserializeObject<List<Request>>(_jsonSerialized);
-
                     return Ok(_jsonDeserialized);
                 }
             }
@@ -992,9 +982,7 @@ namespace TotalFireSafety.Controllers
                     foreach (var item in req)
                     {
                         var checkId = GetNewGuid();
-
                         item.request_id = checkId;
-
                         Request newReqs = new Request() {
                             request_date = item.request_date,
                             request_employee_id = item.request_employee_id,
@@ -1003,6 +991,7 @@ namespace TotalFireSafety.Controllers
                             request_item_quantity = item.request_item_quantity,
                             request_status = "pending",
                             request_type = item.request_type,
+                            request_type_id = item.request_type_id
                         };
                         _context.Requests.Add(newReqs);
                         _context.SaveChanges();
@@ -1019,25 +1008,25 @@ namespace TotalFireSafety.Controllers
         [Authorize]
         [Route("Requests/Edit")]
         [HttpPost]
-        public IHttpActionResult EditRequests(Request req)
+        public IHttpActionResult EditRequests(List<Request> req)
         {
             try
             {
                 using (var _context = new TFSEntity())
                 {
-                    var request = _context.Requests.Where(x => x.request_id == req.request_id).SingleOrDefault();
-
-                    if(request == null)
-                    {
-                        return BadRequest("Request Not Found");
+                    foreach (var item in req) { 
+                        var request = _context.Requests.Where(x => x.request_id == item.request_id).SingleOrDefault();
+                        if (request == null)
+                        {
+                            return BadRequest("Request Not Found");
+                        }
+                        request.request_status = item.request_status;
+                        request.request_type = item.request_type;
+                        request.request_item = item.request_item;
+                        request.request_item_quantity = item.request_item_quantity;
+                        _context.Entry(request);
+                        _context.SaveChanges();
                     }
-
-                    request.request_type = req.request_type;
-                    request.request_item = req.request_item;
-                    request.request_item_quantity = req.request_item_quantity;
-                    request.request_status = req.request_status;
-                    _context.Entry(request);
-                    _context.SaveChanges();
                     return Ok("Requests Added Successfully!");
                 }
             }
@@ -1054,12 +1043,10 @@ namespace TotalFireSafety.Controllers
                 using (var _context = new TFSEntity())
                 {
                     var request = _context.Requests.Where(x => x.request_id == req).SingleOrDefault();
-
                     if (request == null)
                     {
                         return BadRequest("Request Not Found");
                     }
-
                     request.request_status = "archived";
                     _context.Entry(request);
                     _context.SaveChanges();
@@ -1071,7 +1058,6 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-
         #endregion
     }
 }

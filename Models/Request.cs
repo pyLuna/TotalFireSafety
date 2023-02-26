@@ -42,7 +42,7 @@ namespace TotalFireSafety.Models
                 {
                     newID = "PRE" + request_type_id;
                 }
-                if (request_type.ToLower() == "deployment")
+                if (request_type.ToLower() == "deploy")
                 {
                     newID = "DEP" + request_type_id;
                 }

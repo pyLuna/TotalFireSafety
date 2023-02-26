@@ -299,6 +299,11 @@ namespace TotalFireSafety.Controllers
             {
                 uri = "Requests/Add";
             }
+            else
+            {
+                uri = "Requests/Edit";
+            }
+
 
             var response = api_req.SetMethod(uri, userToken, newData);
             var json = JsonConvert.DeserializeObject(response);
@@ -319,7 +324,6 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult Logout()
         {
-
             // DONT FORGET TO CLEAR SESSIONS, TOKENS AND OTHERS
             Session.Clear();
             return RedirectToAction("Login", "Base");

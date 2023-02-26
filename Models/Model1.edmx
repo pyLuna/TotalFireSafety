@@ -52,12 +52,12 @@
           </Key>
           <Property Name="request_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="request_type" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="request_type_id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="request_item" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="request_item_quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="request_date" Type="date" Nullable="false" />
           <Property Name="request_employee_id" Type="int" Nullable="false" />
           <Property Name="request_status" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="request_type_id" Type="int" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -190,16 +190,11 @@
           <EntitySet Name="Employees" EntityType="TotalFireSafetyModel.Employee" />
           <EntitySet Name="Inv_Update" EntityType="TotalFireSafetyModel.Inv_Update" />
           <EntitySet Name="Inventories" EntityType="TotalFireSafetyModel.Inventory" />
-          <EntitySet Name="Requests" EntityType="TotalFireSafetyModel.Request" />
           <EntitySet Name="Roles" EntityType="TotalFireSafetyModel.Role" />
           <EntitySet Name="Status" EntityType="TotalFireSafetyModel.Status" />
           <AssociationSet Name="FK_Credentials_Employee" Association="TotalFireSafetyModel.FK_Credentials_Employee">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Credential" EntitySet="Credentials" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Requests_Employee" Association="TotalFireSafetyModel.FK_Requests_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
           <AssociationSet Name="FK_Roles_Employee" Association="TotalFireSafetyModel.FK_Roles_Employee">
             <End Role="Employee" EntitySet="Employees" />
@@ -213,11 +208,16 @@
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Inv_Update" EntitySet="Inv_Update" />
           </AssociationSet>
+          <EntitySet Name="Requests" EntityType="TotalFireSafetyModel.Request" />
+          <AssociationSet Name="FK_Requests_Employee" Association="TotalFireSafetyModel.FK_Requests_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
           <AssociationSet Name="FK_Requests_Inventory" Association="TotalFireSafetyModel.FK_Requests_Inventory">
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Credential">
           <Key>
             <PropertyRef Name="emp_no" />
@@ -237,9 +237,9 @@
           <Property Name="emp_contact" Type="Int64" Nullable="false" />
           <Property Name="emp_position" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Credential" Relationship="TotalFireSafetyModel.FK_Credentials_Employee" FromRole="Employee" ToRole="Credential" />
-          <NavigationProperty Name="Requests" Relationship="TotalFireSafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
           <NavigationProperty Name="Role" Relationship="TotalFireSafetyModel.FK_Roles_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="Status" Relationship="TotalFireSafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
+          <NavigationProperty Name="Requests" Relationship="TotalFireSafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
         </EntityType>
         <EntityType Name="Inv_Update">
           <Key>
@@ -266,21 +266,6 @@
           <Property Name="in_dateAdded" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Inv_Update" Relationship="TotalFireSafetyModel.FK_Inv_Update_Inventory" FromRole="Inventory" ToRole="Inv_Update" />
           <NavigationProperty Name="Requests" Relationship="TotalFireSafetyModel.FK_Requests_Inventory" FromRole="Inventory" ToRole="Request" />
-        </EntityType>
-        <EntityType Name="Request">
-          <Key>
-            <PropertyRef Name="request_id" />
-          </Key>
-          <Property Name="request_id" Type="Guid" Nullable="false" />
-          <Property Name="request_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="request_type_id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="request_item" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="request_item_quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="request_date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="request_employee_id" Type="Int32" Nullable="false" />
-          <Property Name="request_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="Employee" Relationship="TotalFireSafetyModel.FK_Requests_Employee" FromRole="Request" ToRole="Employee" />
-          <NavigationProperty Name="Inventory" Relationship="TotalFireSafetyModel.FK_Requests_Inventory" FromRole="Request" ToRole="Inventory" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -310,18 +295,6 @@
             </Principal>
             <Dependent Role="Credential">
               <PropertyRef Name="emp_no" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requests_Employee">
-          <End Type="TotalFireSafetyModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="TotalFireSafetyModel.Request" Role="Request" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="emp_no" />
-            </Principal>
-            <Dependent Role="Request">
-              <PropertyRef Name="request_employee_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -358,6 +331,33 @@
             </Principal>
             <Dependent Role="Inv_Update">
               <PropertyRef Name="update_item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="request_id" />
+          </Key>
+          <Property Name="request_id" Type="Guid" Nullable="false" />
+          <Property Name="request_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_item" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_item_quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="request_employee_id" Type="Int32" Nullable="false" />
+          <Property Name="request_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="request_type_id" Type="Int32" />
+          <NavigationProperty Name="Employee" Relationship="TotalFireSafetyModel.FK_Requests_Employee" FromRole="Request" ToRole="Employee" />
+          <NavigationProperty Name="Inventory" Relationship="TotalFireSafetyModel.FK_Requests_Inventory" FromRole="Request" ToRole="Inventory" />
+        </EntityType>
+        <Association Name="FK_Requests_Employee">
+          <End Type="TotalFireSafetyModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="TotalFireSafetyModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="request_employee_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -424,20 +424,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Requests">
-            <EntityTypeMapping TypeName="TotalFireSafetyModel.Request">
-              <MappingFragment StoreEntitySet="Requests">
-                <ScalarProperty Name="request_status" ColumnName="request_status" />
-                <ScalarProperty Name="request_employee_id" ColumnName="request_employee_id" />
-                <ScalarProperty Name="request_date" ColumnName="request_date" />
-                <ScalarProperty Name="request_item_quantity" ColumnName="request_item_quantity" />
-                <ScalarProperty Name="request_item" ColumnName="request_item" />
-                <ScalarProperty Name="request_type_id" ColumnName="request_type_id" />
-                <ScalarProperty Name="request_type" ColumnName="request_type" />
-                <ScalarProperty Name="request_id" ColumnName="request_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="TotalFireSafetyModel.Role">
               <MappingFragment StoreEntitySet="Roles">
@@ -454,6 +440,20 @@
                 <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requests">
+            <EntityTypeMapping TypeName="TotalFireSafetyModel.Request">
+              <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="request_type_id" ColumnName="request_type_id" />
+                <ScalarProperty Name="request_status" ColumnName="request_status" />
+                <ScalarProperty Name="request_employee_id" ColumnName="request_employee_id" />
+                <ScalarProperty Name="request_date" ColumnName="request_date" />
+                <ScalarProperty Name="request_item_quantity" ColumnName="request_item_quantity" />
+                <ScalarProperty Name="request_item" ColumnName="request_item" />
+                <ScalarProperty Name="request_type" ColumnName="request_type" />
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

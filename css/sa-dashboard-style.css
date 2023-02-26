@@ -920,7 +920,7 @@ right .d-drop-btn {
 }
 
 .sum-chart-card {
-    width: 75%;
+    width: 100%;
     height: 200px;
 }
 
@@ -928,7 +928,8 @@ right .d-drop-btn {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 2rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
+    margin-left: 25rem;
 }
 
 .sum-card-title h3 {
@@ -1005,62 +1006,7 @@ right .d-drop-btn {
     font-size: 2em;
 }
 
-.proj-circle-wrap {
-    width: 150px;
-    height: 150px;
-    background: #f1f5f9;
-    border-radius: 50%;
-    border: 1px solid #cdcbd0;
-}
 
-    .proj-circle-wrap .proj-circle .proj-mask,
-    .proj-circle-wrap .proj-circle .proj {
-        width: 150px;
-        height: 150px;
-        position: absolute;
-        border-radius: 50%;
-    }
-
-.proj-mask .proj {
-    clip: rect(0px, 75px, 150px, 0px);
-    background-color: #1F8A70;
-}
-
-.proj-circle-wrap .proj-circle .proj-mask {
-    clip: rect(0px, 150px, 150px, 75px);
-}
-
-.proj-mask.proj-full,
-.proj-circle .proj {
-    animation: inv ease-in-out 1s;
-    transform: rotate(135deg);
-}
-
-@keyframes proj {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(135deg);
-    }
-}
-
-.proj-circle-wrap .proj-inside-circle {
-    width: 122px;
-    height: 122px;
-    border-radius: 50%;
-    background: #fff;
-    line-height: 120px;
-    text-align: center;
-    margin-top: 14px;
-    margin-left: 14px;
-    color: #000;
-    position: absolute;
-    z-index: none;
-    font-weight: 700;
-    font-size: 2em;
-}
 
 
 .pur-circle-wrap {
@@ -1122,7 +1068,7 @@ right .d-drop-btn {
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 2rem;
     margin-top: 1rem;
     margin-bottom: 50px;
@@ -1451,6 +1397,8 @@ right .d-drop-btn {
     font-size: 1rem;
     font-weight: 500;
 }
+
+
 
 .inventory-header .inventory-buttons-style {
     display: flex;
@@ -4617,11 +4565,7 @@ right .d-drop-btn {
     overflow: hidden;
 }
 
-    .form-container form .form {
-        position: absolute;
-        background-color: #fff;
-        transition: 0.3s ease;
-    }
+
 
     .form-container form .form-contents {
         margin-top: 1rem;
@@ -5404,6 +5348,62 @@ right .d-drop-btn {
 }
 
 @media all and (max-width: 1280px) {
+    /* USERS STYLE RESPONSIVE 
+        .user-projects {
+            margin: 0;
+            padding: 0;
+            margin-top: 10px;
+        }
+    
+        .user-header {
+            display: inline-block;
+        }
+    
+        .user-header h3 {
+            margin-left: -20px;
+        }
+    
+        .user-header .user-buttons-style {
+            margin-left: 670px;
+        }
+    
+        .user-header button {
+            margin-left: 2px;
+        }
+    
+        .user-header .user-sort-btn {
+            margin-left: 2px;
+        }
+    
+        .user-body table {
+            margin: 0;
+        } 
+    
+        .add-popup {
+            width: 50%;
+            margin-top: 200px;
+        }
+
+        .add-container .form-container {
+            height: 200px;
+        }
+    
+        .form-container .form-header {
+            font-size: 15px;
+        }
+    
+        .form-container form {
+            width: 700px;
+        }
+    
+        .form-container form .fields .input-field {
+            width: calc(100% / 3 - 15px);
+        }
+    
+        .form-container form button, .btnText {
+            width: 150px;
+        }
+        /* END */
 }
 
 @media all and (max-width: 768px) {
@@ -5589,14 +5589,20 @@ right .d-drop-btn {
         font-size: 15px;
     }
 
-    .inventory-form-container form .fields .input-field {
-        width: calc(100% / 2 - 15px);
-        margin: 2px 0;
+    .inventory-form-container form {
+        width: 400px;
+        margin-top: 10px;
+        margin-left: 30px;
     }
 
-    .inventory-form-container form button, .btnText {
-        width: 150px;
-    }
+        .inventory-form-container form .fields .input-field {
+            width: calc(100% / 1 - 15px);
+            margin: 2px 0;
+        }
+
+        .inventory-form-container form button, .btnText {
+            width: 150px;
+        }
 
     .inventory-add-container .inventory-form-container .inventory-buttons-style button {
         width: 100px;
@@ -5650,6 +5656,78 @@ right .d-drop-btn {
         width: 100px;
     }
 
+    /* END */
+
+    /* DEPLOYMENT REQUST STYLE RESPONSIVE */
+
+    /* END */
+
+    /* SUPPLY REQUST STYLE RESPONSIVE */
+
+    /* END */
+
+    /* PROJECTS STYLE RESPONSIVE */
+
+    /* END */
+
+    /* USERS STYLE RESPONSIVE */
+    .user-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .user-header {
+        margin-left: 0;
+        display: inline-block;
+    }
+
+        .user-header h3 {
+            font-size: 1rem;
+            margin: 0;
+            margin-bottom: -30px;
+        }
+
+        .user-header .user-buttons-style {
+            margin-left: 140px;
+        }
+
+        .user-header button {
+            margin-left: 2px;
+        }
+
+        .user-header .user-sort-btn {
+            margin-left: 2px;
+        }
+
+    .user-body table {
+        margin: 0;
+    }
+
+    .add-popup {
+        width: 100%;
+        margin: 0;
+    }
+
+    .form-container .form-header {
+        font-size: 15px;
+        margin-top: 50px;
+    }
+
+    .form-container form {
+        width: 400px;
+        margin: 0;
+        margin-left: 5px;
+    }
+
+        .form-container form .fields .input-field {
+            width: calc(100% / 1 - 15px);
+            margin: 0;
+        }
+
+        .form-container form button, .btnText {
+            width: 150px;
+        }
     /* END */
 
 }
@@ -5755,20 +5833,21 @@ right .d-drop-btn {
 
     .inventory-form-container form {
         width: 400px;
+        margin: 0;
+        margin-top: 100px;
+        margin-left: 5px;
     }
 
         .inventory-form-container form .fields .input-field {
-            width: calc(100% / 2 - 15px);
-            margin: 2px 0;
+            width: calc(100% / 1 - 15px);
+            margin: 0;
         }
 
         .inventory-form-container form button, .btnText {
             width: 150px;
         }
 
-    .arch-popup {
-        width: 100%;
-    }
+
 
     /* END */
 
@@ -5825,7 +5904,63 @@ right .d-drop-btn {
     /* END */
 
     /* USERS STYLE RESPONSIVE */
+    .user-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
 
+    .user-header {
+        margin-left: 0;
+        display: inline-block;
+    }
+
+        .user-header h3 {
+            font-size: 1rem;
+            margin: 0;
+            margin-bottom: -30px;
+        }
+
+        .user-header .user-buttons-style {
+            margin-left: 140px;
+        }
+
+        .user-header button {
+            margin-left: 2px;
+        }
+
+        .user-header .user-sort-btn {
+            margin-left: 2px;
+        }
+
+    .user-body table {
+        margin: 0;
+    }
+
+    .add-popup {
+        width: 100%;
+        margin: 0;
+    }
+
+    .form-container .form-header {
+        font-size: 15px;
+    }
+
+    .form-container form {
+        width: 400px;
+        margin: 0;
+        margin-top: 100px;
+        margin-left: 5px;
+    }
+
+        .form-container form .fields .input-field {
+            width: calc(100% / 1 - 15px);
+            margin: 0;
+        }
+
+        .form-container form button, .btnText {
+            width: 150px;
+        }
     /* END */
 
 

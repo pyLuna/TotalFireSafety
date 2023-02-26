@@ -327,6 +327,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\chart.js" />
+    <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\Inventory.js" />
     <Content Include="Scripts\js\app.js" />
     <Content Include="Scripts\js\chart1.js" />
@@ -387,7 +389,7 @@
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="Views\AdminLayout.cshtml" />
     <Content Include="Views\Admin\Dashboard.cshtml" />
-    <Content Include="Views\Admin\ExportPurchase.cshtml" />
+    <Content Include="Views\Admin\ExportRequest.cshtml" />
     <Content Include="Views\Admin\Inventory.cshtml" />
     <Content Include="Views\Admin\Projects.cshtml" />
     <Content Include="Views\Admin\Requisition.cshtml" />

@@ -27,10 +27,10 @@ namespace TotalFireSafety.Models
         public string emp_position { get; set; }
     
         public virtual Credential Credential { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Request> Requests { get; set; }
         public virtual Role Role { get; set; }
         public virtual Status Status { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Request> Requests { get; set; }
 
         public string formType { get; set; }
 

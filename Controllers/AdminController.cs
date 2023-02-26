@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using TotalFireSafety.Models;
 
@@ -14,6 +15,10 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult GetBarcode(string itemCode)
         {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             var userToken = Session["access_token"].ToString();
             var response = api_req.BarcodeGenerator(userToken, itemCode);
 
@@ -24,6 +29,10 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult FindDataOf(string requestType)
         {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             try
             {
                 var userToken = Session["access_token"].ToString();
@@ -60,11 +69,62 @@ namespace TotalFireSafety.Controllers
             {
                 return RedirectToAction("Login", "Base");
             }
+            //Count for employees
+            TFSEntity db = new TFSEntity();
+            int dataCount = db.Employees.Count(); // Replace "Data" with your model class name
+            ViewBag.DataCount = dataCount;
+
+
+            int Active = db.Status.Count(u => u.emp_no == 1);
+            ViewBag.active = Active;
+
+            //count for circle
+            int inventoryCount = db.Inventories.Count(); // Replace "Data" with your model class name
+            ViewBag.Inventory = inventoryCount;
+
+
+
+            //count request
+            int purchase = db.Requests.Count(x => x.request_type == "Purchase");
+            ViewBag.Purchase = purchase;
+
+            int entries = db.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "pending");
+            ViewBag.Entries = entries;
+
+            int entrieses = db.Requests.Count(x => x.request_type == "Deployment" && x.request_status == "pending");
+            ViewBag.Entrieses = entrieses;
+
+            int supply = db.Requests.Count(x => x.request_type == "Supply");
+            ViewBag.Supply = supply;
+
+            int deployment = db.Requests.Count(x => x.request_type == "Deployment");
+            ViewBag.Deployment = deployment;
+
+
+            //chart
+            var products = db.Inventories.ToList();
+
+            var data = products.Select(p => new {
+                Name = p.in_name,
+                Quantity = int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Category = p.in_class
+            }).ToList();
+
+
+
+            ViewBag.Data = data;
+
+
+
             return View();
         }
         [HttpPost]
         public ActionResult AddItem1(Inventory item)
         {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             var serializedModel = JsonConvert.SerializeObject(item);
             var userToken = Session["access_token"].ToString();
             string uri;
@@ -93,6 +153,10 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult DeleteItem(string item)
         {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             var addCode = new Inventory()
             {
                 in_code = item
@@ -126,6 +190,10 @@ namespace TotalFireSafety.Controllers
         //  Users
         public ActionResult Users()
         {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             Session["editUser"] = null;
             return View();
         }
@@ -145,6 +213,11 @@ namespace TotalFireSafety.Controllers
         //    }
         //    return new Tuple<string, string> (uri,message);
         //}
+
+        public ActionResult ExportRequest()
+        {
+            return View();
+        }
 
         [HttpPost]
         public ActionResult Users(Employee employee)
@@ -182,6 +255,10 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult SearchEmployee()
         {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             try
             {
                 var userToken = Session["access_token"].ToString();
@@ -201,17 +278,52 @@ namespace TotalFireSafety.Controllers
         
         public ActionResult Requisition()
         {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             return View();
+        }
+        [HttpPost]
+        public ActionResult Requisition([System.Web.Http.FromBody] Request[] jsonData,[System.Web.Http.FromUri] string formType)
+        {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            var userToken = Session["access_token"].ToString();
+            var newData = JsonConvert.SerializeObject(jsonData);
+            //var serializedModel = JsonConvert.DeserializeObject<List<Request>>(newData);
+            string uri = "";
+            if(formType == "add")
+            {
+                uri = "Requests/Add";
+            }
+            else
+            {
+                uri = "Requests/Edit";
+            }
+
+
+            var response = api_req.SetMethod(uri, userToken, newData);
+            var json = JsonConvert.DeserializeObject(response);
+
+            JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+            Response.ContentType = "application/json"; // Set the Content-Type header
+            return result;
         }
 
         public ActionResult Projects()
         {
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             return View();
         }
         [HttpPost]
         public ActionResult Logout()
         {
-
             // DONT FORGET TO CLEAR SESSIONS, TOKENS AND OTHERS
             Session.Clear();
             return RedirectToAction("Login", "Base");

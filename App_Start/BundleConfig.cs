@@ -42,7 +42,6 @@ namespace TotalFireSafety
                 ));
             bundles.Add(new ScriptBundle("~/script/admin").Include(
                         "~/Scripts/js/chart1.js",
-                        "~/Scripts/js/chart2.js",
                         "~/Scripts/js/chart3.js"
                 ));
 

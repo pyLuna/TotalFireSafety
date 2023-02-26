@@ -22,7 +22,7 @@ namespace TotalFireSafety.Models
         public string BaseDomain()
         {
             string domain;
-            domain = HttpContext.Current.Request.Url.Host;
+            domain = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority);
 
             if (domain == "localhost")
             {

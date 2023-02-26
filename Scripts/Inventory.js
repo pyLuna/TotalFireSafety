@@ -55,7 +55,6 @@ function setTable(array) {
             if (array[i].in_size == null || array[i].in_size == "") {
                 array[i].in_size = '';
             }
-            //<td name="in_quantity"><label>${array[i].in_dateAdded}</label></td>
             var row = `<tr>`; /*onclick = "canOpenPopup()"*/
             row += `<td id="in_code"><label>${array[i].in_code}</label></td><td name="in_name"><label>${array[i].in_name}</label></td><td name="in_category"><label>${array[i].in_category}</label></td><td name="in_type"><label>${array[i].in_type}</label></td><td name="in_size"><label>${array[i].in_size}</label></td><td name="in_quantity"><label>${array[i].in_quantity}</label></td><td name="in_class"><label>${array[i].in_class}</label></td>`;
             row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
@@ -110,7 +109,7 @@ function SortByCategory(value) {
     }
 }
 
-function setField(value) {
+function setField(value,typeOf) {
     let name = document.querySelector('#itemName');
     let size = document.querySelector('#itemSize');
     let sizeMeas = document.querySelector('#itemSizeMeas');
@@ -122,10 +121,6 @@ function setField(value) {
     let hidCategory = document.getElementById("hiddenCategory");
     let hidType = document.getElementById("hiddenType");
     localStorage.clear();
-
-    //if (value != null) {
-    //    return;
-    //}
 
     for (var i = 0; i < fixedArray.length; i++) {
         if (fixedArray[i]?.in_code == value) {
@@ -141,6 +136,23 @@ function setField(value) {
     let sizeValue = extractNum(filtered[0]?.in_size);
     let quantityValue = extractNum(filtered[0]?.in_quantity);
 
+    if (typeOf != "quant") {
+        if (quantityValue.num !== 0) {
+            quantity.value = quantityValue.num;
+            localStorage.setItem("quantity", quantityValue.num);
+            localStorage.setItem("quantityMeas", quantityValue.measurement);
+        } else {
+            quantity.value = null;
+        }
+    }
+
+    for (let i = 0; i < quantityMeas.options.length; i++) {
+        let option = quantityMeas.options[i];
+        if (quantityValue.measurement == option.value) {
+            quantityMeas.selectedIndex = i;
+        }
+    }
+
     if (sizeValue.num !== 0) {
         size.value = sizeValue.num;
         localStorage.setItem("size", sizeValue.num);
@@ -149,25 +161,10 @@ function setField(value) {
         size.value = null;
     }
 
-    if (quantityValue.num !== 0) {
-        quantity.value = quantityValue.num;
-        localStorage.setItem("quantity", quantityValue.num);
-        localStorage.setItem("quantityMeas", quantityValue.measurement);
-    } else {
-        quantity.value = null;
-    }
-
     for (let i = 0; i < sizeMeas.options.length; i++) {
         let option = sizeMeas.options[i];
         if (sizeValue.measurement == option.value) {
             sizeMeas.selectedIndex = i;
-        }
-    }
-
-    for (let i = 0; i < quantityMeas.options.length; i++) {
-        let option = quantityMeas.options[i];
-        if (quantityValue.measurement == option.value) {
-            quantityMeas.selectedIndex = i;
         }
     }
 
@@ -310,9 +307,8 @@ function AddValue(value,typeOf) {
     }
     else
     {
-        
+        setQuantity();
     }
-    console.log(hiddenQuant.value);
 }
 
 function setQuantity() {

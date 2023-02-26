@@ -77,7 +77,7 @@
                                     <div class="fields">
                                         <div class="input-field">
                                             <label>Item Code</label> @*oninput="dataListOption(this.value)"*@
-                                            <input type="text" id="itemCode" oninput="dataListOption(this.value)" list="itemList" name="in_code" placeholder="ABC-DEF-GHI">
+                                            <input type="text" id="itemCode" list="itemList" name="in_code" placeholder="ABC-DEF-GHI">
                                             <datalist id="itemList">
                                             </datalist>
                                         </div>
@@ -256,21 +256,17 @@
         addnewitem.addEventListener("click", addNewItem);
         size.addEventListener("keyup", setHiddenSize);
 
-        function dataListOption(value) {
-            processBarcode();
-        }
-
         function addNewItem() {
             let formType = document.getElementById("formType");
             formType.value = "add";
             size.removeEventListener("keyup", setHiddenSize);
-            code.removeEventListener("keyup", processBarcode);
+            //code.removeEventListener("keyup", processBarcode);
             quantity.removeEventListener("keyup", insertAdd);
             quantity.removeEventListener("keyup", insertEdit);
 
             code.removeAttribute("readonly");
 
-            code.addEventListener("keyup", NewCodeListener);
+            //code.addEventListener("keyup", NewCodeListener);
             quantity.addEventListener("keyup", setQuantity);
             size.addEventListener("keyup", setSize);
             removeAttrib();
@@ -311,7 +307,7 @@
             console.log(hidType.value);
         });
 
-    function insertAdd() {
+        function insertAdd() {
             AddValue(quantity.value, 'add');
         }
 
@@ -361,41 +357,54 @@
             //quantity.setAttribute("type","number")
         }
 
-        code.addEventListener("keyup", processBarcode);
+    form.addEventListener("keydown", function (event) {
+        if (code.value == "") {
+            resetForm();
+        }
+        if (event.which === 13 || event.keyCode === 13) {
+            event.preventDefault();
+            // retrieve the scanned value
+            if (sliced.length == 0) {
+                sliced = code.value;
+            }
 
-        function processBarcode(event) {
-            if (event != null) {
-                if (event.which === 13 || event.keyCode === 13) {
-                // retrieve the scanned value
-                if (sliced.length == 0) {
-                    sliced = code.value;
-                }
-
-                if (code.value.length != prevVal.length) {
-                    if (prevVal.length != 0) {
-                        var index = 0;
-                        while (index <= prevVal.length) {
-                            index++;
-                        }
-                        sliced = code.value.slice(index - 1);
+            if (code.value.length != prevVal.length) {
+                if (prevVal.length != 0) {
+                    var index = 0;
+                    while (index <= prevVal.length) {
+                        index++;
                     }
+                    sliced = code.value.slice(index - 1);
                 }
+            }
                 @{
                     Session["add"] = "active";
                 }
 
-                if (sliced.length != 0) {
-                    code.value = sliced;
-                }
-
-                    prevVal = code.value;
-                    //quantity.value = 1;
-                }
-                setField(code.value);
-                AddValue(quantity.value, 'add');
-                event.preventDefault();
+            if (sliced.length != 0) {
+                code.value = sliced;
             }
+            setField(code.value, 'quant');
+            AddValue(quantity.value, 'add');
+            let prevNum = quantity.value;
+            if (quantity.value == "" && prevNum == "" || code.value !== prevVal) {
+                quantity.value = 1;
+            }
+            else if (code.value === prevVal && prevVal != "" && sliced != "") {
+                quantity.value = Number(prevNum) + 1;
+            }
+            prevVal = sliced;
         }
+    });
+    code.addEventListener("input", processBarcode);
+
+    function processBarcode(event) {
+        if (event.which !== 13 || event.keyCode !== 13) {
+            setField(code.value, 'quant');
+            AddValue(quantity.value, 'add');
+            quantity.value = 1;
+        }
+    }
 
         function EditListener() {
             quantity.removeEventListener("keyup", insertAdd);
@@ -426,7 +435,7 @@
             addpopupinv.classList.add("add-popup-inv-show");
             code.setAttribute("readonly", true);
             removeAttrib();
-            setField(value);
+            setField(value,null);
             code.value = value;
             addnewitem.style.display = "none";
             AddValue(value, 'edit');

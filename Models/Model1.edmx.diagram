@@ -9,16 +9,16 @@
         <EntityTypeShape EntityType="TotalFireSafetyModel.Employee" Width="1.5" PointX="0.75" PointY="7" />
         <EntityTypeShape EntityType="TotalFireSafetyModel.Inv_Update" Width="1.5" PointX="6" PointY="4" />
         <EntityTypeShape EntityType="TotalFireSafetyModel.Inventory" Width="1.5" PointX="3.75" PointY="0.75" />
-        <EntityTypeShape EntityType="TotalFireSafetyModel.Request" Width="1.5" PointX="6" PointY="6.875" />
         <EntityTypeShape EntityType="TotalFireSafetyModel.Role" Width="1.5" PointX="3" PointY="11" />
         <EntityTypeShape EntityType="TotalFireSafetyModel.Status" Width="1.5" PointX="3" PointY="4.75" />
         <AssociationConnector Association="TotalFireSafetyModel.FK_Credentials_Employee" />
-        <AssociationConnector Association="TotalFireSafetyModel.FK_Requests_Employee" />
         <AssociationConnector Association="TotalFireSafetyModel.FK_Roles_Employee" />
         <AssociationConnector Association="TotalFireSafetyModel.FK_Status_Employee" />
         <AssociationConnector Association="TotalFireSafetyModel.FK_Inv_Update_Inventory" />
+        <EntityTypeShape EntityType="TotalFireSafetyModel.Request" Width="1.5" PointX="6" PointY="6.75" />
+        <AssociationConnector Association="TotalFireSafetyModel.FK_Requests_Employee" />
         <AssociationConnector Association="TotalFireSafetyModel.FK_Requests_Inventory" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

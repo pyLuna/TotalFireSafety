@@ -251,7 +251,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-       
+
         //private Tuple<string,string> setUri(int isEdit)
         //{
         //    string uri,message;
@@ -268,9 +268,21 @@ namespace TotalFireSafety.Controllers
         //    return new Tuple<string, string> (uri,message);
         //}
 
-        public ActionResult ExportRequest()
+        public ActionResult ExportRequest(int? id)
         {
-            return View();
+            var empId = Session["emp_no"].ToString();
+            TFSEntity db = new TFSEntity();
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            var data = db.Requests.Where(d => d.request_type_id == id).ToList();
+           
+            return View(data);
+
+            var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
+            return View(datas);
         }
 
         [HttpPost]

@@ -225,9 +225,9 @@
     </div>
 
     <script>
-        let imageInput = document.getElementById('SaveImage');
+        let imageInput = document.getElementById('file-upload');
 
-        imageInput.addEventListener('change', (event) => {
+        imageInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
 
             // Create a FormData object to send the file
@@ -246,6 +246,7 @@
                     return response.json();
                 })
                 .then(data => {
+                    window.location.reload();
                     console.log('Response:', data);
                 })
                 .catch(error => {

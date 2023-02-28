@@ -671,6 +671,9 @@ namespace TotalFireSafety.Controllers
                             creds.username = _emp.Credential.username;
                             creds.password = _emp.Credential.password;
 
+                            _context.Entry(creds);
+                            _context.Entry(status);
+                            _context.Entry(roles);
                             _context.Entry(emp);
                             _context.SaveChanges();
                             return Ok("Employee Added");

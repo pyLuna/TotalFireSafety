@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using TotalFireSafety.Models;
 
@@ -12,16 +15,70 @@ namespace TotalFireSafety.Controllers
     {
         // GET: Admin
         readonly APIRequestHandler api_req = new APIRequestHandler();
+        protected string GetPath(int emp_no)
+        {
+            using(var _context = new TFSEntity())
+            {
+                var user = _context.Employees.Where(x => x.emp_no == emp_no).SingleOrDefault();
+                if(user.ProfilePath != null)
+                {
+                    return user.ProfilePath;
+                }
+
+                return "~/images/profile.png";
+            }
+        }
+        [HttpPost]
+        public ActionResult SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
+        {
+            var empId = Session["emp_no"].ToString();
+            if(empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            // Check if a file was uploaded
+            try
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    // Store the file path in the database as a string using Entity Framework
+                    using (var _context = new TFSEntity())
+                    {
+                        // Get the filename and extension of the uploaded file
+                        string filename = Path.GetFileName(file.FileName);
+                        string extension = Path.GetExtension(filename);
+                        // Generate a unique filename
+                        string uniqueFilename = Guid.NewGuid().ToString() + extension;
+                        // Save the uploaded file to a folder on the server
+                        string folderPath = "~/Uploads/Images/";
+                        string serverFolderPath = HostingEnvironment.MapPath(folderPath);
+                        string serverFilePath = Path.Combine(serverFolderPath, uniqueFilename);
+                        file.SaveAs(serverFilePath);
+                        var user = _context.Employees.Where(x => x.emp_no == int.Parse(empId)).SingleOrDefault();
+                        var image = folderPath + uniqueFilename;
+                        user.ProfilePath = image;
+                        _context.Entry(user);
+                        _context.SaveChanges();
+                        return Json("Success");
+                    }
+                }
+                return Json("File is Empty");
+            }
+            catch(Exception ex)
+            {
+                return RedirectToAction("Dashboard",ex);
+            }
+        }
         [HttpPost]
         public ActionResult GetBarcode(string itemCode)
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
             var userToken = Session["access_token"].ToString();
             var response = api_req.BarcodeGenerator(userToken, itemCode);
-
             JsonResult result = Json(response, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             return result;
@@ -29,7 +86,8 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult FindDataOf(string requestType)
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -53,7 +111,6 @@ namespace TotalFireSafety.Controllers
                     requisition = JsonConvert.DeserializeObject<List<Request>>(response);
                     result = Json(requisition, JsonRequestBehavior.AllowGet);
                 }
-
                 Response.ContentType = "application/json"; // Set the Content-Type header
                 return result;
             }
@@ -65,63 +122,48 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult Dashboard()
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             //Count for employees
-            TFSEntity db = new TFSEntity();
-            int dataCount = db.Employees.Count(); // Replace "Data" with your model class name
+            TFSEntity _context = new TFSEntity();
+            int dataCount = _context.Employees.Count(); // Replace "Data" with your model class name
             ViewBag.DataCount = dataCount;
-
-
-            int Active = db.Status.Count(u => u.emp_no == 1);
+            int Active = _context.Status.Count(u => u.emp_no == 1);
             ViewBag.active = Active;
-
             //count for circle
-            int inventoryCount = db.Inventories.Count(); // Replace "Data" with your model class name
+            int inventoryCount = _context.Inventories.Count(); // Replace "Data" with your model class name
             ViewBag.Inventory = inventoryCount;
-
-
-
             //count request
-            int purchase = db.Requests.Count(x => x.request_type == "Purchase");
+            int purchase = _context.Requests.Count(x => x.request_type == "Purchase");
             ViewBag.Purchase = purchase;
-
-            int entries = db.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "pending");
+            int entries = _context.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "pending");
             ViewBag.Entries = entries;
-
-            int entrieses = db.Requests.Count(x => x.request_type == "Deployment" && x.request_status == "pending");
+            int entrieses = _context.Requests.Count(x => x.request_type == "Deployment" && x.request_status == "pending");
             ViewBag.Entrieses = entrieses;
-
-            int supply = db.Requests.Count(x => x.request_type == "Supply");
+            int supply = _context.Requests.Count(x => x.request_type == "Supply");
             ViewBag.Supply = supply;
-
-            int deployment = db.Requests.Count(x => x.request_type == "Deployment");
+            int deployment = _context.Requests.Count(x => x.request_type == "Deployment");
             ViewBag.Deployment = deployment;
-
-
             //chart
-            var products = db.Inventories.ToList();
-
+            var products = _context.Inventories.ToList();
             var data = products.Select(p => new {
                 Name = p.in_name,
                 Quantity = int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray())),
                 Category = p.in_class
             }).ToList();
-
-
-
             ViewBag.Data = data;
-
-
-
             return View();
         }
+
         [HttpPost]
         public ActionResult AddItem1(Inventory item)
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -153,7 +195,8 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult DeleteItem(string item)
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -163,9 +206,7 @@ namespace TotalFireSafety.Controllers
             };
             var serializedModel = JsonConvert.SerializeObject(addCode);
             var userToken = Session["access_token"].ToString();
-
             var response = api_req.SetMethod("Warehouse/Inventory/Delete", userToken, serializedModel);
-
             if (response == "BadRequest" || response == "InternalServerError")
             {
                 return Json("error");
@@ -176,7 +217,8 @@ namespace TotalFireSafety.Controllers
         //  Inventory
         public ActionResult Inventory()
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -184,17 +226,20 @@ namespace TotalFireSafety.Controllers
             {
                 Session["edit"] = "pending";
             }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
 
         //  Users
         public ActionResult Users()
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
             Session["editUser"] = null;
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
        
@@ -222,11 +267,11 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult Users(Employee employee)
         {
-            if(Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if(empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
-
             var serializedModel = JsonConvert.SerializeObject(employee);
             var userToken = Session["access_token"].ToString();
             string uri = "", message = "";
@@ -255,7 +300,8 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult SearchEmployee()
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -263,9 +309,7 @@ namespace TotalFireSafety.Controllers
             {
                 var userToken = Session["access_token"].ToString();
                 var response = api_req.GetAllMethod("/Admin/Employee", userToken);
-
                 var json = JsonConvert.DeserializeObject<List<Employee>>(response);
-
                 JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 Response.ContentType = "application/json"; // Set the Content-Type header
                 return result;
@@ -275,19 +319,23 @@ namespace TotalFireSafety.Controllers
                 return Json(ex);
             }
         }
-        
+
         public ActionResult Requisition()
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+
         [HttpPost]
         public ActionResult Requisition([System.Web.Http.FromBody] Request[] jsonData,[System.Web.Http.FromUri] string formType)
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -303,11 +351,8 @@ namespace TotalFireSafety.Controllers
             {
                 uri = "Requests/Edit";
             }
-
-
             var response = api_req.SetMethod(uri, userToken, newData);
             var json = JsonConvert.DeserializeObject(response);
-
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             return result;
@@ -315,10 +360,12 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult Projects()
         {
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"].ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
         [HttpPost]
@@ -328,6 +375,5 @@ namespace TotalFireSafety.Controllers
             Session.Clear();
             return RedirectToAction("Login", "Base");
         }
-
     }
 }

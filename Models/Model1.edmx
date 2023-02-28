@@ -22,6 +22,7 @@
           <Property Name="emp_hiredDate" Type="date" />
           <Property Name="emp_contact" Type="bigint" Nullable="false" />
           <Property Name="emp_position" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProfilePath" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Inv_Update">
           <Key>
@@ -240,6 +241,7 @@
           <NavigationProperty Name="Role" Relationship="TotalFireSafetyModel.FK_Roles_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="Status" Relationship="TotalFireSafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
           <NavigationProperty Name="Requests" Relationship="TotalFireSafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
+          <Property Name="ProfilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Inv_Update">
           <Key>
@@ -391,6 +393,7 @@
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="TotalFireSafetyModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="ProfilePath" ColumnName="ProfilePath" />
                 <ScalarProperty Name="emp_position" ColumnName="emp_position" />
                 <ScalarProperty Name="emp_contact" ColumnName="emp_contact" />
                 <ScalarProperty Name="emp_hiredDate" ColumnName="emp_hiredDate" />

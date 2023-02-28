@@ -690,8 +690,34 @@ namespace TotalFireSafety.Controllers
 
         }
         #endregion
-        
+
         #region Inventory
+        [Authorize(Roles = "warehouse,admin")]
+        [Route("Warehouse/Inventory/Archive")]
+        [HttpGet]
+        public IHttpActionResult GetAllArchivedItem()
+        {
+            try
+            {
+                using (var _context = new TFSEntity())
+                {
+                    var items = _context.Inventories.Where(x => x.in_status == "archived");
+
+                    var _jsonSerialized = JsonConvert.SerializeObject(items, Formatting.None, new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                    //  Deserialize the serialized json format to remove the escape characters like \ 
+                    var _jsonDeserialized = JsonConvert.DeserializeObject<List<Inventory>>(_jsonSerialized);
+
+                    return Ok(_jsonDeserialized);
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
         [Authorize(Roles = "warehouse,admin")]
         [Route("Warehouse/Inventory")]
         [HttpGet]

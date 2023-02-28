@@ -31,7 +31,7 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if(empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -76,7 +76,7 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult GetBarcode(string itemCode)
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -91,7 +91,7 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult FindDataOf(string requestType)
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -127,7 +127,7 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult Dashboard()
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -167,7 +167,7 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult AddItem1(Inventory item)
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -202,7 +202,7 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult DeleteItem(string item)
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -226,7 +226,7 @@ namespace TotalFireSafety.Controllers
         //  Inventory
         public ActionResult Inventory()
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -242,7 +242,7 @@ namespace TotalFireSafety.Controllers
         //  Users
         public ActionResult Users()
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -276,7 +276,7 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult Users(Employee employee)
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if(empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -311,7 +311,7 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult SearchEmployee()
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -334,7 +334,7 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult Requisition()
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -346,7 +346,7 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult Requisition([System.Web.Http.FromBody] Request[] jsonData,[System.Web.Http.FromUri] string formType)
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -373,7 +373,7 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult Projects()
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -387,6 +387,10 @@ namespace TotalFireSafety.Controllers
             // DONT FORGET TO CLEAR SESSIONS, TOKENS AND OTHERS
             Session.Clear();
             return RedirectToAction("Login", "Base");
+        }
+        public ActionResult InvArchive()
+        {
+            return View();
         }
     }
 }

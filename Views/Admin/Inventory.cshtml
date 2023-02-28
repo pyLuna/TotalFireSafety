@@ -40,11 +40,9 @@
             <div class="inventory-header" id="tableTitle">
                 <h3>INVENTORY ITEMS</h3>
                 <div class="inventory-buttons-style" id="hideBtn">
-                    @*<button class="add-btn" title="ADD NEW ITEM"><a href="@Url.Action("AddItem","Admin")"><span class="las la-plus-circle"></span></a></button>*@
                     <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()"><a><span class="las la-plus-circle"></span></a></button>
                     <button class="pri-btn" title="PRINT REPORT" id="printBtn" @*onclick="printOpenPopup()"*@> <a href="#"><span class="las la-print"></span></a></button>
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportTable()"> <a href="#"><span class="las la-file-download"></span></a></button>
-                    @*<button class="expo-btn" title="ARCHIVE" onclick="OpenArchPopup()"> <a href="#"><span class="las la-file-archive"></span></a></button>*@
                     <button class="inventory-sort-btn" onclick="userSortFunction()">
                         <span></span>
                         <span class="las la-chevron-down"></span>
@@ -114,7 +112,6 @@
                                         <div class="input-field">
                                             <label>Size</label>
                                             <div class="input-field-size">
-                                                @*onkeyup="setHiddenSize()"*@
                                                 <input type="number" placeholder="00000" id="itemSize" readonly>
                                                 <select readonly id="itemSizeMeas">
                                                     <option disabled selected>Measurement</option>
@@ -254,19 +251,21 @@
         let prevVal = "";
 
         addnewitem.addEventListener("click", addNewItem);
-        size.addEventListener("keyup", setHiddenSize);
+    size.addEventListener("keyup", setHiddenSize);
+    sizeMeas.addEventListener("change", setHiddenSize1);
 
         function addNewItem() {
             let formType = document.getElementById("formType");
             formType.value = "add";
             size.removeEventListener("keyup", setHiddenSize);
-            //code.removeEventListener("keyup", processBarcode);
+            code.removeEventListener("input", processBarcode);
+            form.removeEventListener("keydown",Scan);
             quantity.removeEventListener("keyup", insertAdd);
             quantity.removeEventListener("keyup", insertEdit);
 
             code.removeAttribute("readonly");
 
-            //code.addEventListener("keyup", NewCodeListener);
+            code.addEventListener("keyup", NewCodeListener);
             quantity.addEventListener("keyup", setQuantity);
             size.addEventListener("keyup", setSize);
             removeAttrib();
@@ -355,10 +354,10 @@
             sizeMeas.setAttribute("disabled", true);
             addnewitem.style.display = "block";
             //quantity.setAttribute("type","number")
-        }
+    }
 
-    form.addEventListener("keydown", function (event) {
-        if (code.value == "") {
+    function Scan(event) {
+         if (code.value == "") {
             resetForm();
         }
         if (event.which === 13 || event.keyCode === 13) {
@@ -395,7 +394,9 @@
             }
             prevVal = sliced;
         }
-    });
+    }
+
+    form.addEventListener("keydown", Scan);
     code.addEventListener("input", processBarcode);
 
     function processBarcode(event) {

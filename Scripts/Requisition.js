@@ -455,7 +455,8 @@ function setTemplate(array,formType) {
             newRequest.push(newObj);
         }
     }
-    if (formType == "edit") {
+    //if (formType == "edit")
+     else {
         const rows = Array.from(table1.getElementsByTagName('tr')).slice(1);
         for (var i = 0; i < array.length; i++) {
             let newObj = Object.assign({}, template);
@@ -466,7 +467,11 @@ function setTemplate(array,formType) {
             newObj.request_type = array[i].request_type;
             newObj.request_status = array[i].request_status;
             newObj.request_item = array[i].request_item;
-            newObj.request_item_quantity = rows[i].cells[3].innerHTML;
+            if (formType != "stats") {
+                newObj.request_item_quantity = rows[i].cells[3].innerHTML;
+            } else {
+                newObj.request_item_quantity = array[i].request_item_quantity;
+            }
             newRequest.push(newObj);
         }
     }
@@ -546,5 +551,5 @@ function UpdateStatus(idToFind, type) {
     filtered.forEach(function (item) {
         item.request_status = edit;
     });
-    setTemplate(filtered, "edit");
+    setTemplate(filtered, "stats");
 }

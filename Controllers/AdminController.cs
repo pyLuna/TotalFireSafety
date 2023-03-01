@@ -230,6 +230,11 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
+        public ActionResult InvArchive()
+        {
+            return View();
+        }
+
         //  Users
         public ActionResult Users()
         {

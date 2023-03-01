@@ -62,7 +62,8 @@ namespace TotalFireSafety
             using (var _context = new TFSEntity()) //init database connection
             {
                 //find user
-                var _user = _context.Credentials.Where(x => x.username.Equals(context.UserName) && x.password.Equals(context.Password)).SingleOrDefault();
+                var _user = _context.Credentials.Where(x => x.username.Equals(context.UserName,System.StringComparison.CurrentCulture) && x.password.Equals(context.Password, System.StringComparison.CurrentCulture)).SingleOrDefault();
+                //var _user = _context.Credentials.Where(x => string.Equals(x.username,context.UserName, System.StringComparison.CurrentCulture) && string.Equals(x.password, context.Password, System.StringComparison.CurrentCulture)).FirstOrDefault();
                 //verify role
                 if (_user != null)
                 {

@@ -386,16 +386,15 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-        [HttpPost]
         public ActionResult Logout()
         {
             // DONT FORGET TO CLEAR SESSIONS, TOKENS AND OTHERS
             Session.Clear();
             return RedirectToAction("Login", "Base");
         }
-        public ActionResult InvArchive()
-        {
-            return View();
-        }
+        //public ActionResult InvArchive()
+        //{
+        //    return View();
+        //}
     }
 }

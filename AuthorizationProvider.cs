@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin.Security.OAuth;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -58,39 +59,47 @@ namespace TotalFireSafety
         {
             //set token as "bearer"
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-
             using (var _context = new TFSEntity()) //init database connection
             {
-                //find user
-                var _user = _context.Credentials.Where(x => x.username.Equals(context.UserName) && x.password.Equals(context.Password)).SingleOrDefault();
-                //verify role
-                if (_user != null)
+                try
                 {
-                    //find roles
-                    //var _role = _context.Roles.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
-                    var _role = _context.Roles.Where(x => x.emp_no.Equals(_user.emp_no)).SingleOrDefault();
-                    //find status
-                    var _status = _context.Status.Where(x => x.emp_no.Equals(_user.emp_no)).SingleOrDefault();
-                    //var _status = _context.Status.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
-                    string authorization = VerifyRole(_role.role1);
-                    if (IsActive(_status.IsActive))
+                var _user = _context.Credentials.Where(x => x.username == context.UserName && x.password == context.Password).AsEnumerable().First(x => x.username == context.UserName && x.password == context.Password);
+                    //find user
+                    //var _user = _context.Credentials.Where(x => string.Equals(x.username,context.UserName, System.StringComparison.CurrentCulture) && string.Equals(x.password, context.Password, System.StringComparison.CurrentCulture)).FirstOrDefault();
+                    //verify role
+                    if (_user != null)
                     {
-                        if (!IsLocked(_status.IsLocked))
+                        //find roles
+                        //var _role = _context.Roles.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
+                        var _role = _context.Roles.Where(x => x.emp_no.Equals(_user.emp_no)).SingleOrDefault();
+                        //find status
+                        var _status = _context.Status.Where(x => x.emp_no.Equals(_user.emp_no)).SingleOrDefault();
+                        //var _status = _context.Status.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
+                        string authorization = VerifyRole(_role.role1);
+                        if (IsActive(_status.IsActive))
                         {
-                            identity.AddClaim(new Claim(ClaimTypes.Role, authorization));
-                            identity.AddClaim(new Claim("username", _user.username));
-                            identity.AddClaim(new Claim(ClaimTypes.Name, authorization));
-                            context.Validated(identity);
+                            if (!IsLocked(_status.IsLocked))
+                            {
+                                identity.AddClaim(new Claim(ClaimTypes.Role, authorization));
+                                identity.AddClaim(new Claim("username", _user.username));
+                                identity.AddClaim(new Claim(ClaimTypes.Name, authorization));
+                                context.Validated(identity);
+                                return;
+                            }
+                            context.SetError("invalid_grant", "Locked Account. Contact Admin");
                             return;
                         }
-                        context.SetError("invalid_grant", "Locked Account. Contact Admin");
+                        context.SetError("invalid_grant", "Inactive Account. Contact Admin");
                         return;
                     }
-                    context.SetError("invalid_grant", "Inactive Account. Contact Admin");
+                    context.SetError("invalid_grant", "Provided username and password is incorrect");
                     return;
                 }
-                context.SetError("invalid_grant", "Provided username and password is incorrect");
-                return;
+                catch(InvalidOperationException)
+                {
+                    context.SetError("invalid_grant", "Provided username and password is incorrect");
+                    return;
+                }
             }
 
         }

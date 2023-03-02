@@ -277,10 +277,29 @@ function extractNum(value) {
             return { num, measurement };
 }
 
+function setHiddenSize1() {
+    let hiddenSize = document.getElementById("hiddenSize");
+    let size = document.getElementById("itemSize");
+    let sizeMeas = localStorage.getItem("sizeMeas");
+    let itemSizeMeas = document.getElementById("itemSizeMeas");
+
+    if (sizeMeas == '\"') {
+        sizeMeas = "INCH";
+    }
+    if (size.value == null || size.value == "null" || size.value == "") {
+        hiddenSize.value = null;
+    }
+    else {
+        hiddenSize.value = size.value + ' ' + itemSizeMeas.options[itemSizeMeas.selectedIndex].innerHTML;
+        console.log(hiddenSize.value);
+    }
+}
+
 function setHiddenSize() {
     let hiddenSize = document.getElementById("hiddenSize");
     let size = document.getElementById("itemSize");
     let sizeMeas = localStorage.getItem("sizeMeas");
+    let itemSizeMeas = localStorage.getItem("itemSizeMeas");
 
     if (sizeMeas == '\"') {
         sizeMeas = "INCH";
@@ -290,8 +309,8 @@ function setHiddenSize() {
     }
     else {
         hiddenSize.value = size.value + ' ' + sizeMeas;
+        console.log(hiddenSize.value);
     }
-    //console.log(hiddenSize.value);
 }
 
 function AddValue(value,typeOf) {

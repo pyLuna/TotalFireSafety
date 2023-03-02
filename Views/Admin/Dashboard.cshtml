@@ -299,9 +299,88 @@
                             <canvas id="barchart1" width="250" height="300"></canvas>
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                             <script>
-                            var data = @Html.Raw(Json.Encode(ViewBag.Data));
+                                var data = @Html.Raw(Json.Encode(ViewBag.Data));
+                                var labels = data.map(function (item) {
+                                    return item.Name;
+                                });
+
+                                // Get references to the select element and chart canvas
+                                var select = document.getElementById('itemCategory');
+                                var canvas = document.getElementById('barchart1');
+
+                                select.addEventListener('change', function () {
+                                    // Get the selected option value
+                                    var selectedCategory = select.value;
+
+
+                                    // Filter the data array based on the selected option
+                                    var filteredData = data.filter(function (item) {
+                                        if (select.value === "Clear") {
+                                            return item.Name;
+                                        } else {
+                                            return item.Category === selectedCategory;
+                                        }
+
+
+                                    });
+
+                                    var importedValues = filteredData.map(function (item) {
+                                    if (item.Class === 'Import') {
+                                        if (item.Quantity < 250) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255,0,0)' // red color
+                                            };
+                                        } else if (item.Quantity < 500) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255, 165, 0)' // orange color
+                                            };
+                                        } else {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0)' // default blue color
+                                            };
+                                        }
+                                    } else {
+                                        return { value: 0, color: 'rgba(0,128,0)' };
+                                    }
+                                });
+
+                                    var localValues = filteredData.map(function (item) {
+                                    if (item.Class === 'Local') {
+                                        if (item.Quantity < 250) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255,0,0)'
+                                            };
+                                        } else if (item.Quantity < 500) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255, 165, 0)'
+                                            };
+                                        } else {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0)'
+                                            };
+                                        }
+                                    } else {
+                                        return { value: 0, color: 'rgba(0,128,0)' };
+                                    }
+                                });
+
+                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
+                                    chart.data.labels = filteredData.map(function (item) { return item.Name; });
+                                    chart.update();
+                                });
+
+
                                 var importedValues = data.map(function (item) {
-                                    if (item.Category === 'Import') {
+                                    if (item.Class === 'Import') {
                                         if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
@@ -324,7 +403,7 @@
                                 });
 
                                 var localValues = data.map(function (item) {
-                                    if (item.Category === 'Local') {
+                                    if (item.Class === 'Local') {
                                         if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
@@ -346,11 +425,9 @@
                                     }
                                 });
 
-                                var labels = data.map(function (item) {
-                                    return item.Name;
-                                });
 
-                                var ctx = document.getElementById('barchart1').getContext('2d');
+
+                               var ctx = canvas.getContext('2d');
                                 var chart = new Chart(ctx, {
                                     type: 'bar',
                                     data: {
@@ -367,7 +444,8 @@
                                             backgroundColor: localValues.map(function (item) { return item.color; }),
                                             borderColor: 'rgba(255, 99, 132, 1)',
                                             borderWidth: 1
-                                        }]
+                                            }]
+
                                     },
                                     options: {
                                         responsive: true,
@@ -382,7 +460,7 @@
                                         }
                                     }
                                 });
-
+                                chart.update();
 
 
                             </script>
@@ -409,25 +487,25 @@
                                 <canvas id="barcharthori1" width="auto" height="auto"></canvas>
 
                                 <script>
-                                     var data = @Html.Raw(Json.Encode(ViewBag.Data));
-                                    var labels = data.map(function (item) {
-                                        return item.Name;
+                                     var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));
+                                    var labels1 = data1.map(function (item) {
+                                        return item.Name1;
                                     });
 
-                                    var values = data.map(function (item) {
-                                        return item.Quantity;
+                                    var values1 = data1.map(function (item) {
+                                        return item.Quantity1;
                                     });
 
 
                                     var ctx = document.getElementById('barcharthori1').getContext('2d');
-                                    var chart = new Chart(ctx, {
+                                    var Chart = new Chart(ctx, {
                                         type: 'bar',
                                         data: {
-                                            labels: labels,
+                                            labels: labels1,
                                             datasets: [{
                                                 label: 'Quantity',
 
-                                                data: values,
+                                                data: values1,
                                                 backgroundColor: 'rgba(37,109,133)',
                                                 borderColor: 'rgba(54, 162, 235, 1)',
                                                 borderWidth: 1

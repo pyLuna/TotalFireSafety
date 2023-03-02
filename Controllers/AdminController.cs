@@ -127,40 +127,66 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult Dashboard()
         {
-            var empId = Session["emp_no"]?.ToString();
-            if (empId == null)
+            if (Session["emp_no"] == null)
             {
                 return RedirectToAction("Login", "Base");
             }
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             //Count for employees
-            TFSEntity _context = new TFSEntity();
-            int dataCount = _context.Employees.Count(); // Replace "Data" with your model class name
+            TFSEntity db = new TFSEntity();
+            int dataCount = db.Employees.Count(); // Replace "Data" with your model class name
             ViewBag.DataCount = dataCount;
-            int Active = _context.Status.Count(u => u.emp_no == 1);
+
+
+            int Active = db.Status.Count(u => u.emp_no == 1);
             ViewBag.active = Active;
+
             //count for circle
-            int inventoryCount = _context.Inventories.Count(); // Replace "Data" with your model class name
+            int inventoryCount = db.Inventories.Count(); // Replace "Data" with your model class name
             ViewBag.Inventory = inventoryCount;
+
+
+
             //count request
-            int purchase = _context.Requests.Count(x => x.request_type == "Purchase");
+            int purchase = db.Requests.Count(x => x.request_type == "Purchase");
             ViewBag.Purchase = purchase;
-            int entries = _context.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "pending");
+
+            int entries = db.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "pending");
             ViewBag.Entries = entries;
-            int entrieses = _context.Requests.Count(x => x.request_type == "Deployment" && x.request_status == "pending");
+
+            int entrieses = db.Requests.Count(x => x.request_type == "Deployment" && x.request_status == "pending");
             ViewBag.Entrieses = entrieses;
-            int supply = _context.Requests.Count(x => x.request_type == "Supply");
+
+            int supply = db.Requests.Count(x => x.request_type == "Supply");
             ViewBag.Supply = supply;
-            int deployment = _context.Requests.Count(x => x.request_type == "Deployment");
+
+            int deployment = db.Requests.Count(x => x.request_type == "Deployment");
             ViewBag.Deployment = deployment;
+
+
             //chart
-            var products = _context.Inventories.ToList();
+            var products = db.Inventories.ToList();
+
             var data = products.Select(p => new {
                 Name = p.in_name,
                 Quantity = int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray())),
-                Category = p.in_class
+                Class = p.in_class,
+                Category = p.in_category
             }).ToList();
+
+
+
             ViewBag.Data = data;
+
+            //chart 2
+            var data1 = products.Select(g => new {
+                Name1 = g.in_name,
+                Quantity1 = int.Parse(new string(g.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+            }).ToList();
+
+            ViewBag.Chart = data1;
+
+
+
             return View();
         }
 

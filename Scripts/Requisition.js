@@ -37,8 +37,6 @@ document.addEventListener("keypress", function (event) {
     }
 });
 
-
-
 const template = {
     "request_id": null,
     "request_type": "", 

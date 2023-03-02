@@ -11,9 +11,6 @@ using TotalFireSafety.Models;
 /*
  * TODO
  * -LAGYAN NG SCROLL BAR BAWAT TABLE
- * -FIX YUNG DROPDOWN SA ITEM CODE NG INVENTORY - REQUISITION NAME
- * -PROFILE PIC - NAHAHATI
- * -ISLOCKED sa USERSS PAGE
  * -YUNG IBA NASA CP MO CHECK MO JUST YOU
  */
 
@@ -428,16 +425,26 @@ namespace TotalFireSafety.Controllers
             {
                 return RedirectToAction("Login", "Base");
             }
+            Session["message"] = null;
             var userToken = Session["access_token"].ToString();
             var newData = JsonConvert.SerializeObject(jsonData);
             //var serializedModel = JsonConvert.DeserializeObject<List<Request>>(newData);
-            string uri = "";
+            string uri = "",message="";
             if(formType == "add")
             {
+                message = "Request has been accepted";
                 uri = "Requests/Add";
             }
             else
             {
+                if(formType == "approved")
+                {
+                    message = "Request Approved";
+                }
+                else
+                {
+                    message = "Request Declined";
+                }
                 uri = "Requests/Edit";
             }
             var response = api_req.SetMethod(uri, userToken, newData);
@@ -445,6 +452,7 @@ namespace TotalFireSafety.Controllers
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            Session["message"] = message;
             return result;
         }
 
@@ -460,13 +468,8 @@ namespace TotalFireSafety.Controllers
         }
         public ActionResult Logout()
         {
-            // DONT FORGET TO CLEAR SESSIONS, TOKENS AND OTHERS
             Session.Clear();
             return RedirectToAction("Login", "Base");
         }
-        //public ActionResult InvArchive()
-        //{
-        //    return View();
-        //}
     }
 }

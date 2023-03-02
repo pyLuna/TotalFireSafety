@@ -19,7 +19,7 @@ let EmployeeInput = document.getElementById("EmployeeInput");
 let itemList = document.getElementById("itemList");
 let select_type = document.getElementById("select_type");
 let table1 = document.getElementById("formTable");
-
+let requestType = "";
 const formTable = document.querySelector('#formTable tbody');
 
 formTable.addEventListener("click", function (event) {
@@ -204,6 +204,7 @@ function setTable(array) {
 }
 
 function EmployeeList() {
+    itemList.innerHTML = "";
     newEmployee.forEach(function (item) {
         var option = document.createElement('option');
         option.value = item.emp_name;
@@ -473,6 +474,7 @@ function setTemplate(array,formType) {
             }
             newRequest.push(newObj);
         }
+        formType = requestType;
     }
     sendRequest(newRequest, formType);
 }
@@ -542,9 +544,11 @@ function UpdateStatus(idToFind, type) {
     let edit = "";
     if (type == 'approve') {
         edit = "Approved";
+        requestType = "approved";
     }
     else {
         edit = "Declined";
+        requestType = "declined";
     }
 
     filtered.forEach(function (item) {

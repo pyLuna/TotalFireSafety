@@ -40,7 +40,8 @@
             <div class="inventory-header" id="tableTitle">
                 <h3>INVENTORY ITEMS</h3>
                 <div class="inventory-buttons-style" id="hideBtn">
-                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()"><a><span class="las la-plus-circle"></span></a></button>
+                    <button class="add-btn" title="ADD NEW ITEM"><a href="@Url.Action("AddItem","Admin")"><span class="las la-plus-circle"></span></a></button>
+                    @*<button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()"><a><span class="las la-plus-circle"></span></a></button>@*
                     <button class="pri-btn" title="PRINT REPORT" id="printBtn" @*onclick="printOpenPopup()"*@> <a href="#"><span class="las la-print"></span></a></button>
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportTable()"> <a href="#"><span class="las la-file-download"></span></a></button>
                     <button class="inventory-sort-btn" onclick="userSortFunction()">

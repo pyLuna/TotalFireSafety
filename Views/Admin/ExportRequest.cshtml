@@ -173,15 +173,15 @@
 
 
         <div class="info-pop-container" id="info-popup">
-            <img src="~/Content/images/information.png">
+            <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
             <p>Do you want to export this document?</p>
-            <button type="button" onclick="openPopup() + infoClosePopup() + exportToPdf()">Yes</button>
+            <button type="button" onclick="openPopup() + infoClosePopup() + exportToPdf() ">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="~/Content/images/warning.png">
+            <img src="@Url.Content("~/images/warning.png")">
             <h2>System Warning!</h2>
             <p>Are you sure you don't want to export this document?</p>
             <button type="button" onclick="remOpenPopup() + canClosePopup()  ">Yes</button>
@@ -189,15 +189,15 @@
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="~/Content/images/export.png">
-            <h2>Exported!</h2>
+            <img src="@Url.Content("~/images/export.png")" >
+           <h2>Exported!</h2>
             <p>Your document is already exported!</p>
-            <button type="button" onclick="closePopup()">OK</button>
+            <button type="button" onclick="closePopup() ">OK</button>
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="~/Content/images/remove.png">
-            <h2>Cancel!</h2>
+            <img src="@Url.Content("~/images/remove.png")">
+           <h2>Cancel!</h2>
             <p>Document didn't export!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
@@ -244,6 +244,7 @@
 
     function closePopup() {
         popup.classList.remove("open-popup-show")
+         location.href = "@Url.Action("Requisition", "Admin")";
     }
 
     let canpopup = document.getElementById("can-popup");
@@ -264,6 +265,7 @@
 
     function remClosePopup() {
         rempopup.classList.remove("rem-popup-show")
+          location.href = "@Url.Action("Requisition", "Admin")";
     }
 
     let printpopup = document.getElementById("print-popup");

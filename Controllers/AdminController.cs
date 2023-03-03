@@ -127,6 +127,7 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult Dashboard()
         {
+            var empId = Session["emp_no"].ToString();
             if (Session["emp_no"] == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -137,7 +138,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.DataCount = dataCount;
 
 
-            int Active = db.Status.Count(u => u.emp_no == 1);
+            int Active = db.Status.Count(u => u.IsActive == 1);
             ViewBag.active = Active;
 
             //count for circle
@@ -153,13 +154,16 @@ namespace TotalFireSafety.Controllers
             int entries = db.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "pending");
             ViewBag.Entries = entries;
 
-            int entrieses = db.Requests.Count(x => x.request_type == "Deployment" && x.request_status == "pending");
+            int entrieses = db.Requests.Count(x => x.request_type == "Deploy" && x.request_status == "pending");
             ViewBag.Entrieses = entrieses;
+
+            int Sup = db.Requests.Count(x => x.request_type == "Supply" && x.request_status == "pending");
+            ViewBag.Sup = Sup;
 
             int supply = db.Requests.Count(x => x.request_type == "Supply");
             ViewBag.Supply = supply;
 
-            int deployment = db.Requests.Count(x => x.request_type == "Deployment");
+            int deployment = db.Requests.Count(x => x.request_type == "Deploy");
             ViewBag.Deployment = deployment;
 
 
@@ -186,7 +190,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.Chart = data1;
 
 
-
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
 
@@ -312,8 +316,7 @@ namespace TotalFireSafety.Controllers
            
             return View(data);
 
-            var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
-            return View(datas);
+           
         }
 
         [HttpPost]

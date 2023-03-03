@@ -249,7 +249,7 @@
                                     document.getElementById("deployment").textContent = deployment;
                                 </script>
                                 <p></p>
-                                <label class="card-active" id="entrieses">5</label><span class="card-active">New Entries</span>
+                                <label class="card-active" id="entrieses"></label><span class="card-active">New Entries</span>
                                 <script>
                                     var entrieses = @ViewBag.Entrieses;
                                     document.getElementById("entrieses").textContent = entrieses;
@@ -268,9 +268,17 @@
                         <div class="card-container">
                             <h3>Supply Request</h3>
                             <div class="card-details">
-                                <label>30</label><span>Total Entries</span>
+                                <label id="supply"></label><span>Total Entries</span>
+                                <script>
+                                    var supply = @ViewBag.Supply;
+                                    document.getElementById("supply").textContent = supply;
+                                </script>
                                 <p></p>
-                                <label class="card-active">5</label><span class="card-active">New Entries</span>
+                                <label class="card-active" id="Sup"></label><span class="card-active">New Entries</span>
+                                <script>
+                                    var Sup = @ViewBag.Sup;
+                                    document.getElementById("Sup").textContent = Sup;
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -287,10 +295,15 @@
                     <div class="card-header">
                         <h3>Item Categories Summary</h3>
 
-                        <select required>
+                        <h3>Item Categories Summary</h3>
+
+                        <select id="itemCategory" required>
                             <option disabled selected>Item Category</option>
-                            <option>...</option>
-                            <option>..</option>
+                            <option value="Fire Extinguisher">Fire Extinguisher</option>
+                            <option value="Power Tools">Power Tools</option>
+                            <option value="Fittings">Fittings</option>
+                            <option value="Scaffolding">Scaffolding</option>
+                            <option value="Clear">Clear</option>
                         </select>
 
                     </div>

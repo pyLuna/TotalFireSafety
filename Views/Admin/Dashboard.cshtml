@@ -610,12 +610,18 @@
     var currentMonth = new Date().getMonth() + 1;
 
     // Populate year dropdown with 4 years
-    for (var i = 0; i < 4; i++) {
+    for (var i = -5; i < 0; i++) {
         var yearOption = document.createElement("option");
         yearOption.value = currentYear + i;
         yearOption.text = currentYear + i;
         document.getElementById("year").appendChild(yearOption);
     }
+
+    // Add an option for the current year
+    var currentYearOption = document.createElement("option");
+    currentYearOption.value = currentYear;
+    currentYearOption.text = currentYear;
+    document.getElementById("year").appendChild(currentYearOption);
 
     // Populate month dropdown with all months
     for (var i = 1; i <= 12; i++) {

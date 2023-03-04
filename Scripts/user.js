@@ -68,7 +68,7 @@ function setTable(array) {
             if (array[i].Status?.IsActive === 1) {
                 stats = "Active";
                 if (array[i].Status?.IsLocked === 1) {
-                    stats = "IsLocked";
+                    stats = "Locked";
                 }
             }
             else {

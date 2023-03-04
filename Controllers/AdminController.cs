@@ -8,6 +8,11 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using TotalFireSafety.Models;
 
+/*
+ * TODO
+ * -LAGYAN NG SCROLL BAR BAWAT TABLE
+ * -YUNG IBA NASA CP MO CHECK MO JUST YOU
+ */
 
 namespace TotalFireSafety.Controllers
 {
@@ -28,6 +33,40 @@ namespace TotalFireSafety.Controllers
                 return "~/images/profile.png";
             }
         }
+        [HttpPost]
+        public ActionResult RestoreItem([System.Web.Http.FromUri] string itemCode)
+        {
+            try
+            {
+                var empId = Session["emp_no"]?.ToString();
+                if (empId == null)
+                {
+                    return RedirectToAction("Login", "Base");
+                }
+                var userToken = Session["access_token"]?.ToString();
+                ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                var addCode = new Inventory()
+                {
+                    in_code = itemCode
+                };
+                var codeToFind = JsonConvert.SerializeObject(addCode);
+                var uri = "/Warehouse/Inventory/Archive";
+                var response = api_req.SetMethod(uri,userToken, codeToFind);
+                if (response == "BadRequest" || response == "InternalServerError")
+                {
+                    ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                    return Json("error", JsonRequestBehavior.AllowGet);
+                }
+            var json = JsonConvert.DeserializeObject(response);
+                JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         public ActionResult SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {
@@ -60,7 +99,7 @@ namespace TotalFireSafety.Controllers
                         user.ProfilePath = image;
                         _context.Entry(user);
                         _context.SaveChanges();
-                ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                        ViewBag.ProfilePath = GetPath(int.Parse(empId));
                         return Json("Success");
                         //C: \Users\Lucas Eli\Source\Repos\TotalFireSafety\Uploads\Images\
                     }
@@ -110,6 +149,14 @@ namespace TotalFireSafety.Controllers
                     inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
                     result = Json(inv, JsonRequestBehavior.AllowGet);
                 }
+                if(requestType == "deleted")
+                {
+                    uri = "/Warehouse/Inventory/Archive";
+                    response = api_req.GetAllMethod(uri, userToken);
+                    inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
+                    result = Json(inv, JsonRequestBehavior.AllowGet);
+                }
+
                 if (requestType == "requisition") {
                     uri = "/Requests/All";
                     response = api_req.GetAllMethod(uri, userToken);
@@ -224,6 +271,10 @@ namespace TotalFireSafety.Controllers
         }
 
         //  Inventory
+        /*
+         *  TODO
+         *  -ADD NG COLUMN--DATE ADDED (LATEST ANG IDIDISPLAY)
+         */
         public ActionResult Inventory()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -241,6 +292,12 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult InvArchive()
         {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
 
@@ -286,8 +343,8 @@ namespace TotalFireSafety.Controllers
            
             return View(data);
 
-            var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
-            return View(datas);
+            //var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
+            //return View(datas);
         }
 
         [HttpPost]
@@ -368,16 +425,26 @@ namespace TotalFireSafety.Controllers
             {
                 return RedirectToAction("Login", "Base");
             }
+            Session["message"] = null;
             var userToken = Session["access_token"].ToString();
             var newData = JsonConvert.SerializeObject(jsonData);
             //var serializedModel = JsonConvert.DeserializeObject<List<Request>>(newData);
-            string uri = "";
+            string uri = "",message="";
             if(formType == "add")
             {
+                message = "Request has been accepted";
                 uri = "Requests/Add";
             }
             else
             {
+                if(formType == "approved")
+                {
+                    message = "Request Approved";
+                }
+                else
+                {
+                    message = "Request Declined";
+                }
                 uri = "Requests/Edit";
             }
             var response = api_req.SetMethod(uri, userToken, newData);
@@ -385,6 +452,7 @@ namespace TotalFireSafety.Controllers
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            Session["message"] = message;
             return result;
         }
 
@@ -400,13 +468,8 @@ namespace TotalFireSafety.Controllers
         }
         public ActionResult Logout()
         {
-            // DONT FORGET TO CLEAR SESSIONS, TOKENS AND OTHERS
             Session.Clear();
             return RedirectToAction("Login", "Base");
         }
-        //public ActionResult InvArchive()
-        //{
-        //    return View();
-        //}
     }
 }

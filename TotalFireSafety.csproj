@@ -223,6 +223,7 @@
   <ItemGroup>
     <Content Include="css\loginpage.css" />
     <Content Include="css\sa-dashboard-style.css" />
+    <Content Include="css\sa-inventory-style.css" />
     <Content Include="css\userstyle.css" />
     <Content Include="css\util.css" />
     <Content Include="fonts\font-awesome-4.7.0\css\font-awesome.css" />
@@ -331,6 +332,7 @@
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\Inventory.js" />
+    <Content Include="Scripts\InvArchive.js" />
     <Content Include="Scripts\js\app.js" />
     <Content Include="Scripts\js\chart1.js" />
     <Content Include="Scripts\js\chart2.js" />

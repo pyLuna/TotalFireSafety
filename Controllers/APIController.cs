@@ -694,6 +694,31 @@ namespace TotalFireSafety.Controllers
         #region Inventory
         [Authorize(Roles = "warehouse,admin")]
         [Route("Warehouse/Inventory/Archive")]
+        [HttpPost]
+        public IHttpActionResult RestoreItem(Inventory val)
+        {
+            try
+            {
+                using (var _context = new TFSEntity())
+                {
+                    var item = _context.Inventories.Where(x => x.in_code == val.in_code).FirstOrDefault();
+                    if(item == null)
+                    {
+                        return BadRequest();
+                    }
+                    item.in_status = "active";
+                    _context.Entry(item);
+                    _context.SaveChanges();
+                    return Ok();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        [Authorize(Roles = "warehouse,admin")]
+        [Route("Warehouse/Inventory/Archive")]
         [HttpGet]
         public IHttpActionResult GetAllArchivedItem()
         {

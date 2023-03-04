@@ -376,6 +376,7 @@ function GetBarcode(value) {
 
 function setDatalist() {
     let itemList = document.getElementById('itemList');
+    itemList.innerHTML = "";
     fixedArray.forEach(function (item) {
         let option = document.createElement('option');
         option.value = item.in_code;

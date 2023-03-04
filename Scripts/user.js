@@ -64,19 +64,6 @@ function setTable(array) {
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
 
-            //if (array[i].emp_name === null) {
-            //    array[i].emp_name = '';
-            //}
-            //if (array[i].emp_position === null) {
-            //    array[i].emp_position = '';
-            //}
-            //if (array[i].IsActive === null) {
-            //    array[i].IsActive = 'InActive';
-
-            //}
-            //if (array[i].IsActive === 1) {
-            //    array[i].IsActive = 'Active';
-            //}
             let stats = "";
             if (array[i].Status?.IsActive === 1) {
                 stats = "Active";
@@ -132,7 +119,6 @@ function SearchItem(value) {
 
 function SortByCategory(value) {
     const category = document.querySelector('#selcat');
-    //document.getElementById("myDropdown").setAttribute("style","display:none;");
     if (value != '') {
         category.innerHTML = value;
         SearchItem(value.toLowerCase());
@@ -167,12 +153,9 @@ function setField(value) {
     name.value = filtered[0]?.emp_name;
     contact.value = filtered[0]?.emp_contact;
     empID.value = filtered[0]?.emp_no;
-    //dateHired.value = filtered[0]?.FormattedDate; //  TO Check
     username.value = filtered[0]?.Credential?.username;
     password.value = filtered[0]?.Credential?.password;
     position.value = filtered[0]?.emp_position;
-    //roles.value = filtered[0].Role?.role1;
-    //stats.value = statsValue;
     empID.value = filtered[0]?.emp_no;
 
     var dateString = new Date(filtered[0]?.FormattedDate);

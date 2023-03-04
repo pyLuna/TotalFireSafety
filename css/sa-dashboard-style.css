@@ -113,6 +113,128 @@ input::-webkit-inner-spin-button {
 
 /****************   01 - MESSEGE BOX STYLES  ******************/
 
+
+/*** Start of Error Style ***/
+
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#notfound {
+    position: relative;
+    height: 100vh;
+}
+
+    #notfound .notfound {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+.notfound {
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    line-height: 1.4;
+}
+
+    .notfound .notfound-404 {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        margin: 0px auto 50px;
+    }
+
+        .notfound .notfound-404 > div:first-child {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: #ffa200;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+            border: 5px dashed #000;
+            border-radius: 5px;
+        }
+
+            .notfound .notfound-404 > div:first-child:before {
+                content: '';
+                position: absolute;
+                left: -5px;
+                right: -5px;
+                bottom: -5px;
+                top: -5px;
+                -webkit-box-shadow: 0px 0px 0px 5px rgba(0, 0, 0, 0.1) inset;
+                box-shadow: 0px 0px 0px 5px rgba(0, 0, 0, 0.1) inset;
+                border-radius: 5px;
+            }
+
+        .notfound .notfound-404 h1 {
+            font-family: 'Cabin', sans-serif;
+            color: #000;
+            font-weight: 700;
+            margin: 0;
+            font-size: 90px;
+            position: absolute;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            left: 50%;
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+        }
+
+    .notfound h2 {
+        font-family: 'Cabin', sans-serif;
+        font-size: 33px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 7px;
+    }
+
+    .notfound p {
+        font-family: 'Cabin', sans-serif;
+        font-size: 16px;
+        color: #000;
+        font-weight: 400;
+    }
+
+    .notfound a {
+        font-family: 'Cabin', sans-serif;
+        display: inline-block;
+        padding: 10px 25px;
+        background-color: #8f8f8f;
+        border: none;
+        border-radius: 40px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+        -webkit-transition: 0.2s all;
+        transition: 0.2s all;
+    }
+
+        .notfound a:hover {
+            background-color: #2c2c2c;
+        }
+
+
+/*** End of Error Style ****/
+
 .err-pop-container {
     width: 400px;
     background: #16215B;
@@ -926,10 +1048,11 @@ right .d-drop-btn {
 
 .sum-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 2rem;
     margin-top: 2rem;
-    margin-left: 25rem;
+    margin-left: 15rem;
+    margin-right: 15rem;
 }
 
 .sum-card-title h3 {
@@ -1406,6 +1529,7 @@ right .d-drop-btn {
     transition: width 0.3s ease-in-out;
 }
 
+
 /************************** END *************************/
 /***************** 05 - INVENTORY STYLES ****************/
 .upper-section {
@@ -1686,7 +1810,6 @@ right .d-drop-btn {
             background-color: #16215B;
         }
 
-
 .inventory-add-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -1730,7 +1853,6 @@ right .d-drop-btn {
     background-color: #16215B;
     cursor: pointer;
 }
-
 
 .inventory-form-container .inventory-form-header::before {
     content: "";
@@ -2698,6 +2820,9 @@ right .d-drop-btn {
     font-size: .9rem;
 }
 
+/* Dash Project Style */
+
+
 .print-container {
     padding-left: 50px;
     padding-right: 50px;
@@ -2874,7 +2999,7 @@ right .d-drop-btn {
 
 .print-save-btns {
     display: inline-block;
-    margin-left: 850px;
+    margin-left: 720px;
     margin-top: -200px;
 }
 
@@ -4835,6 +4960,32 @@ right .d-drop-btn {
     ;
 }
 
+.tbl-proj {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .tbl-proj th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+.proj-container .prog-bar {
+        background-color: #ECECEC;
+        border: 1px solid #aaa;
+        width: 500px;
+        height: 20px;
+}
+
+ 
+
+.proj-container .prog-bar .prog-bar-per {
+        width: 25%;
+        background-color: #16215B;
+        height: 20px;
+}
+
 .proj-container .title-container h2 {
     font-size: 15px;
     margin-top: 20px;
@@ -5016,7 +5167,7 @@ right .d-drop-btn {
         color: #16215B;
         resize: none;
         overflow-y: scroll;
-        background-color: #DDDDDD;
+        background-color: white;
         border: none;
         border-radius: 5px;
     }
@@ -5068,7 +5219,7 @@ right .d-drop-btn {
         color: #16215B;
         resize: none;
         overflow-y: scroll;
-        background-color: #DDDDDD;
+        background-color: white;
         border: none;
         border-radius: 5px;
     }
@@ -5427,6 +5578,11 @@ right .d-drop-btn {
     .form-container form button {
         width: 150px;
     }
+
+    .progress-bar {
+        margin-right: -250px;
+        width: 250px;
+    }
 }
 
 @media all and (max-width: 900px) {
@@ -5628,6 +5784,11 @@ right .d-drop-btn {
         .sidebar .user-wrapper {
             margin-top: -5px;
         }
+
+    .progress-bar {
+        margin-right: -100px;
+        width: 250px;
+    }
     /* END */
 
     /* SEARCH AND DROP DOWN RESPONSIVE */
@@ -5685,24 +5846,29 @@ right .d-drop-btn {
         margin: 0;
     }
 
-    .inventory-form-container .inventory-form-header {
-        font-size: 15px;
+    .inventory-form-container {
+        width: 500px;
     }
 
-    .inventory-form-container form {
-        width: 400px;
-        margin-top: 10px;
-        margin-left: 30px;
-    }
-
-        .inventory-form-container form .fields .input-field {
-            width: calc(100% / 1 - 15px);
-            margin: 2px 0;
+        .inventory-form-container .inventory-form-header {
+            font-size: 15px;
         }
 
-        .inventory-form-container form button, .btnText {
-            width: 150px;
+        .inventory-form-container form {
+            width: 200px;
+            margin-top: 10px;
+            margin-left: 30px;
         }
+
+
+            .inventory-form-container form .fields .input-field {
+                width: calc(100% / 1 - 15px);
+                margin: 2px 0;
+            }
+
+            .inventory-form-container form button, .btnText {
+                width: 150px;
+            }
 
     .inventory-add-container .inventory-form-container .inventory-buttons-style button {
         width: 100px;
@@ -5753,6 +5919,10 @@ right .d-drop-btn {
     }
 
     .purchase-add-container {
+        width: 100px;
+    }
+
+    .inventory-form-container {
         width: 100px;
     }
 
@@ -5828,6 +5998,7 @@ right .d-drop-btn {
         .form-container form button, .btnText {
             width: 150px;
         }
+
     /* END */
 
 }
@@ -5869,6 +6040,10 @@ right .d-drop-btn {
         align-items: center;
         height: 200px;
         max-width: 50%;
+    }
+
+    .progress-bar {
+        margin-right: 0;
     }
 
     /* END */

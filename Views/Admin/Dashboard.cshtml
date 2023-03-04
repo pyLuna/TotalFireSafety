@@ -17,81 +17,15 @@
 
         <right>
             <h4>View Summary In:</h4>
-            
-            <button class="yr-drop-btn" onclick="yrFunction()">
-                <a>
-                    <span>Year</span>
-                    <span class="las la-chevron-down"></span>
-                </a>
-            </button>
-            <div class="yr-dropdown-content" id="yrDropdown">
-                <a href="#">2019</a>
-                <a href="#">2020</a>
-                <a href="#">2021</a>
-                <a href="#">2022</a>
-                <a href="#">2023</a>
-            </div>
 
-            <button class="m-drop-btn" onclick="mFunction()">
-                <a>
-                    <span>Month</span>
-                    <span class="las la-chevron-down"></span>
-                </a>
-            </button>
-            <div class="m-dropdown-content" id="mDropdown">
-                <a href="#">January</a>
-                <a href="#">February</a>
-                <a href="#">March</a>
-                <a href="#">April</a>
-                <a href="#">May</a>
-                <a href="#">June</a>
-                <a href="#">July</a>
-                <a href="#">August</a>
-                <a href="#">September</a>
-                <a href="#">October</a>
-                <a href="#">November</a>
-                <a href="#">December</a>
-            </div>
+            <select id="year" required>
+                <option disabled selected>Year</option>
+            </select>
 
-            <button class="d-drop-btn" onclick="dFunction()">
-                <a>
-                    <span>Day</span>
-                    <span class="las la-chevron-down"></span>
-                </a>
-            </button>
-            <div class="d-dropdown-content" id="dDropdown">
-                <a href="#">01</a>
-                <a href="#">02</a>
-                <a href="#">03</a>
-                <a href="#">04</a>
-                <a href="#">05</a>
-                <a href="#">06</a>
-                <a href="#">07</a>
-                <a href="#">08</a>
-                <a href="#">09</a>
-                <a href="#">10</a>
-                <a href="#">11</a>
-                <a href="#">12</a>
-                <a href="#">13</a>
-                <a href="#">14</a>
-                <a href="#">15</a>
-                <a href="#">16</a>
-                <a href="#">17</a>
-                <a href="#">18</a>
-                <a href="#">19</a>
-                <a href="#">20</a>
-                <a href="#">21</a>
-                <a href="#">22</a>
-                <a href="#">23</a>
-                <a href="#">24</a>
-                <a href="#">25</a>
-                <a href="#">26</a>
-                <a href="#">27</a>
-                <a href="#">28</a>
-                <a href="#">29</a>
-                <a href="#">30</a>
-                <a href="#">31</a>
-            </div>
+            <select id="month" required>
+                <option disabled selected>Month</option>
+            </select>
+
 
         </right>
     </header>
@@ -226,7 +160,7 @@
                                     document.getElementById("purchase").textContent = purchase;
                                 </script>
                                 <p></p>
-                                <label class="card-active" id="entries"></label><span class="card-active">New Entries</span>
+                                <label class="card-active" id="entries"></label><span class="card-active">Pending Entries</span>
                                 <script>
                                     var entries = @ViewBag.Entries;
                                     document.getElementById("entries").textContent = entries;
@@ -249,7 +183,7 @@
                                     document.getElementById("deployment").textContent = deployment;
                                 </script>
                                 <p></p>
-                                <label class="card-active" id="entrieses"></label><span class="card-active">New Entries</span>
+                                <label class="card-active" id="entrieses"></label><span class="card-active">Pending Entries</span>
                                 <script>
                                     var entrieses = @ViewBag.Entrieses;
                                     document.getElementById("entrieses").textContent = entrieses;
@@ -262,7 +196,7 @@
 
             <!-- NEW ADD CARD -->
             <div class="card-title">
-                <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
+                <a href="@Url.Action("Requisition","Admin")">
                     <h3>Supply</h3>
                     <div class="card-single">
                         <div class="card-container">
@@ -274,7 +208,7 @@
                                     document.getElementById("supply").textContent = supply;
                                 </script>
                                 <p></p>
-                                <label class="card-active" id="Sup"></label><span class="card-active">New Entries</span>
+                                <label class="card-active" id="Sup"></label><span class="card-active">Pending Entries</span>
                                 <script>
                                     var Sup = @ViewBag.Sup;
                                     document.getElementById("Sup").textContent = Sup;
@@ -555,7 +489,23 @@
         <br>
 
         <div class="project-sum">
-            <h3>Project Summary</h3>
+        
+                <div class="project-sum-btns">
+                    <div class="drp-wrapper">
+
+                        <select required>
+                            <option disabled selected>Status</option>
+                            <option>On-going</option>
+                            <option>In-line</option>
+                            <option>Delayed</option>
+                        </select>
+                        <select required>
+                            <option disabled selected>Proj. Lead</option>
+                            <option>Clarisse Vasquez</option>
+                        </select>
+                    </div>
+
+                </div>
         </div>
 
         <div class="dsh-projects">
@@ -655,6 +605,32 @@
 @Scripts.Render("~/script/admin")
 
 <script>
+    // Get current year and month
+    var currentYear = new Date().getFullYear();
+    var currentMonth = new Date().getMonth() + 1;
+
+    // Populate year dropdown with 4 years
+    for (var i = 0; i < 4; i++) {
+        var yearOption = document.createElement("option");
+        yearOption.value = currentYear + i;
+        yearOption.text = currentYear + i;
+        document.getElementById("year").appendChild(yearOption);
+    }
+
+    // Populate month dropdown with all months
+    for (var i = 1; i <= 12; i++) {
+        var monthOption = document.createElement("option");
+        monthOption.value = i < 10 ? "0" + i : i;
+        monthOption.text = i < 10 ? "0" + i : i;
+        document.getElementById("month").appendChild(monthOption);
+    }
+
+    // Set default selected values to current year and month
+    document.getElementById("year").value = currentYear;
+    document.getElementById("month").value = currentMonth < 10 ? "0" + currentMonth : currentMonth;
+</script>
+
+<script>
     `use strict`;
     //function refreshTime() {
     //    const timeDisplay = document.getElementById("dt");
@@ -682,50 +658,6 @@
 
     /* When the user clicks on the button,
        toggle between hiding and showing the dropdown content */
-    function yrFunction() {
-        document.getElementById("yrDropdown").classList.toggle("yr-show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.yr-drop-btn')) {
-            var myDropdown = document.getElementById("yrDropdown");
-            if (myDropdown.classList.contains('yr-show')) {
-                myDropdown.classList.remove('yr-show');
-            }
-        }
-    }
-
-    /* When the user clicks on the button,
-        toggle between hiding and showing the dropdown content */
-    function mFunction() {
-        document.getElementById("mDropdown").classList.toggle("m-show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.m-drop-btn')) {
-            var myDropdown = document.getElementById("mDropdown");
-            if (myDropdown.classList.contains('m-show')) {
-                myDropdown.classList.remove('m-show');
-            }
-        }
-    }
-
-    /* When the user clicks on the button,
-       toggle between hiding and showing the dropdown content */
-    function dFunction() {
-        document.getElementById("dDropdown").classList.toggle("d-show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.d-drop-btn')) {
-            var myDropdown = document.getElementById("dDropdown");
-            if (myDropdown.classList.contains('d-show')) {
-                myDropdown.classList.remove('d-show');
-            }
-        }
-    }
+   
 
 </script>

@@ -49,7 +49,7 @@ const template = {
 };
 
 function GetAllItem() {
-    fetch('/Admin/FindDataOf?requestType=inventory')
+    fetch('/Admin/FindDataOf1?requestType=inventory')
         .then(res => {
             if (res.ok) {
                 // API request was successful
@@ -65,6 +65,7 @@ function GetAllItem() {
             console.log(`inventory`);
         })
         .catch(error => {
+            //window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
@@ -105,7 +106,7 @@ function GetAll() {
                 errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
                 table.appendChild(errorMessageRow);
             }
-        })
+        }) 
         .then(data => {
             jsonArray.length = 0;
             jsonArray.push(data);

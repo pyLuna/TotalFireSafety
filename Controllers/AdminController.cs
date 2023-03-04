@@ -50,14 +50,19 @@ namespace TotalFireSafety.Controllers
                     in_code = itemCode
                 };
                 var codeToFind = JsonConvert.SerializeObject(addCode);
-                var uri = "/Warehouse/Inventory/Archive";
+                var uri = "/Warehouse/Inventory/Status";
                 var response = api_req.SetMethod(uri,userToken, codeToFind);
-                if (response == "BadRequest" || response == "InternalServerError")
+                if (response == "BadRequest" )
                 {
-                    ViewBag.ProfilePath = GetPath(int.Parse(empId));
-                    return Json("error", JsonRequestBehavior.AllowGet);
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("BadRequest","Error");
                 }
-            var json = JsonConvert.DeserializeObject(response);
+                if (response == "InternalServerError")
+                {
+                    return RedirectToAction("InternalServerError","Error");
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                }
+                var json = JsonConvert.DeserializeObject(response);
                 JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 return result;
             }
@@ -123,6 +128,16 @@ namespace TotalFireSafety.Controllers
             var userToken = Session["access_token"].ToString();
             var response = api_req.BarcodeGenerator(userToken, itemCode);
             JsonResult result = Json(response, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+            if (response == "BadRequest")
+            {
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+            }
             Response.ContentType = "application/json"; // Set the Content-Type header
                 ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return result;
@@ -162,6 +177,16 @@ namespace TotalFireSafety.Controllers
                     response = api_req.GetAllMethod(uri, userToken);
                     requisition = JsonConvert.DeserializeObject<List<Request>>(response);
                     result = Json(requisition, JsonRequestBehavior.AllowGet);
+                }
+                if (response == "BadRequest")
+                {
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("BadRequest", "Error");
+                }
+                if (response == "InternalServerError")
+                {
+                    return RedirectToAction("InternalServerError", "Error");
+                    //return Json("error", JsonRequestBehavior.AllowGet);
                 }
                 Response.ContentType = "application/json"; // Set the Content-Type header
                 return result;
@@ -234,11 +259,15 @@ namespace TotalFireSafety.Controllers
 
             var response = api_req.SetMethod(uri, userToken, serializedModel);
 
-            if (response == "BadRequest" || response == "InternalServerError")
+            if (response == "BadRequest")
             {
-                ViewBag.Added = response.ToString();
-                ViewBag.ProfilePath = GetPath(int.Parse(empId));
-                return RedirectToAction("Inventory");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             var json = JsonConvert.DeserializeObject(response);
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
@@ -261,10 +290,15 @@ namespace TotalFireSafety.Controllers
             var serializedModel = JsonConvert.SerializeObject(addCode);
             var userToken = Session["access_token"].ToString();
             var response = api_req.SetMethod("Warehouse/Inventory/Delete", userToken, serializedModel);
-            if (response == "BadRequest" || response == "InternalServerError")
+            if (response == "BadRequest")
             {
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-                return Json("error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return Json("Item Deleted");
@@ -370,11 +404,15 @@ namespace TotalFireSafety.Controllers
             }
             var response = api_req.SetMethod(uri, userToken, serializedModel);
             ViewBag.Message = message;
-            if (response == "BadRequest" || response == "InternalServerError")
+            if (response == "BadRequest")
             {
-                ViewBag.Response = response.ToString();
-                ViewBag.ProfilePath = GetPath(int.Parse(empId));
-                return View();
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             var json = JsonConvert.DeserializeObject(response);
             ViewBag.Success = json.ToString();
@@ -397,7 +435,17 @@ namespace TotalFireSafety.Controllers
                 var json = JsonConvert.DeserializeObject<List<Employee>>(response);
                 JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 Response.ContentType = "application/json"; // Set the Content-Type header
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                if (response == "BadRequest")
+                {
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("BadRequest", "Error");
+                }
+                if (response == "InternalServerError")
+                {
+                    return RedirectToAction("InternalServerError", "Error");
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                }
                 return result;
             }
             catch (Exception ex)
@@ -449,6 +497,16 @@ namespace TotalFireSafety.Controllers
             }
             var response = api_req.SetMethod(uri, userToken, newData);
             var json = JsonConvert.DeserializeObject(response);
+            if (response == "BadRequest")
+            {
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+            }
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));

@@ -131,6 +131,10 @@
     <script>
         window.onload = function () {
             GetAll();
+            var reload = localStorage.getItem("reload");
+            if (reload == "true") {
+                openPopup();
+            }
         }
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */

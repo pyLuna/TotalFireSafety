@@ -29,5 +29,10 @@ namespace TotalFireSafety.Controllers
         {
             return View();
         }
+        [HandleError]
+        public ActionResult BadRequest()
+        {
+            return View();
+        }
     }
 }

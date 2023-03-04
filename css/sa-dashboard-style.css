@@ -61,6 +61,10 @@ body {
     font-family: Poppins-Regular, sans-serif;
 }
 
+label.error{
+    color:red !important;
+}
+
     body::-webkit-scrollbar {
         display: none;
         width: 0 !important;

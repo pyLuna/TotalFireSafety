@@ -45,16 +45,10 @@ namespace TotalFireSafety
                         "~/Scripts/js/chart3.js"
                 ));
 
-            // TODO DELETE THIS SNIPPET
-            // Add User JS to prevent regex and mvc conflict
-            //bundles.Add(new StyleBundle("~/script/adduser").Include(
-            //            "~/Scripts/AddUsers.js"
+            //bundles.Add(new ScriptBundle("~/scripts/validation").Include(
+            //            "https://code.jquery.com/jquery-3.6.0.min.js",
+            //            "https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"
             //    ));
-
-            //bundles.Add(new ScriptBundle("~/script/inventory").Include(
-            //            "~/Scripts/Inventory.js"
-            //    ));
-
         }
     }
 }

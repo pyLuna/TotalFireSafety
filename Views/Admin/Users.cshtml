@@ -1,14 +1,15 @@
 ﻿@using TotalFireSafety.Models
-@model Employee 
+@model Employee
 
 @{
     ViewBag.Title = "Users";
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Users = "active";
 }
-
+<script src='@Url.Content("~/Scripts/Uservalidation.js")'></script>
 <div class="main-content">
     <header>
+
         <h2>
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
@@ -100,51 +101,51 @@
                                 <div class="fields">
                                     <div class="input-field">
                                         <label>Name</label>
-                                        <input type="text" placeholder="Enter your name" id="name" name="emp_name" required>
+                                        <input type="text" placeholder="Enter your name" id="emp_name" name="emp_name" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Contact</label>
-                                        <input type="number" placeholder="Enter your contact" name="emp_contact" id="contact" required>
+                                        <input type="number" placeholder="Enter your contact" name="emp_contact" id="emp_contact" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Employee ID</label>
-                                        <input type="number" placeholder="00000" id="empId" name="emp_no" required>
+                                        <input type="number" placeholder="00000" id="emp_no" name="emp_no" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Hired Date</label>
-                                        <input type="date" id="dateDisplay" name="emp_hiredDate">
+                                        <input type="date" id="emp_hiredDate" name="emp_hiredDate">
                                         @*<input type="text" id="dateHired" style="display:none;" readonly>*@
                                     </div>
                                     <input type="text" id="formType" name="formType" style="display:none;" readonly>
 
                                     <div class="input-field">
                                         <label>Username</label>
-                                        <input type="text" placeholder="Enter username" id="username" name="Credential.username" required>
+                                        <input type="text" placeholder="Enter username" id="Credential.username" name="Credential.username" required>
                                     </div>
                                     <input type="text" placeholder="Enter username" id="credsid" name="Credential.emp_no" style="display:none;" required>
 
                                     <div class="input-field">
                                         <label>Password</label>
-                                        <input type="password" placeholder="Enter password" id="password" name="Credential.password" required>
+                                        <input type="password" placeholder="Enter password" id="Credential.password" name="Credential.password" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Position</label>
                                         @*<select id="sel-pos" required>
-                <option disabled selected>Select Position</option>
-                <option>Supervisor</option>
-                <option>Office Manager</option>
-                <option>Warehouse Manager</option>
-            </select>*@
-                                        <input type="text" placeholder="Enter Position" id="position" name="emp_position" required>
+                                                <option disabled selected>Select Position</option>
+                                                <option>Supervisor</option>
+                                                <option>Office Manager</option>
+                                                <option>Warehouse Manager</option>
+                                            </select>*@
+                                        <input type="text" placeholder="Enter Position" id="emp_position" name="emp_position" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Roles</label>
-                                        <select id="sel-roles" required>
+                                        <select id="sel-roles" name="sel-roles" required>
                                             <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
                                             <option>Office Manager</option>
@@ -157,7 +158,7 @@
 
                                     <div class="input-field">
                                         <label>Status</label>
-                                        <select id="sel-stats" required>
+                                        <select id="sel-stats" name="sel-stats" required>
                                             <option disabled selected>Select Position</option>
                                             <option value="Active">Active</option>
                                             <option value="Inactive">Inactive</option>
@@ -173,10 +174,12 @@
                         </div>
                         <center>
                             <div class="form-add-btns">
+
                                 <button class="save" onclick="infoOpenPopup()" id="saveBtn">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>
+                                <button class="save" onclick="infoOpenPopup()" id="saveBtn11" style="display:none;"></button>
 
                                 <button class="cancel">
                                     @*+ closeAddForm()*@
@@ -227,9 +230,8 @@
     </main>
 
     <script src="~/Scripts/user.js"></script>
-
     <script>
-
+        //$('#formId').validate();
         //document.getElementById("sel-stats").addEventListener("change", function () {
         //    //var optionValue = this.options[this.selectedIndex].value;
         //    setHiddenStats(this.selectedIndex);
@@ -293,10 +295,6 @@
         }
 
         function addOpenPopup() {
-            @*@{
-                Session["editUser"] = "true";
-                Session["addUser"] = "false";
-            }*@
             addpopup.classList.add("add-popup-show")
         }
 

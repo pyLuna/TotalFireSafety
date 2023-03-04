@@ -236,6 +236,7 @@
     <Content Include="images\edit.png" />
     <Content Include="images\export.png" />
     <Content Include="images\information.png" />
+    <Content Include="images\LogoNameFull.png" />
     <Content Include="images\pic1.jpg" />
     <Content Include="images\printer.png" />
     <Content Include="images\profile.png" />

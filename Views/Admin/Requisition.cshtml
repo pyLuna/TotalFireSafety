@@ -30,10 +30,10 @@
                 <div class="purchase-buttons-style">
                     <button class="add-btn" title="ADD NEW REQUEST" onclick="addOpenPopupPur() + EmployeeList() + createRow()"><span class="las la-plus-circle"></span></button>
                     <button class="pri-btn" title="PRINT REPORT" onclick="printOpenPopup()"><span class="las la-print"></span></button>
-                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup()"><span class="las la-file-download"></span></button>
+                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()"><span class="las la-file-download"></span></button>
                     <button class="purchase-sort-btn" onclick="userSortFunction()">
-                            <span></span>
-                            <span class="las la-chevron-down"></span>
+                        <span></span>
+                        <span class="las la-chevron-down"></span>
                     </button>
                     <div class="purchase-sort-content" id="purSortDropdown">
                         <a href="#">Ascending</a>
@@ -120,7 +120,7 @@
                             <div class="purchase-form-contents">
                                 <div class="purchase-form-table">
                                     <div class="purchase-form-table-style">
-                                        <div class="table-responsive" style="overflow-x: auto;height: 300px;width: auto;">
+                                        <div class="table-responsive" style="overflow-x:auto;">
                                             <table width="100%" id="formTable">
                                                 <thead>
                                                     <tr>
@@ -173,7 +173,7 @@
         <div class="save-pop-container" id="popup">
             <img src="@Url.Content("~/images/tick.png")">
             <h2>Accepted!</h2>
-            <p>Request has been accepted!</p>
+            <p>@Session["message"]</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
@@ -209,7 +209,44 @@
     </main>
 </div>
 <script src="@Url.Content("~/Scripts/Requisition.js")"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
+<script>
+
+    function exportToPdf() {
+        const actionButtons = document.querySelectorAll('.purchase-action-style');
+        actionButtons.forEach(button => button.style.display = 'none');
+
+
+        const element = document.querySelector('#myTable');
+        const options = {
+            margin: [0, 0, 0, 0],
+            filename: 'invoice.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
+            // Add header option
+          header: {
+      height: '1cm',
+      contents: '<div id="header"><img id="logo" src="~/images/LogoNameFull.png"></div>',
+      onBeforeParse: (pdf, doc, pages, callback) => {
+        const header = document.getElementById('header');
+        const logo = document.getElementById('logo');
+        callback(header);
+      }
+    }
+        };
+        html2pdf()
+            .set(options)
+            .from(element)
+            .save()
+            .then(() => {
+                // Show action buttons again after exporting
+                actionButtons.forEach(button => button.style.display = 'block');
+            });
+    }
+
+</script>
 <script>
 
     window.onload = function () {

@@ -17,7 +17,8 @@ namespace TotalFireSafety.Models
         public System.Guid update_id { get; set; }
         public string update_item_id { get; set; }
         public string update_quantity { get; set; }
-        public string update_date { get; set; }
+        public Nullable<System.DateTime> update_date { get; set; }
+        public string update_type { get; set; }
     
         public virtual Inventory Inventory { get; set; }
     }

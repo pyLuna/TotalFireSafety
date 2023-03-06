@@ -19,7 +19,7 @@ let EmployeeInput = document.getElementById("EmployeeInput");
 let itemList = document.getElementById("itemList");
 let select_type = document.getElementById("select_type");
 let table1 = document.getElementById("formTable");
-
+let requestType = "";
 const formTable = document.querySelector('#formTable tbody');
 
 formTable.addEventListener("click", function (event) {
@@ -49,7 +49,7 @@ const template = {
 };
 
 function GetAllItem() {
-    fetch('/Admin/FindDataOf?requestType=inventory')
+    fetch('/Admin/FindDataOf1?requestType=inventory')
         .then(res => {
             if (res.ok) {
                 // API request was successful
@@ -65,6 +65,7 @@ function GetAllItem() {
             console.log(`inventory`);
         })
         .catch(error => {
+            //window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
@@ -105,7 +106,7 @@ function GetAll() {
                 errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
                 table.appendChild(errorMessageRow);
             }
-        })
+        }) 
         .then(data => {
             jsonArray.length = 0;
             jsonArray.push(data);
@@ -204,6 +205,7 @@ function setTable(array) {
 }
 
 function EmployeeList() {
+    itemList.innerHTML = "";
     newEmployee.forEach(function (item) {
         var option = document.createElement('option');
         option.value = item.emp_name;
@@ -473,6 +475,7 @@ function setTemplate(array,formType) {
             }
             newRequest.push(newObj);
         }
+        formType = requestType;
     }
     sendRequest(newRequest, formType);
 }
@@ -542,9 +545,11 @@ function UpdateStatus(idToFind, type) {
     let edit = "";
     if (type == 'approve') {
         edit = "Approved";
+        requestType = "approved";
     }
     else {
         edit = "Declined";
+        requestType = "declined";
     }
 
     filtered.forEach(function (item) {

@@ -1,6 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "InvArchive";
+    ViewBag.Title = "Archive";
+    Layout = "~/Views/AdminLayout.cshtml";
+    ViewBag.Arch = "active";
 }
 
 <div class="main-content">
@@ -18,11 +20,11 @@
         <div class="upper-section">
             <div class="search-wrapper">
                 <span class="las la-search"></span>
-                <input type="text" placeholder="Search here">
+                <input type="text" placeholder="Search here" onkeyup="SearchItem(this.value)">
             </div>
             &nbsp;
             <div class="drp-wrapper">
-                <select required>
+                <select id="selcat" onchange="SortByCategory(this.value)">
                     <option disabled selected>Select Category</option>
                     <option>Fittings</option>
                     <option>Gate Valves</option>
@@ -30,6 +32,7 @@
                     <option>Fire Extinguisher</option>
                     <option>Scaffolding</option>
                     <option>Others</option>
+                    <option>Clear</option>
                 </select>
             </div>
 
@@ -44,58 +47,33 @@
                 <div class="inventory">
                     <div class="inventory-body">
                         <div class="table-responsive" style="overflow-x: auto;">
-                            <table width="100%">
+                            <table width="100%" id="myTable">
                                 <thead>
                                     <tr>
-                                        <td>ID</td>
+                                        <td>Item Code</td>
                                         <td>Name</td>
                                         <td>Category</td>
                                         <td>Type</td>
                                         <td>Size</td>
                                         <td>Quantity</td>
                                         <td>Class</td>
-                                        <td>Date Added</td>
                                         <td>Date Archived</td>
-
+                                        <td>Action</td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><label>00001</label></td>
-                                        <td><label>Clarisse C. Vaquez</label></td>
-                                        <td><label>Supervisor</label></td>
-                                        <td><label>0923758923</label></td>
-                                        <td><label>12341241</label></td>
-                                        <td><label>1432143</label></td>
-                                        <td><label>Imported</label></td>
-                                        <td><label>00/00/00</label></td>
-                                        <td><label>00/00/00</label></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td><label>00001</label></td>
-                                        <td><label>Clarisse C. Vaquez</label></td>
-                                        <td><label>Supervisor</label></td>
-                                        <td><label>0923758923</label></td>
-                                        <td><label>45674567474</label></td>
-                                        <td><label>123421345423</label></td>
-                                        <td><label>Local</label></td>
-                                        <td><label>00/00/00</label></td>
-                                        <td><label>00/00/00</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label>00001</label></td>
-                                        <td><label>Clarisse C. Vaquez</label></td>
-                                        <td><label>Supervisor</label></td>
-                                        <td><label>0923758923</label></td>
-                                        <td><label>45674567474</label></td>
-                                        <td><label>123421345423</label></td>
-                                        <td><label>Local</label></td>
-                                        <td><label>00/00/00</label></td>
-                                        <td><label>00/00/00</label></td>
-                                    </tr>
-
-                                    </tr>
+                                    @*<tr>
+                                            <td><label>00001</label></td>
+                                            <td><label>Clarisse C. Vaquez</label></td>
+                                            <td><label>Supervisor</label></td>
+                                            <td><label>0923758923</label></td>
+                                            <td><label>45674567474</label></td>
+                                            <td><label>123421345423</label></td>
+                                            <td><label>Local</label></td>
+                                            <td><label>00/00/00</label></td>
+                                            <td><label>00/00/00</label></td>
+                                            <td><button class="acc-btn" title="ACCEPT REQUEST"> <a href="#"><span class="las la-check-circle"></span></a></button></td>
+                                        </tr>*@
                                 </tbody>
                             </table>
                         </div>
@@ -106,7 +84,7 @@
 
 
         <div class="info-pop-container" id="info-popup">
-            <img src="../../../images/information.png">
+            <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
             <p>Do you want to save the user on the list?</p>
             <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
@@ -114,7 +92,7 @@
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="../../../images/warning.png">
+            <img src="@Url.Content("~/images/warning.png")">
             <h2>System Warning!</h2>
             <p>Are you sure you want to delete item on the list?</p>
             <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
@@ -122,77 +100,72 @@
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="../../../images/tick.png">
+            <img src="@Url.Content("~/images/tick.png")">
             <h2>Added!</h2>
             <p>User details has been added successfully!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="../../../images/remove.png">
+            <img src="@Url.Content("~/images/remove.png")">
             <h2>Deleted!</h2>
             <p>Item details has deleted in the list!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
         <div class="print-pop-container" id="print-popup">
-            <img src="../../../images/printer.png">
+            <img src="@Url.Content("~/images/printer.png")">
             <h2>Print!</h2>
             <p>Print successfully!</p>
             <button type="button" onclick="printClosePopup()">OK</button>
         </div>
 
         <div class="expo-pop-container" id="expo-popup">
-            <img src="../../../images/export.png">
+            <img src="@Url.Content("~/images/export.png")">
             <h2>Export!</h2>
             <p>Exported Successfully!</p>
             <button type="button" onclick="expoClosePopup()">OK</button>
         </div>
     </main>
-
-    <div class="footer">
-        <center>
-            <div class="footer-con">
-                <img src="../../../images/codepheuse.png" alt="">
-                <h4>CodePheus | 2022</h4>
-            </div>
-        </center>
-    </div>
-
+    <script src="@Url.Content("~/Scripts/InvArchive.js")"></script>
     <script>
-
-
-            /* When the user clicks on the button,
-            toggle between hiding and showing the dropdown content */
-            function myFunction() {
-              document.getElementById("myDropdown").classList.toggle("show");
+        window.onload = function () {
+            GetAll();
+            var reload = localStorage.getItem("reload");
+            if (reload == "true") {
+                openPopup();
             }
+        }
+        /* When the user clicks on the button,
+        toggle between hiding and showing the dropdown content */
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
 
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function(e) {
-              if (!e.target.matches('.drop-btn')) {
-              var myDropdown = document.getElementById("myDropdown");
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.drop-btn')) {
+                var myDropdown = document.getElementById("myDropdown");
                 if (myDropdown.classList.contains('show')) {
-                  myDropdown.classList.remove('show');
+                    myDropdown.classList.remove('show');
                 }
-              }
             }
+        }
 
-            function userSortFunction() {
-              document.getElementById("invSortDropdown").classList.toggle("inventory-sort-show");
-            }
+        function userSortFunction() {
+            document.getElementById("invSortDropdown").classList.toggle("inventory-sort-show");
+        }
 
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function(e) {
-              if (!e.target.matches('.inventory-sort-btn')) {
-              var myDropdown = document.getElementById("invSortDropdown");
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.inventory-sort-btn')) {
+                var myDropdown = document.getElementById("invSortDropdown");
                 if (myDropdown.classList.contains('inventory-sort-show')) {
-                  myDropdown.classList.remove('inventory-sort-show');
+                    myDropdown.classList.remove('inventory-sort-show');
                 }
-              }
             }
+        }
 
-        <!-- Messege Box -->
 
         let addpopupinv = document.getElementById("add-popup-inv");
         function addOpenPopupInv() {
@@ -266,7 +239,4 @@
             expopopup.classList.remove("expo-popup-show")
         }
 
-
-
     </script>
-

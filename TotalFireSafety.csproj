@@ -172,6 +172,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\APIController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -222,6 +223,7 @@
   <ItemGroup>
     <Content Include="css\loginpage.css" />
     <Content Include="css\sa-dashboard-style.css" />
+    <Content Include="css\sa-inventory-style.css" />
     <Content Include="css\userstyle.css" />
     <Content Include="css\util.css" />
     <Content Include="fonts\font-awesome-4.7.0\css\font-awesome.css" />
@@ -331,6 +333,7 @@
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\Inventory.js" />
+    <Content Include="Scripts\InvArchive.js" />
     <Content Include="Scripts\js\app.js" />
     <Content Include="Scripts\js\chart1.js" />
     <Content Include="Scripts\js\chart2.js" />
@@ -400,6 +403,12 @@
     <Content Include="Views\BaseLayout.cshtml" />
     <Content Include="Views\Base\Login.cshtml" />
     <Content Include="Views\Admin\InvArchive.cshtml" />
+    <Content Include="Views\_ErrorLayoutPage1.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\Forbidden.cshtml" />
+    <Content Include="Views\Error\InternalServerError.cshtml" />
+    <Content Include="Views\Error\MethodNotAllowed.cshtml" />
+    <Content Include="Views\Error\BadRequest.cshtml" />
     <Content Include="Views\Admin\InventoryReport.cshtml" />
   </ItemGroup>
   <ItemGroup>

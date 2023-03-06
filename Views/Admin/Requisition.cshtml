@@ -120,7 +120,7 @@
                             <div class="purchase-form-contents">
                                 <div class="purchase-form-table">
                                     <div class="purchase-form-table-style">
-                                        <div class="table-responsive" style="overflow-x: auto;height: 300px;width: auto;">
+                                        <div class="table-responsive" style="overflow-x:auto;">
                                             <table width="100%" id="formTable">
                                                 <thead>
                                                     <tr>
@@ -173,7 +173,7 @@
         <div class="save-pop-container" id="popup">
             <img src="@Url.Content("~/images/tick.png")">
             <h2>Accepted!</h2>
-            <p>Request has been accepted!</p>
+            <p>@Session["message"]</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 

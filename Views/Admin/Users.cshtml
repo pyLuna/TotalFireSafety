@@ -110,7 +110,7 @@
 
                                     <div class="input-field">
                                         <label>Employee ID</label>
-                                        <input type="number" placeholder="00-000" id="empId" name="emp_no" required>
+                                        <input type="number" placeholder="00000" id="empId" name="emp_no" required>
                                     </div>
 
                                     <div class="input-field">
@@ -118,7 +118,7 @@
                                         <input type="date" id="dateDisplay" name="emp_hiredDate">
                                         @*<input type="text" id="dateHired" style="display:none;" readonly>*@
                                     </div>
-                                    <input type="text" id="wasd" name="formType" style="display:none;" readonly>
+                                    <input type="text" id="formType" name="formType" style="display:none;" readonly>
 
                                     <div class="input-field">
                                         <label>Username</label>
@@ -250,12 +250,12 @@
         document.getElementById("addBtn").addEventListener("click", function () {
 
             addpopup.classList.add("add-popup-show");
-            document.getElementById("wasd").value = "add";
+            document.getElementById("formType").value = "add";
         });
 
         function openEditForm(value) {
             addpopup.classList.add("add-popup-show");
-            document.getElementById("wasd").value = "edit";
+            document.getElementById("formType").value = "edit";
             //setSession("edit");
             setField(value);
         }

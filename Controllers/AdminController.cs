@@ -8,6 +8,11 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using TotalFireSafety.Models;
 
+/*
+ * TODO
+ * -LAGYAN NG SCROLL BAR BAWAT TABLE
+ * -YUNG IBA NASA CP MO CHECK MO JUST YOU
+ */
 
 namespace TotalFireSafety.Controllers
 {
@@ -28,6 +33,45 @@ namespace TotalFireSafety.Controllers
                 return "~/images/profile.png";
             }
         }
+        [HttpPost]
+        public ActionResult RestoreItem([System.Web.Http.FromUri] string itemCode)
+        {
+            try
+            {
+                var empId = Session["emp_no"]?.ToString();
+                if (empId == null)
+                {
+                    return RedirectToAction("Login", "Base");
+                }
+                var userToken = Session["access_token"]?.ToString();
+                ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                var addCode = new Inventory()
+                {
+                    in_code = itemCode
+                };
+                var codeToFind = JsonConvert.SerializeObject(addCode);
+                var uri = "/Warehouse/Inventory/Status";
+                var response = api_req.SetMethod(uri,userToken, codeToFind);
+                if (response == "BadRequest" )
+                {
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("BadRequest","Error");
+                }
+                if (response == "InternalServerError")
+                {
+                    return RedirectToAction("InternalServerError","Error");
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                }
+                var json = JsonConvert.DeserializeObject(response);
+                JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         public ActionResult SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {
@@ -60,7 +104,7 @@ namespace TotalFireSafety.Controllers
                         user.ProfilePath = image;
                         _context.Entry(user);
                         _context.SaveChanges();
-                ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                        ViewBag.ProfilePath = GetPath(int.Parse(empId));
                         return Json("Success");
                         //C: \Users\Lucas Eli\Source\Repos\TotalFireSafety\Uploads\Images\
                     }
@@ -84,6 +128,16 @@ namespace TotalFireSafety.Controllers
             var userToken = Session["access_token"].ToString();
             var response = api_req.BarcodeGenerator(userToken, itemCode);
             JsonResult result = Json(response, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+            if (response == "BadRequest")
+            {
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+            }
             Response.ContentType = "application/json"; // Set the Content-Type header
                 ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return result;
@@ -110,11 +164,29 @@ namespace TotalFireSafety.Controllers
                     inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
                     result = Json(inv, JsonRequestBehavior.AllowGet);
                 }
+                if(requestType == "deleted")
+                {
+                    uri = "/Warehouse/Inventory/Archive";
+                    response = api_req.GetAllMethod(uri, userToken);
+                    inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
+                    result = Json(inv, JsonRequestBehavior.AllowGet);
+                }
+
                 if (requestType == "requisition") {
                     uri = "/Requests/All";
                     response = api_req.GetAllMethod(uri, userToken);
                     requisition = JsonConvert.DeserializeObject<List<Request>>(response);
                     result = Json(requisition, JsonRequestBehavior.AllowGet);
+                }
+                if (response == "BadRequest")
+                {
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("BadRequest", "Error");
+                }
+                if (response == "InternalServerError")
+                {
+                    return RedirectToAction("InternalServerError", "Error");
+                    //return Json("error", JsonRequestBehavior.AllowGet);
                 }
                 Response.ContentType = "application/json"; // Set the Content-Type header
                 return result;
@@ -217,11 +289,15 @@ namespace TotalFireSafety.Controllers
 
             var response = api_req.SetMethod(uri, userToken, serializedModel);
 
-            if (response == "BadRequest" || response == "InternalServerError")
+            if (response == "BadRequest")
             {
-                ViewBag.Added = response.ToString();
-                ViewBag.ProfilePath = GetPath(int.Parse(empId));
-                return RedirectToAction("Inventory");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             var json = JsonConvert.DeserializeObject(response);
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
@@ -244,16 +320,25 @@ namespace TotalFireSafety.Controllers
             var serializedModel = JsonConvert.SerializeObject(addCode);
             var userToken = Session["access_token"].ToString();
             var response = api_req.SetMethod("Warehouse/Inventory/Delete", userToken, serializedModel);
-            if (response == "BadRequest" || response == "InternalServerError")
+            if (response == "BadRequest")
             {
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-                return Json("error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return Json("Item Deleted");
         }
 
         //  Inventory
+        /*
+         *  TODO
+         *  -ADD NG COLUMN--DATE ADDED (LATEST ANG IDIDISPLAY)
+         */
         public ActionResult Inventory()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -271,6 +356,12 @@ namespace TotalFireSafety.Controllers
 
         public ActionResult InvArchive()
         {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
 
@@ -317,6 +408,8 @@ namespace TotalFireSafety.Controllers
             return View(data);
 
            
+            //var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
+            //return View(datas);
         }
 
         [HttpPost]
@@ -342,11 +435,15 @@ namespace TotalFireSafety.Controllers
             }
             var response = api_req.SetMethod(uri, userToken, serializedModel);
             ViewBag.Message = message;
-            if (response == "BadRequest" || response == "InternalServerError")
+            if (response == "BadRequest")
             {
-                ViewBag.Response = response.ToString();
-                ViewBag.ProfilePath = GetPath(int.Parse(empId));
-                return View();
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             var json = JsonConvert.DeserializeObject(response);
             ViewBag.Success = json.ToString();
@@ -369,7 +466,17 @@ namespace TotalFireSafety.Controllers
                 var json = JsonConvert.DeserializeObject<List<Employee>>(response);
                 JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 Response.ContentType = "application/json"; // Set the Content-Type header
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                if (response == "BadRequest")
+                {
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("BadRequest", "Error");
+                }
+                if (response == "InternalServerError")
+                {
+                    return RedirectToAction("InternalServerError", "Error");
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                }
                 return result;
             }
             catch (Exception ex)
@@ -397,23 +504,44 @@ namespace TotalFireSafety.Controllers
             {
                 return RedirectToAction("Login", "Base");
             }
+            Session["message"] = null;
             var userToken = Session["access_token"].ToString();
             var newData = JsonConvert.SerializeObject(jsonData);
             //var serializedModel = JsonConvert.DeserializeObject<List<Request>>(newData);
-            string uri = "";
+            string uri = "",message="";
             if(formType == "add")
             {
+                message = "Request has been accepted";
                 uri = "Requests/Add";
             }
             else
             {
+                if(formType == "approved")
+                {
+                    message = "Request Approved";
+                }
+                else
+                {
+                    message = "Request Declined";
+                }
                 uri = "Requests/Edit";
             }
             var response = api_req.SetMethod(uri, userToken, newData);
             var json = JsonConvert.DeserializeObject(response);
+            if (response == "BadRequest")
+            {
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+            }
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            Session["message"] = message;
             return result;
         }
 
@@ -429,13 +557,8 @@ namespace TotalFireSafety.Controllers
         }
         public ActionResult Logout()
         {
-            // DONT FORGET TO CLEAR SESSIONS, TOKENS AND OTHERS
             Session.Clear();
             return RedirectToAction("Login", "Base");
         }
-        //public ActionResult InvArchive()
-        //{
-        //    return View();
-        //}
     }
 }

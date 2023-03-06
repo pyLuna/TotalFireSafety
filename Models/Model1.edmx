@@ -31,7 +31,8 @@
           <Property Name="update_id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="update_item_id" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="update_quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="update_date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="update_date" Type="date" />
+          <Property Name="update_type" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Inventory">
           <Key>
@@ -46,6 +47,7 @@
           <Property Name="in_status" Type="nvarchar" MaxLength="50" />
           <Property Name="in_class" Type="nvarchar" MaxLength="50" />
           <Property Name="in_dateAdded" Type="nvarchar" MaxLength="50" />
+          <Property Name="in_arch_date" Type="date" />
         </EntityType>
         <EntityType Name="Requests">
           <Key>
@@ -189,8 +191,6 @@
         <EntityContainer Name="TFSEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Credentials" EntityType="TotalFireSafetyModel.Credential" />
           <EntitySet Name="Employees" EntityType="TotalFireSafetyModel.Employee" />
-          <EntitySet Name="Inv_Update" EntityType="TotalFireSafetyModel.Inv_Update" />
-          <EntitySet Name="Inventories" EntityType="TotalFireSafetyModel.Inventory" />
           <EntitySet Name="Roles" EntityType="TotalFireSafetyModel.Role" />
           <EntitySet Name="Status" EntityType="TotalFireSafetyModel.Status" />
           <AssociationSet Name="FK_Credentials_Employee" Association="TotalFireSafetyModel.FK_Credentials_Employee">
@@ -205,18 +205,20 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Status" EntitySet="Status" />
           </AssociationSet>
-          <AssociationSet Name="FK_Inv_Update_Inventory" Association="TotalFireSafetyModel.FK_Inv_Update_Inventory">
-            <End Role="Inventory" EntitySet="Inventories" />
-            <End Role="Inv_Update" EntitySet="Inv_Update" />
-          </AssociationSet>
           <EntitySet Name="Requests" EntityType="TotalFireSafetyModel.Request" />
           <AssociationSet Name="FK_Requests_Employee" Association="TotalFireSafetyModel.FK_Requests_Employee">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
+          <EntitySet Name="Inventories" EntityType="TotalFireSafetyModel.Inventory" />
           <AssociationSet Name="FK_Requests_Inventory" Association="TotalFireSafetyModel.FK_Requests_Inventory">
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <EntitySet Name="Inv_Update" EntityType="TotalFireSafetyModel.Inv_Update" />
+          <AssociationSet Name="FK_Inv_Update_Inventory" Association="TotalFireSafetyModel.FK_Inv_Update_Inventory">
+            <End Role="Inventory" EntitySet="Inventories" />
+            <End Role="Inv_Update" EntitySet="Inv_Update" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Credential">
@@ -242,32 +244,6 @@
           <NavigationProperty Name="Status" Relationship="TotalFireSafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
           <NavigationProperty Name="Requests" Relationship="TotalFireSafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
           <Property Name="ProfilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Inv_Update">
-          <Key>
-            <PropertyRef Name="update_id" />
-          </Key>
-          <Property Name="update_id" Type="Guid" Nullable="false" />
-          <Property Name="update_item_id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="update_quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="update_date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Inventory" Relationship="TotalFireSafetyModel.FK_Inv_Update_Inventory" FromRole="Inv_Update" ToRole="Inventory" />
-        </EntityType>
-        <EntityType Name="Inventory">
-          <Key>
-            <PropertyRef Name="in_code" />
-          </Key>
-          <Property Name="in_code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="in_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="in_category" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="in_type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="in_size" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="in_quantity" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="in_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="in_class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="in_dateAdded" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Inv_Update" Relationship="TotalFireSafetyModel.FK_Inv_Update_Inventory" FromRole="Inventory" ToRole="Inv_Update" />
-          <NavigationProperty Name="Requests" Relationship="TotalFireSafetyModel.FK_Requests_Inventory" FromRole="Inventory" ToRole="Request" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -324,18 +300,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Inv_Update_Inventory">
-          <End Type="TotalFireSafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
-          <End Type="TotalFireSafetyModel.Inv_Update" Role="Inv_Update" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Inventory">
-              <PropertyRef Name="in_code" />
-            </Principal>
-            <Dependent Role="Inv_Update">
-              <PropertyRef Name="update_item_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Request">
           <Key>
             <PropertyRef Name="request_id" />
@@ -363,6 +327,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="in_code" />
+          </Key>
+          <Property Name="in_code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="in_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="in_category" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="in_type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="in_size" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="in_quantity" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="in_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="in_class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="in_dateAdded" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="in_arch_date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Requests" Relationship="TotalFireSafetyModel.FK_Requests_Inventory" FromRole="Inventory" ToRole="Request" />
+          <NavigationProperty Name="Inv_Update" Relationship="TotalFireSafetyModel.FK_Inv_Update_Inventory" FromRole="Inventory" ToRole="Inv_Update" />
+        </EntityType>
         <Association Name="FK_Requests_Inventory">
           <End Type="TotalFireSafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
           <End Type="TotalFireSafetyModel.Request" Role="Request" Multiplicity="*" />
@@ -372,6 +353,29 @@
             </Principal>
             <Dependent Role="Request">
               <PropertyRef Name="request_item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Inv_Update">
+          <Key>
+            <PropertyRef Name="update_id" />
+          </Key>
+          <Property Name="update_id" Type="Guid" Nullable="false" />
+          <Property Name="update_item_id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="update_quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="update_date" Type="DateTime" Precision="0" />
+          <Property Name="update_type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Inventory" Relationship="TotalFireSafetyModel.FK_Inv_Update_Inventory" FromRole="Inv_Update" ToRole="Inventory" />
+        </EntityType>
+        <Association Name="FK_Inv_Update_Inventory">
+          <End Type="TotalFireSafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="TotalFireSafetyModel.Inv_Update" Role="Inv_Update" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Inv_Update">
+              <PropertyRef Name="update_item_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -399,31 +403,6 @@
                 <ScalarProperty Name="emp_hiredDate" ColumnName="emp_hiredDate" />
                 <ScalarProperty Name="emp_name" ColumnName="emp_name" />
                 <ScalarProperty Name="emp_no" ColumnName="emp_no" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Inv_Update">
-            <EntityTypeMapping TypeName="TotalFireSafetyModel.Inv_Update">
-              <MappingFragment StoreEntitySet="Inv_Update">
-                <ScalarProperty Name="update_date" ColumnName="update_date" />
-                <ScalarProperty Name="update_quantity" ColumnName="update_quantity" />
-                <ScalarProperty Name="update_item_id" ColumnName="update_item_id" />
-                <ScalarProperty Name="update_id" ColumnName="update_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Inventories">
-            <EntityTypeMapping TypeName="TotalFireSafetyModel.Inventory">
-              <MappingFragment StoreEntitySet="Inventory">
-                <ScalarProperty Name="in_dateAdded" ColumnName="in_dateAdded" />
-                <ScalarProperty Name="in_class" ColumnName="in_class" />
-                <ScalarProperty Name="in_status" ColumnName="in_status" />
-                <ScalarProperty Name="in_quantity" ColumnName="in_quantity" />
-                <ScalarProperty Name="in_size" ColumnName="in_size" />
-                <ScalarProperty Name="in_type" ColumnName="in_type" />
-                <ScalarProperty Name="in_category" ColumnName="in_category" />
-                <ScalarProperty Name="in_name" ColumnName="in_name" />
-                <ScalarProperty Name="in_code" ColumnName="in_code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -457,6 +436,33 @@
                 <ScalarProperty Name="request_item" ColumnName="request_item" />
                 <ScalarProperty Name="request_type" ColumnName="request_type" />
                 <ScalarProperty Name="request_id" ColumnName="request_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inventories">
+            <EntityTypeMapping TypeName="TotalFireSafetyModel.Inventory">
+              <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="in_arch_date" ColumnName="in_arch_date" />
+                <ScalarProperty Name="in_dateAdded" ColumnName="in_dateAdded" />
+                <ScalarProperty Name="in_class" ColumnName="in_class" />
+                <ScalarProperty Name="in_status" ColumnName="in_status" />
+                <ScalarProperty Name="in_quantity" ColumnName="in_quantity" />
+                <ScalarProperty Name="in_size" ColumnName="in_size" />
+                <ScalarProperty Name="in_type" ColumnName="in_type" />
+                <ScalarProperty Name="in_category" ColumnName="in_category" />
+                <ScalarProperty Name="in_name" ColumnName="in_name" />
+                <ScalarProperty Name="in_code" ColumnName="in_code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inv_Update">
+            <EntityTypeMapping TypeName="TotalFireSafetyModel.Inv_Update">
+              <MappingFragment StoreEntitySet="Inv_Update">
+                <ScalarProperty Name="update_type" ColumnName="update_type" />
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="update_quantity" ColumnName="update_quantity" />
+                <ScalarProperty Name="update_item_id" ColumnName="update_item_id" />
+                <ScalarProperty Name="update_id" ColumnName="update_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

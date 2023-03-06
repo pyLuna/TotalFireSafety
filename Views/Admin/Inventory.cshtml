@@ -254,6 +254,7 @@
         let code = document.getElementById("itemCode");
         let hidCategory = document.getElementById("hiddenCategory");
         let hidType = document.getElementById("hiddenType");
+        let itemClass = document.getElementById("itemClass");
         let addnewitem = document.getElementById("addnewitem");
         let imgContainer = document.getElementById("image-container");
         let newNum = "";
@@ -268,16 +269,17 @@
             let formType = document.getElementById("formType");
             formType.value = "add";
             size.removeEventListener("keyup", setHiddenSize);
-            code.removeEventListener("input", processBarcode);
+            code.removeEventListener("input", processInput);
             form.removeEventListener("keydown",Scan);
             quantity.removeEventListener("keyup", insertAdd);
             quantity.removeEventListener("keyup", insertEdit);
 
-            code.removeAttribute("readonly");
+            //code.removeAttribute("readonly");
 
-            code.addEventListener("keyup", NewCodeListener);
+            //code.addEventListener("keyup", NewCodeListener);
             quantity.addEventListener("keyup", setQuantity);
             size.addEventListener("keyup", setSize);
+            code.setAttribute("readonly", true);
             removeAttrib();
         }
 
@@ -407,13 +409,15 @@
     }
 
     form.addEventListener("keydown", Scan);
-    code.addEventListener("input", processBarcode);
+    code.addEventListener("input", processInput);
 
-    function processBarcode(event) {
+    function processInput(event) {
         if (event.which !== 13 || event.keyCode !== 13) {
             setField(code.value, 'quant');
             AddValue(quantity.value, 'add');
-            quantity.value = 1;
+            if (quantity.value == "") {
+                quantity.value = 1;
+            }
         }
     }
 

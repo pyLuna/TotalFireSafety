@@ -227,7 +227,7 @@
                 <h3>Inventories</h3>
                 <div class="card">
                     <div class="card-header">
-                        <h3>Item Categories Summary</h3>
+                        
 
                         <h3>Item Categories Summary</h3>
 
@@ -246,14 +246,20 @@
                             <canvas id="barchart1" width="250" height="300"></canvas>
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                             <script>
-                                var data = @Html.Raw(Json.Encode(ViewBag.Data));
+                            var data = @Html.Raw(Json.Encode(ViewBag.Data));
+
+                                   
                                 var labels = data.map(function (item) {
-                                    return item.Name;
+
+                                    return item.Name
                                 });
+
 
                                 // Get references to the select element and chart canvas
                                 var select = document.getElementById('itemCategory');
+
                                 var canvas = document.getElementById('barchart1');
+
 
                                 select.addEventListener('change', function () {
                                     // Get the selected option value
@@ -272,7 +278,74 @@
                                     });
 
                                     var importedValues = filteredData.map(function (item) {
-                                    if (item.Class === 'Import') {
+                                        if (item.Class === 'Import') {
+                                            if (item.Quantity < 250) {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(255,0,0)' // red color
+                                                };
+                                            } else if (item.Quantity < 500) {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(255, 165, 0)' // orange color
+                                                };
+                                            } else {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(0,128,0)' // default blue color
+                                                };
+                                            }
+                                        } else {
+                                            return { value: 0, color: 'rgba(0,128,0)' };
+                                        }
+                                    });
+
+                                    var localValues = filteredData.map(function (item) {
+                                        if (item.Class === 'Local') {
+                                            if (item.Quantity < 250) {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(255,0,0)'
+                                                };
+                                            } else if (item.Quantity < 500) {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(255, 165, 0)'
+                                                };
+                                            } else {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(0,128,0)'
+                                                };
+                                            }
+                                        } else {
+                                            return { value: 0, color: 'rgba(0,128,0)' };
+                                        }
+                                    });
+
+                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
+                                    chart.data.labels = filteredData.map(function (item) { return item.Name; });
+                                    chart.update();
+                                });
+
+
+
+                                var selectYear = document.getElementById('year');
+                               
+
+                                selectYear.addEventListener('change', function () {
+                                    var selectedYear = selectYear.value;
+
+                                    var filteredData1 = data.filter(function (item) {
+
+                                        return item.Date == selectedYear;
+                                    });
+              
+                                    // Same code as before for updating the chart with the filtered data
+                                    var importedValues = filteredData1.map(function (item) {
                                         if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
@@ -289,41 +362,104 @@
                                                 color: 'rgba(0,128,0)' // default blue color
                                             };
                                         }
-                                    } else {
-                                        return { value: 0, color: 'rgba(0,128,0)' };
-                                    }
-                                });
+                                   
+                                    });
 
-                                    var localValues = filteredData.map(function (item) {
-                                    if (item.Class === 'Local') {
-                                        if (item.Quantity < 250) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)'
-                                            };
-                                        } else if (item.Quantity < 500) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)'
-                                            };
+                                    var localValues = filteredData1.map(function (item) {
+                                        if (item.Class === 'Local') {
+                                            if (item.Quantity < 250) {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(255,0,0)'
+                                                };
+                                            } else if (item.Quantity < 500) {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(255, 165, 0)'
+                                                };
+                                            } else {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(0,128,0)'
+                                                };
+                                            }
                                         } else {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0)'
-                                            };
+                                            return { value: 0, color: 'rgba(0,128,0)' };
                                         }
-                                    } else {
-                                        return { value: 0, color: 'rgba(0,128,0)' };
-                                    }
-                                });
+                                    });
 
                                     chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
                                     chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
                                     chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
                                     chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
-                                    chart.data.labels = filteredData.map(function (item) { return item.Name; });
+                                    chart.data.labels = filteredData1.map(function (item) { return item.Name; });
                                     chart.update();
                                 });
+
+                                var selectMonth = document.getElementById('month');
+
+                                selectMonth.addEventListener('change', function () {
+                                    var selectedMonth = selectMonth.value;
+
+                                    var filteredData2 = data.filter(function (item) {
+
+                                        return item.Date1 == selectedMonth;
+                                    });
+
+                                    // Same code as before for updating the chart with the filtered data
+                                    var importedValues = filteredData2.map(function (item) {
+                                        if (item.Quantity < 250) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255,0,0)' // red color
+                                            };
+                                        } else if (item.Quantity < 500) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255, 165, 0)' // orange color
+                                            };
+                                        } else {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0)' // default blue color
+                                            };
+                                        }
+
+                                    });
+
+                                    var localValues = filteredData2.map(function (item) {
+                                        if (item.Class === 'Local') {
+                                            if (item.Quantity < 250) {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(255,0,0)'
+                                                };
+                                            } else if (item.Quantity < 500) {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(255, 165, 0)'
+                                                };
+                                            } else {
+                                                return {
+                                                    value: item.Quantity,
+                                                    color: 'rgba(0,128,0)'
+                                                };
+                                            }
+                                        } else {
+                                            return { value: 0, color: 'rgba(0,128,0)' };
+                                        }
+                                    });
+
+                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
+                                    chart.data.labels = filteredData2.map(function (item) { return item.Name; });
+                                    chart.update();
+                                });
+
+
+
 
 
                                 var importedValues = data.map(function (item) {
@@ -374,13 +510,14 @@
 
 
 
-                               var ctx = canvas.getContext('2d');
+
+                                var ctx = canvas.getContext('2d');
                                 var chart = new Chart(ctx, {
                                     type: 'bar',
                                     data: {
                                         labels: labels,
                                         datasets: [{
-                                            label: 'Import',
+                                            label: 'Imported',
                                             data: importedValues.map(function (item) { return item.value; }),
                                             backgroundColor: importedValues.map(function (item) { return item.color; }),
                                             borderColor: 'rgba(54, 162, 235, 1)',
@@ -391,7 +528,7 @@
                                             backgroundColor: localValues.map(function (item) { return item.color; }),
                                             borderColor: 'rgba(255, 99, 132, 1)',
                                             borderWidth: 1
-                                            }]
+                                        }]
 
                                     },
                                     options: {
@@ -408,7 +545,6 @@
                                     }
                                 });
                                 chart.update();
-
 
                             </script>
 
@@ -595,7 +731,7 @@
                 </div>
             </div>
         </div>
-</div>
+
 
     </main>
 </div>
@@ -624,12 +760,15 @@
     document.getElementById("year").appendChild(currentYearOption);
 
     // Populate month dropdown with all months
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
     for (var i = 1; i <= 12; i++) {
         var monthOption = document.createElement("option");
-        monthOption.value = i < 10 ? "0" + i : i;
-        monthOption.text = i < 10 ? "0" + i : i;
+        monthOption.value = i; // set the value to the integer value of the month
+        monthOption.textContent = monthNames[i - 1]; // set the text to the month name
         document.getElementById("month").appendChild(monthOption);
     }
+   
 
     // Set default selected values to current year and month
     document.getElementById("year").value = currentYear;

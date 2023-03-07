@@ -146,7 +146,7 @@
                                     <div class="input-field">
                                         <label>Roles</label>
                                         <select id="sel-roles" name="sel-roles" required>
-                                            <option disabled selected>Select Position</option>
+                                            <option disabled selected value="">Select Position</option>
                                             <option>Supervisor</option>
                                             <option>Office Manager</option>
                                             <option>Warehouse Manager</option>
@@ -175,11 +175,11 @@
                         <center>
                             <div class="form-add-btns">
 
-                                <button class="save" onclick="infoOpenPopup()" id="saveBtn">
+                                <button class="save"onclick="checkForm()" id="saveBtn">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>
-                                <button class="save" onclick="infoOpenPopup()" id="saveBtn11" style="display:none;"></button>
+                                <button class="save"  id="saveBtn11" style="display:none;"></button>
 
                                 <button class="cancel">
                                     @*+ closeAddForm()*@
@@ -236,6 +236,13 @@
         //    //var optionValue = this.options[this.selectedIndex].value;
         //    setHiddenStats(this.selectedIndex);
         //});
+
+        function checkForm() {
+            var bool = $('#formId').valid();
+            if (bool) {
+                infoOpenPopup();
+            }
+        }
 
         let addpopup = document.getElementById("add-popup");
         window.onload = function () {

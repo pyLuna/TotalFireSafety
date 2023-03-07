@@ -61,6 +61,11 @@ body {
     font-family: Poppins-Regular, sans-serif;
 }
 
+.manual-error {
+    color: red;
+    min-height: 10px;
+}
+
 label.error{
     color:red !important;
 }

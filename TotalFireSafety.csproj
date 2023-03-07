@@ -330,6 +330,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\validations\InventoryValidation.js" />
     <Content Include="Scripts\validations\RequisitionValidation.js" />
     <Content Include="Scripts\validations\UserValidation.js" />
     <Content Include="Scripts\chart.js" />

@@ -65,7 +65,7 @@ function GetAllItem() {
             console.log(`inventory`);
         })
         .catch(error => {
-            //window.location.replace('/Error/InternalServerError');
+            window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
@@ -85,6 +85,7 @@ function GetAllEmployee() {
             console.log(`Employee`);
         })
         .catch(error => {
+            window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
@@ -117,6 +118,7 @@ function GetAll() {
             }
         })
         .catch(error => {
+            window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }

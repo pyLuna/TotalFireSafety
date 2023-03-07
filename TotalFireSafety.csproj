@@ -334,6 +334,7 @@
     <Content Include="Scripts\chart.min.js" />
     <Content Include="Scripts\Inventory.js" />
     <Content Include="Scripts\InvArchive.js" />
+    <Content Include="Scripts\InvReport.js" />
     <Content Include="Scripts\js\app.js" />
     <Content Include="Scripts\js\chart1.js" />
     <Content Include="Scripts\js\chart2.js" />

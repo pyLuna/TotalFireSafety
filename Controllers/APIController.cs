@@ -739,9 +739,36 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new TFSEntity())
                 {
-                    var items = _context.Inv_Update.Select(x => x).ToList();
+                    var invItems = _context.Inventories.Select(x => x).ToList();
+                    var reports = _context.Inv_Update.Select(x => x).ToList();
+                    var newList = new List<Inv_Update>();
 
-                    var _jsonSerialized = JsonConvert.SerializeObject(items, Formatting.None, new JsonSerializerSettings()
+                    foreach (var item in reports)
+                    {
+                        var itemReports = invItems.Where(x => x.in_code == item.update_item_id).SingleOrDefault();
+                        var newReport = new Inv_Update()
+                        {
+                            update_id = item.update_id,
+                            update_item_id = item.update_item_id,
+                            update_quantity = item.update_quantity,
+                            update_date = item.update_date,
+                            update_type = item.update_type,
+
+                            Inventory = itemReports?.in_code == item.update_item_id ? new Inventory
+                            {
+                                in_code = itemReports.in_code,
+                                in_name = itemReports.in_name,
+                                in_category = itemReports.in_category,
+                                in_type = itemReports.in_type,
+                                in_size = itemReports.in_size,
+                                in_status = itemReports.in_status,
+                                in_class = itemReports.in_class
+                            } : null
+                        };
+                        newList.Add(newReport);
+                    }
+
+                    var _jsonSerialized = JsonConvert.SerializeObject(newList, Formatting.None, new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
@@ -771,6 +798,7 @@ namespace TotalFireSafety.Controllers
                         return BadRequest();
                     }
                     item.in_status = "active";
+                    item.in_arch_date = null;
                     _context.Entry(item);
                     _context.SaveChanges();
                     return Ok();
@@ -945,6 +973,7 @@ namespace TotalFireSafety.Controllers
                     if (_item != null)
                     {
                         _item.in_status = "archived";
+                        _item.in_arch_date = DateTime.Now;
                         _context.Entry(_item);
                         _context.SaveChanges();
                         return Ok("Item Deleted Successfully!");

@@ -49,6 +49,7 @@ function GetAllEmployeeInfo() {
             }
         })
         .catch(error => {
+            window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }

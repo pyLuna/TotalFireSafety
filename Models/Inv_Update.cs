@@ -21,5 +21,9 @@ namespace TotalFireSafety.Models
         public string update_type { get; set; }
     
         public virtual Inventory Inventory { get; set; }
+        public string FormattedDate
+        {
+            get { return update_date?.ToString("MMMM dd, yyyy"); }
+        }
     }
 }

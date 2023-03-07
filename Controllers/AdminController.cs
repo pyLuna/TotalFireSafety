@@ -20,6 +20,22 @@ namespace TotalFireSafety.Controllers
     {
         // GET: Admin
         readonly APIRequestHandler api_req = new APIRequestHandler();
+        #region Others
+        //private Tuple<string,string> setUri(int isEdit)
+        //{
+        //    string uri,message;
+        //    if(isEdit == 1)
+        //    {
+        //        uri = "Admin/Employee/Update";
+        //        message = "Updated!";
+        //    }
+        //    else
+        //    {
+        //        uri = "Admin/Employee/Add";
+        //        message = "Added!";
+        //    }
+        //    return new Tuple<string, string> (uri,message);
+        //}
         protected string GetPath(int emp_no)
         {
             using(var _context = new TFSEntity())
@@ -29,54 +45,14 @@ namespace TotalFireSafety.Controllers
                 {
                     return user.ProfilePath;
                 }
-
                 return "~/images/profile.png";
             }
         }
         [HttpPost]
-        public ActionResult RestoreItem([System.Web.Http.FromUri] string itemCode)
-        {
-            try
-            {
-                var empId = Session["emp_no"]?.ToString();
-                if (empId == null)
-                {
-                    return RedirectToAction("Login", "Base");
-                }
-                var userToken = Session["access_token"]?.ToString();
-                ViewBag.ProfilePath = GetPath(int.Parse(empId));
-                var addCode = new Inventory()
-                {
-                    in_code = itemCode
-                };
-                var codeToFind = JsonConvert.SerializeObject(addCode);
-                var uri = "/Warehouse/Inventory/Status";
-                var response = api_req.SetMethod(uri,userToken, codeToFind);
-                if (response == "BadRequest" )
-                {
-                    //return Json("error", JsonRequestBehavior.AllowGet);
-                    return RedirectToAction("BadRequest","Error");
-                }
-                if (response == "InternalServerError")
-                {
-                    return RedirectToAction("InternalServerError","Error");
-                    //return Json("error", JsonRequestBehavior.AllowGet);
-                }
-                var json = JsonConvert.DeserializeObject(response);
-                JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return Json(ex, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpPost]
         public ActionResult SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {
             var empId = Session["emp_no"]?.ToString();
-            if(empId == null)
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -112,35 +88,10 @@ namespace TotalFireSafety.Controllers
                 ViewBag.ProfilePath = GetPath(int.Parse(empId));
                 return Json("File is Empty");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return RedirectToAction("Dashboard",ex);
+                return RedirectToAction("Dashboard", ex);
             }
-        }
-        [HttpPost]
-        public ActionResult GetBarcode(string itemCode)
-        {
-            var empId = Session["emp_no"]?.ToString();
-            if (empId == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            var userToken = Session["access_token"].ToString();
-            var response = api_req.BarcodeGenerator(userToken, itemCode);
-            JsonResult result = Json(response, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
-            if (response == "BadRequest")
-            {
-                //return Json("error", JsonRequestBehavior.AllowGet);
-                return RedirectToAction("BadRequest", "Error");
-            }
-            if (response == "InternalServerError")
-            {
-                return RedirectToAction("InternalServerError", "Error");
-                //return Json("error", JsonRequestBehavior.AllowGet);
-            }
-            Response.ContentType = "application/json"; // Set the Content-Type header
-                ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            return result;
         }
 
         public ActionResult FindDataOf(string requestType)
@@ -154,6 +105,7 @@ namespace TotalFireSafety.Controllers
             {
                 var userToken = Session["access_token"].ToString();
                 List<Request> requisition = new List<Request>();
+                List<Inv_Update> reports = new List<Inv_Update>();
                 List<Inventory> inv = new List<Inventory>();
                 string uri = "", response = "";
                 JsonResult result = null;
@@ -164,7 +116,14 @@ namespace TotalFireSafety.Controllers
                     inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
                     result = Json(inv, JsonRequestBehavior.AllowGet);
                 }
-                if(requestType == "deleted")
+                if (requestType == "report")
+                {
+                    uri = "Warehouse/Inventory/Updates";
+                    response = api_req.GetAllMethod(uri, userToken);
+                    reports = JsonConvert.DeserializeObject<List<Inv_Update>>(response);
+                    result = Json(reports, JsonRequestBehavior.AllowGet);
+                }
+                if (requestType == "deleted")
                 {
                     uri = "/Warehouse/Inventory/Archive";
                     response = api_req.GetAllMethod(uri, userToken);
@@ -172,7 +131,8 @@ namespace TotalFireSafety.Controllers
                     result = Json(inv, JsonRequestBehavior.AllowGet);
                 }
 
-                if (requestType == "requisition") {
+                if (requestType == "requisition")
+                {
                     uri = "/Requests/All";
                     response = api_req.GetAllMethod(uri, userToken);
                     requisition = JsonConvert.DeserializeObject<List<Request>>(response);
@@ -196,10 +156,11 @@ namespace TotalFireSafety.Controllers
                 return Json(ex);
             }
         }
+        #endregion
 
         public ActionResult Dashboard()
         {
-            var empId = Session["emp_no"].ToString();
+            var empId = Session["emp_no"]?.ToString();
             if (Session["emp_no"] == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -245,6 +206,8 @@ namespace TotalFireSafety.Controllers
             var data = products.Select(p => new {
                 Name = p.in_name,
                 Quantity = int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Date = DateTime.ParseExact(p.in_dateAdded, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture).Year,
+                Date1 = DateTime.ParseExact(p.in_dateAdded, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture).Month,
                 Class = p.in_class,
                 Category = p.in_category
             }).ToList();
@@ -264,6 +227,82 @@ namespace TotalFireSafety.Controllers
 
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
+        }
+        public ActionResult Projects()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
+
+        #region Inventory
+        [HttpPost]
+        public ActionResult RestoreItem([System.Web.Http.FromUri] string itemCode)
+        {
+            try
+            {
+                var empId = Session["emp_no"]?.ToString();
+                if (empId == null)
+                {
+                    return RedirectToAction("Login", "Base");
+                }
+                var userToken = Session["access_token"]?.ToString();
+                ViewBag.ProfilePath = GetPath(int.Parse(empId));
+                var addCode = new Inventory()
+                {
+                    in_code = itemCode
+                };
+                var codeToFind = JsonConvert.SerializeObject(addCode);
+                var uri = "/Warehouse/Inventory/Status";
+                var response = api_req.SetMethod(uri, userToken, codeToFind);
+                if (response == "BadRequest")
+                {
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("BadRequest", "Error");
+                }
+                if (response == "InternalServerError")
+                {
+                    return RedirectToAction("InternalServerError", "Error");
+                    //return Json("error", JsonRequestBehavior.AllowGet);
+                }
+                var json = JsonConvert.DeserializeObject(response);
+                JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetBarcode(string itemCode)
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            var userToken = Session["access_token"].ToString();
+            var response = api_req.BarcodeGenerator(userToken, itemCode);
+            JsonResult result = Json(response, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+            if (response == "BadRequest")
+            {
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            Response.ContentType = "application/json"; // Set the Content-Type header
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return result;
         }
 
         [HttpPost]
@@ -334,11 +373,6 @@ namespace TotalFireSafety.Controllers
             return Json("Item Deleted");
         }
 
-        //  Inventory
-        /*
-         *  TODO
-         *  -ADD NG COLUMN--DATE ADDED (LATEST ANG IDIDISPLAY)
-         */
         public ActionResult Inventory()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -365,7 +399,19 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        //  Users
+        public ActionResult InventoryReport()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
+        #endregion
+
+        #region Users
         public ActionResult Users()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -377,41 +423,6 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-
-        //private Tuple<string,string> setUri(int isEdit)
-        //{
-        //    string uri,message;
-        //    if(isEdit == 1)
-        //    {
-        //        uri = "Admin/Employee/Update";
-        //        message = "Updated!";
-        //    }
-        //    else
-        //    {
-        //        uri = "Admin/Employee/Add";
-        //        message = "Added!";
-        //    }
-        //    return new Tuple<string, string> (uri,message);
-        //}
-
-        public ActionResult ExportRequest(int? id)
-        {
-            var empId = Session["emp_no"].ToString();
-            TFSEntity db = new TFSEntity();
-            if (Session["emp_no"] == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            var data = db.Requests.Where(d => d.request_type_id == id).ToList();
-           
-            return View(data);
-
-           
-            //var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
-            //return View(datas);
-        }
-
         [HttpPost]
         public ActionResult Users(Employee employee)
         {
@@ -484,7 +495,9 @@ namespace TotalFireSafety.Controllers
                 return Json(ex);
             }
         }
+        #endregion
 
+        #region Requisition
         public ActionResult Requisition()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -495,7 +508,23 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+        public ActionResult ExportRequest(int? id)
+        {
+            var empId = Session["emp_no"].ToString();
+            TFSEntity db = new TFSEntity();
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            var data = db.Requests.Where(d => d.request_type_id == id).ToList();
 
+            return View(data);
+
+
+            //var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
+            //return View(datas);
+        }
         [HttpPost]
         public ActionResult Requisition([System.Web.Http.FromBody] Request[] jsonData,[System.Web.Http.FromUri] string formType)
         {
@@ -544,17 +573,8 @@ namespace TotalFireSafety.Controllers
             Session["message"] = message;
             return result;
         }
+        #endregion
 
-        public ActionResult Projects()
-        {
-            var empId = Session["emp_no"]?.ToString();
-            if (empId == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            return View();
-        }
         public ActionResult Logout()
         {
             Session.Clear();

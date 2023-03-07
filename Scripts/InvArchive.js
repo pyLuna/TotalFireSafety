@@ -52,6 +52,9 @@ function setTable(array) {
             if (array[i].in_type == null) {
                 array[i].in_type = '';
             }
+            if (array[i].FormattedDate == null) {
+                array[i].FormattedDate = '';
+            }
             if (array[i].in_size == null || array[i].in_size == "") {
                 array[i].in_size = '';
             }
@@ -63,7 +66,7 @@ function setTable(array) {
             row += `<td name="in_size"><label>${array[i].in_size}</label></td>`;
             row += `<td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
             row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
-            row += `<td></td>`;
+            row += `<td name="in_arch_date"><label>${array[i].FormattedDate}</label></td>`;
             row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
             row += `<button class="edit-btn" title="RESTORE ITEM" onclick="RestoreItem('${array[i].in_code}')"> <a href="#"><span class="las la-trash-restore"></span></a></button>`;
             row += `</div></td>`;

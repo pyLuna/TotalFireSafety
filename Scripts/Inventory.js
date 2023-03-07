@@ -31,6 +31,7 @@ function GetAll() {
             }
         })
         .catch(error => {
+            window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }

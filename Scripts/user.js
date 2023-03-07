@@ -1,14 +1,14 @@
 ﻿let jsonArray = [];
 let filtered = [];
 let fixedArray = [];
-let name = document.querySelector('#name');
-let contact = document.querySelector('#contact');
-let empID = document.querySelector('#empId');
-let dateDisplay = document.getElementById("dateDisplay");
+let name = document.querySelector('#emp_name');
+let contact = document.querySelector('#emp_contact');
+let empID = document.querySelector('#emp_no');
+let dateDisplay = document.getElementById("emp_hiredDate");
 let dateHired = document.getElementById("dateHired");
-let username = document.getElementById("username");
-let password = document.getElementById("password");
-let position = document.getElementById("position");
+let username = document.getElementById("Credential.username");
+let password = document.getElementById("Credential.password");
+let position = document.getElementById("emp_position");
 let roles = document.getElementById("roles");
 let rolesid = document.getElementById("rolesid");
 let statsid = document.getElementById("statsid");
@@ -49,6 +49,7 @@ function GetAllEmployeeInfo() {
             }
         })
         .catch(error => {
+            window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }

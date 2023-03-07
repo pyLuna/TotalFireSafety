@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "ProjectView";
+    Layout = "~/Views/AdminLayout.cshtml";
+}
+
+<div class="details-grid">
+    <div class="details-sum">
+        <div class="details">
+            <div class="details-header">
+                <h3>Proejct UI (*remove this - title of the project)</h3>
+            </div>
+
+            <div class="det-desc">
+                <h3>Description</h3>
+            </div>
+
+            <div class="details-content">
+                <textarea name="" id="" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-sum">
+        <div class="details">
+            <div class="header-proj-lead">
+                <img src="../../images/profile.png" alt="">
+                <div class="det-txt">
+                    <h3>Clarisse Vasquez</h3>
+                    <label>Person-in-charge</label>
+                </div>
+
+            </div>
+
+
+            <div class="details-date-content">
+                <label>Start Date:</label><input type="date">
+                <br>
+                <br>
+                <label>Target Finish Date:</label><input type="date">
+                <br>
+                <br>
+                <label>No. of Days</label><input type="text">
+                <br>
+                <br>
+                <label>Status</label><input type="text">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="details-grid">
+    <div class="details-sum">
+        <div class="details">
+            <div class="details-header">
+                <h3>Daily Report and Progress</h3>
+
+                <button class="add-btn" title="ADD DAILY REPORT" onclick="addOpenPopupRepo()"><a><span class="las la-plus-circle"></span>Add Report</a></button>
+            </div>
+            <div class="details-content-tbl">
+                <div class="details-body">
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <td>Date</td>
+                                    <td>Description</td>
+                                    <td>Status</td>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>sdfaas</td>
+                                    <td>asdfasf</td>
+                                    <td>asdfa</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="details-sum">
+        <div class="details">
+            <div class="details-header">
+                <h3>Laborer Team</h3>
+
+            </div>
+            <div class="details-content">
+                <div class="details-team-body">
+                    <div class="table-responsive" style="overflow-x: auto;">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td contenteditable="false">Ian Cenera</td>
+                                </tr>
+                                <tr>
+                                    <td contenteditable="false">Jewell Mayrena</td>
+                                </tr>
+                                <tr>
+                                    <td contenteditable="false">Clark Arcilla</td>
+                                </tr>
+                                <tr>
+                                    <td contenteditable="false">Mark Calixtro</td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="popup-repo-add" id="popup-repo-add">
+    <div class="proj-repo-add-container">
+        <div class="repo-content">
+
+            <div class="report-days">
+                Days No.
+                <input type="text" readonly value="11">
+            </div>
+            <div class="report-title">
+                Installation (Task Title)
+            </div>
+            <div class="task-description">
+                <h3>Description</h3>
+                <textarea name="" id="" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></textarea>
+
+                <span href="#" class="las la-paperclip"></span>
+            </div>
+        </div>
+
+
+
+        <div class="details-btn-add-report">
+            <button title="Save Project">ADD</button>
+            <button title="Save Project" onclick="addClosePopupRepo()">CANCEL</i></button>
+        </div>
+    </div>
+</div>

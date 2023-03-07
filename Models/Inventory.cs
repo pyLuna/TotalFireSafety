@@ -37,5 +37,9 @@ namespace TotalFireSafety.Models
         public virtual ICollection<Inv_Update> Inv_Update { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
+        public string FormattedDate
+        {
+            get { return in_arch_date?.ToString("MMMM dd, yyyy"); }
+        }
     }
 }

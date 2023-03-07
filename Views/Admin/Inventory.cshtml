@@ -5,7 +5,7 @@
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Inv = "active";
 }
-
+<script src='@Url.Content("~/Scripts/validations/InventoryValidation.js")'></script>
 <div class="main-content">
     <header>
         <h2>
@@ -70,25 +70,25 @@
                                 <div class="img-wrapper" id="image-container" style="display:none">
                                     @*<img id="imgContainer" alt="barcode">*@
                                 </div>
-                                <input type="text" id="formType" name="formType" style="display:none">
+                                <input type="text" id="formType" name="formType" style="display:none" required>
                                 <div class="inventory-form-contents">
                                     <div class="fields">
                                         <div class="input-field">
                                             <label>Item Code</label> @*oninput="dataListOption(this.value)"*@
-                                            <input type="text" id="itemCode" list="itemList" name="in_code" placeholder="ABC-DEF-GHI">
+                                            <input type="text" id="itemCode" list="itemList" name="in_code" placeholder="ABC-DEF-GHI" required>
                                             <datalist id="itemList">
                                             </datalist>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Item Name</label>
-                                            <input type="text" placeholder="Item Name" name="in_name" id="itemName" readonly>
+                                            <input type="text" placeholder="Item Name" name="in_name" id="itemName" readonly required>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Category</label>
-                                            <select id="cat-select" readonly>
-                                                <option disabled selected>Select Category</option>
+                                            <select id="cat-select" readonly required>
+                                                <option disabled selected value="">Select Category</option>
                                                 <option value="Fittings">Fittings</option>
                                                 <option value="Gate Valves">Gate Valves</option>
                                                 <option value="Power Tools">Power Tools</option>
@@ -101,8 +101,10 @@
 
                                         <div class="input-field">
                                             <label>Class</label>
-                                            <select id="class-select" readonly>
-                                                <option disabled selected>Select Category</option>
+                                            <select id="class-select" readonly required>
+                                                <option disabled selected value="">Select Category</option>
+                                                <option>Local</option>
+                                                <option>Imported</option>
                                             </select>
                                             <input type="text" id="hiddenCategory" name="in_category" style="display:none">
                                         </div>
@@ -133,13 +135,14 @@
                                             <label>Quantity</label>
                                             <div class="input-field-quantity">
                                                 @*onchange="AddValue(this.options[this.selectedIndex].value,'edit'*@
-                                                <input type="number" placeholder="00000" id="itemQuant">
-                                                <select readonly id="itemQuantMeas">
-                                                    <option disabled selected>Measurement</option>
+                                                <input type="number" placeholder="00000" id="itemQuant" required>
+                                                <select readonly id="itemQuantMeas" required>
+                                                    <option disabled selected value="">Measurement</option>
                                                     <option value="PCS">PCS</option>
                                                     <option value="SET">SET</option>
                                                 </select>
-                                                <input type="text" id="hiddenQuant" name="in_quantity" style="display:none">
+                                                <input type="text" id="hiddenQuant" name="in_quantity" style="display:none" required>
+                                                <br /><br /><br /><label id="itemQuantMeas-error" class="error manual-error" for="itemQuantMeas"></label>
                                             </div>
                                         </div>
                                         <div class="input-field">                                            
@@ -149,7 +152,7 @@
                             </div>
                             <center>
                                 <div class="form-add-btns">
-                                    <button class="save" id="saveBtn" onclick="infoOpenPopup() + setQuantity()">
+                                    <button class="save" id="saveBtn" onclick="checkForm() + setQuantity()">
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>
                                     </button>
@@ -240,6 +243,14 @@
 </div>
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
 <script>
+
+    function checkForm() {
+        var bool = $('#addForm').valid();
+        if (bool) {
+            infoOpenPopup();
+        }
+    }
+
 
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */

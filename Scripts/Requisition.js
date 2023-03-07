@@ -15,7 +15,7 @@ let employeeId = document.getElementById('employeeId');
 let reqtype = document.getElementById('reqtype');
 let reqdate = document.getElementById('reqdate');
 let reqid = document.getElementById('reqid');
-let EmployeeInput = document.getElementById("EmployeeInput");
+let EmployeeInput = document.getElementById("request_emp");
 let itemList = document.getElementById("itemList");
 let select_type = document.getElementById("select_type");
 let table1 = document.getElementById("formTable");
@@ -49,7 +49,7 @@ const template = {
 };
 
 function GetAllItem() {
-    fetch('/Admin/FindDataOf1?requestType=inventory')
+    fetch('/Admin/FindDataOf?requestType=inventory')
         .then(res => {
             if (res.ok) {
                 // API request was successful
@@ -278,11 +278,34 @@ function createRow() {
         localStorage.setItem('increment', newNum);
     }
     var select = createOption(newNum);
+    $.validator.addMethod("notNull", function (value, element) {
+        return value !== "";
+    }, "This field is required.");
+
+    $('#formId').validate({
+        rules: {
+            [`itemInp${newNum}`]: {
+                notNull: true
+            },
+            [`itemQuant${newNum}`]: {
+                notNull: true,
+            }
+        },
+        messages: {
+            [`itemInp${newNum}`]: {
+                notNull: 'This field is required.'
+            },
+            [`itemQuant${newNum}`]: {
+                notNull: 'This field is required.',
+            }
+        }
+    });
+
     data += `<tr>`;
-    data += `<td><input type="text" id="itemInp${newNum}" list="itemoption${newNum}" oninput="getInputId(this.id)" style="width:150px;height:30px;border:none;">${select}</td>`;
+    data += `<td><input type="text" id="itemInp${newNum}" onkeyup="itemCodeListener()" name="itemInp${newNum}" list="itemoption${newNum}" oninput="getInputId(this.id)" style="width:150px;height:30px;border:none;">${select}</td>`;
     data += `<td contenteditable="false" id="itemCat${newNum}"></td>`;
     data += `<td contenteditable="false" id="itemSize${newNum}"></td>`;
-    data += `<td contenteditable="true" id="itemQuant${newNum}"></td>`;
+    data += `<td><input type="text" id="itemQuant${newNum}" name="itemQuant${newNum}" onkeyup="itemCodeListener()" style="width:150px;height:30px;border:none;"></td>`;
     data += `<td contenteditable="false" id="itemType${newNum}"></td>`;
     data += `<td contenteditable="false" id="itemClass${newNum}"></td>`;
     data += `<td><a style="text-decoration:underline;" href="#" id="delBtn${newNum}" class="delete-row">Delete</a></td>`;
@@ -290,6 +313,28 @@ function createRow() {
     data += `</tr>`;
     formTable.innerHTML += data;
     GetSetRowInput("set");
+} 
+
+function itemCodeListener() {
+    var table = $('#formTable');
+    var rows = table.find('tr');
+    var i = 0;
+    rows.each(function () {
+        var inputs = $(this).find('input');
+        var error = document.getElementById('errorLabel');
+
+        inputs.each(function () {
+            if ($(this).val() == '') {
+                // input is empty, show error message
+                error.style.display = "block";
+                error.innerHTML = "Please check the fields if its empty.";
+            }
+            else {
+                error.style.display = "none";
+            }
+        });
+        i++;
+    });
 }
 
 function FindType(valueToValidate) {
@@ -489,7 +534,7 @@ function GetInputValue(num) {
         const firstCell = rows[i].cells[0];
         const textbox = firstCell.querySelector('input[type="text"]');
         if (i === num) {
-            newVal = textbox.value;
+            newVal = textbox.value === null ? "" : textbox.value;
             break;
         }
     }

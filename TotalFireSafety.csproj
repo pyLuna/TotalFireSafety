@@ -401,6 +401,8 @@
     <Content Include="Views\Base\Login.cshtml" />
     <Content Include="Views\Admin\InvArchive.cshtml" />
     <Content Include="Views\Admin\InventoryReport.cshtml" />
+    <Content Include="Views\Admin\ProjectAdd.cshtml" />
+    <Content Include="Views\Admin\ProjectView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

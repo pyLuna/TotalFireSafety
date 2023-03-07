@@ -173,6 +173,8 @@ namespace TotalFireSafety.Controllers
             var data = products.Select(p => new {
                 Name = p.in_name,
                 Quantity = int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Date = DateTime.ParseExact(p.in_dateAdded, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture).Year,
+                Date1 = DateTime.ParseExact(p.in_dateAdded, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture).Month,
                 Class = p.in_class,
                 Category = p.in_category
             }).ToList();

@@ -239,6 +239,17 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
+        public ActionResult ProjectAdd()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
+
         #region Inventory
         [HttpPost]
         public ActionResult RestoreItem([System.Web.Http.FromUri] string itemCode)
@@ -556,7 +567,6 @@ namespace TotalFireSafety.Controllers
                 uri = "Requests/Edit";
             }
             var response = api_req.SetMethod(uri, userToken, newData);
-            var json = JsonConvert.DeserializeObject(response);
             if (response == "BadRequest")
             {
                 //return Json("error", JsonRequestBehavior.AllowGet);
@@ -567,6 +577,7 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("InternalServerError", "Error");
                 //return Json("error", JsonRequestBehavior.AllowGet);
             }
+            var json = JsonConvert.DeserializeObject(response);
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));

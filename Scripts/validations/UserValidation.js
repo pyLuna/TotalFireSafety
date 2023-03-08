@@ -4,8 +4,8 @@ $(document).ready(function () {
 		rules: {
 			emp_name: {
 				required: true,
-				minlength: 4,
-				lettersonly: true
+				minlength: 4
+				//lettersonly: true
 			},
 			emp_contact: {
 				required: true,
@@ -30,8 +30,8 @@ $(document).ready(function () {
 		messages: {
 			emp_name: {
 				required: "Please enter name.",
-				minlength: "Name must be at least 4 characters long.",
-				lettersonly: "Name must be letters only"
+				minlength: "Name must be at least 4 characters long."
+				//lettersonly: "Name must be letters only"
 			},
 			emp_contact: {
 				required: "Please enter contact number.",

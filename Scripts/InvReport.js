@@ -43,25 +43,16 @@ function fixArray() {
 
 function setTable(array) {
     table.innerHTML = '';
-    var className = "";
+    var size = '';
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
-
-            if (array[i].request_status === "Pending") {
-                className = "stat-pen";
-            }
-            if (array[i].request_status === "Declined") {
-                className = "stat-dec";
-            }
-            if (array[i].request_status === "Approved") {
-                className = "stat-appr";
-            }
 
             var row = `<tr>`;
             row += `<td><label>${array[i].update_item_id}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_name}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_category}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_type}</label></td>`;
+            row += `<td><label>${array[i].Inventory.in_size === null ? "" : array[i].Inventory.in_size}</label></td>`;
             row += `<td><label>${array[i].update_quantity}</label></td>`;
             row += `<td><label>${array[i].update_type}</label></td>`;
             row += `<td><label>${array[i].FormattedDate}</label></td>`;

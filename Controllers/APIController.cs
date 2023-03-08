@@ -845,8 +845,27 @@ namespace TotalFireSafety.Controllers
                 using (var _context = new TFSEntity())
                 {
                     var items = _context.Inventories.Where(x => x.in_status != "archived");
+                    List<Inventory> newList = new List<Inventory>();
 
-                    var _jsonSerialized = JsonConvert.SerializeObject(items, Formatting.None, new JsonSerializerSettings()
+                    foreach (var item in items)
+                    {
+                        Inventory newItems = new Inventory()
+                        {
+                            in_code = item.in_code,
+                            in_category = item.in_category,
+                            in_arch_date = item.in_arch_date,
+                            in_class = item.in_class,
+                            in_dateAdded = item.in_dateAdded,
+                            in_name = item.in_name,
+                            in_quantity = item.in_quantity,
+                            in_size = item.in_size,
+                            in_status = item.in_status,
+                            in_type = item.in_type
+                        };
+                        newList.Add(newItems);
+                    }
+
+                    var _jsonSerialized = JsonConvert.SerializeObject(newList, Formatting.None, new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });

@@ -1,5 +1,6 @@
 ﻿let inputVal = [];
 let viewData = [];
+let quantityList = [];
 let codeList = [];
 let tableData = [];
 let jsonArray = [];
@@ -460,15 +461,22 @@ function resetForm() {
 
 function saveRequest() {
     var formType = document.getElementById("formType").value;
+    const rows = Array.from(table1.getElementsByTagName('tr'));
     tableData.length = 0;
     for (var row = 1; row < table1.rows.length; row++) {
         let rowData = [];
         for (var cell = 0; cell < table1.rows[row].cells.length - 1; cell++) {
             var newValue = "";
             let itemCode = document.getElementById(`itemCode${row}`)?.innerHTML;
+            if (cell == 3) {
+                const thirdCell = rows[row].cells[3];
+                const textbox = thirdCell.querySelector('input[type="text"]');
+                const value = textbox.value;
+                quantityList.push(value);
+            }
             if (cell == 0) {
                 newValue = GetInputValue(row-1);
-            codeList.push(itemCode);
+                codeList.push(itemCode);
             }
             else {
                 newValue = table1.rows[row].cells[cell].textContent
@@ -499,7 +507,7 @@ function setTemplate(array,formType) {
             newObj.request_type = type.options[type.selectedIndex].value;
             newObj.request_status = "pending";
             newObj.request_item = codeList[i];
-            newObj.request_item_quantity = array[i][3];
+            newObj.request_item_quantity = quantityList[i];
             newRequest.push(newObj);
         }
     }

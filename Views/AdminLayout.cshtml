@@ -122,99 +122,68 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
+                @if (Int32.Parse(Session["system_role"].ToString()) == 1 || Int32.Parse(Session["system_role"].ToString()) == 2)
+                {
+                    <button class="oper-dropdown-btn">
+                        <a>
+                            <span class="las la-warehouse"></span>
+                            <span>Inventories</span>
+                        </a>
+                    </button>
+                    <div class="dropdown-container">
+                    <li>
+                        <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
+                            <span class="las la-cubes"></span>
+                            <span>Inventory Lists</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("InvArchive","Admin")" class="@ViewBag.Arch">
+                            <span class="las la-archive"></span>
+                            <span>Inventory Archive</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("InventoryReport","Admin")" class="@ViewBag.Report">
+                            <span class="las la-archive"></span>
+                            <span>Inventory Report</span>
+                        </a>
+                    </li>
+                     </div>
+                 }
 
-                <button class="oper-dropdown-btn">
-                    <a>
-                        <span class="las la-warehouse"></span>
-                        <span>Inventories</span>
-                    </a>
-                </button>
-                <div class="dropdown-container">
                 <li>
-                    <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
-                        <span class="las la-cubes"></span>
-                        <span>Inventory Lists</span>
+                    <a href="@Url.Action("Requisition", "Admin")" class="@ViewBag.Req">
+                        <span class="las la-file"></span>
+                        <span>Requisition</span>
                     </a>
                 </li>
+                @if (Int32.Parse(Session["system_role"].ToString()) == 1)
+                {
                 <li>
-                    <a href="@Url.Action("InvArchive","Admin")" class="@ViewBag.Arch">
-                        <span class="las la-archive"></span>
-                        <span>Inventory Archive</span>
+                    <a href="@Url.Action("Users","Admin")" class="@ViewBag.Users">
+                        <span class="las la-user-tie"></span>
+                        <span>Users</span>
                     </a>
                 </li>
-                                <li>
-                    <a href="@Url.Action("InventoryReport","Admin")" class="@ViewBag.Report">
-                        <span class="las la-archive"></span>
-                        <span>Inventory Report</span>
+                }
+                @if (Int32.Parse(Session["system_role"].ToString()) != 2)
+                {
+                <li>
+                    <a href="@Url.Action("Projects", "Admin")" class="@ViewBag.Proj">
+                        <span class="las la-pen-square"></span>
+                        <span>Projects</span>
                     </a>
                 </li>
-        </div>
-        <li>
-            <a href="@Url.Action("Requisition","Admin")" class="@ViewBag.Req">
-                <span class="las la-file"></span>
-                <span>Requisition</span>
-            </a>
-        </li>
-        @*<li>
-            <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
-                <span class="las la-warehouse"></span>
-                <span>Inventories</span>
-            </a>
-        </li>*@
-        @*<button class="oper-dropdown-btn">
-            <a>
-                <span class="las la-caret-down"></span>
-                <span>Requisition</span>
-            </a>
-        </button>
-        <div class="dropdown-container">
-            <li>
-                <a href="@Url.Action("PurchaseRequisition","Admin")" class="@ViewBag.Pur">
-                    <span class="las la-file"></span>
-                    <span>Purchasing Request</span>
-                </a>
-            </li>
-            <li>
-                <a href="@Url.Action("DeploymentRequisition","Admin")" class="@ViewBag.Dep">
-                    <span class="las la-folder"></span>
-                    <span>Deployment Request</span>
-                </a>
-            </li>
-            <li>
-                <a href="@Url.Action("SupplyRequisition","Admin")" class="@ViewBag.Sup">
-                    <span class="lar la-folder-open"></span>
-                    <span>Supply Request</span>
-                </a>
-            </li>
-        </div>*@
-        @*<li>
-            <a href="@Url.Action("Purchasing","Admin")" class="@ViewBag.Pur1">
-                <span class="las la-dolly"></span>
-                <span>Purchasing</span>
-            </a>
-        </li>*@
-
-        <li>
-            <a href="@Url.Action("Users","Admin")" class="@ViewBag.Users">
-                <span class="las la-user-tie"></span>
-                <span>Users</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="@Url.Action("Projects","Admin")" class="@ViewBag.Proj">
-                <span class="las la-pen-square"></span>
-                <span>Projects</span>
-            </a>
-        </li>
-        <li>
-            <a href="@Url.Action("Logout","Admin")">
-                <span class="las la-sign-out-alt"></span>
-                <span>Logout</span>
-            </a>
-        </li>
-        </ul>
-    </div>
+                }
+                <li>
+                    <a href="@Url.Action("Logout","Admin")">
+                        <span class="las la-sign-out-alt"></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+                </ul>
+            </div>
 
     <div class="logo-float">
         <img src="~/images/tfsti-logo.png" alt="">

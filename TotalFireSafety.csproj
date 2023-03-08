@@ -415,6 +415,8 @@
     <Content Include="Views\Admin\InventoryReport.cshtml" />
     <Content Include="Views\Admin\ProjectAdd.cshtml" />
     <Content Include="Views\Admin\ProjectView.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

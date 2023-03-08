@@ -5,53 +5,63 @@
     ViewBag.Report = "active";
 }
 
-<main>
-    <div class="inventory-repo-grid">
-        <div class="inventory-repo-header">
-            <h3>INVENTORY REPORT</h3>
-            <div class="inventory-repo-buttons-style">
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            Inventory Reports
+        </h2>
+    </header>
+    <main>
+        <div class="inventory-repo-grid">
+            <div class="inventory-repo-header">
+                <h3>INVENTORY REPORT</h3>
+                <div class="inventory-repo-buttons-style">
 
-                <label>Date:</label>
-                <input type="date">
+                    <label>Date:</label>
+                    <input type="date">
 
-                <label>-</label>
-                <input type="date">
+                    <label>-</label>
+                    <input type="date">
 
-                <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()"><a><span class="las la-print"></span></a></button>
-                <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()"><a><span class="las la-file-download"></span></a></button>
+                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()"><a><span class="las la-print"></span></a></button>
+                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()"><a><span class="las la-file-download"></span></a></button>
+
+                </div>
 
             </div>
-
-        </div>
-        <div class="inventory-repo-projects">
-            <div class="inventory-repo">
-                <div class="inventory-repo-body">
-                    <div class="table-responsive" style="overflow-x: auto;">
-                        <table width="100%" id="myTable">
-                            <thead>
-                                <tr>
-                                    <td>Code</td>
-                                    <td>Name</td>
-                                    <td>Category</td>
-                                    <td>Type</td>
-                                    <td>Size</td>
-                                    <td>Quantity</td>
-                                    <td>Transaction</td>
-                                    <td>Date Added</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+            <div class="inventory-repo-projects">
+                <div class="inventory-repo">
+                    <div class="inventory-repo-body">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table width="100%" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <td>Code</td>
+                                        <td>Name</td>
+                                        <td>Category</td>
+                                        <td>Type</td>
+                                        <td>Size</td>
+                                        <td>Quantity</td>
+                                        <td>Transaction</td>
+                                        <td>Date Added</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </main>
     </div>
-</main>
-<script src="@Url.Content("~/Scripts/InvReport.js")"></script>
-<script>
-    window.onload = function () {
-        GetAll();
-    }
-</script>
+    <script src="@Url.Content("~/Scripts/InvReport.js")"></script>
+    <script>
+        window.onload = function () {
+            GetAll();
+        }
+    </script>

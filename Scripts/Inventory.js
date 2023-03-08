@@ -1,4 +1,5 @@
-﻿let jsonArray = [];
+﻿let itemCode = [];
+let jsonArray = [];
 let filtered = [];
 let fixedArray = [];
 const table = document.querySelector('#myTable tbody');
@@ -109,7 +110,14 @@ function SortByCategory(value) {
         setTable(fixedArray);
     }
 }
-
+function validateCode() {
+    let code = document.querySelector('#itemCode').value.toLowerCase();
+    itemCode.forEach(function (item) {
+        if (code != item.toLowerCase()) {
+            resetForm(1);
+        }
+    });
+}
 function setField(value,typeOf) {
     let name = document.querySelector('#itemName');
     let size = document.querySelector('#itemSize');
@@ -129,90 +137,92 @@ function setField(value,typeOf) {
             filtered.push(fixedArray[i]);
         }
     }
-    //code.value = filtered[0]?.in_code;
-    name.value = filtered[0]?.in_name;
-    //size.value = filtered[0].in_size;
-    //quantity.value = filtered[0].in_quantity;
+    if (filtered.lengthd !== 0) {
+        //code.value = filtered[0]?.in_code;
+        name.value = filtered[0]?.in_name;
+        //size.value = filtered[0].in_size;
+        //quantity.value = filtered[0].in_quantity;
 
-    let sizeValue = extractNum(filtered[0]?.in_size);
-    let quantityValue = extractNum(filtered[0]?.in_quantity);
+        let sizeValue = extractNum(filtered[0]?.in_size);
+        let quantityValue = extractNum(filtered[0]?.in_quantity);
 
-    if (typeOf != "quant") {
-        if (quantityValue.num !== 0) {
-            quantity.value = quantityValue.num;
-            localStorage.setItem("quantity", quantityValue.num);
-            localStorage.setItem("quantityMeas", quantityValue.measurement);
+        if (typeOf != "quant") {
+            if (quantityValue.num !== 0) {
+                quantity.value = quantityValue.num;
+                localStorage.setItem("quantity", quantityValue.num);
+                localStorage.setItem("quantityMeas", quantityValue.measurement);
+            } else {
+                quantity.value = null;
+            }
+        }
+
+        for (let i = 0; i < quantityMeas.options.length; i++) {
+            let option = quantityMeas.options[i];
+            if (quantityValue.measurement == option.value) {
+                quantityMeas.selectedIndex = i;
+            }
+        }
+
+        if (sizeValue.num !== 0) {
+            size.value = sizeValue.num;
+            localStorage.setItem("size", sizeValue.num);
+            localStorage.setItem("sizeMeas", sizeValue.measurement);
         } else {
-            quantity.value = null;
+            size.value = null;
         }
-    }
 
-    for (let i = 0; i < quantityMeas.options.length; i++) {
-        let option = quantityMeas.options[i];
-        if (quantityValue.measurement == option.value) {
-            quantityMeas.selectedIndex = i;
+        for (let i = 0; i < sizeMeas.options.length; i++) {
+            let option = sizeMeas.options[i];
+            if (sizeValue.measurement == option.value) {
+                sizeMeas.selectedIndex = i;
+            }
         }
-    }
 
-    if (sizeValue.num !== 0) {
-        size.value = sizeValue.num;
-        localStorage.setItem("size", sizeValue.num);
-        localStorage.setItem("sizeMeas", sizeValue.measurement);
-    } else {
-        size.value = null;
-    }
-
-    for (let i = 0; i < sizeMeas.options.length; i++) {
-        let option = sizeMeas.options[i];
-        if (sizeValue.measurement == option.value) {
-            sizeMeas.selectedIndex = i;
+        // loop through all the options in the select element
+        for (let i = 0; i < cat.options.length; i++) {
+            let option = cat.options[i];
+            // check if the option value exists in the valuesToCompare array
+            if (filtered[0]?.in_category === option.value) {
+                cat.selectedIndex = i;
+                hidCategory.value = filtered[0].in_category;
+                localStorage.setItem("selCategory", filtered[0].in_category);
+            }
         }
-    }
 
-    // loop through all the options in the select element
-    for (let i = 0; i < cat.options.length; i++) {
-        let option = cat.options[i];
-        // check if the option value exists in the valuesToCompare array
-        if (filtered[0]?.in_category === option.value) {
-            cat.selectedIndex = i;
-            hidCategory.value = filtered[0].in_category;
-            localStorage.setItem("selCategory", filtered[0].in_category);
+        for (let i = 0; i < type.options.length; i++) {
+            let option = type.options[i];
+            // check if the option value exists in the valuesToCompare array
+            if (filtered[0]?.in_type === option.value) {
+                type.selectedIndex = i;
+                hidType.value = filtered[0].in_type;
+                localStorage.setItem("selType", filtered[0].in_type);
+            }
         }
-    }
-
-    for (let i = 0; i < type.options.length; i++) {
-        let option = type.options[i];
-        // check if the option value exists in the valuesToCompare array
-        if (filtered[0]?.in_type === option.value) {
-            type.selectedIndex = i;
-            hidType.value = filtered[0].in_type;
-            localStorage.setItem("selType", filtered[0].in_type);
+        if (filtered[0]?.in_type === '') {
+            type.selectedIndex = 0;
         }
+        if (filtered[0]?.in_category === '') {
+            cat.selectedIndex = 0;
+        }
+        setHiddenSize();
     }
-    if (filtered[0]?.in_type === '') {
-        type.selectedIndex = 0;
-    }
-    if (filtered[0]?.in_category === '') {
-        cat.selectedIndex = 0;
-    }
-    setHiddenSize();
 }
 
-function exportArrayToCsv() {
-    let newArray = [['Code', 'Name', 'Category', 'Type', 'Size', 'Quantity']];
+//function exportArrayToCsv() {
+//    let newArray = [['Code', 'Name', 'Category', 'Type', 'Size', 'Quantity']];
 
-    for (var i = 0; i < fixedArray.length; i++) {
-        newArray.push([fixedArray[i].in_code, fixedArray[i].in_name, fixedArray[i].in_category, fixedArray[i].in_type, fixedArray[i].in_size, fixedArray[i].in_quantity]);
-    }
-    var csv = newArray.map(row => row.join(',')).join('\n');
-    // Create a hidden link
-    var link = document.createElement('a');
-    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
-    link.setAttribute('download', 'Inventory.csv');
+//    for (var i = 0; i < fixedArray.length; i++) {
+//        newArray.push([fixedArray[i].in_code, fixedArray[i].in_name, fixedArray[i].in_category, fixedArray[i].in_type, fixedArray[i].in_size, fixedArray[i].in_quantity]);
+//    }
+//    var csv = newArray.map(row => row.join(',')).join('\n');
+//    // Create a hidden link
+//    var link = document.createElement('a');
+//    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+//    link.setAttribute('download', 'Inventory.csv');
 
-    //// Trigger the download
-    link.click();
-}
+//    //// Trigger the download
+//    link.click();
+//}
 
 //Descending
 function SortDescending() {
@@ -382,5 +392,6 @@ function setDatalist() {
         let option = document.createElement('option');
         option.value = item.in_code;
         itemList.appendChild(option);
+        itemCode.push(item.in_code);
     });
 }

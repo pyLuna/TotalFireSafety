@@ -46,6 +46,29 @@
     src: url('../fonts/montserrat/Montserrat-Bold.ttf');
 }
 
+/*PRINT TABLE DO NOT REMOVE OR EDIT*/
+@media print {
+    body *{
+        visibility: hidden;
+    }
+    .myTable{
+        width:100%;
+    }
+    .printable,
+    .printable * {
+        width:auto;
+        height:auto;
+        visibility: visible;
+    }
+
+    .printable {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+/* END OF PRINT */
+
 /*///////////////////////////////////////////////////////////////*/
 * {
     padding: 0;

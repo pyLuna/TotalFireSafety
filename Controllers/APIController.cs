@@ -14,6 +14,10 @@ namespace TotalFireSafety.Controllers
 {
     public class APIController : ApiController
     {
+        /*
+         *  TO DO
+         *  --AYUSIN ANG GetAll ng mga APIs
+         */
         private Tuple<Guid, Boolean> Validate(string typeOf)
         {
             using (var _context = new TFSEntity())
@@ -93,7 +97,7 @@ namespace TotalFireSafety.Controllers
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
-                    var _Deserialized = JsonConvert.DeserializeObject<List<Status>>(_jsonSerialized);
+                    var _Deserialized = JsonConvert.DeserializeObject<Status>(_jsonSerialized);
                     return Ok(_Deserialized);
                 }
             }
@@ -247,7 +251,7 @@ namespace TotalFireSafety.Controllers
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
-                    var _Deserialized = JsonConvert.DeserializeObject<List<Credential>>(_jsonSerialized);
+                    var _Deserialized = JsonConvert.DeserializeObject<Credential>(_jsonSerialized);
                     return Ok(_Deserialized);
                 }
             }
@@ -401,7 +405,7 @@ namespace TotalFireSafety.Controllers
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
-                    var _Deserialized = JsonConvert.DeserializeObject<List<Role>>(_jsonSerialized);
+                    var _Deserialized = JsonConvert.DeserializeObject<Role>(_jsonSerialized);
                     return Ok(_Deserialized);
                 }
             }

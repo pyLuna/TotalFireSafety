@@ -42,7 +42,7 @@
                 <div class="inventory-buttons-style" id="hideBtn">
                     <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()"><a><span class="las la-plus-circle"></span></a></button>
                     <button class="pri-btn" title="PRINT REPORT" id="printBtn" @*onclick="printOpenPopup()"*@> <a href="#"><span class="las la-print"></span></a></button>
-                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportTable()"> <a href="#"><span class="las la-file-download"></span></a></button>
+                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()"> <a href="#"><span class="las la-file-download"></span></a></button>
                     <button class="inventory-sort-btn" onclick="userSortFunction()">
                         <span></span>
                         <span class="las la-chevron-down"></span>
@@ -145,7 +145,7 @@
                                                 <br /><br /><br /><label id="itemQuantMeas-error" class="error manual-error" for="itemQuantMeas"></label>
                                             </div>
                                         </div>
-                                        <div class="input-field">                                            
+                                        <div class="input-field">
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +158,7 @@
                                     </button>
 
                                     <button class="cancel">
-                                        <span class="btnText" id="cancelBtn" onclick="addClosePopupInv() + resetForm()">Cancel</span>
+                                        <span class="btnText" id="cancelBtn" onclick="addClosePopupInv() + resetForm(0)">Cancel</span>
                                         <i class="las la-window-close"></i>
                                     </button>
                                 </div>
@@ -168,22 +168,20 @@
                 </div>
             </div>
 
-            <div class="inventory-projects" id="printTable">
+            <div class="inventory-projects" id="printable">
                 <div class="inventory">
                     <div class="inventory-body">
-                        <div class="table-responsive" style="overflow-x: auto;">
-                            <table width="100%" id="myTable">
+                        <div class="table-responsive printable" style="overflow-x: auto;">
+                            <table width="100%" id="myTable" class="myTable">
                                 <thead>
                                     <tr>
                                         <td>Code</td>
-                                        @*<td>Item Class</td>*@
                                         <td>Name</td>
                                         <td>Category</td>
                                         <td>Type</td>
                                         <td>Size</td>
                                         <td>Quantity</td>
                                         <td>Class</td>
-                                        @*<td>Date Added</td>*@
                                         <td id="hideAction">Action</td>
                                     </tr>
                                 </thead>
@@ -242,6 +240,7 @@
     </main>
 </div>
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
 
     function checkForm() {
@@ -251,6 +250,25 @@
         }
     }
 
+    function exportToPdf() {
+        const element = document.querySelector('#myTable');
+        storeOriginalTableHtml()
+        var columnToRemove = 7; // Replace with the index of the column you want to remove (starting from 0)
+        var rows = element.getElementsByTagName("tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].getElementsByTagName("td")[columnToRemove].style.display = "none";
+        }
+        const options = {
+            margin: [0, 0, 0, 0],
+            filename: 'inventory-list.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        };
+        html2pdf().set(options).from(element).save();
+        resetTable();
+    }
 
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */
@@ -337,8 +355,8 @@
             AddValue(quantity.value,'edit');
         }
 
-        function resetForm() {
-            for (let i = 0; i < form.elements.length; i++) {
+        function resetForm(skip) {
+            for (let i = Number(skip); i < form.elements.length; i++) {
                 form.elements[i].value = "";
             }
             cat.selectedIndex = 0;
@@ -380,9 +398,9 @@
     }
 
     function Scan(event) {
-         if (code.value == "") {
-            resetForm();
-        }
+        // if (code.value == "") {
+        //    resetForm(0);
+        //}
         if (event.which === 13 || event.keyCode === 13) {
             event.preventDefault();
             // retrieve the scanned value
@@ -417,6 +435,7 @@
             }
             prevVal = sliced;
         }
+            //validateCode();
     }
 
     form.addEventListener("keydown", Scan);
@@ -430,6 +449,7 @@
                 quantity.value = 1;
             }
         }
+            //validateCode();
     }
 
         function EditListener() {
@@ -479,18 +499,39 @@
         document.getElementById("cancelBtn").addEventListener("click", function () {
             event.preventDefault();
         });
-
+    /* START OF PRINT */
+        var originalTableHtml;
         document.getElementById("printBtn").addEventListener("click", function () {
-            window.print();
-        });
+            storeOriginalTableHtml()
+            var table = document.getElementById("printable");
+            var columnToRemove = 7; // Replace with the index of the column you want to remove (starting from 0)
+            var rows = table.getElementsByTagName("tr");
 
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].getElementsByTagName("td")[columnToRemove].style.display = "none";
+            }
+            var printResult = window.print();
+            if (!printResult) {
+                resetTable();
+            }
+        });
+        function storeOriginalTableHtml() {
+            var table = document.getElementById("printable");
+            originalTableHtml = table.innerHTML;
+        }
+
+        function resetTable() {
+            var table = document.getElementById("printable");
+            table.innerHTML = originalTableHtml;
+        }
+    /* END OF PRINT */
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
 
-        function exportTable() {
-            exportArrayToCsv();
-        }
+        //function exportTable() {
+        //    exportArrayToCsv();
+        //}
 
         // Close the dropdown if the user clicks outside of it
         window.onclick = function (e) {

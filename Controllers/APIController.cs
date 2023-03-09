@@ -516,7 +516,7 @@ namespace TotalFireSafety.Controllers
         #endregion
         
         #region Employees
-        [Authorize(Roles = "admin")]
+        [Authorize]
         [Route("Admin/Employee")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
@@ -839,7 +839,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [Authorize(Roles = "warehouse,admin")]
+        [Authorize]
         [Route("Warehouse/Inventory")]
         [HttpGet]
         public IHttpActionResult GetAllItem()

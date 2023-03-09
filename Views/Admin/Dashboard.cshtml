@@ -265,73 +265,57 @@
                                     // Get the selected option value
                                     var selectedCategory = select.value;
 
-
                                     // Filter the data array based on the selected option
-                                    var filteredData = data.filter(function (item) {
-                                        if (select.value === "Clear") {
-                                            return item.Name;
-                                        } else {
-                                            return item.Category === selectedCategory;
-                                        }
-
-
+                                    var filteredData = selectedCategory === "Clear" ? data : data.filter(function (item) {
+                                        return item.Category === selectedCategory;
                                     });
 
-                                    var importedValues = filteredData.map(function (item) {
-                                        if (item.Class === 'Import') {
-                                            if (item.Quantity < 100) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255,0,0)' // red color
-                                                };
-                                            } else if (item.Quantity < 250) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255, 165, 0)' // orange color
-                                                };
-                                            } else {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(0,128,0)' // default blue color
-                                                };
-                                            }
+                                    var warningValues = filteredData.map(function (item) {
+                                        if (item.Quantity < 100) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255, 165, 0)' // orange color
+                                            };
                                         } else {
-                                            return { value: 0, color: 'rgba(0,128,0)' };
+                                            return null; // green color
                                         }
-                                    });
+                                    }).filter(Boolean);
 
-                                    var localValues = filteredData.map(function (item) {
-                                        if (item.Class === 'Local') {
-                                            if (item.Quantity < 100) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255,0,0)'
-                                                };
-                                            } else if (item.Quantity < 250) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255, 165, 0)'
-                                                };
-                                            } else {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(0,128,0)'
-                                                };
-                                            }
+                                    var criticalValues = filteredData.map(function (item) {
+                                        if (item.Quantity < 50) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255,0,0)'
+                                            };
                                         } else {
-                                            return { value: 0, color: 'rgba(0,128,0)' };
+                                            return null;
                                         }
-                                    });
+                                    }).filter(Boolean);
 
-                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
+                                    var goodValues = filteredData.map(function (item) {
+                                        if (item.Quantity >= 200 && item.Quantity <= 500) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0, 1)'
+                                            };
+                                        } else {
+                                            return null;
+                                        }
+                                    }).filter(Boolean);
+
+                                    chart.data.datasets[0].data = warningValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[0].backgroundColor = warningValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[1].data = criticalValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[1].backgroundColor = criticalValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
                                     chart.data.labels = filteredData.map(function (item) { return item.Name; });
                                     chart.update();
+
+                                    // Return the filtered data
+                                    return filteredData;
                                 });
-
-
+                              
 
                                 var selectYear = document.getElementById('year');
                                
@@ -345,55 +329,50 @@
                                     });
               
                                     // Same code as before for updating the chart with the filtered data
-                                    var importedValues = filteredData1.map(function (item) {
-                                        if (item.Quantity < 100) {
+                                    var warningValues = filteredData1.map(function (item) {
+                                        if (item.Quantity < 100 && item.Quantity >= 50) {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(255,0,0)' // red color
-                                            };
-                                        } else if (item.Quantity < 250) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)' // orange color
+                                                color: 'rgba(255, 165, 0)'
                                             };
                                         } else {
+                                            return null;
+                                        }
+                                    }).filter(Boolean)
+
+                                    var criticalValues = filteredData1.map(function (item) {
+                                        if (item.Quantity < 50) {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(0,128,0)' // default blue color
+                                                color: 'rgba(255,0,0)'
                                             };
-                                        }
-                                   
-                                    });
-
-                                    var localValues = filteredData1.map(function (item) {
-                                        if (item.Class === 'Local') {
-                                            if (item.Quantity < 250) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255,0,0)'
-                                                };
-                                            } else if (item.Quantity < 500) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255, 165, 0)'
-                                                };
-                                            } else {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(0,128,0)'
-                                                };
-                                            }
                                         } else {
-                                            return { value: 0, color: 'rgba(0,128,0)' };
+                                            return null;
                                         }
-                                    });
+                                    }).filter(Boolean);
 
-                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
+                                    var goodValues = filteredData1.map(function (item) {
+                                        if (item.Quantity >= 200 && item.Quantity <= 500) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0, 1)'
+                                            };
+                                        } else {
+                                            return null;
+                                        }
+                                    }).filter(Boolean);
+
+                                    chart.data.datasets[0].data = warningValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[0].backgroundColor = warningValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[1].data = criticalValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[1].backgroundColor = criticalValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
                                     chart.data.labels = filteredData1.map(function (item) { return item.Name; });
                                     chart.update();
+
+                                    // Return the filtered data
+                                    return filteredData;
                                 });
 
                                 var selectMonth = document.getElementById('month');
@@ -407,129 +386,117 @@
                                     });
 
                                     // Same code as before for updating the chart with the filtered data
-                                    var importedValues = filteredData2.map(function (item) {
-                                        if (item.Quantity < 100) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)' // red color
-                                            };
-                                        } else if (item.Quantity < 250) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)' // orange color
-                                            };
-                                        } else {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0)' // default blue color
-                                            };
-                                        }
-
-                                    });
-
-                                    var localValues = filteredData2.map(function (item) {
-                                        if (item.Class === 'Local') {
-                                            if (item.Quantity < 250) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255,0,0)'
-                                                };
-                                            } else if (item.Quantity < 500) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255, 165, 0)'
-                                                };
-                                            } else {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(0,128,0)'
-                                                };
-                                            }
-                                        } else {
-                                            return { value: 0, color: 'rgba(0,128,0)' };
-                                        }
-                                    });
-
-                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
-                                    chart.data.labels = filteredData2.map(function (item) { return item.Name; });
-                                    chart.update();
-                                });
-
-
-
-
-
-                                var importedValues = data.map(function (item) {
-                                    if (item.Class === 'Import') {
-                                        if (item.Quantity < 100) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)' // red color
-                                            };
-                                        } else if (item.Quantity < 250) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)' // orange color
-                                            };
-                                        } else {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0)' // default blue color
-                                            };
-                                        }
-                                    } else {
-                                        return { value: 0, color: 'rgba(0,128,0)' };
-                                    }
-                                });
-
-                                var localValues = data.map(function (item) {
-                                    if (item.Class === 'Local') {
-                                        if (item.Quantity < 200) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)'
-                                            };
-                                        } else if (item.Quantity < 250) {
+                                    var warningValues = filteredData2.map(function (item) {
+                                        if (item.Quantity < 100 && item.Quantity >= 50) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255, 165, 0)'
                                             };
                                         } else {
+                                            return null;
+                                        }
+                                    }).filter(Boolean)
+
+                                    var criticalValues = filteredData2.map(function (item) {
+                                        if (item.Quantity < 50) {
                                             return {
                                                 value: item.Quantity,
-                                                color: 'rgba(0,128,0)'
+                                                color: 'rgba(255,0,0)'
                                             };
+                                        } else {
+                                            return null;
                                         }
-                                    } else {
-                                        return { value: 0, color: 'rgba(0,128,0)' };
-                                    }
+                                    }).filter(Boolean);
+
+                                    var goodValues = filteredData2.map(function (item) {
+                                        if (item.Quantity >= 200 && item.Quantity <= 500) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0, 1)'
+                                            };
+                                        } else {
+                                            return null;
+                                        }
+                                    }).filter(Boolean);
+
+                                    chart.data.datasets[0].data = warningValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[0].backgroundColor = warningValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[1].data = criticalValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[1].backgroundColor = criticalValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
+                                    chart.data.labels = filteredData2.map(function (item) { return item.Name; });
+                                    chart.update();
+
+                                    // Return the filtered data
+                                    return filteredData;
                                 });
 
 
 
+
+
+                                var warningValues = data.map(function (item) {
+                                    if (item.Quantity < 100) {
+                                        return {
+                                            value: item.Quantity,
+                                            color: 'rgba(255, 165, 0)' // orange color
+                                        };
+                                    } else {
+                                        return { value: 0, color: 'rgba(0,128,0)' }; // green color
+                                    }
+                                });
+
+                                var criticalValues = data.map(function (item) {
+                                    if (item.Quantity < 50) {
+                                        return {
+                                            value: item.Quantity,
+                                            color: 'rgba(255,0,0)' // red color
+                                        };
+                                    } else {
+                                        return { value: 0, color: 'rgba(0,128,0)' }; // green color
+                                    }
+                                });
+
+                                var goodValues = data.map(function (item) {
+                                    if (item.Quantity > 200 && item.Quantity > 500) {
+                                        return {
+                                            value: item.Quantity,
+                                            color: 'rgba(255, 165, 0)' // orange color
+                                        };
+                                    } else {
+                                        return { value: item.Quantity, color: 'rgba(0,128,0)' }; // green color
+                                    }
+                                });
 
                                 var ctx = canvas.getContext('2d');
                                 var chart = new Chart(ctx, {
                                     type: 'bar',
                                     data: {
                                         labels: labels,
-                                        datasets: [{
-                                            label: 'Imported',
-                                            data: importedValues.map(function (item) { return item.value; }),
-                                            backgroundColor: importedValues.map(function (item) { return item.color; }),
-                                            borderColor: 'rgba(54, 162, 235, 1)',
-                                            borderWidth: 1
-                                        }, {
-                                            label: 'Local',
-                                            data: localValues.map(function (item) { return item.value; }),
-                                            backgroundColor: localValues.map(function (item) { return item.color; }),
-                                            borderColor: 'rgba(255, 99, 132, 1)',
-                                            borderWidth: 1
-                                        }]
-
+                                        datasets: [
+                                            {
+                                                label: 'Warning',
+                                                data: warningValues.map(function (item) { return item.value; }),
+                                                backgroundColor: warningValues.map(function (item) { return item.color; }),
+                                                borderColor: 'rgba(255, 165, 0, 1)',
+                                                borderWidth: 1
+                                            },
+                                            {
+                                                label: 'Critical',
+                                                data: criticalValues.map(function (item) { return item.value; }),
+                                                backgroundColor: criticalValues.map(function (item) { return item.color; }),
+                                                borderColor: 'rgba(255,0,0, 1)',
+                                                borderWidth: 1
+                                            },
+                                            {
+                                                label: 'Good',
+                                                data: goodValues.map(function (item) { return item.value; }),
+                                                backgroundColor: goodValues.map(function (item) { return item.color; }),
+                                                borderColor: 'rgba(0,128,0, 1)',
+                                                borderWidth: 1
+                                            }
+                                        ]
                                     },
                                     options: {
                                         responsive: true,

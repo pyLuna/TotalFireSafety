@@ -205,7 +205,7 @@ namespace TotalFireSafety.Controllers
 
             var data = products.Select(p => new {
                 Name = p.Inventory.in_name,
-                Quantity = int.Parse(new string(p.Inventory.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Quantity = int.Parse(new string(p.update_quantity.ToString().Where(char.IsDigit).ToArray())),
                 Date = p.update_date.GetValueOrDefault().Year,
                 Date1 = p.update_date.GetValueOrDefault().Month,
                 Class = p.Inventory.in_class,

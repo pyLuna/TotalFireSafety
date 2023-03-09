@@ -201,15 +201,15 @@ namespace TotalFireSafety.Controllers
 
 
             //chart
-            var products = db.Inventories.ToList();
+            var products = db.Inv_Update.ToList();
 
             var data = products.Select(p => new {
-                Name = p.in_name,
-                Quantity = int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray())),
-                Date = DateTime.ParseExact(p.in_dateAdded, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture).Year,
-                Date1 = DateTime.ParseExact(p.in_dateAdded, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture).Month,
-                Class = p.in_class,
-                Category = p.in_category
+                Name = p.Inventory.in_name,
+                Quantity = int.Parse(new string(p.Inventory.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Date = p.update_date.GetValueOrDefault().Year,
+                Date1 = p.update_date.GetValueOrDefault().Month,
+                Class = p.Inventory.in_class,
+                Category = p.Inventory.in_category
             }).ToList();
 
 
@@ -218,8 +218,8 @@ namespace TotalFireSafety.Controllers
 
             //chart 2
             var data1 = products.Select(g => new {
-                Name1 = g.in_name,
-                Quantity1 = int.Parse(new string(g.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Name1 = g.Inventory.in_name,
+                Quantity1 = int.Parse(new string(g.Inventory.in_quantity.ToString().Where(char.IsDigit).ToArray())),
             }).ToList();
 
             ViewBag.Chart = data1;

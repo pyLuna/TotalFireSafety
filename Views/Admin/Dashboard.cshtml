@@ -279,12 +279,12 @@
 
                                     var importedValues = filteredData.map(function (item) {
                                         if (item.Class === 'Import') {
-                                            if (item.Quantity < 250) {
+                                            if (item.Quantity < 100) {
                                                 return {
                                                     value: item.Quantity,
                                                     color: 'rgba(255,0,0)' // red color
                                                 };
-                                            } else if (item.Quantity < 500) {
+                                            } else if (item.Quantity < 250) {
                                                 return {
                                                     value: item.Quantity,
                                                     color: 'rgba(255, 165, 0)' // orange color
@@ -302,12 +302,12 @@
 
                                     var localValues = filteredData.map(function (item) {
                                         if (item.Class === 'Local') {
-                                            if (item.Quantity < 250) {
+                                            if (item.Quantity < 100) {
                                                 return {
                                                     value: item.Quantity,
                                                     color: 'rgba(255,0,0)'
                                                 };
-                                            } else if (item.Quantity < 500) {
+                                            } else if (item.Quantity < 250) {
                                                 return {
                                                     value: item.Quantity,
                                                     color: 'rgba(255, 165, 0)'
@@ -346,12 +346,12 @@
               
                                     // Same code as before for updating the chart with the filtered data
                                     var importedValues = filteredData1.map(function (item) {
-                                        if (item.Quantity < 250) {
+                                        if (item.Quantity < 100) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255,0,0)' // red color
                                             };
-                                        } else if (item.Quantity < 500) {
+                                        } else if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255, 165, 0)' // orange color
@@ -408,12 +408,12 @@
 
                                     // Same code as before for updating the chart with the filtered data
                                     var importedValues = filteredData2.map(function (item) {
-                                        if (item.Quantity < 250) {
+                                        if (item.Quantity < 100) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255,0,0)' // red color
                                             };
-                                        } else if (item.Quantity < 500) {
+                                        } else if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255, 165, 0)' // orange color
@@ -464,12 +464,12 @@
 
                                 var importedValues = data.map(function (item) {
                                     if (item.Class === 'Import') {
-                                        if (item.Quantity < 250) {
+                                        if (item.Quantity < 100) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255,0,0)' // red color
                                             };
-                                        } else if (item.Quantity < 500) {
+                                        } else if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255, 165, 0)' // orange color
@@ -487,12 +487,12 @@
 
                                 var localValues = data.map(function (item) {
                                     if (item.Class === 'Local') {
-                                        if (item.Quantity < 250) {
+                                        if (item.Quantity < 200) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255,0,0)'
                                             };
-                                        } else if (item.Quantity < 500) {
+                                        } else if (item.Quantity < 250) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(255, 165, 0)'

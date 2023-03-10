@@ -6,7 +6,6 @@
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Users = "active";
 }
-<script src='@Url.Content("~/Scripts/validations/Uservalidation.js")'></script>
 <div class="main-content">
     <header>
 
@@ -92,58 +91,51 @@
         <div class="add-popup" id="add-popup">
             <div class="add-container">
                 <div class="form-container">
-                    <form action="@Url.Action("Users", "Admin","add")" method="post" id="formId">
+                    <form action="@Url.Action("Users", "Admin","add")" method="post" id="formId" class="validate-form">
                         <div class="details personal">
                             <div class="form-header">
                                 ACCOUNT INFORMATION
                             </div>
                             <div class="form-contents">
                                 <div class="fields">
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Name</label>
-                                        <input type="text" placeholder="Enter your name" id="emp_name" name="emp_name" required>
+                                            <input class="input100" type="text" placeholder="Enter your name" id="emp_name" name="emp_name" required>
                                     </div>
 
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Contact</label>
                                         <input type="number" placeholder="Enter your contact" name="emp_contact" id="emp_contact" required>
                                     </div>
 
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Employee ID</label>
                                         <input type="number" placeholder="00000" id="emp_no" name="emp_no" required>
                                     </div>
 
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Hired Date</label>
                                         <input type="date" id="emp_hiredDate" name="emp_hiredDate">
-                                        @*<input type="text" id="dateHired" style="display:none;" readonly>*@
                                     </div>
                                     <input type="text" id="formType" name="formType" style="display:none;" readonly>
 
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Username</label>
                                         <input type="text" placeholder="Enter username" id="Credential.username" name="Credential.username" required>
                                     </div>
                                     <input type="text" placeholder="Enter username" id="credsid" name="Credential.emp_no" style="display:none;" required>
 
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Password</label>
                                         <input type="password" placeholder="Enter password" id="Credential.password" name="Credential.password" required>
                                     </div>
 
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Position</label>
-                                        @*<select id="sel-pos" required>
-                                                <option disabled selected>Select Position</option>
-                                                <option>Supervisor</option>
-                                                <option>Office Manager</option>
-                                                <option>Warehouse Manager</option>
-                                            </select>*@
                                         <input type="text" placeholder="Enter Position" id="emp_position" name="emp_position" required>
                                     </div>
 
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Roles</label>
                                         <select id="sel-roles" name="sel-roles" required>
                                             <option disabled selected value="">Select Position</option>
@@ -152,11 +144,10 @@
                                             <option>Warehouse Manager</option>
                                             <option>Local Account</option>
                                         </select>
-                                        <input type="number" id="rolesid" name="Role.emp_no" style="display:none;" readonly>
-                                        <input type="number" id="roles" name="Role.role1" style="display:none;" readonly>
                                     </div>
-
-                                    <div class="input-field">
+                                    <input type="number" id="rolesid" name="Role.emp_no" style="display:none;" readonly>
+                                    <input type="number" id="roles" name="Role.role1" style="display:none;" readonly>
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Status</label>
                                         <select id="sel-stats" name="sel-stats" required>
                                             <option disabled selected>Select Position</option>
@@ -164,22 +155,21 @@
                                             <option value="Inactive">Inactive</option>
                                             <option value="Locked">Locked</option>
                                         </select>
-                                        <input type="number" id="statsid" name="Status.emp_no" style="display:none;" readonly>
-                                        <input type="number" id="stats" name="Status.isLocked" style="display:none;" readonly>
-                                        <input type="number" id="stats1" name="Status.isActive" style="display:none;" readonly>
                                     </div>
-
+                                    <input type="number" id="statsid" name="Status.emp_no" style="display:none;" readonly>
+                                    <input type="number" id="stats" name="Status.isLocked" style="display:none;" readonly>
+                                    <input type="number" id="stats1" name="Status.isActive" style="display:none;" readonly>
                                 </div>
                             </div>
                         </div>
                         <center>
                             <div class="form-add-btns">
-
-                                <button class="save"onclick="checkForm()" id="saveBtn">
+                                @*onclick="checkForm()"*@
+                                <button class="save" id="saveBtn">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>
-                                <button class="save"  id="saveBtn11" style="display:none;"></button>
+                                <button class="save" id="saveBtn11" style="display:none;"></button>
 
                                 <button class="cancel">
                                     @*+ closeAddForm()*@
@@ -228,7 +218,7 @@
         </div>
 
     </main>
-
+    <script src='@Url.Content("~/Scripts/validations/Uservalidation.js")'></script>
     <script src="~/Scripts/user.js"></script>
     <script>
         //$('#formId').validate();

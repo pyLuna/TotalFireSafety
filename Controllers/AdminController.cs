@@ -206,11 +206,21 @@ namespace TotalFireSafety.Controllers
             var data = products.Select(p => new {
                 Name = p.Inventory.in_name,
                 Quantity = int.Parse(new string(p.update_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Quantity1 = int.Parse(new string(p.Inventory.in_quantity.ToString().Where(char.IsDigit).ToArray())),
                 Date = p.update_date.GetValueOrDefault().Year,
                 Date1 = p.update_date.GetValueOrDefault().Month,
                 Class = p.Inventory.in_class,
                 Category = p.Inventory.in_category
             }).ToList();
+
+            var monthlyData = data.GroupBy(p => new { p.Date, p.Date1 })
+                       .Select(g => new {
+                           Year = g.Key.Date,
+                           Month = g.Key.Date1,
+                           TotalUpdateQuantity = g.Sum(p => p.Quantity),
+                           TotalInQuantity = g.Sum(p => p.Quantity1)
+                       }).ToList();
+
 
 
 

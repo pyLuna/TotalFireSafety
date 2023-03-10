@@ -436,37 +436,31 @@
 
 
 
-                                var warningValues = data.map(function (item) {
-                                    if (item.Quantity < 100) {
-                                        return {
-                                            value: item.Quantity,
-                                            color: 'rgba(255, 165, 0)' // orange color
-                                        };
-                                    } else {
-                                        return { value: 0, color: 'rgba(0,128,0)' }; // green color
-                                    }
+                                var warningValues = data.filter(function (item) {
+                                    return item.Quantity >= 50 && item.Quantity < 100;
+                                }).map(function (item) {
+                                    return {
+                                        value: item.Quantity,
+                                        color: 'rgba(255, 165, 0)' // orange color
+                                    };
                                 });
 
-                                var criticalValues = data.map(function (item) {
-                                    if (item.Quantity < 50) {
-                                        return {
-                                            value: item.Quantity,
-                                            color: 'rgba(255,0,0)' // red color
-                                        };
-                                    } else {
-                                        return { value: 0, color: 'rgba(0,128,0)' }; // green color
-                                    }
+                                var criticalValues = data.filter(function (item) {
+                                    return item.Quantity < 50;
+                                }).map(function (item) {
+                                    return {
+                                        value: item.Quantity,
+                                        color: 'rgba(255, 0, 0)' // red color
+                                    };
                                 });
 
-                                var goodValues = data.map(function (item) {
-                                    if (item.Quantity > 200 && item.Quantity > 500) {
-                                        return {
-                                            value: item.Quantity,
-                                            color: 'rgba(255, 165, 0)' // orange color
-                                        };
-                                    } else {
-                                        return { value: item.Quantity, color: 'rgba(0,128,0)' }; // green color
-                                    }
+                                var goodValues = data.filter(function (item) {
+                                    return item.Quantity >= 200 && item.Quantity <= 500;
+                                }).map(function (item) {
+                                    return {
+                                        value: item.Quantity,
+                                        color: 'rgba(0, 128, 0)' // green color
+                                    };
                                 });
 
                                 var ctx = canvas.getContext('2d');

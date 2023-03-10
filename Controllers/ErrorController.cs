@@ -34,5 +34,9 @@ namespace TotalFireSafety.Controllers
         {
             return View();
         }
+        public ActionResult Unauthorize()
+        {
+            return View();
+        }
     }
 }

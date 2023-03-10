@@ -5,8 +5,10 @@ let codeList = [];
 let tableData = [];
 let jsonArray = [];
 let filtered = [];
+let fixedArray = [];
 let allRequests = [];
 let Employees = [];
+let newArray = [];
 let newEmployee = [];
 let itemInv = [];
 let typeLabel = ['Deploy', 'Purchase', 'Supply'];
@@ -66,7 +68,7 @@ function GetAllItem() {
             console.log(`inventory`);
         })
         .catch(error => {
-            window.location.replace('/Error/InternalServerError');
+            //window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
@@ -86,7 +88,7 @@ function GetAllEmployee() {
             console.log(`Employee`);
         })
         .catch(error => {
-            window.location.replace('/Error/InternalServerError');
+            //window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
@@ -113,16 +115,24 @@ function GetAll() {
             jsonArray.length = 0;
             jsonArray.push(data);
             fixArray(jsonArray, 1);
+            DeleteCertainPart();
             if (table !== null) {
                 PopulateView();
                 setTable(viewData);
             }
         })
         .catch(error => {
-            window.location.replace('/Error/InternalServerError');
+            //window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
+
+function DeleteCertainPart() {
+    newArray = fixedArray.map(function (item) {
+        return { ...item, Inventory: undefined };
+    });
+}
+
 //serves as a search function
 function filterArray(value) {
     filtered.length = 0;
@@ -132,9 +142,16 @@ function filterArray(value) {
         }
     }
 }
-
+function NewfilterArray(value) {
+    filtered.length = 0;
+    for (var j = 0; j < allRequests.length; j++) {
+        if (JSON.stringify(newArray[j]).toLowerCase().includes(value)) {
+            filtered.push(newArray[j]);
+        }
+    }
+}
 function SearchItem(value) {
-    filterArray(value.toLowerCase());
+    NewfilterArray(value.toLowerCase());
     if (value == '') {
         setTable(allRequests);
     } else {
@@ -146,6 +163,7 @@ function fixArray(array, boolean) {
     if (boolean == 1) {
         for (var j = 0; j < array[0].length; j++) {
             allRequests.push(array[0][j]);
+            fixedArray.push(array[0][j]);
         }
     }
     else if (boolean == 2) {

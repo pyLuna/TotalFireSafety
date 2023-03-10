@@ -201,35 +201,59 @@ namespace TotalFireSafety.Controllers
 
 
             //chart
-            var products = db.Inv_Update.ToList();
+            var products = db.Inventories.ToList();
+            var update = db.Inv_Update.ToList();
+            
+            List<Inventory> newList = new List<Inventory>();
+            foreach(var item in products)
+            {
+                var check = update.Where(x => x.update_item_id == item.in_code).ToList();
+                Inventory newInv = new Inventory()
+                {
+                   
+                    in_category = item.in_category,
+                    in_class = item.in_class,
+                    in_code = item.in_code,
+                    in_dateAdded = item.in_dateAdded,
+                    in_name = item.in_name,
+                    in_quantity = item.in_quantity,
+                   
+                    Inv_Update = check/* == null ? check : null*/
+                };
+                newList.Add(newInv);
+            }
+            var data = newList
+     .GroupJoin(
+         update,
+         p => p.in_code,
+         u => u.update_item_id,
+         (p, u) => new {
+             Name = p.in_name,
+             Quantity = u.Sum(d => int.Parse(new string(d.update_quantity.ToString().Where(char.IsDigit).ToArray()))),
+             Quantity1 = int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+             Date = u.FirstOrDefault()?.update_date.GetValueOrDefault().Year ?? 0,
+             Date1 = u.FirstOrDefault()?.update_date.GetValueOrDefault().Month ?? 0,
+             Class = p.in_class,
+             Category = p.in_category
+         })
+     .Select(d => new {
+         d.Name,
+         d.Quantity,
+         d.Quantity1,
+         Total = d.Quantity + d.Quantity1,
+         d.Date,
+         d.Date1,
+         d.Class,
+         d.Category
+     })
+     .ToList();
 
-            var data = products.Select(p => new {
-                Name = p.Inventory.in_name,
-                Quantity = int.Parse(new string(p.update_quantity.ToString().Where(char.IsDigit).ToArray())),
-                Quantity1 = int.Parse(new string(p.Inventory.in_quantity.ToString().Where(char.IsDigit).ToArray())),
-                Date = p.update_date.GetValueOrDefault().Year,
-                Date1 = p.update_date.GetValueOrDefault().Month,
-                Class = p.Inventory.in_class,
-                Category = p.Inventory.in_category
-            }).ToList();
-
-            var monthlyData = data.GroupBy(p => new { p.Date, p.Date1 })
-                       .Select(g => new {
-                           Year = g.Key.Date,
-                           Month = g.Key.Date1,
-                           TotalUpdateQuantity = g.Sum(p => p.Quantity),
-                           TotalInQuantity = g.Sum(p => p.Quantity1)
-                       }).ToList();
-
-
-
-
-            ViewBag.Data = data;
+           ViewBag.Data = data;
 
             //chart 2
             var data1 = products.Select(g => new {
-                Name1 = g.Inventory.in_name,
-                Quantity1 = int.Parse(new string(g.Inventory.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Name1 = g.in_name,
+                Quantity1 = int.Parse(new string(g.in_quantity.ToString().Where(char.IsDigit).ToArray())),
             }).ToList();
 
             ViewBag.Chart = data1;

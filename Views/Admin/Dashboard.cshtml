@@ -271,20 +271,20 @@
                                     });
 
                                     var warningValues = filteredData.map(function (item) {
-                                        if (item.Quantity < 100) {
+                                        if (item.Total < 100 && item.Total >= 51) {
                                             return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)' // orange color
+                                                value: item.Total,
+                                                color: 'rgba(255, 165, 0)'
                                             };
                                         } else {
-                                            return null; // green color
+                                            return null;
                                         }
-                                    }).filter(Boolean);
+                                    }).filter(Boolean)
 
                                     var criticalValues = filteredData.map(function (item) {
-                                        if (item.Quantity < 50) {
+                                        if (item.Total < 50) {
                                             return {
-                                                value: item.Quantity,
+                                                value: item.Total,
                                                 color: 'rgba(255,0,0)'
                                             };
                                         } else {
@@ -293,9 +293,9 @@
                                     }).filter(Boolean);
 
                                     var goodValues = filteredData.map(function (item) {
-                                        if (item.Quantity >= 200 && item.Quantity <= 500) {
+                                        if (item.Total >= 200 && item.Total <= 500) {
                                             return {
-                                                value: item.Quantity,
+                                                value: item.Total,
                                                 color: 'rgba(0,128,0, 1)'
                                             };
                                         } else {
@@ -330,9 +330,9 @@
               
                                     // Same code as before for updating the chart with the filtered data
                                     var warningValues = filteredData1.map(function (item) {
-                                        if (item.Quantity < 100 && item.Quantity >= 50) {
+                                        if (item.Total < 100 && item.Total >= 50) {
                                             return {
-                                                value: item.Quantity,
+                                                value: item.Total,
                                                 color: 'rgba(255, 165, 0)'
                                             };
                                         } else {
@@ -341,9 +341,9 @@
                                     }).filter(Boolean)
 
                                     var criticalValues = filteredData1.map(function (item) {
-                                        if (item.Quantity < 50) {
+                                        if (item.Total < 50) {
                                             return {
-                                                value: item.Quantity,
+                                                value: item.Total,
                                                 color: 'rgba(255,0,0)'
                                             };
                                         } else {
@@ -352,9 +352,9 @@
                                     }).filter(Boolean);
 
                                     var goodValues = filteredData1.map(function (item) {
-                                        if (item.Quantity >= 200 && item.Quantity <= 500) {
+                                        if (item.Total >= 200 && item.Total <= 500) {
                                             return {
-                                                value: item.Quantity,
+                                                value: item.Total,
                                                 color: 'rgba(0,128,0, 1)'
                                             };
                                         } else {
@@ -387,9 +387,9 @@
 
                                     // Same code as before for updating the chart with the filtered data
                                     var warningValues = filteredData2.map(function (item) {
-                                        if (item.Quantity < 100 && item.Quantity >= 50) {
+                                        if (item.Total < 100 && item.Total >= 50) {
                                             return {
-                                                value: item.Quantity,
+                                                value: item.Total,
                                                 color: 'rgba(255, 165, 0)'
                                             };
                                         } else {
@@ -398,9 +398,9 @@
                                     }).filter(Boolean)
 
                                     var criticalValues = filteredData2.map(function (item) {
-                                        if (item.Quantity < 50) {
+                                        if (item.Total < 50) {
                                             return {
-                                                value: item.Quantity,
+                                                value: item.Total,
                                                 color: 'rgba(255,0,0)'
                                             };
                                         } else {
@@ -409,9 +409,9 @@
                                     }).filter(Boolean);
 
                                     var goodValues = filteredData2.map(function (item) {
-                                        if (item.Quantity >= 200 && item.Quantity <= 500) {
+                                        if (item.Total >= 200 && item.Total <= 500) {
                                             return {
-                                                value: item.Quantity,
+                                                value: item.Total,
                                                 color: 'rgba(0,128,0, 1)'
                                             };
                                         } else {
@@ -437,28 +437,28 @@
 
 
                                 var warningValues = data.filter(function (item) {
-                                    return item.Quantity >= 50 && item.Quantity < 100;
+                                    return item.Total >= 50 && item.Total  < 100;
                                 }).map(function (item) {
                                     return {
-                                        value: item.Quantity,
+                                        value: item.Total ,
                                         color: 'rgba(255, 165, 0)' // orange color
                                     };
                                 });
 
                                 var criticalValues = data.filter(function (item) {
-                                    return item.Quantity < 50;
+                                    return item.Total  < 50;
                                 }).map(function (item) {
                                     return {
-                                        value: item.Quantity,
+                                        value: item.Total ,
                                         color: 'rgba(255, 0, 0)' // red color
                                     };
                                 });
 
                                 var goodValues = data.filter(function (item) {
-                                    return item.Quantity >= 200 && item.Quantity <= 500;
+                                    return item.Total >= 200 && item.Total  <= 5000;
                                 }).map(function (item) {
                                     return {
-                                        value: item.Quantity,
+                                        value: item.Total ,
                                         color: 'rgba(0, 128, 0)' // green color
                                     };
                                 });

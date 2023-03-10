@@ -32,7 +32,7 @@ namespace TotalFireSafety.Models
         public string in_class { get; set; }
         public string in_dateAdded { get; set; }
         public Nullable<System.DateTime> in_arch_date { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inv_Update> Inv_Update { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

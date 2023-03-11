@@ -199,7 +199,7 @@ namespace TotalFireSafety.Controllers
             int deployment = db.Requests.Count(x => x.request_type == "Deploy");
             ViewBag.Deployment = deployment;
 
-
+    
             //chart
             var products = db.Inventories.ToList();
             var update = db.Inv_Update.ToList();
@@ -217,43 +217,35 @@ namespace TotalFireSafety.Controllers
                     in_dateAdded = item.in_dateAdded,
                     in_name = item.in_name,
                     in_quantity = item.in_quantity,
-                   
+                    in_size = item.in_size,
+                    in_type = item.in_type,
                     Inv_Update = check/* == null ? check : null*/
                 };
                 newList.Add(newInv);
             }
             var data = newList
-     .GroupJoin(
-         update,
-         p => p.in_code,
-         u => u.update_item_id,
-         (p, u) => new {
-             Name = p.in_name,
-             Quantity = u.Sum(d => int.Parse(new string(d.update_quantity.ToString().Where(char.IsDigit).ToArray()))),
-             Quantity1 = int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray())),
-             Date = u.FirstOrDefault()?.update_date.GetValueOrDefault().Year ?? 0,
-             Date1 = u.FirstOrDefault()?.update_date.GetValueOrDefault().Month ?? 0,
-             Class = p.in_class,
-             Category = p.in_category
-         })
-     .Select(d => new {
-         d.Name,
-         d.Quantity,
-         d.Quantity1,
-         Total = d.Quantity + d.Quantity1,
-         d.Date,
-         d.Date1,
-         d.Class,
-         d.Category
-     })
-     .ToList();
+      .SelectMany(p => p.Inv_Update.DefaultIfEmpty(), (p, u) => new {
+          Name = p.in_name,
+          Quantity = (u == null ? 0 : int.Parse(new string(u.update_quantity.ToString().Where(char.IsDigit).ToArray()))) +
+           (p == null ? 0 : int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray()))),
+          Class = p.in_class,
+          Category = p.in_category
+      })
+      .GroupBy(d => d.Name)
+      .Select(g => new {
+          Name = g.Key,
+          Quantity = g.Sum(x => x.Quantity),
+          Class = g.FirstOrDefault()?.Class,
+          Category = g.FirstOrDefault()?.Category
+      })
+      .ToList();
 
-           ViewBag.Data = data;
+            ViewBag.Data = data;
 
             //chart 2
             var data1 = products.Select(g => new {
                 Name1 = g.in_name,
-                Quantity1 = int.Parse(new string(g.in_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Quantity1 = int.Parse(new string(g.in_quantity.ToString().Where(char.IsDigit).ToArray()))
             }).ToList();
 
             ViewBag.Chart = data1;

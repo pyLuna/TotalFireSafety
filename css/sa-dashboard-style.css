@@ -1075,176 +1075,31 @@ right .d-drop-btn {
 
 /******************************* END ********************************/
 /********************** 04 - DASHBOARD STYLES ***********************/
-
-.summary {
-    margin-bottom: 80px;
-    display: block;
+right .inv-sum-date {
 }
 
-.summary-title {
-    font-size: 1.2rem;
-    color: #7F8487;
-    margin-bottom: 10px;
-}
+    right .inv-sum-date label {
+        margin: 10px;
+        color: #fff;
+    }
 
-.sum-chart-card {
-    width: 100%;
-    height: 200px;
-}
-
-.sum-cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 2rem;
-    margin-top: 2rem;
-    margin-left: 15rem;
-    margin-right: 15rem;
-}
-
-.sum-card-title h3 {
-    font-size: 1rem;
-    color: #7F8487;
-    margin-bottom: 5px;
-    margin-top: 20px;
-}
-
-.sum-card-single {
-    display: block;
-    justify-content: space-between;
-    background-color: #fff;
-    padding: 1rem;
-    border-left: 4px solid #16215B;
-    border-radius: 5px;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-}
-
-.inv-circle-wrap {
-    width: 150px;
-    height: 150px;
-    background: #f1f5f9;
-    border-radius: 50%;
-    border: 1px solid #cdcbd0;
-}
-
-    .inv-circle-wrap .inv-circle .inv-mask,
-    .inv-circle-wrap .inv-circle .inv {
+    right .inv-sum-date input {
+        font-size: .9rem;
         width: 150px;
-        height: 150px;
-        position: absolute;
-        border-radius: 50%;
+        height: 30px;
+        border: none;
+        border-radius: 5px;
     }
 
-.inv-mask .inv {
-    clip: rect(0px, 75px, 150px, 0px);
-    background-color: #1C82AD;
-}
-
-.inv-circle-wrap .inv-circle .inv-mask {
-    clip: rect(0px, 150px, 150px, 75px);
-}
-
-.inv-mask.inv-full,
-.inv-circle .inv {
-    animation: inv ease-in-out 1s;
-    transform: rotate(180deg);
-}
-
-@keyframes inv {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(180deg);
-    }
-}
-
-.inv-circle-wrap .inv-inside-circle {
-    width: 122px;
-    height: 122px;
-    border-radius: 50%;
-    background: #fff;
-    line-height: 120px;
-    text-align: center;
-    margin-top: 14px;
-    margin-left: 14px;
-    color: #000;
-    position: absolute;
-    z-index: none;
-    font-weight: 700;
-    font-size: 2em;
-}
-
-
-
-
-.pur-circle-wrap {
-    width: 150px;
-    height: 150px;
-    background: #f1f5f9;
-    border-radius: 50%;
-    border: 1px solid #cdcbd0;
-}
-
-    .pur-circle-wrap .pur-circle .pur-mask,
-    .pur-circle-wrap .pur-circle .pur {
-        width: 150px;
-        height: 150px;
-        position: absolute;
-        border-radius: 50%;
-    }
-
-.pur-mask .pur {
-    clip: rect(0px, 75px, 150px, 0px);
-    background-color: #CD0404;
-}
-
-.pur-circle-wrap .pur-circle .pur-mask {
-    clip: rect(0px, 150px, 150px, 75px);
-}
-
-.pur-mask.pur-full,
-.pur-circle .pur {
-    animation: inv ease-in-out 1s;
-    transform: rotate(45deg);
-}
-
-@keyframes pur {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(45deg);
-    }
-}
-
-.pur-circle-wrap .pur-inside-circle {
-    width: 122px;
-    height: 122px;
-    border-radius: 50%;
-    background: #fff;
-    line-height: 120px;
-    text-align: center;
-    margin-top: 14px;
-    margin-left: 14px;
-    color: #000;
-    position: absolute;
-    z-index: none;
-    font-weight: 700;
-    font-size: 2em;
-}
-
+        right .inv-sum-date input::-webkit-calendar-picker-indicator {
+            margin-right: 10px;
+        }
 .cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 2rem;
     margin-top: 1rem;
     margin-bottom: 50px;
-    background-color: #fff;
-    border-left: 4px solid #16215B;
-    border-radius: 5px;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 }
 
     .cards .card-title:hover {
@@ -1259,6 +1114,10 @@ right .d-drop-btn {
 
 .card-title {
     border-left: 2px solid #f0f0f0;
+    background-color: #fff;
+    border-left: 4px solid #16215B;
+    border-radius: 5px;
+    box-shadow: 4px 3px 3px #B2B2B2;
 }
 
     .card-title h3 {
@@ -1327,6 +1186,31 @@ right .d-drop-btn {
     overflow: hidden;
 }
 
+    .inventory-sum .inv-sum-header {
+        display: flex;
+    }
+
+        .inventory-sum .inv-sum-header h3 {
+            margin-left: 2%;
+        }
+
+
+    .inventory-sum .inv-sum-date {
+        margin-top: 5px;
+        margin-bottom: 4%;
+    }
+
+        .inventory-sum .inv-sum-date label {
+            font-weight: 800;
+            font-size: .9rem;
+        }
+
+        .inventory-sum .inv-sum-date input {
+            height: 30px;
+            width: 150px;
+        }
+
+
 .recent-grid .inventory-sum .card .card-header select {
     max-width: 100%;
     width: 180px;
@@ -1336,10 +1220,10 @@ right .d-drop-btn {
     font-weight: 400;
     color: #333;
     border-radius: 5px;
-    border: 1px solid #aaa;
+    border: 1px solid #000;
+    display: inline-block;
+    margin-right: 10px;
 }
-
-
 
 .recent-grid .inventory-sum .test {
     margin-left: -100px;
@@ -1375,6 +1259,7 @@ right .d-drop-btn {
         font-size: .8rem;
         padding: .5rem;
         border: 1px solid #B2B2B2;
+        width: 100px;
     }
 
         .card-headers button a {
@@ -1387,6 +1272,61 @@ right .d-drop-btn {
             background-color: #16215B;
             cursor: pointer;
         }
+
+
+.legend-grp {
+    margin-left: 55%;
+    margin-right: 2%;
+    height: 30px;
+    width: 350px;
+    background-color: #fff;
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    display: inline-flex;
+}
+
+    .legend-grp .legend-content {
+        margin-top: 3px;
+        margin-left: 4px;
+        display: flex;
+    }
+
+        .legend-grp .legend-content h3 {
+            font-size: 1rem;
+            color: #000;
+        }
+
+.legend-content .legend-content-1 {
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: #09AF10;
+    border: 1px solid #000;
+    margin-left: 20px;
+}
+
+    .legend-content .legend-content-1 label {
+        margin-left: 25px;
+        margin-top: 1px;
+        font-size: .9rem;
+    }
+
+.legend-content .legend-content-2 {
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: #FF0000;
+    border: 1px solid #000;
+    margin-left: 100px;
+}
+
+    .legend-content .legend-content-2 label {
+        margin-left: 25px;
+        margin-top: 1px;
+        font-size: .9rem;
+    }
 
 /* Card Header */
 
@@ -1407,28 +1347,9 @@ right .d-drop-btn {
         font-size: 1rem;
     }
 
-    .card-header button {
-        background: #fff;
-        border-radius: 5px;
-        color: #000;
-        font-size: .8rem;
-        padding: .5rem 1rem;
-        border: 1px solid #B2B2B2;
+    .card-header .fst-grp select {
+        margin-left: 45%;
     }
-
-
-        .card-header button a {
-            display: inline-block;
-            justify-content: space-between;
-            color: inherit;
-            text-decoration: inherit;
-        }
-
-        .card-header button:hover {
-            color: #fff;
-            background-color: #16215B;
-            cursor: pointer;
-        }
 
 .chart-border {
     padding-left: 20px;
@@ -1475,7 +1396,32 @@ right .d-drop-btn {
         list-style-type: circle;
     }
 
+.card-headers .fst-legend-content {
+    display: flex;
+    margin-left: 10px;
+}
+
+    .card-headers .fst-legend-content .fst-content-1 {
+        display: flex;
+        height: 20px;
+        width: 20px;
+        background-color: #FF932F;
+        border: 1px solid #000;
+    }
+
+    .card-headers .fst-legend-content label {
+        margin-left: 10px;
+        margin-top: 1px;
+    }
+
+.card-headers .fst-date {
+    color: #707070;
+}
+
+
+
 /* Dashboard Project Style */
+
 /* NEW UPDATE */
 
 .project-sum {
@@ -1484,7 +1430,7 @@ right .d-drop-btn {
     overflow: hidden;
     display: grid;
     grid-template-columns: 90% 10%;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
     .project-sum h3 {
@@ -1494,44 +1440,22 @@ right .d-drop-btn {
         margin-left: 2%;
     }
 
-.project-sum-btns {
-    display: block;
-    margin-top: -50px;
-    margin-bottom: 60px;
+
+
+.dsh .drp-wrapper {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 73%;
+    margin-bottom: -20px;
 }
 
-    .project-sum-btns .drp-wrapper {
-        display: flex;
-        justify-content: right;
-        position: absolute;
-        right: 2%;
-    }
-
-    .project-sum-btns button {
-        width: 100px;
-        height: 40px;
-        margin-right: 5px;
-        margin-top: 10px;
-        border-radius: 3px;
-        transition: all ease-in-out 0.2s;
-        cursor: pointer;
-        background-color: #fff;
-        border: 1px solid #B2B2B2;
-        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-    }
-
-        .project-sum-btns button:hover {
-            color: #fff;
-            border: 1px solid var(--text-color-black);
-            background-color: #16215B;
-        }
-
-    .project-sum-btns select {
+    .dsh .drp-wrapper select {
         height: 20px;
-        width: 120px;
+        width: 200px;
         text-align: left;
         height: 40px;
         font-size: .9rem;
+        font-weight: 600;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
         padding: 2px;
         margin-right: 5px;
@@ -1541,7 +1465,7 @@ right .d-drop-btn {
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    max-height: 400px;
+    max-height: 800px;
     overflow: scroll;
 }
 
@@ -1562,27 +1486,31 @@ right .d-drop-btn {
     padding: 30px;
 }
 
-    .dsh-body table td label {
-        color: #000;
-        font-size: 1rem;
-        font-weight: 700;
+    .dsh-body table td {
+        width: 5px;
     }
 
-    .dsh-body table td .stat-appr {
-        color: #A8E890;
-    }
+        .dsh-body table td label {
+            color: #000;
+            font-size: 1rem;
+            font-weight: 700;
+        }
 
-    .dsh-body table td .stat-dec {
-        color: #EC7272;
-    }
+        .dsh-body table td .stat-appr {
+            color: #A8E890;
+        }
 
-    .dsh-body table td .stat-pen {
-        color: #39B5E0;
-    }
+        .dsh-body table td .stat-dec {
+            color: #EC7272;
+        }
+
+        .dsh-body table td .stat-pen {
+            color: #39B5E0;
+        }
 
 
 .progress-bar {
-    width: 450px;
+    width: 250px;
     height: 20px;
     background-color: #f2f2f2;
     border-radius: 10px;
@@ -1622,8 +1550,81 @@ right .d-drop-btn {
     transition: width 0.3s ease-in-out;
 }
 
-/* END */
 
+.proj-legend-grp {
+    margin-top: 1.5%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    height: 30px;
+    width: 500px;
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    display: inline-flex;
+}
+
+    .proj-legend-grp .proj-legend-content {
+        margin-top: 3px;
+        margin-left: 4px;
+        display: flex;
+    }
+
+        .proj-legend-grp .proj-legend-content h3 {
+            font-size: 1rem;
+            color: #000;
+        }
+
+
+
+.proj-legend-content .proj-legend-content-1 {
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: #09AF10;
+    border: 1px solid #000;
+    margin-left: 20px;
+}
+
+    .proj-legend-content .proj-legend-content-1 label {
+        margin-left: 25px;
+        margin-top: 2px;
+        font-size: .9rem;
+    }
+
+.proj-legend-content .proj-legend-content-2 {
+    display: flex;
+    height: 20px;
+    width: 30px;
+    background-color: #FF0000;
+    border: 1px solid #000;
+    margin-left: 100px;
+}
+
+    .proj-legend-content .proj-legend-content-2 label {
+        margin-left: 40px;
+        margin-top: 2px;
+        font-size: .9rem;
+    }
+
+
+.proj-legend-content .proj-legend-content-3 {
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: #B1CAFA;
+    border: 1px solid #000;
+    margin-left: 100px;
+}
+
+    .proj-legend-content .proj-legend-content-3 label {
+        margin-left: 25px;
+        margin-top: 2px;
+        font-size: .9rem;
+    }
+
+/* END */
 
 /************************** END *************************/
 /***************** 05 - INVENTORY STYLES ****************/

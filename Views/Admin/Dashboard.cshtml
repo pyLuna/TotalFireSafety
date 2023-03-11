@@ -16,15 +16,17 @@
         </h2>
 
         <right>
-            <h4>View Summary In:</h4>
+           
+            <div class="inv-sum-date">
+                <div class="sum-date-con">
+                    <label></label>
+                    <input type="date">
 
-            <select id="year" required>
-                <option disabled selected>Year</option>
-            </select>
+                    <label>-</label>
+                    <input type="date">
+                </div>
 
-            <select id="month" required>
-                <option disabled selected>Month</option>
-            </select>
+            </div>
 
 
         </right>
@@ -224,21 +226,34 @@
         <div class="recent-grid">
 
             <div class="inventory-sum">
-                <h3>Inventories</h3>
+                <div class="inv-sum-header">
+                    <h3>Inventories</h3>
+                </div>
                 <div class="card">
                     <div class="card-header">
-                        
+
 
                         <h3>Item Categories Summary</h3>
 
-                        <select id="itemCategory" required>
-                            <option disabled selected>Item Category</option>
-                            <option value="Fire Extinguisher">Fire Extinguisher</option>
-                            <option value="Power Tools">Power Tools</option>
-                            <option value="Fittings">Fittings</option>
-                            <option value="Scaffolding">Scaffolding</option>
-                            <option value="Clear">Clear</option>
-                        </select>
+                        <div class="cat-grp">
+                            <select required>
+                                <option disabled selected>Item Class</option>
+                                <option>All</option>
+                                <option>Local</option>
+                                <option>Import</option>
+                            </select>
+
+                            <select id="itemCategory" required>
+                                <option disabled selected>Item Category</option>
+                                <option value="Fire Extinguisher">Fire Extinguisher</option>
+                                <option value="Power Tools">Power Tools</option>
+                                <option value="Fittings">Fittings</option>
+                                <option value="Scaffolding">Scaffolding</option>
+                                <option value="Clear">Clear</option>
+                            </select>
+                        </div>
+
+                        
 
                     </div>
                     <div class="chart-border">
@@ -248,7 +263,7 @@
                             <script>
                             var data = @Html.Raw(Json.Encode(ViewBag.Data));
 
-                                   
+
                                 var labels = data.map(function (item) {
 
                                     return item.Name
@@ -270,16 +285,7 @@
                                         return item.Category === selectedCategory;
                                     });
 
-                                    var warningValues = filteredData.map(function (item) {
-                                        if (item.Total < 100 && item.Total >= 51) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(255, 165, 0)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean)
+                                    
 
                                     var criticalValues = filteredData.map(function (item) {
                                         if (item.Total < 50) {
@@ -293,7 +299,7 @@
                                     }).filter(Boolean);
 
                                     var goodValues = filteredData.map(function (item) {
-                                        if (item.Total >= 200 && item.Total <= 500) {
+                                        if (item.Total >= 51 && item.Total <= 5000) {
                                             return {
                                                 value: item.Total,
                                                 color: 'rgba(0,128,0, 1)'
@@ -303,165 +309,41 @@
                                         }
                                     }).filter(Boolean);
 
-                                    chart.data.datasets[0].data = warningValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = warningValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[0].data = goodValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[0].backgroundColor = goodValues.map(function (item) { return item.color; });
                                     chart.data.datasets[1].data = criticalValues.map(function (item) { return item.value; });
                                     chart.data.datasets[1].backgroundColor = criticalValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
                                     chart.data.labels = filteredData.map(function (item) { return item.Name; });
                                     chart.update();
 
                                     // Return the filtered data
                                     return filteredData;
                                 });
-                              
 
-                                var selectYear = document.getElementById('year');
+
                                
 
-                                selectYear.addEventListener('change', function () {
-                                    var selectedYear = selectYear.value;
+                                var criticalValues = data.map(function (item) {
+                                    if (item.Total < 50) {
+                                        return {
+                                            value: item.Total,
+                                            color: 'rgba(255,0,0)'
+                                        };
+                                    } else {
+                                        return null;
+                                    }
+                                }).filter(Boolean);
 
-                                    var filteredData1 = data.filter(function (item) {
-
-                                        return item.Date == selectedYear;
-                                    });
-              
-                                    // Same code as before for updating the chart with the filtered data
-                                    var warningValues = filteredData1.map(function (item) {
-                                        if (item.Total < 100 && item.Total >= 50) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(255, 165, 0)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean)
-
-                                    var criticalValues = filteredData1.map(function (item) {
-                                        if (item.Total < 50) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(255,0,0)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean);
-
-                                    var goodValues = filteredData1.map(function (item) {
-                                        if (item.Total >= 200 && item.Total <= 500) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(0,128,0, 1)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean);
-
-                                    chart.data.datasets[0].data = warningValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = warningValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = criticalValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = criticalValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
-                                    chart.data.labels = filteredData1.map(function (item) { return item.Name; });
-                                    chart.update();
-
-                                    // Return the filtered data
-                                    return filteredData;
-                                });
-
-                                var selectMonth = document.getElementById('month');
-
-                                selectMonth.addEventListener('change', function () {
-                                    var selectedMonth = selectMonth.value;
-
-                                    var filteredData2 = data.filter(function (item) {
-
-                                        return item.Date1 == selectedMonth;
-                                    });
-
-                                    // Same code as before for updating the chart with the filtered data
-                                    var warningValues = filteredData2.map(function (item) {
-                                        if (item.Total < 100 && item.Total >= 50) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(255, 165, 0)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean)
-
-                                    var criticalValues = filteredData2.map(function (item) {
-                                        if (item.Total < 50) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(255,0,0)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean);
-
-                                    var goodValues = filteredData2.map(function (item) {
-                                        if (item.Total >= 200 && item.Total <= 500) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(0,128,0, 1)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean);
-
-                                    chart.data.datasets[0].data = warningValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = warningValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = criticalValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = criticalValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
-                                    chart.data.labels = filteredData2.map(function (item) { return item.Name; });
-                                    chart.update();
-
-                                    // Return the filtered data
-                                    return filteredData;
-                                });
-
-
-
-
-
-                                var warningValues = data.filter(function (item) {
-                                    return item.Total >= 50 && item.Total  < 100;
-                                }).map(function (item) {
-                                    return {
-                                        value: item.Total ,
-                                        color: 'rgba(255, 165, 0)' // orange color
-                                    };
-                                });
-
-                                var criticalValues = data.filter(function (item) {
-                                    return item.Total  < 50;
-                                }).map(function (item) {
-                                    return {
-                                        value: item.Total ,
-                                        color: 'rgba(255, 0, 0)' // red color
-                                    };
-                                });
-
-                                var goodValues = data.filter(function (item) {
-                                    return item.Total >= 200 && item.Total  <= 5000;
-                                }).map(function (item) {
-                                    return {
-                                        value: item.Total ,
-                                        color: 'rgba(0, 128, 0)' // green color
-                                    };
-                                });
+                                var goodValues = data.map(function (item) {
+                                    if (item.Total >= 51 && item.Total <= 5000) {
+                                        return {
+                                            value: item.Total,
+                                            color: 'rgba(0,128,0, 1)'
+                                        };
+                                    } else {
+                                        return null;
+                                    }
+                                }).filter(Boolean);
 
                                 var ctx = canvas.getContext('2d');
                                 var chart = new Chart(ctx, {
@@ -469,13 +351,7 @@
                                     data: {
                                         labels: labels,
                                         datasets: [
-                                            {
-                                                label: 'Warning',
-                                                data: warningValues.map(function (item) { return item.value; }),
-                                                backgroundColor: warningValues.map(function (item) { return item.color; }),
-                                                borderColor: 'rgba(255, 165, 0, 1)',
-                                                borderWidth: 1
-                                            },
+
                                             {
                                                 label: 'Critical',
                                                 data: criticalValues.map(function (item) { return item.value; }),
@@ -494,6 +370,14 @@
                                     },
                                     options: {
                                         responsive: true,
+                                        plugins: {
+                                            legend: {
+                                                display:
+                                                    false
+
+                                }
+                                        },
+                                        stacked: false,
                                         maintainAspectRatio: false,
                                         aspectRatio: 4 / 4,
                                         scales: {
@@ -502,7 +386,8 @@
                                                     beginAtZero: true
                                                 }
                                             }]
-                                        }
+                                        },
+
                                     }
                                 });
                                 chart.update();
@@ -514,6 +399,23 @@
 
                     <div class="card-headers">
                         <a href="@Url.Action("Inventory","Admin")"><button> See more <span class="las la-arrow-right"></span></button></a>
+                        <div class="legend-grp">
+                            <div class="legend-content">
+                                <h3>Legend: </h3>
+                                <div class="legend-content-1">
+                                    <div class="legend-color">
+
+                                    </div>
+                                    <label> A.Average </label>
+                                </div>
+                                <div class="legend-content-2">
+                                    <div class="legend-color">
+
+                                    </div>
+                                    <label> Critical </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -523,6 +425,15 @@
                 <div class="card">
                     <div class="card-header">
                         <h3>Most Requested Item</h3>
+
+                        <div class="fst-grp">
+                            <select required>
+                                <option disabled selected>Choose</option>
+                                <option>...</option>
+                                <option>..</option>
+                            </select>
+                        </div>
+                        <div class="project-sum-btns"></div>
                     </div>
 
                     <div class="chart-borders">
@@ -575,6 +486,17 @@
                         </div>
                     </div>
 
+                    <div class="card-headers">
+                        <div class="fst-legend-content">
+                            <div class="fst-content-1">
+
+                            </div>
+                            <label> Quantity </label>
+                        </div>
+
+                        <label class="fst-date">03/08/2023 - 03/08/2023</label>
+                    </div>
+
                 </div>
             </div>
 
@@ -586,27 +508,24 @@
         <br>
 
         <div class="project-sum">
-        
-                <div class="project-sum-btns">
-                    <div class="drp-wrapper">
-
-                        <select required>
-                            <option disabled selected>Status</option>
-                            <option>On-going</option>
-                            <option>In-line</option>
-                            <option>Delayed</option>
-                        </select>
-                        <select required>
-                            <option disabled selected>Proj. Lead</option>
-                            <option>Clarisse Vasquez</option>
-                        </select>
-                    </div>
-
-                </div>
+            <h3>PROJECT SUMMARY</h3>               
         </div>
 
         <div class="dsh-projects">
             <div class="dsh">
+                <div class="drp-wrapper">
+                    <select required>
+                        <option disabled selected>Project Status</option>
+                        <option>On-going</option>
+                        <option>In-line</option>
+                        <option>Delayed</option>
+                    </select>
+
+                    <select required>
+                        <option disabled selected>Project Lead</option>
+                        <option>Clarisse Vasquez</option>
+                    </select>
+                </div>
                 <div class="dsh-body">
                     <div class="table-responsive" style="overflow-x: auto;">
                         <table width="100%">
@@ -690,6 +609,31 @@
                         </table>
                     </div>
                 </div>
+                <div class="proj-legend-grp">
+                    <div class="proj-legend-content">
+                        <h3>Legend: </h3>
+                        <div class="proj-legend-content-1">
+                            <div class="legend-color">
+
+                            </div>
+                            <label> Ongoing </label>
+                        </div>
+                        <div class="proj-legend-content-2">
+                            <div class="legend-color">
+
+                            </div>
+                            <label> Delayed </label>
+                        </div>
+
+                        <div class="proj-legend-content-3">
+                            <div class="legend-color">
+
+                            </div>
+                            <label> Inline </label>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -701,40 +645,7 @@
     <script src="../js/chart3.js"></script>*@
 @Scripts.Render("~/script/admin")
 
-<script>
-    // Get current year and month
-    var currentYear = new Date().getFullYear();
-    var currentMonth = new Date().getMonth() + 1;
 
-    // Populate year dropdown with 4 years
-    for (var i = -5; i < 0; i++) {
-        var yearOption = document.createElement("option");
-        yearOption.value = currentYear + i;
-        yearOption.text = currentYear + i;
-        document.getElementById("year").appendChild(yearOption);
-    }
-
-    // Add an option for the current year
-    var currentYearOption = document.createElement("option");
-    currentYearOption.value = currentYear;
-    currentYearOption.text = currentYear;
-    document.getElementById("year").appendChild(currentYearOption);
-
-    // Populate month dropdown with all months
-    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-    for (var i = 1; i <= 12; i++) {
-        var monthOption = document.createElement("option");
-        monthOption.value = i; // set the value to the integer value of the month
-        monthOption.textContent = monthNames[i - 1]; // set the text to the month name
-        document.getElementById("month").appendChild(monthOption);
-    }
-   
-
-    // Set default selected values to current year and month
-    document.getElementById("year").value = currentYear;
-    document.getElementById("month").value = currentMonth < 10 ? "0" + currentMonth : currentMonth;
-</script>
 
 <script>
     `use strict`;

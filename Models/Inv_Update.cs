@@ -14,6 +14,8 @@ namespace TotalFireSafety.Models
     
     public partial class Inv_Update
     {
+        internal object in_name;
+
         public System.Guid update_id { get; set; }
         public string update_item_id { get; set; }
         public string update_quantity { get; set; }

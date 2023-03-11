@@ -297,28 +297,28 @@ function createRow() {
         localStorage.setItem('increment', newNum);
     }
     var select = createOption(newNum);
-    $.validator.addMethod("notNull", function (value, element) {
-        return value !== "";
-    }, "This field is required.");
+    //$.validator.addMethod("notNull", function (value, element) {
+    //    return value !== "";
+    //}, "This field is required.");
 
-    $('#formId').validate({
-        rules: {
-            [`itemInp${newNum}`]: {
-                notNull: true
-            },
-            [`itemQuant${newNum}`]: {
-                notNull: true,
-            }
-        },
-        messages: {
-            [`itemInp${newNum}`]: {
-                notNull: 'This field is required.'
-            },
-            [`itemQuant${newNum}`]: {
-                notNull: 'This field is required.',
-            }
-        }
-    });
+    //$('#formId').validate({
+    //    rules: {
+    //        [`itemInp${newNum}`]: {
+    //            notNull: true
+    //        },
+    //        [`itemQuant${newNum}`]: {
+    //            notNull: true,
+    //        }
+    //    },
+    //    messages: {
+    //        [`itemInp${newNum}`]: {
+    //            notNull: 'This field is required.'
+    //        },
+    //        [`itemQuant${newNum}`]: {
+    //            notNull: 'This field is required.',
+    //        }
+    //    }
+    //});
 
     data += `<tr>`;
     data += `<td><input type="text" id="itemInp${newNum}" onkeyup="itemCodeListener()" name="itemInp${newNum}" list="itemoption${newNum}" oninput="getInputId(this.id)" style="width:150px;height:30px;border:none;">${select}</td>`;

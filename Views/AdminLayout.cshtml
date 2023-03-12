@@ -1,341 +1,241 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@ViewBag.Title</title>
-    <link rel="shortcut icon" type="image/icon" href="~/images/tfsti-logo-noname.png" />
-    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    @Styles.Render("~/style/admin")
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    @*@Scripts.Render("~/scripts/validation")*@
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>@ViewBag.Title</title>
+	<link rel="shortcut icon" type="image/icon" href="~/images/tfsti-logo-noname.png" />
+	<link href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+	@Styles.Render("~/style/admin")
+	@*<link rel="stylesheet" href="@Url.Content("~/css/util.css")">*@
+	<script src="@Url.Content("~/Scripts/vendor/jquery/jquery-3.2.1.min.js")"></script>
 
-    <style>
-        .image-container {
-            position: relative;
-            display: inline-block;
-            padding-right: 20px;
-        }
+	@*<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>*@
+	@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>*@
+	@*@Scripts.Render("~/scripts/validation")*@
 
-        .circle {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            overflow: hidden;
-            background-color: #333;
-        }
+	<style>
+		.image-container {
+			position: relative;
+			display: inline-block;
+			padding-right: 20px;
+		}
 
-            .circle img {
-                display: block;
-                width: 100%;
-                height: auto;
-            }
+		.circle {
+			position: relative;
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			overflow: hidden;
+			background-color: #333;
+		}
 
-        .upload-button {
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            z-index: 1;
-            cursor: pointer;
-        }
+			.circle img {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
 
-            .upload-button label {
-                display: block;
-                width: 80px;
-                height: 40px;
-                text-align: center;
-                color: #fff;
-                font-size: 30px;
-                line-height: 80px;
-                background-color: rgba(0, 0, 0, 0.5);
-            }
+		.upload-button {
+			position: absolute;
+			bottom: -10px;
+			left: 50%;
+			transform: translateX(-50%);
+			opacity: 0;
+			transition: opacity 0.3s ease-in-out;
+			z-index: 1;
+			cursor: pointer;
+		}
 
-                .upload-button label i {
-                    color: #fff;
-                }
+			.upload-button label {
+				display: block;
+				width: 80px;
+				height: 40px;
+				text-align: center;
+				color: #fff;
+				font-size: 30px;
+				line-height: 80px;
+				background-color: rgba(0, 0, 0, 0.5);
+			}
 
-            .upload-button input {
-                display: none;
-            }
+				.upload-button label i {
+					color: #fff;
+				}
 
-        .circle::before {
-            content: "";
-            position: absolute;
-            bottom: -75px;
-            left: 0;
-            width: 100%;
-            height: 75px;
-            border-radius: 0 0 50% 50%;
-            background-color: rgba(0, 0, 0, 0.5);
-            transition: height 0.3s ease-in-out;
-            z-index: -1;
-        }
+			.upload-button input {
+				display: none;
+			}
 
-        .circle:hover::before {
-            height: 100%;
-        }
+		.circle::before {
+			content: "";
+			position: absolute;
+			bottom: -75px;
+			left: 0;
+			width: 100%;
+			height: 75px;
+			border-radius: 0 0 50% 50%;
+			background-color: rgba(0, 0, 0, 0.5);
+			transition: height 0.3s ease-in-out;
+			z-index: -1;
+		}
 
-        .circle:hover {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
+		.circle:hover::before {
+			height: 100%;
+		}
 
-            .circle:hover .upload-button {
-                opacity: 1;
-            }
-    </style>
+		.circle:hover {
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+
+			.circle:hover .upload-button {
+				opacity: 1;
+			}
+	</style>
 </head>
 <body>
-    <input type="checkbox" id="nav-toggle">
-    <div class="sidebar">
-        <div class="user-wrapper">
-            <div class="image-container">
-                <div class="circle">
-                    <img src="@Url.Content(ViewBag.ProfilePath)" alt="Profile Picture" class="profile-user" style="height:100%; width:100%;">
-                    <div class="upload-button">
-                        <label for="file-upload">
-                            <i class="las la-camera" style="top: 20px; display: grid; align-items: start;"></i>
-                        </label>
-                        @*<form method="post" action="@Url.Action("SaveImage","Admin")" enctype="multipart/form-data" id="SaveImage">
-                        </form>*@
-                        <input type="file" id="file-upload">
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h4>Juan Dela Cruz</h4>
-                <small>Supervisor</small>
-            </div>
-        </div>
+	<input type="checkbox" id="nav-toggle">
+	<div class="sidebar">
+		<div class="user-wrapper">
+			<div class="image-container">
+				<div class="circle">
+					<img src="@Url.Content(ViewBag.ProfilePath)" alt="Profile Picture" class="profile-user" style="height:100%; width:100%;">
+					<div class="upload-button">
+						<label for="file-upload">
+							<i class="las la-camera" style="top: 20px; display: grid; align-items: start;"></i>
+						</label>
+						@*<form method="post" action="@Url.Action("SaveImage","Admin")" enctype="multipart/form-data" id="SaveImage">
+							</form>*@
+						<input type="file" id="file-upload">
+					</div>
+				</div>
+			</div>
+			<div>
+				<h4>Juan Dela Cruz</h4>
+				<small>Supervisor</small>
+			</div>
+		</div>
 
-        <div class="sidebar-menu">
-            <ul>
-                <li>
-                    <a href="@Url.Action("Dashboard","Admin")" class="@ViewBag.Dash">
-                        <span class="las la-tv"></span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                @if (Int32.Parse(Session["system_role"].ToString()) == 1 || Int32.Parse(Session["system_role"].ToString()) == 2)
-                {
-                    <button class="oper-dropdown-btn">
-                        <a>
-                            <span class="las la-warehouse"></span>
-                            <span>Inventories</span>
-                        </a>
-                    </button>
-                    <div class="dropdown-container">
-                    <li>
-                        <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
-                            <span class="las la-cubes"></span>
-                            <span>Inventory Lists</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("InvArchive","Admin")" class="@ViewBag.Arch">
-                            <span class="las la-archive"></span>
-                            <span>Inventory Archive</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("InventoryReport","Admin")" class="@ViewBag.Report">
-                            <span class="las la-archive"></span>
-                            <span>Inventory Report</span>
-                        </a>
-                    </li>
-                     </div>
-                 }
+		<div class="sidebar-menu">
+			<ul>
+				<li>
+					<a href="@Url.Action("Dashboard","Admin")" class="@ViewBag.Dash">
+						<span class="las la-tv"></span>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				@if (Int32.Parse(Session["system_role"].ToString()) == 1 || Int32.Parse(Session["system_role"].ToString()) == 2)
+				{
+					<button class="oper-dropdown-btn">
+						<a>
+							<span class="las la-warehouse"></span>
+							<span>Inventories</span>
+						</a>
+					</button>
+					<div class="dropdown-container">
+					<li>
+						<a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
+							<span class="las la-cubes"></span>
+							<span>Inventory Lists</span>
+						</a>
+					</li>
+					<li>
+						<a href="@Url.Action("InvArchive","Admin")" class="@ViewBag.Arch">
+							<span class="las la-archive"></span>
+							<span>Inventory Archive</span>
+						</a>
+					</li>
+					<li>
+						<a href="@Url.Action("InventoryReport","Admin")" class="@ViewBag.Report">
+							<span class="las la-archive"></span>
+							<span>Inventory Report</span>
+						</a>
+					</li>
+			</div>
+		}
 
-                <li>
-                    <a href="@Url.Action("Requisition", "Admin")" class="@ViewBag.Req">
-                        <span class="las la-file"></span>
-                        <span>Requisition</span>
-                    </a>
-                </li>
-                @if (Int32.Parse(Session["system_role"].ToString()) == 1)
-                {
-                <li>
-                    <a href="@Url.Action("Users","Admin")" class="@ViewBag.Users">
-                        <span class="las la-user-tie"></span>
-                        <span>Users</span>
-                    </a>
-                </li>
-                }
-                @if (Int32.Parse(Session["system_role"].ToString()) != 2)
-                {
-                <li>
-                    <a href="@Url.Action("Projects", "Admin")" class="@ViewBag.Proj">
-                        <span class="las la-pen-square"></span>
-                        <span>Projects</span>
-                    </a>
-                </li>
-                }
-                <li>
-                    <a href="@Url.Action("Logout","Admin")">
-                        <span class="las la-sign-out-alt"></span>
-                        <span>Logout</span>
-                    </a>
-                </li>
-                </ul>
-            </div>
+				<li>
+					<a href="@Url.Action("Requisition", "Admin")" class="@ViewBag.Req">
+						<span class="las la-file"></span>
+						<span>Requisition</span>
+					</a>
+				</li>
+				@if (Int32.Parse(Session["system_role"].ToString()) == 1)
+				{
+					<li>
+						<a href="@Url.Action("Users","Admin")" class="@ViewBag.Users">
+							<span class="las la-user-tie"></span>
+							<span>Users</span>
+						</a>
+					</li>
+				}
+				@if (Int32.Parse(Session["system_role"].ToString()) != 2)
+				{
+					<li>
+						<a href="@Url.Action("Projects", "Admin")" class="@ViewBag.Proj">
+							<span class="las la-pen-square"></span>
+							<span>Projects</span>
+						</a>
+					</li>
+				}
+				<li>
+					<a href="@Url.Action("Logout","Admin")">
+						<span class="las la-sign-out-alt"></span>
+						<span>Logout</span>
+					</a>
+				</li>
+				</ul>
+			</div>
 
-    <div class="logo-float">
-        <img src="~/images/tfsti-logo.png" alt="">
-    </div>
+			<div class="logo-float">
+				<img src="~/images/tfsti-logo.png" alt="">
+			</div>
 
-    </div>
-    <div>
-        @RenderBody()
-    </div>
-    <div class="footer">
-        <center>
-            <div class="footer-con">
-                <img src="~/images/codepheuse.png" alt="">
-                <h4>CodePheus | 2022</h4>
-            </div>
-        </center>
-    </div>
+			</div>
+			<div>
+				@RenderBody()
+			</div>
+			<div class="footer">
+				<center>
+					<div class="footer-con">
+						<img src="~/images/codepheuse.png" alt="">
+						<h4>CodePheus | 2022</h4>
+					</div>
+				</center>
+			</div>
 
-    <script>
-        let imageInput = document.getElementById('file-upload');
+			<script>
+				let imageInput = document.getElementById('file-upload');
 
-        imageInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
+				imageInput.addEventListener('change', function (event) {
+					const file = event.target.files[0];
 
-            // Create a FormData object to send the file
-            const formData = new FormData();
-            formData.append('file', file);
+					// Create a FormData object to send the file
+					const formData = new FormData();
+					formData.append('file', file);
 
-            // Send the file to the API using fetch
-            fetch('/Admin/SaveImage', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    window.location.reload();
-                    console.log('Response:', data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-
-        //function sendRequest(jsonData, formType) {
-        //    fetch("/Admin/Requisition?formType=" + formType, {
-        //        method: 'POST',
-        //        headers: {
-        //            'Content-Type': 'application/json'
-        //        },
-        //        body: JSON.stringify(jsonData)
-        //    })
-        //        .then(response => {
-        //            if (response.ok) {
-        //                return response.text()
-        //            }
-        //            else {
-        //                throw new Error('Network response was not ok');
-        //            }
-        //        })
-        //        .then(data => {
-        //            console.log('Response from server:', data);
-        //            window.location.reload();
-        //            localStorage.setItem("success", true);
-        //        })
-        //        .catch(error => {
-        //            console.error('Error:', error);
-        //        });
-        //}
-
-    </script>
-
-    @*<script>
-        `use strict`;
-        function refreshTime() {
-            const timeDisplay = document.getElementById("dt");
-            const dateString = new Date().toLocaleString();
-            const formattedString = dateString.replace(", ", " - ");
-            timeDisplay.textContent = formattedString;
-        }
-        setInterval(refreshTime, 0);
-
-
-        var dropdown = document.getElementsByClassName("oper-dropdown-bt");
-        var i;
-
-        for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    dropdownContent.style.display = "none";
-                } else {
-                    dropdownContent.style.display = "block";
-                }
-            });
-        }
-
-        /* When the user clicks on the button,
-           toggle between hiding and showing the dropdown content */
-        function yrFunction() {
-            document.getElementById("yrDropdown").classList.toggle("yr-show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.yr-drop-btn')) {
-                var myDropdown = document.getElementById("yrDropdown");
-                if (myDropdown.classList.contains('yr-show')) {
-                    myDropdown.classList.remove('yr-show');
-                }
-            }
-        }
-
-        /* When the user clicks on the button,
-            toggle between hiding and showing the dropdown content */
-        function mFunction() {
-            document.getElementById("mDropdown").classList.toggle("m-show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.m-drop-btn')) {
-                var myDropdown = document.getElementById("mDropdown");
-                if (myDropdown.classList.contains('m-show')) {
-                    myDropdown.classList.remove('m-show');
-                }
-            }
-        }
-
-        /* When the user clicks on the button,
-           toggle between hiding and showing the dropdown content */
-        function dFunction() {
-            document.getElementById("dDropdown").classList.toggle("d-show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.d-drop-btn')) {
-                var myDropdown = document.getElementById("dDropdown");
-                if (myDropdown.classList.contains('d-show')) {
-                    myDropdown.classList.remove('d-show');
-                }
-            }
-        }
-
-    </script>*@
-</body>
-
-
+					// Send the file to the API using fetch
+					fetch('/Admin/SaveImage', {
+						method: 'POST',
+						body: formData
+					})
+						.then(response => {
+							if (!response.ok) {
+								throw new Error('Network response was not ok');
+							}
+							return response.json();
+						})
+						.then(data => {
+							window.location.reload();
+							console.log('Response:', data);
+						})
+						.catch(error => {
+							console.error('Error:', error);
+						});
+				});
+			</script>
+		</body>
 </html>

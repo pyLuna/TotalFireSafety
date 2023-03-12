@@ -52,6 +52,7 @@ namespace TotalFireSafety.Controllers
                 return Validate("done");
             }
         }
+
         #region Status
         [Authorize(Roles = "admin")]
         [Route("Admin/Status")]  //  Get all Employee Route
@@ -63,14 +64,34 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new TFSEntity())
                 {
-                    var roles = _context.Status.Select(x => x).ToList();
+                    var statuses = _context.Status.Select(x => x).ToList();
+                    var employees = _context.Employees.Select(x => x).ToList();
 
-                    var _jsonSerialized = JsonConvert.SerializeObject(roles, Formatting.None, new JsonSerializerSettings()
+                    var newList = new List<Status>();
+                    foreach (var item in statuses)
+                    {
+                        var newEmps = employees.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
+                        Status newStats = new Status()
+                        {
+                            emp_no = item.emp_no,
+                            IsActive = item.IsActive,
+                            IsLocked = item.IsLocked,
+                            Employee = newEmps?.emp_no == item.emp_no ? new Employee
+                            {
+                                emp_no = newEmps.emp_no,
+                                emp_contact = newEmps.emp_contact,
+                                emp_hiredDate = newEmps.emp_hiredDate,
+                                emp_name = newEmps.emp_name,
+                                emp_position = newEmps.emp_position,
+                            } : null,
+                        };
+                        newList.Add(newStats);
+                    }
+
+                    var _jsonSerialized = JsonConvert.SerializeObject(newList, Formatting.None, new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
-
-                    var employee = new Employee();
 
                     var _Deserialized = JsonConvert.DeserializeObject<List<Status>>(_jsonSerialized);
                     return Ok(_Deserialized);

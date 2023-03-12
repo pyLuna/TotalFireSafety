@@ -5,8 +5,10 @@ let codeList = [];
 let tableData = [];
 let jsonArray = [];
 let filtered = [];
+let fixedArray = [];
 let allRequests = [];
 let Employees = [];
+let newArray = [];
 let newEmployee = [];
 let itemInv = [];
 let typeLabel = ['Deploy', 'Purchase', 'Supply'];
@@ -113,6 +115,7 @@ function GetAll() {
             jsonArray.length = 0;
             jsonArray.push(data);
             fixArray(jsonArray, 1);
+            DeleteCertainPart();
             if (table !== null) {
                 PopulateView();
                 setTable(viewData);
@@ -123,6 +126,13 @@ function GetAll() {
             console.error(error);
         });
 }
+
+function DeleteCertainPart() {
+    newArray = fixedArray.map(function (item) {
+        return { ...item, Inventory: undefined };
+    });
+}
+
 //serves as a search function
 function filterArray(value) {
     filtered.length = 0;
@@ -132,9 +142,16 @@ function filterArray(value) {
         }
     }
 }
-
+function NewfilterArray(value) {
+    filtered.length = 0;
+    for (var j = 0; j < allRequests.length; j++) {
+        if (JSON.stringify(newArray[j]).toLowerCase().includes(value)) {
+            filtered.push(newArray[j]);
+        }
+    }
+}
 function SearchItem(value) {
-    filterArray(value.toLowerCase());
+    NewfilterArray(value.toLowerCase());
     if (value == '') {
         setTable(allRequests);
     } else {
@@ -146,6 +163,7 @@ function fixArray(array, boolean) {
     if (boolean == 1) {
         for (var j = 0; j < array[0].length; j++) {
             allRequests.push(array[0][j]);
+            fixedArray.push(array[0][j]);
         }
     }
     else if (boolean == 2) {
@@ -279,31 +297,11 @@ function createRow() {
         localStorage.setItem('increment', newNum);
     }
     var select = createOption(newNum);
-    $.validator.addMethod("notNull", function (value, element) {
-        return value !== "";
-    }, "This field is required.");
-
-    $('#formId').validate({
-        rules: {
-            [`itemInp${newNum}`]: {
-                notNull: true
-            },
-            [`itemQuant${newNum}`]: {
-                notNull: true,
-            }
-        },
-        messages: {
-            [`itemInp${newNum}`]: {
-                notNull: 'This field is required.'
-            },
-            [`itemQuant${newNum}`]: {
-                notNull: 'This field is required.',
-            }
-        }
-    });
-
     data += `<tr>`;
-    data += `<td><input type="text" id="itemInp${newNum}" onkeyup="itemCodeListener()" name="itemInp${newNum}" list="itemoption${newNum}" oninput="getInputId(this.id)" style="width:150px;height:30px;border:none;">${select}</td>`;
+    data += `<td>`;
+    data += `<div class="wrap-input100 validate-input">`;
+    data += `<input type="text" id="itemInp${newNum}" onkeyup="itemCodeListener()" name="itemInp${newNum}" list="itemoption${newNum}" oninput="getInputId(this.id)" style="width:150px;height:30px;border:none;">${select}</td>`;
+    data += `</div>`;
     data += `<td contenteditable="false" id="itemCat${newNum}"></td>`;
     data += `<td contenteditable="false" id="itemSize${newNum}"></td>`;
     data += `<td><input type="text" id="itemQuant${newNum}" name="itemQuant${newNum}" onkeyup="itemCodeListener()" style="width:150px;height:30px;border:none;"></td>`;

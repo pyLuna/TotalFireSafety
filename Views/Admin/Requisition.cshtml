@@ -5,7 +5,6 @@
     ViewBag.Req = "active";
 }
 
-<script src='@Url.Content("~/Scripts/validations/RequisitionValidation.js")'></script>
 <div class="main-content">
     <header>
         <h2>
@@ -29,7 +28,7 @@
             <div class="purchase-header">
                 <h3>REQUEST LISTS</h3>
                 <div class="purchase-buttons-style">
-                    <button class="add-btn" title="ADD NEW REQUEST" onclick="addOpenPopupPur() + EmployeeList() + createRow()"><span class="las la-plus-circle"></span></button>
+                    <button class="add-btn" title="ADD NEW REQUEST" id="add-quant" onclick="addOpenPopupPur() + EmployeeList() + createRow()"><span class="las la-plus-circle"></span></button>
                     <button class="pri-btn" title="PRINT REPORT" onclick="printOpenPopup()"><span class="las la-print"></span></button>
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()"><span class="las la-file-download"></span></button>
                     <button class="purchase-sort-btn" onclick="userSortFunction()">
@@ -79,7 +78,7 @@
                             </div>
                             <div class="purchase-form-contents">
                                 <div class="fields">
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input" data-validation>
                                         <label>
                                             <a>Name: </a><br />
                                             <input type="text" id="request_emp" oninput="setForm(this.value,'add')" list="itemList" name="request_emp" placeholder="Name" required>
@@ -90,7 +89,7 @@
                                         </label>
                                     </div>
                                     <br />
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label id="reqtype">
                                             <a>Request Type: </a><br>
                                             <select style="height:40px;" onchange="setReqId(this.selectedIndex)" id="select_type" name="select_type" required>
@@ -103,17 +102,17 @@
                                             <label id="select_type-error" class="error manual-error" for="select_type"></label>
                                         </label>
                                     </div>
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Postion:<span id="position"></span></label>
                                     </div>
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Employee ID:<span id="employeeId"></span></label>
                                     </div>
 
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Request Date:<span id="reqdate"></span></label>
                                     </div>
-                                    <div class="input-field">
+                                    <div class="input-field wrap-input100 validate-input">
                                         <label>Request ID:<span id="reqid"></span></label>
                                     </div>
                                 </div>
@@ -157,7 +156,8 @@
                     </form>
                     <center>
                         <div class="form-add-btns">
-                            <button class="save" onclick="checkForm()">
+                            @*onclick="checkForm()"*@
+                            <button class="save" id="saveBtn">
                                 <span class="btnText">Save</span>
                                 <i class="las la-check-square"></i>
                             </button>
@@ -218,17 +218,18 @@
 
     </main>
 </div>
+<script src='@Url.Content("~/Scripts/validations/RequisitionValidation.js")'></script>
 <script src="@Url.Content("~/Scripts/Requisition.js")"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 <script>
 
-    function checkForm() {
-        var bool = $('#formId').valid();
-        if (bool) {
-            infoOpenPopup();
-        }
-    }
+    //function checkForm() {
+    //    var bool = $('#formId').valid();
+    //    if (bool) {
+    //        infoOpenPopup();
+    //    }
+    //}
 
     function exportToPdf() {
         const actionButtons = document.querySelectorAll('.purchase-action-style');
@@ -243,15 +244,15 @@
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
             // Add header option
-          header: {
-      height: '1cm',
-      contents: '<div id="header"><img id="logo" src="~/images/LogoNameFull.png"></div>',
-      onBeforeParse: (pdf, doc, pages, callback) => {
-        const header = document.getElementById('header');
-        const logo = document.getElementById('logo');
-        callback(header);
-      }
-    }
+            header: {
+                height: '1cm',
+                contents: '<div id="header"><img id="logo" src="~/images/LogoNameFull.png"></div>',
+                onBeforeParse: (pdf, doc, pages, callback) => {
+                    const header = document.getElementById('header');
+                    const logo = document.getElementById('logo');
+                    callback(header);
+                }
+            }
         };
         html2pdf()
             .set(options)

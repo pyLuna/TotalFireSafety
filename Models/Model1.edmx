@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="TotalFireSafetyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Basecount">
+          <Key>
+            <PropertyRef Name="bc_id" />
+          </Key>
+          <Property Name="bc_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="bc_itemCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="bc_date" Type="date" Nullable="false" />
+          <Property Name="bc_count" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Credentials">
           <Key>
             <PropertyRef Name="emp_no" />
@@ -79,6 +88,18 @@
           <Property Name="IsActive" Type="int" Nullable="false" />
           <Property Name="IsLocked" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Basecount_Inventory">
+          <End Role="Inventory" Type="Self.Inventory" Multiplicity="1" />
+          <End Role="Basecount" Type="Self.Basecount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Basecount">
+              <PropertyRef Name="bc_itemCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Credentials_Employee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
           <End Role="Credentials" Type="Self.Credentials" Multiplicity="0..1" />
@@ -152,6 +173,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="TotalFireSafetyModelStoreContainer">
+          <EntitySet Name="Basecount" EntityType="Self.Basecount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Credentials" EntityType="Self.Credentials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inv_Update" EntityType="Self.Inv_Update" Schema="dbo" store:Type="Tables" />
@@ -159,6 +181,10 @@
           <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Basecount_Inventory" Association="Self.FK_Basecount_Inventory">
+            <End Role="Inventory" EntitySet="Inventory" />
+            <End Role="Basecount" EntitySet="Basecount" />
+          </AssociationSet>
           <AssociationSet Name="FK_Credentials_Employee" Association="Self.FK_Credentials_Employee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Credentials" EntitySet="Credentials" />
@@ -219,6 +245,11 @@
           <AssociationSet Name="FK_Inv_Update_Inventory" Association="TotalFireSafetyModel.FK_Inv_Update_Inventory">
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Inv_Update" EntitySet="Inv_Update" />
+          </AssociationSet>
+          <EntitySet Name="Basecounts" EntityType="TotalFireSafetyModel.Basecount" />
+          <AssociationSet Name="FK_Basecount_Inventory" Association="TotalFireSafetyModel.FK_Basecount_Inventory">
+            <End Role="Inventory" EntitySet="Inventories" />
+            <End Role="Basecount" EntitySet="Basecounts" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Credential">
@@ -343,6 +374,7 @@
           <Property Name="in_arch_date" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Requests" Relationship="TotalFireSafetyModel.FK_Requests_Inventory" FromRole="Inventory" ToRole="Request" />
           <NavigationProperty Name="Inv_Update" Relationship="TotalFireSafetyModel.FK_Inv_Update_Inventory" FromRole="Inventory" ToRole="Inv_Update" />
+          <NavigationProperty Name="Basecounts" Relationship="TotalFireSafetyModel.FK_Basecount_Inventory" FromRole="Inventory" ToRole="Basecount" />
         </EntityType>
         <Association Name="FK_Requests_Inventory">
           <End Type="TotalFireSafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
@@ -376,6 +408,28 @@
             </Principal>
             <Dependent Role="Inv_Update">
               <PropertyRef Name="update_item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Basecount">
+          <Key>
+            <PropertyRef Name="bc_id" />
+          </Key>
+          <Property Name="bc_id" Type="Guid" Nullable="false" />
+          <Property Name="bc_itemCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bc_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="bc_count" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Inventory" Relationship="TotalFireSafetyModel.FK_Basecount_Inventory" FromRole="Basecount" ToRole="Inventory" />
+        </EntityType>
+        <Association Name="FK_Basecount_Inventory">
+          <End Type="TotalFireSafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="TotalFireSafetyModel.Basecount" Role="Basecount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Basecount">
+              <PropertyRef Name="bc_itemCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -463,6 +517,16 @@
                 <ScalarProperty Name="update_quantity" ColumnName="update_quantity" />
                 <ScalarProperty Name="update_item_id" ColumnName="update_item_id" />
                 <ScalarProperty Name="update_id" ColumnName="update_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Basecounts">
+            <EntityTypeMapping TypeName="TotalFireSafetyModel.Basecount">
+              <MappingFragment StoreEntitySet="Basecount">
+                <ScalarProperty Name="bc_count" ColumnName="bc_count" />
+                <ScalarProperty Name="bc_date" ColumnName="bc_date" />
+                <ScalarProperty Name="bc_itemCode" ColumnName="bc_itemCode" />
+                <ScalarProperty Name="bc_id" ColumnName="bc_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

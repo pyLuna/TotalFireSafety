@@ -177,6 +177,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\APIRequestHandler.cs" />
+    <Compile Include="Models\Basecount.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Credential.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

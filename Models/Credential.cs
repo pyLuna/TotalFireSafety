@@ -11,13 +11,13 @@ namespace TotalFireSafety.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Credential
     {
         public int emp_no { get; set; }
         public string username { get; set; }
         public string password { get; set; }
-    
+
         public virtual Employee Employee { get; set; }
     }
 }

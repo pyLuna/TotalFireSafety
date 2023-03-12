@@ -25,7 +25,6 @@ namespace TotalFireSafety.Models
     
         public virtual Employee Employee { get; set; }
         public virtual Inventory Inventory { get; set; }
-
         public string formType { get; set; }
 
         public string FormattedDate

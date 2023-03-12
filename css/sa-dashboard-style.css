@@ -16,6 +16,21 @@
 .validate-input {
     position: relative;
 }
+.employee_dropdown::before {
+    top:65% !important;
+    right: 185px !important;
+}
+
+.employee_dropdown::after {
+    top: 63% !important;
+    right: 193px !important;
+}
+.employee_input::before {
+    right: 223px !important;
+}
+.employee_input::after{
+    right: 230px !important;
+}
 .alert-validate::before {
     content: attr(data-validate);
     position: absolute;

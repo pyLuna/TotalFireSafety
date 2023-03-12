@@ -18,6 +18,8 @@
         <AssociationConnector Association="TotalFireSafetyModel.FK_Requests_Inventory" />
         <EntityTypeShape EntityType="TotalFireSafetyModel.Inv_Update" Width="1.5" PointX="3" PointY="1.75" />
         <AssociationConnector Association="TotalFireSafetyModel.FK_Inv_Update_Inventory" />
+        <EntityTypeShape EntityType="TotalFireSafetyModel.Basecount" Width="1.5" PointX="3" PointY="7.875" />
+        <AssociationConnector Association="TotalFireSafetyModel.FK_Basecount_Inventory" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

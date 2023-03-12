@@ -203,7 +203,8 @@ namespace TotalFireSafety.Controllers
             //chart
             var products = db.Inventories.ToList();
             var update = db.Inv_Update.ToList();
-            
+            var request = db.Requests.ToList();
+
             List<Inventory> newList = new List<Inventory>();
             foreach(var item in products)
             {
@@ -243,9 +244,10 @@ namespace TotalFireSafety.Controllers
             ViewBag.Data = data;
 
             //chart 2
-            var data1 = products.Select(g => new {
-                Name1 = g.in_name,
-                Quantity1 = int.Parse(new string(g.in_quantity.ToString().Where(char.IsDigit).ToArray()))
+            var data1 = request.Select(g => new {
+                Name = g.Inventory.in_name,
+                Quantity = int.Parse(new string(g.request_item_quantity.ToString().Where(char.IsDigit).ToArray())),
+                Date = g.request_date
             }).ToList();
 
             ViewBag.Chart = data1;

@@ -20,11 +20,11 @@
             <div class="inv-sum-date">
                 <div class="sum-date-con">
                     <label></label>
-                    <input type="date" id="date">
+                    <input type="date"  id="date">
 
                     <label>-</label>
-                    <input type="date" id="date1">
-                    <button id="filterBtn">Filter</button>
+                    <input type="date"  id="date1">
+                   
                 </div>
 
             </div>
@@ -245,11 +245,12 @@
                             </select>
 
                             <select id="itemCategory" required>
-                                <option disabled selected>Item Category</option>
+                                <option value="">Item Category</option>
                                 <option value="Fire Extinguisher">Fire Extinguisher</option>
                                 <option value="Power Tools">Power Tools</option>
                                 <option value="Fittings">Fittings</option>
                                 <option value="Scaffolding">Scaffolding</option>
+                                <option value="Others">Other</option>
                                 <option value="Clear">Clear</option>
                             </select>
                         </div>
@@ -272,10 +273,10 @@
 
 
                                 // Get references to the select element and chart canvas
-                                var select = document.getElementById('itemCategory');
+                                
 
                                 var canvas = document.getElementById('barchart1');
-
+                                var select = document.getElementById('itemCategory');
 
                                 select.addEventListener('change', function () {
                                     // Get the selected option value
@@ -288,13 +289,11 @@
 
                                     
                                     var goodValues = filteredData.map(function (item) {
-                                        if (item.Quantity >= 51 && item.Quantity <= 5000) {
+                                        if (item.Quantity > 51 && item.Quantity <= 5000) {
                                             return {
                                                 value: item.Quantity,
                                                 color: 'rgba(0,128,0, 1)'
                                             };
-                                        } else {
-                                            return null;
                                         }
                                     }).filter(Boolean);
 
@@ -304,9 +303,7 @@
                                                 value: item.Quantity,
                                                 color: 'rgba(255,0,0)'
                                             };
-                                        } else {
-                                            return null;
-                                        }
+                                        } 
                                     }).filter(Boolean);
 
                                    
@@ -429,7 +426,7 @@
 
                                 }
                                         },
-                                        stacked: false,
+                                       
                                         maintainAspectRatio: false,
                                         aspectRatio: 4 / 4,
                                         scales: {
@@ -504,13 +501,13 @@
                                         return item.Quantity;
                                     });
 
-                                    var select = document.getElementById("request");
+                                    var selectRequest = document.getElementById("request");
 
                                     // Add event listener to detect changes in the select element
                                     select.addEventListener("change", function () {
 
                                         // Get the selected option value
-                                        var selectedValue = select.value;
+                                        var selectedValue = selectRequest.value;
 
                                         // Sort the labels and values arrays in descending or ascending order based on the selected option
                                         if (selectedValue === "most") {
@@ -535,35 +532,26 @@
                                         Chart.update();
                                     });
 
-                                    var dateInput = document.getElementById("date");
-                                    var date1Input = document.getElementById("date1");
-
-                                    // Add event listener to detect changes in the date input elements
-                                    dateInput.addEventListener("change", updateChart);
-                                    date1Input.addEventListener("change", updateChart);
-
                                     function updateChart() {
-                                        var startDate = new Date(dateInput.value);
-                                        var endDate = new Date(date1Input.value);
+                                        var startDate = new Date(document.getElementById("date").value);
+                                        var endDate = new Date(document.getElementById("date1").value);
 
+                                        // Filter the data based on the selected date range
                                         var filteredData = data1.filter(function (item) {
                                             var itemDate = new Date(item.Date);
                                             return itemDate >= startDate && itemDate <= endDate;
                                         });
 
-                                        var labels = filteredData.map(function (item) {
-                                            return item.Name;
-                                        });
+                                        // Extract the labels and values from the filtered data
+                                        var labels = filteredData.map(function (item) { return item.Name; });
+                                        var values = filteredData.map(function (item) { return item.Quantity; });
 
-                                        var values = filteredData.map(function (item) {
-                                            return item.Quantity;
-                                        });
-
-                                        // Update the chart data with the filtered labels and values arrays
+                                        // Update the chart with the filtered data
                                         Chart.data.labels = labels;
                                         Chart.data.datasets[0].data = values;
                                         Chart.update();
                                     }
+
                                     var ctx = document.getElementById('barcharthori1').getContext('2d');
                                     var Chart = new Chart(ctx, {
                                         type: 'bar',

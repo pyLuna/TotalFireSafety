@@ -226,15 +226,17 @@ namespace TotalFireSafety.Controllers
             }
             var data = newList
       .SelectMany(p => p.Inv_Update.DefaultIfEmpty(), (p, u) => new {
+         Code = p.in_code,
           Name = p.in_name,
           Quantity = (u == null ? 0 : int.Parse(new string(u.update_quantity.ToString().Where(char.IsDigit).ToArray()))) +
            (p == null ? 0 : int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray()))),
           Class = p.in_class,
           Category = p.in_category
       })
-      .GroupBy(d => d.Name)
+      .GroupBy(d => d.Code)
       .Select(g => new {
-          Name = g.Key,
+          Code = g.Key,
+          Name = g.FirstOrDefault()?.Name,
           Quantity = g.Sum(x => x.Quantity),
           Class = g.FirstOrDefault()?.Class,
           Category = g.FirstOrDefault()?.Category
@@ -247,7 +249,8 @@ namespace TotalFireSafety.Controllers
             var data1 = request.Select(g => new {
                 Name = g.Inventory.in_name,
                 Quantity = int.Parse(new string(g.request_item_quantity.ToString().Where(char.IsDigit).ToArray())),
-                Date = g.request_date
+                Date = g.request_date,
+                Date1 = g.request_date
             }).ToList();
 
             ViewBag.Chart = data1;

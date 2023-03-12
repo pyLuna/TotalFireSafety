@@ -57,8 +57,21 @@ function setTable(array) {
             if (array[i].in_size == null || array[i].in_size == "") {
                 array[i].in_size = '';
             }
+            /* class ng remarks 
+             * stat-standard
+             * stat-average
+             * stat-re-order
+             */
+            var remarks = "TO DO";
             var row = `<tr>`; /*onclick = "canOpenPopup()"*/
-            row += `<td id="in_code"><label>${array[i].in_code}</label></td><td name="in_name"><label>${array[i].in_name}</label></td><td name="in_category"><label>${array[i].in_category}</label></td><td name="in_type"><label>${array[i].in_type}</label></td><td name="in_size"><label>${array[i].in_size}</label></td><td name="in_quantity"><label>${array[i].in_quantity}</label></td><td name="in_class"><label>${array[i].in_class}</label></td>`;
+            row += `<td id="in_code"><label>${array[i].in_code}</label></td>`;
+            row += `<td name="in_name"><label>${array[i].in_name}</label></td>`;
+            row += `<td name ="in_category"> <label>${array[i].in_category}</label></td>`;
+            row += `<td name="in_type"><label>${array[i].in_type}</label></td>`;
+            row += `<td name="in_size"><label>${array[i].in_size}</label></td>`;
+            row += `<td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
+            row += `<td name="in_remarks"><label>${remarks}</label></td>`;
+            row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
             row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
             row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEdit('${array[i].in_code}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
             row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick = "canOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;

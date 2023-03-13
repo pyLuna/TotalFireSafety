@@ -885,7 +885,8 @@ namespace TotalFireSafety.Controllers
                             in_quantity = item.in_quantity,
                             in_size = item.in_size,
                             in_status = item.in_status,
-                            in_type = item.in_type
+                            in_type = item.in_type,
+                            in_remarks = item.in_remarks
                         };
                         newList.Add(newItems);
                     }

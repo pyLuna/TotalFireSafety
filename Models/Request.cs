@@ -52,5 +52,6 @@ namespace TotalFireSafety.Models
                 return newID;
             }
         }
+
     }
 }

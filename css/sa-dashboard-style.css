@@ -1982,6 +1982,33 @@ right .inv-sum-date {
 
 /* END */
 
+/*EDIT POPUP INVENTORY*/
+
+.edit-popup-inv {
+    height: auto;
+    width: 70%;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.1);
+    color: #fff;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.edit-popup-inv-show {
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+/* END */
+
+
 .inventory-body .inventory-header {
     margin-top: 0;
     margin-bottom: 10px;

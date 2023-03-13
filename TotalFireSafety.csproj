@@ -234,6 +234,7 @@
     <Content Include="fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\font-awesome-4.7.0\HELP-US-OUT.txt" />
     <Content Include="fonts\montserrat\OFL.txt" />
+    <Content Include="images\barcode.png" />
     <Content Include="images\bg-logo.jpg" />
     <Content Include="images\bg001.jpg" />
     <Content Include="images\codepheuse.png" />
@@ -333,6 +334,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\inv_bak.js" />
     <Content Include="Scripts\validations\InventoryValidation.js" />
     <Content Include="Scripts\validations\RequisitionValidation.js" />
     <Content Include="Scripts\validations\UserValidation.js" />
@@ -421,6 +423,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <Content Include="Views\Error\Unauthorize.cshtml" />
+    <Content Include="Views\Admin\Inventory_bak.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

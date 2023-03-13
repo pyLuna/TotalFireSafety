@@ -209,10 +209,11 @@ namespace TotalFireSafety.Controllers
 
     
             //chart
-            var products = db.Inventories.ToList();
-            var update = db.Inv_Update.ToList();
-            
-            List<Inventory> newList = new List<Inventory>();
+            var products = db.Basecounts.ToList();
+            var update = db.Basecounts.ToList();
+            var Request = db.Requests.ToList();
+
+           /* List<Inventory> newList = new List<Inventory>();
             foreach(var item in products)
             {
                 var check = update.Where(x => x.update_item_id == item.in_code).ToList();
@@ -227,12 +228,12 @@ namespace TotalFireSafety.Controllers
                     in_quantity = item.in_quantity,
                     in_size = item.in_size,
                     in_type = item.in_type,
-                    Inv_Update = check/* == null ? check : null*/
+                    Inv_Update = check*//* == null ? check : null*//*
                 };
                 newList.Add(newInv);
-            }
-            var data = newList
-      .SelectMany(p => p.Inv_Update.DefaultIfEmpty(), (p, u) => new {
+            }*/
+            
+     /* .SelectMany(p => p.Inv_Update.DefaultIfEmpty(), (p, u) => new {
           Name = p.in_name,
           Quantity = (u == null ? 0 : int.Parse(new string(u.update_quantity.ToString().Where(char.IsDigit).ToArray()))) +
            (p == null ? 0 : int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray()))),
@@ -246,17 +247,42 @@ namespace TotalFireSafety.Controllers
           Class = g.FirstOrDefault()?.Class,
           Category = g.FirstOrDefault()?.Category
       })
-      .ToList();
+      .ToList();*/
+
+                 var data = products.Select(g => new {
+                     Code = g.bc_itemCode,
+                     Name = g.Inventory.in_name,
+                     Category = g.Inventory.in_category,
+                     Class = g.Inventory.in_class,
+                     Quantity = int.Parse(new string(g.bc_count.ToString().Where(char.IsDigit).ToArray())),
+                     Date = g.bc_date.ToString("M/dd/yyyy") // format the date
+                 }).ToList();
 
             ViewBag.Data = data;
 
             //chart 2
-            var data1 = products.Select(g => new {
-                Name1 = g.in_name,
-                Quantity1 = int.Parse(new string(g.in_quantity.ToString().Where(char.IsDigit).ToArray()))
-            }).ToList();
+            var data1 = Request
+     .Where(g => g.request_type == "Deploy")
+     .Select(g => new {
+         Code = g.request_type,
+         Name1 = g.Inventory.in_name,
+         Type = g.request_item,
+         Quantity1 = int.Parse(new string(g.request_item_quantity.ToString().Where(char.IsDigit).ToArray())),
+         Date = g.request_date.ToString("M/dd/yyyy")
+     })
+     .GroupBy(g => g.Name1)
+     .Select(g => new {
+         Name1 = g.Key,
+         g.First().Code,
+         Type = g.First().Code,
+         Quantity1 = g.Sum(x => x.Quantity1),
+         g.First().Date
+     })
+     .ToList();
 
             ViewBag.Chart = data1;
+
+           
 
 
             ViewBag.ProfilePath = GetPath(int.Parse(empId));

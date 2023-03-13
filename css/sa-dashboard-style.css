@@ -524,7 +524,7 @@ body {
     transition: transform 0.4s, top 0.4s;
 }
 
-.open-popup-show {
+.save-pop-container-show {
     visibility: visible;
     top: 50%;
     transform: translate(-50%,-50%) scale(1);
@@ -1984,7 +1984,7 @@ right .inv-sum-date {
 
 /*EDIT POPUP INVENTORY*/
 
-.edit-popup-inv {
+.edit-item-popup-inv {
     height: auto;
     width: 70%;
     border-radius: 6px;
@@ -2000,11 +2000,12 @@ right .inv-sum-date {
     margin-right: 5%;
 }
 
-.edit-popup-inv-show {
+.edit-item-popup-inv-show {
     visibility: visible;
     top: 50%;
     transform: translate(-50%,-50%) scale(1);
 }
+
 
 /* END */
 
@@ -2092,7 +2093,7 @@ right .inv-sum-date {
             width: calc(100% / 3 - 15px);
             flex-direction: column;
             margin: 4px 0;
-        }
+        } 
 
     .inventory-form-container form .input-field-size {
         display: flex;

@@ -424,6 +424,45 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+        [HttpPost]
+        public ActionResult Inventory(Inventory items,string type)
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            var serializedModel = JsonConvert.SerializeObject(items);
+            var userToken = Session["access_token"].ToString();
+            string uri;
+
+            if (type == "add")
+            {
+                uri = "Warehouse/Inventory/Add";
+            }
+            else
+            {
+                uri = "Warehouse/Inventory/Edit";
+            }
+
+            var response = api_req.SetMethod(uri, userToken, serializedModel);
+
+            if (response == "BadRequest")
+            {
+                //return Json("error", JsonRequestBehavior.AllowGet);
+                return RedirectToAction("BadRequest", "Error");
+            }
+            if (response == "InternalServerError")
+            {
+                return RedirectToAction("InternalServerError", "Error");
+                //return Json("error", JsonRequestBehavior.AllowGet);
+            }
+            var json = JsonConvert.DeserializeObject(response);
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            Session["edit"] = json.ToString();
+            ViewBag.Added = "Item has added successfully";
+            return View();
+        }
 
         public ActionResult InvArchive()
         {

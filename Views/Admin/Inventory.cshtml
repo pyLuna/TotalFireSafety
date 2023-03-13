@@ -1,642 +1,655 @@
 ﻿@using TotalFireSafety.Models
 @model Inventory
 @{
-    ViewBag.Title = "Inventory";
-    Layout = "~/Views/AdminLayout.cshtml";
-    ViewBag.Inv = "active";
+	ViewBag.Title = "Inventory";
+	Layout = "~/Views/AdminLayout.cshtml";
+	ViewBag.Inv = "active";
 }
 <script src='@Url.Content("~/Scripts/validations/InventoryValidation.js")'></script>
 <div class="main-content">
-    <header>
-        <h2>
-            <label for="nav-toggle">
-                <span class="las la-bars"></span>
-            </label>
-            Inventories
-        </h2>
-    </header>
+	<header>
+		<h2>
+			<label for="nav-toggle">
+				<span class="las la-bars"></span>
+			</label>
+			Inventories
+		</h2>
+	</header>
 
-    <main>
+	<main>
 
-        <div class="upper-section">
-            <div class="search-wrapper">
-                <span class="las la-search"></span>
-                <input type="text" placeholder="Search here" onkeyup="SearchItem(this.value)">
-            </div>
-            &nbsp;
-            <select id="selcat" onchange="SortByCategory(this,this.value)">
-                <option disabled selected>Select Category</option>
-                <option value="Fittings">Fittings</option>
-                <option value="Gate Valves">Gate Valves</option>
-                <option value="Power Tools">Power Tools</option>
-                <option value="Fire Extinguisher">Fire Extinguisher</option>
-                <option value="Scaffolding">Scaffolding</option>
-                <option value="Others">Others</option>
-                <option value="">Clear</option>
-            </select>
-        </div>
+		<div class="upper-section">
+			<div class="search-wrapper">
+				<span class="las la-search"></span>
+				<input type="text" placeholder="Search here" onkeyup="SearchItem(this.value)">
+			</div>
+			&nbsp;
+			<select id="selcat" onchange="SortByCategory(this,this.value)">
+				<option disabled selected>Select Category</option>
+				<option value="Fittings">Fittings</option>
+				<option value="Gate Valves">Gate Valves</option>
+				<option value="Power Tools">Power Tools</option>
+				<option value="Fire Extinguisher">Fire Extinguisher</option>
+				<option value="Scaffolding">Scaffolding</option>
+				<option value="Others">Others</option>
+				<option value="">Clear</option>
+			</select>
+		</div>
 
-        <div class="inventory-grid">
-            <div class="inventory-header" id="tableTitle">
-                <h3>INVENTORY ITEMS</h3>
-                <div class="inventory-buttons-style" id="hideBtn">
+		<div class="inventory-grid">
+			<div class="inventory-header" id="tableTitle">
+				<h3>INVENTORY ITEMS</h3>
+				<div class="inventory-buttons-style" id="hideBtn">
 
-                    @*<button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()">ADD NEW ITEM</button>
-                <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
+					@*<button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()">ADD NEW ITEM</button>
+					<button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
 
-                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + AppendOption()">ADD NEW ITEM</button>
-                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup()">
-                        <a>
-                            EXPORT
-                            <span class="las la-file-download"></span>
-                        </a>
-                    </button>
+					<button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + AppendOption()">ADD NEW ITEM</button>
+					<button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup()">
+						<a>
+							EXPORT
+							<span class="las la-file-download"></span>
+						</a>
+					</button>
 
-                    <select id="filter" onchange="SortByCategory(this,this.value)">
-                        <option disabled selected>FILTER</option>
-                        <option value="standard">Standard</option>
-                        <option value="average">Average</option>
-                        <option value="critical">Critical</option>
-                        <option value="">Clear</option>
-                    </select>
-                </div>
-            </div>
+					<select id="filter" onchange="SortByCategory(this,this.value)">
+						<option disabled selected>FILTER</option>
+						<option value="standard">Standard</option>
+						<option value="average">Average</option>
+						<option value="critical">Critical</option>
+						<option value="">Clear</option>
+					</select>
+				</div>
+			</div>
 
-            <div class="add-popup-inv" id="add-popup-inv">
-                <div class="inventory-add-container">
-                    <!-- Inventory Add -->
-                    <div class="inventory-form-container">
-                        <form action="" id="myForm">
-                            <div class="details-personal">
-                                <div class="inventory-form-header">
-                                    ADD NEW ITEM
+			<div class="add-popup-inv" id="add-popup-inv">
+				<div class="inventory-add-container">
+					<!-- Inventory Add -->
+					<div class="inventory-form-container">
+						<form action="/Admin/Inventory?type=add" method="post" id="myForm">
+							<div class="details-personal">
+								<div class="inventory-form-header">
+									ADD NEW ITEM
+								</div>
+								<div class="inventory-form-contents">
+									<div class="fields">
+										<div class="input-field">
+											<label>Item ID</label>
+											<input type="text" id="in_code" name="in_code" placeholder="ABC-DEF-GHI-000" readonly>
+										</div>
 
-                                </div>
-                                <div class="inventory-form-contents">
-                                    <div class="fields">
-                                        <div class="input-field">
-                                            <label>Item ID</label>
-                                            <input type="text" id="itemCode" name="in_code" placeholder="ABC-DEF-GHI-000" readonly>
-                                        </div>
+										<div class="input-field">
+											<label>Item Name</label>
+											<input type="text" id="in_name" name="in_name" placeholder="Enter item name">
+										</div>
 
-                                        <div class="input-field">
-                                            <label>Item Name</label>
-                                            <input type="text" name="in_name" placeholder="Enter item name" required>
-                                        </div>
+										<div class="input-field">
+											<label>Category</label>
+											@*<select id="category" required>
+												<option disabled selected>Select Category</option>
+											</select>*@
+											<input type="text" id="in_category" name="in_category" list="catList" placeholder="Enter item category">
+											<datalist id="catList"></datalist>
+										</div>
 
-                                        <div class="input-field">
-                                            <label>Category</label>
-                                            <select id="category" required>
-                                                <option disabled selected>Select Category</option>
-                                            </select>
-                                        </div>
+										<div class="input-field">
+											<label>Class</label>
+											<select id="class">
+												<option disabled selected>Select Class</option>
+											</select>
+										</div>
+										<input type="text" id="in_class" name="in_class" style="display:none;">
 
-                                        <div class="input-field">
-                                            <label>Class</label>
-                                            <select id="class" required>
-                                                <option disabled selected>Select Class</option>
-                                            </select>
-                                        </div>
+										<div class="input-field">
+											<label>Type</label>
+											@*<select id="type" required>
+												<option disabled selected>Select Type</option>
+											</select>*@
+											<input type="text" id="in_type" list="typeList" name="in_type" placeholder="Enter item type">
+											<datalist id="typeList"></datalist>
+										</div>
 
-                                        <div class="input-field">
-                                            <label>Type</label>
-                                            <select id="type" required>
-                                                <option disabled selected>Select Type</option>
-                                            </select>
-                                        </div>
+										<div class="input-field">
+											<label>Size</label>
+											<div class="input-field-size">
+												<input type="number" id="inpSizeSel" placeholder="00000">
+												<select id="sizeSel">
+													<option disabled selected>Unit</option>
+												</select>
+											</div>
+										</div>
+										<input type="text" id="in_size" name="in_size" style="display:none;">
 
-                                        <div class="input-field">
-                                            <label>Size</label>
-                                            <div class="input-field-size">
-                                                <input type="number" placeholder="00000" required>
-                                                <select id="sizeSel" required>
-                                                    <option disabled selected>Measurement</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Quantity</label>
-                                            <div class="input-field-quantity">
-                                                <input type="number" placeholder="00000" required>
-                                                <select id="sizeQuant" required>
-                                                    <option disabled selected>Measurement</option>
-                                                </select>
-                                            </div>
-                                        </div>
+										<div class="input-field">
+											<label>Quantity</label>
+											<div class="input-field-quantity">
+												<input type="number" id="inpSizeQuant" placeholder="00000">
+												<select id="sizeQuant">
+													<option disabled selected>Unit</option>
+												</select>
+											</div>
+										</div>
+										<input type="text" id="in_quantity" name="in_quantity" style="display:none;">
+										<input type="text" id="in_remarks" name="in_remarks" style="display:none;">
+										<div class="input-field">
+											<label>Date Added</label>
+											<input type="text" id="dateAdded" name="in_dateAdded" readonly>
+										</div>
+										<div class="input-field">
+											<div class="img-bar-grp" id="image-container">
+												@*<img src="~/images/barcode.png" alt="">*@
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 
-                                        <div class="input-field">
-                                            <label>Date Added</label>
-                                            <input type="text" placeholder="00/00/00" readonly>
-                                        </div>
-                                        <div class="input-field">
-                                            <div class="img-bar-grp">
-                                                <img src="~/images/barcode.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+							<div class="form-add-btns">
+								<button class="save" onclick="infoOpenPopup() + SetHiddenValues()">
+									<span class="btnText">Save</span>
+									<i class="las la-check-square"></i>
+								</button>
 
-                            <div class="form-add-btns">
-                                <button class="save" onclick="infoOpenPopup()">
-                                    <span class="btnText">Save</span>
-                                    <i class="las la-check-square"></i>
-                                </button>
+								<button class="cancel">
+									<span class="btnText" onclick="canOpenPopup()">Cancel</span>
+									<i class="las la-window-close"></i>
+								</button>
+							</div>
 
-                                <button class="cancel">
-                                    <span class="btnText" onclick="canOpenPopup()">Cancel</span>
-                                    <i class="las la-window-close"></i>
-                                </button>
-                            </div>
+						</form>
+					</div>
+				</div>
+			</div>
 
-                        </form>
-                    </div>
-                </div>
-            </div>
 
-            <div class="edit-popup-inv" id="edit-qty-popup-inv">
-                <div class="inventory-add-container">
 
-                    <!-- Inventory Edit Item -->
+			<!-- NEED DUPLICATE PARA MAS MABILIS MATAPOS-->
+			<!--<div class="add-popup-inv1" id="add-popup-inv1">
+		<div class="inventory-add-container">-->
+			<!-- Inventory Add -->
+			<!--<div class="inventory-form-container">
+					<form action="" id="myForm1">
+						<div class="details-personal">
+							<div class="inventory-form-header">
+								ADD NEW ITEM
 
-                    <div class="inventory-form-container">
-                        <form action="">
-                            <div class="details-personal">
-                                <div class="inventory-form-header">
-                                    EDIT ITEM
+							</div>
+							<div class="inventory-form-contents">
+								<div class="fields">
+									<div class="input-field">
+										<label>Item ID</label>
+										<input type="text" name="in_code1" placeholder="ABC-DEF-GHI-000" readonly>
+									</div>
 
-                                </div>
-                                <div class="inventory-form-contents">
-                                    <div class="fields">
-                                        <div class="input-field">
-                                            <label>Item ID</label>
-                                            <input type="number" placeholder="00000" readonly>
-                                        </div>
+									<div class="input-field">
+										<label>Item Name</label>
+										<input type="text" name="in_name1" placeholder="Enter item name" required>
+									</div>
 
-                                        <div class="input-field">
-                                            <label>Item Name</label>
-                                            <input type="text" placeholder="Enter item name" required>
-                                        </div>
+									<div class="input-field">
+										<label>Category</label>
+										<select id="category1" required>
+											<option disabled selected>Select Category</option>
+										</select>
+									</div>
 
-                                        <div class="input-field">
-                                            <label>Category</label>
-                                            <select required>
-                                                <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
-                                            </select>
-                                        </div>
+									<div class="input-field">
+										<label>Class</label>
+										<select id="class1" required>
+											<option disabled selected>Select Class</option>
+										</select>
+									</div>
 
-                                        <div class="input-field">
-                                            <label>Class</label>
-                                            <select required>
-                                                <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
-                                            </select>
-                                        </div>
+									<div class="input-field">
+										<label>Type</label>
+										<select id="type1" required>
+											<option disabled selected>Select Type</option>
+										</select>
+									</div>
 
-                                        <div class="input-field">
-                                            <label>Type</label>
-                                            <select required>
-                                                <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
-                                            </select>
-                                        </div>
+									<div class="input-field">
+										<label>Size</label>
+										<div class="input-field-size">
+											<input type="number" placeholder="00000" required>
+											<select id="sizeSel1" required>
+												<option disabled selected>Measurement</option>
+											</select>
+										</div>
+									</div>
+									<div class="input-field">
+										<label>Quantity</label>
+										<div class="input-field-quantity">
+											<input type="number" placeholder="00000" required>
+											<select id="sizeQuant1" required>
+												<option disabled selected>Measurement</option>
+											</select>
+										</div>
+									</div>
 
-                                        <div class="input-field">
-                                            <label>Size</label>
-                                            <div class="input-field-size">
-                                                <input type="number" placeholder="00000" required>
-                                                <select required>
-                                                    <option disabled selected>Measurement</option>
-                                                    <option>cm</option>
-                                                    <option>inch</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Quantity</label>
-                                            <div class="input-field-quantity">
-                                                <input type="number" placeholder="00000" required>
-                                                <select required>
-                                                    <option disabled selected>Measurement</option>
-                                                    <option>cm</option>
-                                                    <option>inch</option>
-                                                </select>
-                                            </div>
-                                        </div>
+									<div class="input-field">
+										<label>Date Added</label>
+										<input type="text" placeholder="00/00/00" readonly>
+									</div>
+									<div class="input-field">
+										<div class="img-bar-grp">
+											<img src="~/images/barcode.png" alt="">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                                        <div class="input-field">
-                                            <label>Date Added</label>
-                                            <input type="text" placeholder="00/00/00" readonly>
-                                        </div>
-                                        <div class="input-field">
-                                            <div class="img-bar-grp">
-                                                <img src="~/images/barcode.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+						<div class="form-add-btns">
+							<button class="save" onclick="infoOpenPopup()">
+								<span class="btnText">Save</span>
+								<i class="las la-check-square"></i>
+							</button>
 
-                            <div class="form-add-btns">
-                                <button class="save" onclick="infoOpenPopup()">
-                                    <span class="btnText">Save</span>
-                                    <i class="las la-check-square"></i>
-                                </button>
+							<button class="cancel">
+								<span class="btnText" onclick="canOpenPopup()">Cancel</span>
+								<i class="las la-window-close"></i>
+							</button>
+						</div>
 
-                                <button class="cancel">
-                                    <span class="btnText" onclick="canOpenPopup()">Cancel</span>
-                                    <i class="las la-window-close"></i>
-                                </button>
-                            </div>
+					</form>
+				</div>
+			</div>
+		</div>-->
 
-                        </form>
-                    </div>
-                </div>
-            </div>
+			<div class="add-qty-popup-inv" id="add-qty-popup-inv">
+				<div class="inventory-add-container">
 
-            <!-- NEED DUPLICATE PARA MAS MABILIS MATAPOS-->
-            <!--<div class="add-popup-inv1" id="add-popup-inv1">
-        <div class="inventory-add-container">-->
-            <!-- Inventory Add -->
-            <!--<div class="inventory-form-container">
-                <form action="" id="myForm1">
-                    <div class="details-personal">
-                        <div class="inventory-form-header">
-                            ADD NEW ITEM
+					<!-- Inventory Add Quantity -->
 
-                        </div>
-                        <div class="inventory-form-contents">
-                            <div class="fields">
-                                <div class="input-field">
-                                    <label>Item ID</label>
-                                    <input type="text" name="in_code1" placeholder="ABC-DEF-GHI-000" readonly>
-                                </div>
+					<div class="inventory-form-container">
+						<form action="">
+							<div class="details-personal">
+								<div class="inventory-form-header">
+									ADD NEW ITEM
 
-                                <div class="input-field">
-                                    <label>Item Name</label>
-                                    <input type="text" name="in_name1" placeholder="Enter item name" required>
-                                </div>
+								</div>
+								<div class="inventory-form-contents">
+									<div class="fields">
+										<div class="input-field">
+											<label>Item ID</label>
+											<input type="number" placeholder="00000" readonly>
+										</div>
 
-                                <div class="input-field">
-                                    <label>Category</label>
-                                    <select id="category1" required>
-                                        <option disabled selected>Select Category</option>
-                                    </select>
-                                </div>
+										<div class="input-field">
+											<label>Item Name</label>
+											<input type="text" placeholder="Enter item name" required>
+										</div>
 
-                                <div class="input-field">
-                                    <label>Class</label>
-                                    <select id="class1" required>
-                                        <option disabled selected>Select Class</option>
-                                    </select>
-                                </div>
+										<div class="input-field">
+											<label>Category</label>
+											<select required>
+												<option disabled selected>Select Category</option>
+												<option>...</option>
+												<option>..</option>
+											</select>
+										</div>
 
-                                <div class="input-field">
-                                    <label>Type</label>
-                                    <select id="type1" required>
-                                        <option disabled selected>Select Type</option>
-                                    </select>
-                                </div>
+										<div class="input-field">
+											<label>Class</label>
+											<select required>
+												<option disabled selected>Select Category</option>
+												<option>...</option>
+												<option>..</option>
+											</select>
+										</div>
 
-                                <div class="input-field">
-                                    <label>Size</label>
-                                    <div class="input-field-size">
-                                        <input type="number" placeholder="00000" required>
-                                        <select id="sizeSel1" required>
-                                            <option disabled selected>Measurement</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="input-field">
-                                    <label>Quantity</label>
-                                    <div class="input-field-quantity">
-                                        <input type="number" placeholder="00000" required>
-                                        <select id="sizeQuant1" required>
-                                            <option disabled selected>Measurement</option>
-                                        </select>
-                                    </div>
-                                </div>
+										<div class="input-field">
+											<label>Type</label>
+											<select required>
+												<option disabled selected>Select Category</option>
+												<option>...</option>
+												<option>..</option>
+											</select>
+										</div>
 
-                                <div class="input-field">
-                                    <label>Date Added</label>
-                                    <input type="text" placeholder="00/00/00" readonly>
-                                </div>
-                                <div class="input-field">
-                                    <div class="img-bar-grp">
-                                        <img src="~/images/barcode.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+										<div class="input-field">
+											<label>Size</label>
+											<div class="input-field-size">
+												<input type="number" placeholder="00000" required>
+												<select required>
+													<option disabled selected>Measurement</option>
+													<option>cm</option>
+													<option>inch</option>
+												</select>
+											</div>
+										</div>
+										<div class="input-field">
+											<label>Quantity</label>
+											<div class="input-field-quantity">
+												<input type="number" placeholder="00000" required>
+												<select required>
+													<option disabled selected>Measurement</option>
+													<option>cm</option>
+													<option>inch</option>
+												</select>
+											</div>
+										</div>
 
-                    <div class="form-add-btns">
-                        <button class="save" onclick="infoOpenPopup()">
-                            <span class="btnText">Save</span>
-                            <i class="las la-check-square"></i>
-                        </button>
+										<div class="input-field">
+											<label>Date Added</label>
+											<input type="text" placeholder="00/00/00" readonly>
+										</div>
+										<div class="input-field">
+											<div class="img-bar-grp">
+												<img src="~/images/barcode.png" alt="">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 
-                        <button class="cancel">
-                            <span class="btnText" onclick="canOpenPopup()">Cancel</span>
-                            <i class="las la-window-close"></i>
-                        </button>
-                    </div>
+							<div class="form-add-btns">
+								<button class="save" onclick="infoOpenPopup()">
+									<span class="btnText">Save</span>
+									<i class="las la-check-square"></i>
+								</button>
 
-                </form>
-            </div>
-        </div>
-    </div>-->
+								<button class="cancel">
+									<span class="btnText" onclick="canOpenPopup()">Cancel</span>
+									<i class="las la-window-close"></i>
+								</button>
+							</div>
 
-            <div class="add-qty-popup-inv" id="add-qty-popup-inv">
-                <div class="inventory-add-container">
+						</form>
+					</div>
+				</div>
+			</div>
 
-                    <!-- Inventory Add Quantity -->
+			<div class="add-popup-inv" id="edit-item-popup-inv" ">
+				<div class="inventory-add-container">
 
-                    <div class="inventory-form-container">
-                        <form action="">
-                            <div class="details-personal">
-                                <div class="inventory-form-header">
-                                    ADD NEW ITEM
+					<!-- Inventory Add Quantity -->
 
-                                </div>
-                                <div class="inventory-form-contents">
-                                    <div class="fields">
-                                        <div class="input-field">
-                                            <label>Item ID</label>
-                                            <input type="number" placeholder="00000" readonly>
-                                        </div>
+					<div class="inventory-form-container">
+						<form action="">
+							<div class="details-personal">
+								<div class="inventory-form-header">
+									EDIT ITEM
 
-                                        <div class="input-field">
-                                            <label>Item Name</label>
-                                            <input type="text" placeholder="Enter item name" required>
-                                        </div>
+								</div>
+								<div class="inventory-form-contents">
+									<div class="fields">
+										<div class="input-field">
+											<label>Item ID</label>
+											<input type="number" placeholder="00000" readonly>
+										</div>
 
-                                        <div class="input-field">
-                                            <label>Category</label>
-                                            <select required>
-                                                <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
-                                            </select>
-                                        </div>
+										<div class="input-field">
+											<label>Item Name</label>
+											<input type="text" placeholder="Enter item name" required>
+										</div>
 
-                                        <div class="input-field">
-                                            <label>Class</label>
-                                            <select required>
-                                                <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
-                                            </select>
-                                        </div>
+										<div class="input-field">
+											<label>Category</label>
+											<select required>
+												<option disabled selected>Select Category</option>
+												<option>...</option>
+												<option>..</option>
+											</select>
+										</div>
 
-                                        <div class="input-field">
-                                            <label>Type</label>
-                                            <select required>
-                                                <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
-                                            </select>
-                                        </div>
+										<div class="input-field">
+											<label>Class</label>
+											<select required>
+												<option disabled selected>Select Category</option>
+												<option>...</option>
+												<option>..</option>
+											</select>
+										</div>
 
-                                        <div class="input-field">
-                                            <label>Size</label>
-                                            <div class="input-field-size">
-                                                <input type="number" placeholder="00000" required>
-                                                <select required>
-                                                    <option disabled selected>Measurement</option>
-                                                    <option>cm</option>
-                                                    <option>inch</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="input-field">
-                                            <label>Quantity</label>
-                                            <div class="input-field-quantity">
-                                                <input type="number" placeholder="00000" required>
-                                                <select required>
-                                                    <option disabled selected>Measurement</option>
-                                                    <option>cm</option>
-                                                    <option>inch</option>
-                                                </select>
-                                            </div>
-                                        </div>
+										<div class="input-field">
+											<label>Type</label>
+											<select required>
+												<option disabled selected>Select Category</option>
+												<option>...</option>
+												<option>..</option>
+											</select>
+										</div>
 
-                                        <div class="input-field">
-                                            <label>Date Added</label>
-                                            <input type="text" placeholder="00/00/00" readonly>
-                                        </div>
-                                        <div class="input-field">
-                                            <div class="img-bar-grp">
-                                                <img src="~/images/barcode.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+										<div class="input-field">
+											<label>Size</label>
+											<div class="input-field-size">
+												<input type="number" placeholder="00000" required>
+												<select required>
+													<option disabled selected>Measurement</option>
+													<option>cm</option>
+													<option>inch</option>
+												</select>
+											</div>
+										</div>
+										<div class="input-field">
+											<label>Quantity</label>
+											<div class="input-field-quantity">
+												<input type="number" placeholder="00000" required>
+												<select required>
+													<option disabled selected>Measurement</option>
+													<option>cm</option>
+													<option>inch</option>
+												</select>
+											</div>
+										</div>
 
-                            <div class="form-add-btns">
-                                <button class="save" onclick="infoOpenPopup()">
-                                    <span class="btnText">Save</span>
-                                    <i class="las la-check-square"></i>
-                                </button>
+										<div class="input-field">
+											<label>Date Added</label>
+											<input type="text" placeholder="00/00/00" readonly>
+										</div>
+										<div class="input-field">
+											<div class="img-bar-grp">
+												<img src="~/images/barcode.png" alt="">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 
-                                <button class="cancel">
-                                    <span class="btnText" onclick="canOpenPopup()">Cancel</span>
-                                    <i class="las la-window-close"></i>
-                                </button>
-                            </div>
+							<div class="form-add-btns">
+								<button class="save" onclick="infoOpenPopup()">
+									<span class="btnText">Save</span>
+									<i class="las la-check-square"></i>
+								</button>
 
-                        </form>
-                    </div>
-                </div>
-            </div>
+								<button class="cancel">
+									<span class="btnText" onclick="canOpenPopup()">Cancel</span>
+									<i class="las la-window-close"></i>
+								</button>
+							</div>
 
-            <div class="inventory-projects" id="printable">
-                <div class="inventory">
-                    <div class="inventory-body">
-                        <div class="table-responsive printable" style="overflow-x: auto;">
-                            <table width="100%" id="myTable" class="myTable">
-                                <thead>
-                                    <tr>
-                                        <td><a onclick="Sort(this,'in_code')">Code<i class="las la-sort-down"></i></a></td>
-                                        <td><a onclick="Sort(this,'in_name')">Name<i class="las la-sort-down"></i></a></td>
-                                        <td>Category</td>
-                                        <td>Type</td>
-                                        <td>Size</td>
-                                        <td>Quantity</td>
-                                        <td>Remarks</td>
-                                        <td><a onclick="Sort(this,'in_class')">Class<i class="las la-sort-down"></i></a></td>
-                                        <td id="hideAction">Action</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+						</form>
+					</div>
+				</div>
+			</div>
 
-        <div class="info-pop-container" id="info-popup">
-            <img src="@Url.Content("~/images/information.png")">
-            <h2>System Warning!</h2>
-            <p>Do you want to save the item on the list?</p>
-            <button type="submit" form="addForm">Yes</button>
-            <button type="button" onclick="infoClosePopup()">Cancel</button>
-        </div>
+			<div class="inventory-projects" id="printable">
+				<div class="inventory">
+					<div class="inventory-body">
+						<div class="table-responsive printable" style="overflow-x: auto;">
+							<table width="100%" id="myTable" class="myTable">
+								<thead>
+									<tr>
+										<td><a onclick="Sort(this,'in_code')">Code<i class="las la-sort-down"></i></a></td>
+										<td><a onclick="Sort(this,'in_name')">Name<i class="las la-sort-down"></i></a></td>
+										<td>Category</td>
+										<td>Type</td>
+										<td>Size</td>
+										<td>Quantity</td>
+										<td>Remarks</td>
+										<td><a onclick="Sort(this,'in_class')">Class<i class="las la-sort-down"></i></a></td>
+										<td id="hideAction">Action</td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <div class="can-pop-container" id="can-popup">
-            <img src="@Url.Content("~/images/warning.png")">
-            <h2>System Warning!</h2>
-            <p>Are you sure you want to cancel?</p>
-            @*DeleteItem()*@
-            <button type="button" onclick="canClosePopup() + addClosePopupInv()">Yes</button>
-            <button type="button" onclick="canClosePopup()">Cancel</button>
-        </div>
+		<div class="info-pop-container" id="info-popup">
+			<img src="@Url.Content("~/images/information.png")">
+			<h2>System Warning!</h2>
+			<p>Do you want to save the item on the list?</p>
+			<button type="submit" form="myForm">Yes</button>
+			<button type="button" onclick="infoClosePopup()">Cancel</button>
+		</div>
 
-        <div class="rem-pop-container" id="rem-popup">
-            <img src="@Url.Content("~/images/remove.png")">
-            <h2>Deleted!</h2>
-            <p>Item details has deleted in the list!</p>
-            <button type="button" onclick="remClosePopup()">OK</button>
-        </div>
+		<div class="can-pop-container" id="can-popup">
+			<img src="@Url.Content("~/images/warning.png")">
+			<h2>System Warning!</h2>
+			<p>Are you sure you want to cancel?</p>
+			@*DeleteItem()*@
+			<button type="button" onclick="canClosePopup() + addClosePopupInv()">Yes</button>
+			<button type="button" onclick="canClosePopup()">Cancel</button>
+		</div>
 
-        <div class="save-pop-container" id="popup">
-            <img src="@Url.Content("~/images/tick.png")">
-            <h2>Saved!</h2>
-            <p>Item has saved successfully!</p>
-            <button type="button" onclick="closePopup() ">OK</button>
-        </div>
-        <div class="print-pop-container" id="print-popup">
-            <img src="@Url.Content("~/images/printer.png")">
-            <h2>Print!</h2>
-            <p>Print successfully!</p>
-            <button type="button" onclick="printClosePopup()">OK</button>
-        </div>
+		<div class="rem-pop-container" id="rem-popup">
+			<img src="@Url.Content("~/images/remove.png")">
+			<h2>Deleted!</h2>
+			<p>Item details has deleted in the list!</p>
+			<button type="button" onclick="remClosePopup()">OK</button>
+		</div>
 
-        <div class="expo-pop-container" id="expo-popup">
-            <img src="@Url.Content("~/images/export.png")">
-            <h2>Export!</h2>
-            <p>Exported Successfully!</p>
-            <button type="button" onclick="expoClosePopup()">OK</button>
-        </div>
+		@if (ViewBag.Added != null)
+		{
+			<div class="save-pop-container-show" id="popup">
+				<img src="@Url.Content("~/images/tick.png")">
+				<h2>Saved!</h2>
+				<p>@ViewBag.Added</p>
+				@*<p>Item has saved successfully!</p>*@
+				<button type="button" onclick="closePopup() ">OK</button>
+			</div>
+		}
+		<div class="print-pop-container" id="print-popup">
+			<img src="@Url.Content("~/images/printer.png")">
+			<h2>Print!</h2>
+			<p>Print successfully!</p>
+			<button type="button" onclick="printClosePopup()">OK</button>
+		</div>
 
-    </main>
+		<div class="expo-pop-container" id="expo-popup">
+			<img src="@Url.Content("~/images/export.png")">
+			<h2>Export!</h2>
+			<p>Exported Successfully!</p>
+			<button type="button" onclick="expoClosePopup()">OK</button>
+		</div>
+
+	</main>
 </div>
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
 
-    window.onload = function () {
-        GetAll();
-    }
-        
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.drop-btn')) {
-                var myDropdown = document.getElementById("myDropdown");
-                if (myDropdown.classList.contains('show')) {
-                    myDropdown.classList.remove('show');
+	window.onload = function () {
+		GetAll();
+	}
 
-                }
-            }
-        }
+		// Close the dropdown if the user clicks outside of it
+		window.onclick = function (e) {
+			if (!e.target.matches('.drop-btn')) {
+				var myDropdown = document.getElementById("myDropdown");
+				if (myDropdown.classList.contains('show')) {
+					myDropdown.classList.remove('show');
 
-        function userSortFunction() {
-            document.getElementById("invSortDropdown").classList.toggle("inventory-sort-show");
-        }
+				}
+			}
+		}
 
-        let archpopup = document.getElementById("arch-popup");
-        function OpenArchPopup() {
-            archpopup.classList.add("arch-popup-show")
-        }
+		function userSortFunction() {
+			document.getElementById("invSortDropdown").classList.toggle("inventory-sort-show");
+		}
 
-        function CloseArchPopup() {
-            archpopup.classList.remove("arch-popup-show")
-        }
+		let archpopup = document.getElementById("arch-popup");
+		function OpenArchPopup() {
+			archpopup.classList.add("arch-popup-show")
+		}
 
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.inventory-sort-btn')) {
-                var myDropdown = document.getElementById("invSortDropdown");
-                if (myDropdown.classList.contains('inventory-sort-show')) {
-                    myDropdown.classList.remove('inventory-sort-show');
-                }
-            }
-        }
-            //Messege Box
-        let popup = document.getElementById("popup");
-        function openPopup() {
-            popup.classList.add("open-popup-show")
-        }
+		function CloseArchPopup() {
+			archpopup.classList.remove("arch-popup-show")
+		}
 
-        function closePopup() {
-            popup.classList.remove("open-popup-show")
-        }
-        let infopopup = document.getElementById("info-popup");
+		// Close the dropdown if the user clicks outside of it
+		window.onclick = function (e) {
+			if (!e.target.matches('.inventory-sort-btn')) {
+				var myDropdown = document.getElementById("invSortDropdown");
+				if (myDropdown.classList.contains('inventory-sort-show')) {
+					myDropdown.classList.remove('inventory-sort-show');
+				}
+			}
+		}
+			//Messege Box
+		let popup = document.getElementById("popup");
+		function openPopup() {
+			popup.classList.add("open-popup-show")
+		}
 
-        function infoOpenPopup() {
-            infopopup.classList.add("info-popup-show")
-        }
+		function closePopup() {
+			popup.classList.remove("save-pop-container-show")
+		}
+		let infopopup = document.getElementById("info-popup");
 
-        function infoClosePopup() {
-            infopopup.classList.remove("info-popup-show")
-        }
+		function infoOpenPopup() {
+			infopopup.classList.add("info-popup-show")
+		}
 
-        let addpopupinv = document.getElementById("add-popup-inv");
-        function addOpenPopupInv() {
-            addpopupinv.classList.add("add-popup-inv-show")
-            //AddListener();
-        }
+		function infoClosePopup() {
+			infopopup.classList.remove("info-popup-show")
+		}
 
-        function addClosePopupInv() {
-            addpopupinv.classList.remove("add-popup-inv-show")
-        }
+		let addpopupinv = document.getElementById("add-popup-inv");
+		function addOpenPopupInv() {
+			addpopupinv.classList.add("add-popup-inv-show")
+			//AddListener();
+		}
 
-        let canpopup = document.getElementById("can-popup");
-    //value
-        function canOpenPopup() {
-            canpopup.classList.add("can-popup-show");
-            //localStorage.setItem("codeToDelete", value);
-        }
+		function addClosePopupInv() {
+			addpopupinv.classList.remove("add-popup-inv-show")
+		}
 
-        function canClosePopup() {
-            canpopup.classList.remove("can-popup-show")
-        }
+		let canpopup = document.getElementById("can-popup");
+	//value
+		function canOpenPopup() {
+			canpopup.classList.add("can-popup-show");
+			//localStorage.setItem("codeToDelete", value);
+		}
 
-        let rempopup = document.getElementById("rem-popup");
+		function canClosePopup() {
+			canpopup.classList.remove("can-popup-show")
+		}
 
-        function remOpenPopup() {
-            rempopup.classList.add("rem-popup-show")
-        }
+		let rempopup = document.getElementById("rem-popup");
 
-        function remClosePopup() {
-            rempopup.classList.remove("rem-popup-show")
-        }
+		function remOpenPopup() {
+			rempopup.classList.add("rem-popup-show")
+		}
 
-        let printpopup = document.getElementById("print-popup");
+		function remClosePopup() {
+			rempopup.classList.remove("rem-popup-show")
+		}
 
-        function printOpenPopup() {
-            printpopup.classList.add("print-popup-show")
-        }
+		let printpopup = document.getElementById("print-popup");
 
-        function printClosePopup() {
-            printpopup.classList.remove("print-popup-show")
-        }
+		function printOpenPopup() {
+			printpopup.classList.add("print-popup-show")
+		}
 
-        let expopopup = document.getElementById("expo-popup");
+		function printClosePopup() {
+			printpopup.classList.remove("print-popup-show")
+		}
 
-        function expoOpenPopup() {
-            expopopup.classList.add("expo-popup-show")
-        }
+		let expopopup = document.getElementById("expo-popup");
 
-        function expoClosePopup() {
-            expopopup.classList.remove("expo-popup-show")
-        }
+		function expoOpenPopup() {
+			expopopup.classList.add("expo-popup-show")
+		}
+
+		function expoClosePopup() {
+			expopopup.classList.remove("expo-popup-show")
+		}
 
 </script>

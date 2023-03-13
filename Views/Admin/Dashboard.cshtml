@@ -20,10 +20,11 @@
             <div class="inv-sum-date">
                 <div class="sum-date-con">
                     <label></label>
-                    <input type="date">
+                    <input type="date" id="startDate">
+
 
                     <label>-</label>
-                    <input type="date">
+                    <input type="date" id="endDate">
                 </div>
 
             </div>
@@ -235,12 +236,12 @@
 
                         <h3>Item Categories Summary</h3>
 
-                        <div class="cat-grp">
-                            <select required>
+                        <div  class="cat-grp">
+                            <select id="class" required>
                                 <option disabled selected>Item Class</option>
-                                <option>All</option>
-                                <option>Local</option>
-                                <option>Import</option>
+                                <option value="All">All</option>
+                                <option value="Local">Local</option>
+                                <option value="Import">Import</option>
                             </select>
 
                             <select id="itemCategory" required>
@@ -249,6 +250,7 @@
                                 <option value="Power Tools">Power Tools</option>
                                 <option value="Fittings">Fittings</option>
                                 <option value="Scaffolding">Scaffolding</option>
+                                <option value="Others">Others</option>
                                 <option value="Clear">Clear</option>
                             </select>
                         </div>
@@ -288,9 +290,9 @@
                                     
 
                                     var criticalValues = filteredData.map(function (item) {
-                                        if (item.Total < 50) {
+                                        if (item.Quantity <= 50) {
                                             return {
-                                                value: item.Total,
+                                                value: item.Quantity,
                                                 color: 'rgba(255,0,0)'
                                             };
                                         } else {
@@ -299,9 +301,9 @@
                                     }).filter(Boolean);
 
                                     var goodValues = filteredData.map(function (item) {
-                                        if (item.Total >= 51 && item.Total <= 5000) {
+                                        if (item.Quantity >= 51 && item.Quantity <= 5000) {
                                             return {
-                                                value: item.Total,
+                                                value: item.Quantity,
                                                 color: 'rgba(0,128,0, 1)'
                                             };
                                         } else {
@@ -317,16 +319,59 @@
                                     chart.update();
 
                                     // Return the filtered data
-                                    return filteredData;
+                                    return data;
                                 });
 
+                                var selectclass = document.getElementById('class');
+                                selectclass.addEventListener('change', function () {
+                                    // Get the selected option value
+                                    var selectedClass = selectclass.value;
 
+                                    // Filter the data array based on the selected option
+                                    var filteredData1 = selectedClass === "All" ? data : data.filter(function (item) {
+                                        return item.Class === selectedClass;
+                                    });
+
+
+
+                                    var criticalValues = filteredData1.map(function (item) {
+                                        if (item.Quantity <= 50) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(255,0,0)'
+                                            };
+                                        } else {
+                                            return null;
+                                        }
+                                    }).filter(Boolean);
+
+                                    var goodValues = filteredData1.map(function (item) {
+                                        if (item.Quantity >= 51 && item.Quantity <= 5000) {
+                                            return {
+                                                value: item.Quantity,
+                                                color: 'rgba(0,128,0, 1)'
+                                            };
+                                        } else {
+                                            return null;
+                                        }
+                                    }).filter(Boolean);
+
+                                    chart.data.datasets[0].data = goodValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[0].backgroundColor = goodValues.map(function (item) { return item.color; });
+                                    chart.data.datasets[1].data = criticalValues.map(function (item) { return item.value; });
+                                    chart.data.datasets[1].backgroundColor = criticalValues.map(function (item) { return item.color; });
+                                    chart.data.labels = filteredData1.map(function (item) { return item.Name; });
+                                    chart.update();
+
+                                    // Return the filtered data
+                                    return data;
+                                });
                                
 
                                 var criticalValues = data.map(function (item) {
-                                    if (item.Total < 50) {
+                                    if (item.Quantity < 50) {
                                         return {
-                                            value: item.Total,
+                                            value: item.Quantity,
                                             color: 'rgba(255,0,0)'
                                         };
                                     } else {
@@ -335,9 +380,9 @@
                                 }).filter(Boolean);
 
                                 var goodValues = data.map(function (item) {
-                                    if (item.Total >= 51 && item.Total <= 5000) {
+                                    if (item.Quantity >= 51 && item.Quantity <= 5000) {
                                         return {
-                                            value: item.Total,
+                                            value: item.Quantity,
                                             color: 'rgba(0,128,0, 1)'
                                         };
                                     } else {
@@ -356,7 +401,7 @@
                                                 label: 'Critical',
                                                 data: criticalValues.map(function (item) { return item.value; }),
                                                 backgroundColor: criticalValues.map(function (item) { return item.color; }),
-                                                borderColor: 'rgba(255,0,0, 1)',
+                                                borderColor: 'rgba(255,0,0)',
                                                 borderWidth: 1
                                             },
                                             {
@@ -424,13 +469,13 @@
                 <h3>&nbsp;</h3>
                 <div class="card">
                     <div class="card-header">
-                        <h3>Most Requested Item</h3>
+                        <h3>Fast Moving Item</h3>
 
                         <div class="fst-grp">
-                            <select required>
+                            <select id="moving" required>
                                 <option disabled selected>Choose</option>
-                                <option>...</option>
-                                <option>..</option>
+                                <option id="fast">Fast Moving Item</option>
+                                <option id="slow">Slow Moving Item</option>
                             </select>
                         </div>
                         <div class="project-sum-btns"></div>
@@ -442,7 +487,7 @@
                                 <canvas id="barcharthori1" width="auto" height="auto"></canvas>
 
                                 <script>
-                                     var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));
+                                    var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));
                                     var labels1 = data1.map(function (item) {
                                         return item.Name1;
                                     });
@@ -451,26 +496,113 @@
                                         return item.Quantity1;
                                     });
 
+                                    var movingSelect = document.getElementById('moving');
+                                    movingSelect.addEventListener('change', function () {
+                                        var selectedOption = this.options[this.selectedIndex].id;
+                                        var filteredData = [];
+
+                                        if (selectedOption === 'fast') {
+                                            filteredData = data1.filter(function (item) {
+                                                return item.Quantity1 >= 51 && item.Quantity1 <= 5000;
+                                            });
+
+                                            Chart.data.datasets[0].label = '';
+                                            Chart.data.datasets[0].hidden = true;
+                                            Chart.data.datasets[1].label = 'Fast Moving';
+                                            Chart.data.datasets[1].hidden = false;
+                                            Chart.options.plugins.legend.display = false;
+                                        } else if (selectedOption === 'slow') {
+                                            filteredData = data1.filter(function (item) {
+                                                return item.Quantity1 <= 50;
+                                            });
+
+                                            Chart.data.datasets[0].label = 'Slow Moving';
+                                            Chart.data.datasets[0].hidden = false;
+                                            Chart.data.datasets[1].label = '';
+                                            Chart.data.datasets[1].hidden = true;
+                                            Chart.options.plugins.legend.display = false;
+                                        }
+
+                                        var filteredSlowMoving = filteredData.map(function (item) {
+                                            if (item.Quantity1 <= 50) {
+                                                return {
+                                                    value: item.Quantity1,
+                                                    color: 'rgba(255, 147, 47)'
+                                                };
+                                            }
+                                        }).filter(Boolean);
+
+                                        var filteredFastMoving = filteredData.map(function (item) {
+                                            if (item.Quantity1 >= 51 && item.Quantity1 <= 5000) {
+                                                return {
+                                                    value: item.Quantity1,
+                                                    color: 'rgba(0,128,0, 1)'
+                                                };
+                                            }
+                                        }).filter(Boolean);
+
+                                        Chart.data.datasets[0].data = filteredSlowMoving.map(function (item) { return item.value; });
+                                        Chart.data.datasets[0].backgroundColor = filteredSlowMoving.map(function (item) { return item.color; });
+                                        Chart.data.datasets[0].hidden = (selectedOption === 'fast'); // hide slow moving labels when fast moving is selected
+
+                                        Chart.data.datasets[1].data = filteredFastMoving.map(function (item) { return item.value; });
+                                        Chart.data.datasets[1].backgroundColor = filteredFastMoving.map(function (item) { return item.color; });
+
+                                        Chart.update();
+                                    });
+
+                                    
+                                    var Slowmoving = data1.map(function (item) {
+                                        if (item.Quantity1 <= 50) {
+                                            return {
+                                                value: item.Quantity1,
+                                                color: 'rgba(255, 147, 47)'
+                                            };
+                                        } 
+                                    }).filter(Boolean);
+
+                                    var Fastmoving = data1.map(function (item) {
+                                        if (item.Quantity1 >= 51 && item.Quantity1 <= 5000) {
+                                            return {
+                                                value: item.Quantity1,
+                                                color: 'rgba(0,128,0, 1)'
+                                            };
+                                        } 
+                                    }).filter(Boolean);
 
                                     var ctx = document.getElementById('barcharthori1').getContext('2d');
                                     var Chart = new Chart(ctx, {
                                         type: 'bar',
                                         data: {
                                             labels: labels1,
-                                            datasets: [{
-                                                label: 'Quantity',
+                                            datasets: [
 
-                                                data: values1,
-                                                backgroundColor: 'rgba(37,109,133)',
-                                                borderColor: 'rgba(54, 162, 235, 1)',
-                                                borderWidth: 1
-                                            }]
+                                                {
+                                                    label: 'Slow Moving',
+                                                    data: Slowmoving.map(function (item) { return item.value; }),
+                                                    backgroundColor: Slowmoving.map(function (item) { return item.color; }),
+                                                    borderColor: 'rgba(255,0,0)',
+                                                    borderWidth: 1
+                                                },
+                                                {
+                                                    label: 'Fast Moving',
+                                                    data: Fastmoving.map(function (item) { return item.value; }),
+                                                    backgroundColor: Fastmoving.map(function (item) { return item.color; }),
+                                                    borderColor: 'rgba(0,128,0, 1)',
+                                                    borderWidth: 1
+                                                }
+                                            ]
                                         },
                                         options: {
                                             indexAxis: 'y',
                                             responsive: true,
                                             maintainAspectRatio: false,
                                             aspectRatio: 4 / 3,
+                                            plugins: {
+                                        legend: {
+                                            display:false
+                                    }
+                                    },
                                             scales: {
                                                 yAxes: [{
                                                     ticks: {
@@ -494,7 +626,7 @@
                             <label> Quantity </label>
                         </div>
 
-                        <label class="fst-date">03/08/2023 - 03/08/2023</label>
+                        <label class="fst-date"></label>
                     </div>
 
                 </div>

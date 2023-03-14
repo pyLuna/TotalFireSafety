@@ -3,10 +3,14 @@ let filtered = [];
 let itemCategories = [];
 let newArray = [];
 let fixedArray = [];
+let formsId = ['#qtyForm', '#addForm', '#editForm'];
+let sliced = "";
 let prevVal = "";
+let prevNum = "";
 let table = document.querySelector('#myTable tbody');
 let selcat = document.getElementById('selcat');
 let filter = document.getElementById('filter');
+//#region add form elements
 let category = document.getElementById('in_category');
 let class1 = document.getElementById('class');
 let class2 = document.getElementById('in_class');
@@ -14,11 +18,29 @@ let name = document.getElementById('in_name');
 let type = document.getElementById('in_type');
 let itemCode = document.getElementById('in_code');
 let dateAdded = document.getElementById('dateAdded');
-let form = document.querySelectorAll('#myForm');
-let allList = document.querySelectorAll('#myForm datalist');
-let allSelect = document.querySelectorAll('#myForm select');
+let add = document.querySelectorAll('#addForm');
+let addForm = document.querySelectorAll('#addForm datalist');
+let addFormSel = document.querySelectorAll('#addForm select');
+let formBtns = document.querySelectorAll('#addForm .form-add-btns button');
+//#endregion
+
+let qtyCode = document.getElementById('in_code1');
+let qtyFormSel = document.querySelectorAll('#qtyForm select');
+let qty = document.querySelectorAll('#qtyForm');
+let selcat1 = document.getElementById('selcat1');
+let selclass = document.getElementById('selclass');
+let seltype = document.getElementById('seltype');
+let inpSize1 = document.getElementById('inpSize1');
+let inpSize = document.getElementById('inpSize');
+let inpQuant = document.getElementById('inpQuant');
+let inpQuant1 = document.getElementById('inpQuant1');
+
+let editFormSel = document.querySelectorAll('#editForm select');
+
+let edit = document.querySelectorAll('#editForm');
 let imgContainer = document.getElementById("image-container");
-let formBtns = document.querySelectorAll('#myForm .form-add-btns button');
+let EditFormBtns = document.querySelectorAll('#editForm .form-add-btns button');
+let QtyFormBtns = document.querySelectorAll('#qtyForm .form-add-btns button');
 
 //#region Listener area
 class1.addEventListener("change", SetItemCode);
@@ -29,6 +51,17 @@ formBtns.forEach((btns) => {
 		event.preventDefault();
 	});
 });
+EditFormBtns.forEach((btns) => {
+	btns.addEventListener("click", function (event) {
+		event.preventDefault();
+	});
+});
+QtyFormBtns.forEach((btns) => {
+	btns.addEventListener("click", function (event) {
+		event.preventDefault();
+	});
+});
+qtyCode.addEventListener("keydown",Scan)
 //#endregion
 
 function GetAll() {
@@ -61,6 +94,62 @@ function GetAll() {
 		.catch(error => {
 			//window.location.replace('/Error/InternalServerError');
 			console.error(error);
+		});
+}
+function DeleteItem() {
+	let item = localStorage.getItem("code");
+
+	fetch('/Admin/DeleteItem?item=' + item, {
+		method: "POST"
+	})
+		.then(res => {
+			if (res.ok) {
+				// API request was successful
+				return res.json();
+			} else {
+				console.log(res.statusText);
+			}
+		})
+		.then(data => {
+			localStorage.setItem("removed", "success");
+			window.location.reload();
+
+		})
+		.catch(error => {
+			console.error(error);
+		});
+}
+function GetBarcode() {
+	event.preventDefault();
+	fetch('/Admin/GetBarcode?itemCode=' + itemCode.value, {
+		method: "POST"
+	})
+		.then(res => {
+			if (res.ok) {
+				// API request was successful
+				return res.json();
+			} else {
+				console.log(res.statusText);
+			}
+		})
+		.then(data => {
+			const img = document.createElement('img');
+			// find the container element to append the image to
+			var parsed = JSON.parse(data);
+			// set its source to the image data
+			img.setAttribute("id", "barcodeImg");
+			//img.setAttribute("download", "filename.png");
+			img.src = `data:image/pmg;base64,${parsed}`;
+
+			//const container = document.getElementById('image-container');
+
+			// append the image to the container element
+			imgContainer.innerHTML = "";
+			imgContainer.appendChild(img);
+		})
+		.catch(error => {
+			imgContainer.style.display = "none";
+			//console.error(error);
 		});
 }
 
@@ -114,10 +203,9 @@ function setTable(array) {
 			row += `<td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
 			row += `<td name="in_remarks"><label class="${remclass}">${remarks}</label></td>`;
 			row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
-			row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
-			row += `<button class="qty-add-btn" title="ADD QUANTIYY SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="las la-plus"></span></a></button>`;
-			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="addOpenPopupInv()"> <a href="#"><span class="lar la-edit"></span></a></button>`;
-			row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick = "canOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
+			row += `<td id="hideActionBtn"><div class="inventory-action-style">`; 
+			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="OpenEdit('${array[i].in_code}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+			row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick = "delOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
 			row += `</div></td>`;
 			row += `</tr>`;
 			table.innerHTML += row;
@@ -156,47 +244,18 @@ function getDateNow() {
 }
 
 function resetForm() {
-	for (let i = 0; i < form.elements.length; i++) {
-		form.elements[i].value = "";
-	}
-	class1.selectedIndex = 0;
-	type.selectedIndex = 0;
-}
-
-function GetBarcode() {
-	event.preventDefault();
-	fetch('/Admin/GetBarcode?itemCode=' + itemCode.value, {
-		method: "POST"
-	})
-		.then(res => {
-			if (res.ok) {
-				// API request was successful
-				return res.json();
-			} else {
-				console.log(res.statusText);
-			}
-		})
-		.then(data => {
-			//console.log(data);
-			//displayBarcode(data);
-			const img = document.createElement('img');
-			// find the container element to append the image to
-			var parsed = JSON.parse(data);
-			// set its source to the image data
-			img.setAttribute("id", "barcodeImg");
-			//img.setAttribute("download", "filename.png");
-			img.src = `data:image/pmg;base64,${parsed}`;
-
-			//const container = document.getElementById('image-container');
-
-			// append the image to the container element
-			imgContainer.innerHTML = "";
-			imgContainer.appendChild(img);
-		})
-		.catch(error => {
-			imgContainer.style.display = "none";
-			//console.error(error);
+	formsId.forEach(id => {
+		let allInputs = `${id} input`;
+		let allSelects = `${id} select`;
+		let inputs = document.querySelectorAll(allInputs);
+		let sels = document.querySelectorAll(allSelects);
+		inputs.forEach(item => {
+			item.value = "";
 		});
+		sels.forEach(item => {
+			item.selectedIndex = 0;
+		});
+	});
 }
 //#endregion
 
@@ -274,7 +333,7 @@ function SearchItem(value) {
 		setTable(filtered);
 	}
 }
-
+// wag galawin
 function FilterItem(value,array) {
 	filtered.length = 0;
 	let catvalue = selcat.options[selcat.selectedIndex].value.toLocaleLowerCase();
@@ -291,35 +350,12 @@ function FilterItem(value,array) {
 			}
 		}
 	}
-
-	//let array = [];
-	//let catvalue = selcat.options[selcat.selectedIndex].value.toLocaleLowerCase();
-	//let filvalue = filter.options[filter.selectedIndex].value.toLocaleLowerCase();
-	//if (filter.selectedIndex != 0 && selcat.selectedIndex != 0) {
-	//    array = filtered;
-	//}
-	//else {
-	//    array = fixedArray;
-	//}
-	//for (let j = 0; j < array.length; j++) {
-	//    if (filter.selectedIndex != 0 && selcat.selectedIndex == 0 || selcat.selectedIndex != 0 && filter.selectedIndex == 0) {
-	//        if (JSON.stringify(array[j].in_category).toLowerCase().includes(value) || JSON.stringify(array[j].in_remarks).toLowerCase().includes(value)) {
-	//            filtered.push(array[j]);
-	//        }
-	//    }
-	//    else {
-	//        if (JSON.stringify(array[j].in_category).toLowerCase().includes(catvalue) && JSON.stringify(array[j].in_remarks).toLowerCase().includes(filvalue)) {
-	//            newArray.push(array[j]);
-	//        }
-	//    }
-	//}
-	//newArray.length = 0;
 }
 //#endregion
 
 //#region set the attributes of the new item form
 function setDatalist() {
-	allList.forEach((datalist) => {
+	addForm.forEach((datalist) => {
 		newArray.length = 0;
 		var id = datalist.id;
 		var sel = document.getElementById(id) === null ? undefined : document.getElementById(id);
@@ -343,24 +379,32 @@ function setDatalist() {
 	});
 }
 
-function AppendOption() {
-	var optionValue = '';
-	allSelect.forEach((item) => {
+function AppendOption(array) {
+	array.forEach((item) => {
+		var optionValue = '';
 		newArray.length = 0;
 		var id = item.getAttribute('id');
 		var sel = document.getElementById(id) === null ? undefined : document.getElementById(id);
 		sel.innerHTML = '';
 		fixedArray.forEach(function (item) {
-			if (id == 'class') {
+			if (id == 'selcat1' || id == 'selcat2') {
+				optionValue = 'Select Category';
+				newArray.push(item.in_category);
+			}
+			if (id == 'seltype' || id == 'seltype2') {
+				optionValue = 'Select Type';
+				newArray.push(item.in_type);
+			}
+			if (id == 'class' || id == 'selclass' || id == 'selclass2') {
 				optionValue = 'Select Class';
 				newArray.push(item.in_class);
 			}
-			if (id == 'sizeSel') {
+			if (id == 'sizeSel' || id == 'inpSize' || id == 'inpSize2A') {
 				optionValue = 'Unit';
 				let sizeResult = extractNum(item.in_size);
 				newArray.push(sizeResult.measurement);
 			}
-			if (id == 'sizeQuant') {
+			if (id == 'sizeQuant' || id == 'inpQuant' || id == 'inpQuant2A') {
 				optionValue = 'Unit';
 				let quantResult = extractNum(item.in_quantity);
 				newArray.push(quantResult.measurement);
@@ -373,6 +417,9 @@ function AppendOption() {
 			if (item1 == ".IN" || item1 == "X.IN" || item1 == "XIN") {
 				item1 = '';
 			}
+			if (item1 == "LENGTH") {
+				item1 = '';
+			}
 			if (item1 == ".IN,LENGTH") {
 				item1 = 'LENGTH';
 			}
@@ -383,11 +430,9 @@ function AppendOption() {
 		sel.innerHTML = option;
 		sel.selectedIndex = 0;
 	});
-	setDatalist();
 	//sabit lang to para magka value yung date added na input
 	dateAdded.value = getDateNow();
 }
-
 //#endregion
 
 //#region set item code
@@ -436,6 +481,7 @@ function abbreviateString(str) {
 //#endregion
 
 //#region insert data on all hidden inputs
+//for addForm
 function SetHiddenValues() {
 	var in_class = document.getElementById('in_class');
 	var in_size = document.getElementById('in_size');
@@ -460,4 +506,203 @@ function SetHiddenValues() {
 		in_remarks.value = 'critical';
 	}
 }
+
+//for edit form
+function setHiddensEdit() {
+	var catsel = document.getElementById('selcat2');
+	var typesel = document.getElementById('seltype2');
+	var classsel = document.getElementById('selclass2');
+	var inpSize2A = document.getElementById('inpSize2A');
+	var inpQuant2A = document.getElementById('inpQuant2A');
+	var inpQuant2 = document.getElementById('inpQuant2');
+	var inpSize2 = document.getElementById('inpSize2');
+	var cat1 = document.getElementById('in_category2');
+	var cl1 = document.getElementById('in_class2');
+	var ty1 = document.getElementById('in_type2');
+	var sz1 = document.getElementById('in_size2');
+	var qt1 = document.getElementById('in_quantity2');
+	var rm1 = document.getElementById('in_remarks2');
+	var oldqt = extractNum(filtered[0].in_quantity);
+	var newqt = Number(oldqt.num) + Number(inpQuant2.value);
+	cat1.value = catsel.options[catsel.selectedIndex].value;
+	cl1.value = classsel.options[classsel.selectedIndex].value;
+	ty1.value = typesel.options[typesel.selectedIndex].value;
+	qt1.value = newqt + ' ' + inpQuant2A.options[inpQuant2A.selectedIndex].value;
+	sz1.value = inpSize2.value + ' ' + inpSize2A.options[inpSize2A.selectedIndex].value;
+
+	if (newqt < 40) {
+		rm1.value = 'critical';
+	}
+	else if (newqt > 60) {
+		rm1.value = 'standard';
+	}
+	else {
+		rm1.value = 'average';
+	}
+
+	console.log(`${cat1.value}	${cl1.value}	${ty1.value}	${qt1.value}	${sz1.value}`);
+}
+
+//for add qty form
+function setHiddens() {
+	var cat1 = document.getElementById('in_category1');
+	var cl1 = document.getElementById('in_class1');
+	var ty1 = document.getElementById('in_type1');
+	var sz1 = document.getElementById('in_size1');
+	var qt1 = document.getElementById('in_quantity1');
+	var rm1 = document.getElementById('in_remarks1');
+	var oldqt = extractNum(filtered[0].in_quantity);
+	var newqt = Number(oldqt.num) + Number(inpQuant1.value);
+	cat1.value = selcat1.options[selcat1.selectedIndex].value;
+	cl1.value = selclass.options[selclass.selectedIndex].value;
+	ty1.value = seltype.options[seltype.selectedIndex].value;
+	qt1.value = newqt + ' ' + inpQuant.options[inpQuant.selectedIndex].value;
+	sz1.value = inpSize1.value + ' ' + inpSize.options[inpSize.selectedIndex].value;
+
+	if (newqt < 40) {
+		rm1.value = 'critical';
+	}
+	else if (newqt > 60) {
+		rm1.value = 'standard';
+	}
+	else {
+		rm1.value = 'average';
+	}
+
+	console.log(`${cat1.value}	${cl1.value}	${ty1.value}	${qt1.value}	${sz1.value}`);
+}
 //#endregion
+
+//#region process barcode
+function Scan(event) {
+	if (event.which === 13 || event.keyCode === 13) {
+		event.preventDefault();
+		// retrieve the scanned value
+		if (sliced.length == 0) {
+			sliced = qtyCode.value;
+		}
+
+		if (qtyCode.value.length != prevVal.length) {
+			if (prevVal.length != 0) {
+				var index = 0;
+				while (index <= prevVal.length) {
+					index++;
+				}
+				sliced = qtyCode.value.slice(index - 1);
+			}
+		}
+		if (sliced.length != 0) {
+			qtyCode.value = sliced;
+		}
+		SetField(qtyCode.value, '#qtyForm input','#qtyForm select','add');
+		let prevNum = inpQuant1.value;
+		if (inpQuant1.value == "" && prevNum == "" || qtyCode.value !== prevVal) {
+			inpQuant1.value = 1;
+		}
+		else if (qtyCode.value === prevVal && prevVal != "" && sliced != "") {
+			inpQuant1.value = Number(prevNum) + 1;
+		}
+		prevVal = sliced;
+	}
+}
+//#endregion
+
+//#region set fields on form
+function SetField(codeToProcess, input, select,type) {
+	filterArray(codeToProcess.toLowerCase());
+	var input = document.querySelectorAll(input);
+	var select = document.querySelectorAll(select);
+
+	input.forEach(input => {
+		if (input.tagName.toLowerCase() === 'input') {
+			// Do something with it, for example:
+			filtered.forEach(item => {
+				var qty = extractNum(item.in_quantity);
+				var sz = extractNum(item?.in_size);
+				if (input.id == 'in_code2') {
+					input.value = item.in_code;
+				}
+				if (input.id == 'in_name1' || input.id == 'in_name2') {
+					input.value = item.in_name;
+				}
+				if (input.id == 'inpQuant1' || input.id == 'inpQuant2') {
+					if (type != 'add') {
+						input.value = Number(qty.num);
+					}
+				}
+				if (input.id == 'inpSize1' || input.id == 'inpSize2') {
+					if (sz.num != 0) {
+						input.value = Number(sz.num);
+					}
+				}
+				if (input.id == 'inpDate' || input.id == 'inpDate2') {
+					input.value = item.in_dateAdded;
+				}
+			});
+		}
+	});
+	select.forEach(input => {
+		if (input.tagName.toLowerCase() === 'select') {
+			if (input.id == 'selcat1' || input.id == 'selcat2') {
+				for (var index = 0; index < input.options.length; index++) {
+					let option = input.options[index].value;
+					if (filtered[0].in_category === option) {
+						input.selectedIndex = index;
+					}
+				}
+			}
+			if (input.id == 'selclass' || input.id == 'selclass2') {
+				for (var index = 0; index < input.options.length; index++) {
+					let option = input.options[index].value;
+					if (filtered[0].in_class === option) {
+						input.selectedIndex = index;
+					}
+				}
+			}
+			if (input.id == 'seltype' || input.id == 'seltype2') {
+				for (var index = 0; index < input.options.length; index++) {
+					let option = input.options[index].value;
+					if (filtered[0].in_type === option) {
+						input.selectedIndex = index;
+					}
+				}
+			}
+			if (input.id == 'inpQuant' || input.id == 'inpQuant2A') {
+				var quant = extractNum(filtered[0].in_quantity);
+				for (var index = 0; index < input.options.length; index++) {
+					let option = input.options[index].value;
+					if (quant.measurement === option) {
+						input.selectedIndex = index;
+					}
+				}
+			}
+			if (input.id == 'inpSize' || input.id == 'inpSize2A') {
+				var sze = extractNum(filtered[0].in_size);
+				var newUnit = "";
+				if (sze.measurement == ".IN" || sze.measurement == "X.IN" || sze.measurement == "XIN") {
+					newUnit = 'IN';
+				} else if (sze.measurement == ".IN,LENGTH") {
+					newUnit = 'LENGTH';
+				}
+				else {
+					newUnit = sze.measurement;
+				}
+				for (var index = 0; index < input.options.length; index++) {
+					let option = input.options[index].value;
+					if (newUnit === option) {
+						input.selectedIndex = index;
+					}
+				}
+			}
+		} 
+	});
+	//GetBarcode()
+}
+//#endregion
+
+function OpenEdit(invCode) {
+	editOpenPopupInv();
+	var inputs = document.querySelector('#editForm').elements;
+	AppendOption(editFormSel);
+	SetField(invCode, '#editForm input', '#editForm select', 'edit');
+}

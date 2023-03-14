@@ -85,7 +85,9 @@ function setTable(array) {
 			 * stat-average
 			 * stat-re-order
 			 */
-			let row = `<tr>`; /*onclick = "canOpenPopup()"*/
+			let row = `<tr>`;
+			row += `<form action="/Admin/AddItem1?item=${array[i].emp_no}" method="post" id="tableList">`;
+/*onclick = "canOpenPopup()"*/
 			row += `<td id="in_code"><label>${array[i].in_code}</label></td>`;
 			row += `<td name="in_name"><label>${array[i].in_name}</label></td>`;
 			row += `<td name ="in_category"> <label>${array[i].in_category}</label></td>`;
@@ -96,10 +98,11 @@ function setTable(array) {
 			row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
 			row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
 			row += `<button class="qty-add-btn" title="ADD QUANTIYY SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="las la-plus"></span></a></button>`;
-			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="addOpenPopupInv()"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="editOpenPopupInv('${array[i].in_code}') + AppendOption()"> <a href="#"><span class="lar la-edit"></span></a></button>`;
 			row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick = "canOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
 			row += `</div></td>`;
 			row += `</tr>`;
+			row += `</form>`;
 			table.innerHTML += row;
 		}
 	}
@@ -254,7 +257,7 @@ function AppendOption() {
 		newArray.length = 0;
 		var id = item.getAttribute('id');
 		var sel = document.getElementById(id) === null ? 0 : document.getElementById(id);
-
+		sel.innerHTML = '';
 		fixedArray.forEach(function (item) {
 			if (id == 'category') {
 				optionValue = 'Select Category';

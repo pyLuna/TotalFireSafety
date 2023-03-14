@@ -352,19 +352,20 @@ namespace TotalFireSafety.Controllers
             }
             var serializedModel = JsonConvert.SerializeObject(item);
             var userToken = Session["access_token"].ToString();
-            string uri;
+            string uri = "", message = "";
 
-            if( item.formType == "add")
+            if ( item.formType == "add")
             {
                 uri = "Warehouse/Inventory/Add";
+                message = "Added!";
             }
-            else
+            if (item.formType == "edit")
             {
-                uri = "Warehouse/Inventory/Edit";
+                uri = "Warehouse/Inventory/Update";
+                message = "Updated!";
             }
-
             var response = api_req.SetMethod(uri, userToken, serializedModel);
-
+            ViewBag.Message = message;
             if (response == "BadRequest")
             {
                 //return Json("error", JsonRequestBehavior.AllowGet);
@@ -376,6 +377,7 @@ namespace TotalFireSafety.Controllers
                 //return Json("error", JsonRequestBehavior.AllowGet);
             }
             var json = JsonConvert.DeserializeObject(response);
+          
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             Session["edit"] = json.ToString();
             return RedirectToAction("Inventory");
@@ -421,6 +423,7 @@ namespace TotalFireSafety.Controllers
             {
                 Session["edit"] = "pending";
             }
+
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }

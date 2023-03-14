@@ -154,13 +154,13 @@
                 </div>
             </div>
 
-            <div class="edit-popup-inv" id="edit-qty-popup-inv">
+            <div class="add-popup-inv" id="edit-popup-inv">
                 <div class="inventory-add-container">
 
                     <!-- Inventory Edit Item -->
 
                     <div class="inventory-form-container">
-                        <form action="">
+                        <form action="@Url.Action("AddItem1", "Admin","edit")" method="post" id="formId" >
                             <div class="details-personal">
                                 <div class="inventory-form-header">
                                     EDIT ITEM
@@ -170,45 +170,42 @@
                                     <div class="fields">
                                         <div class="input-field">
                                             <label>Item ID</label>
-                                            <input type="number" placeholder="00000" readonly>
+                                            <input type="number" placeholder="00000" name="in_code" id="in_code" readonly>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Item Name</label>
-                                            <input type="text" placeholder="Enter item name" required>
+                                            <input type="text" placeholder="Enter item name" name="in_name" id="in_name" required>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Category</label>
-                                            <select required>
+                                            <select name="in_category" id="in_category" required>
                                                 <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
+
                                             </select>
                                         </div>
-
+                                        <input type="text" id="formType" name="formType" style="display:none;" readonly>
                                         <div class="input-field">
                                             <label>Class</label>
-                                            <select required>
+                                            <select name="in_class" id="in_class" required>
                                                 <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
+
                                             </select>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Type</label>
-                                            <select required>
+                                            <select name="in_type" id="in_type" required>
                                                 <option disabled selected>Select Category</option>
-                                                <option>...</option>
-                                                <option>..</option>
+
                                             </select>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Size</label>
                                             <div class="input-field-size">
-                                                <input type="number" placeholder="00000" required>
+                                                <input type="number" name="in_size" id="in_size" placeholder="00000" required>
                                                 <select required>
                                                     <option disabled selected>Measurement</option>
                                                     <option>cm</option>
@@ -219,7 +216,7 @@
                                         <div class="input-field">
                                             <label>Quantity</label>
                                             <div class="input-field-quantity">
-                                                <input type="number" placeholder="00000" required>
+                                                <input type="number" name="in_quantity" id="in_quantity" placeholder="00000" required>
                                                 <select required>
                                                     <option disabled selected>Measurement</option>
                                                     <option>cm</option>
@@ -230,7 +227,7 @@
 
                                         <div class="input-field">
                                             <label>Date Added</label>
-                                            <input type="text" placeholder="00/00/00" readonly>
+                                            <input type="text" name="in_dateAdded" id="in_dateAdded" placeholder="00/00/00" readonly>
                                         </div>
                                         <div class="input-field">
                                             <div class="img-bar-grp">
@@ -239,6 +236,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                             </div>
 
                             <div class="form-add-btns">
@@ -247,8 +245,10 @@
                                     <i class="las la-check-square"></i>
                                 </button>
 
+                                <button class="save" id="saveBtn11" style="display:none;"></button>
+
                                 <button class="cancel">
-                                    <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                    <span class="btnText" onclick="editClosePopupInv()">Cancel</span>
                                     <i class="las la-window-close"></i>
                                 </button>
                             </div>
@@ -578,6 +578,8 @@
         function closePopup() {
             popup.classList.remove("open-popup-show")
         }
+
+
         let infopopup = document.getElementById("info-popup");
 
         function infoOpenPopup() {
@@ -596,6 +598,16 @@
 
         function addClosePopupInv() {
             addpopupinv.classList.remove("add-popup-inv-show")
+        }
+
+        let editpopupinv = document.getElementById("edit-popup-inv");
+        function editOpenPopupInv() {
+            editpopupinv.classList.add("add-popup-inv-show")
+            //AddListener();
+        }
+
+        function editClosePopupInv() {
+            editpopupinv.classList.remove("add-popup-inv-show")
         }
 
         let canpopup = document.getElementById("can-popup");

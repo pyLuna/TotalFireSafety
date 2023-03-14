@@ -59,7 +59,7 @@
                     @*Barcode Container*@
 
                     <div class="inventory-form-container">
-                        <form action="@Url.Action("AddItem1", "Admin")" id="addForm" method="post">
+                        <form action="@Url.Action("AddItem1", "Admin")" id="addForm" method="post" class="inv-form">
                             <div class="details personal">
                                 <div class="inventory-form-header">
                                     ITEM DETAILS
@@ -73,19 +73,20 @@
                                 <input type="text" id="formType" name="formType" style="display:none" required>
                                 <div class="inventory-form-contents">
                                     <div class="fields">
-                                        <div class="input-field">
+
+                                        <div class="input-field wrap-input100 validate-input" data-validation>
                                             <label>Item Code</label> @*oninput="dataListOption(this.value)"*@
-                                            <input type="text" id="itemCode" list="itemList" name="in_code" placeholder="ABC-DEF-GHI" required>
+                                            <input class="input100" type="text" id="itemCode" list="itemList" name="in_code" placeholder="ABC-DEF-GHI" required>
                                             <datalist id="itemList">
                                             </datalist>
                                         </div>
 
-                                        <div class="input-field">
+                                        <div class="input-field wrap-input100 validate-input">
                                             <label>Item Name</label>
-                                            <input type="text" placeholder="Item Name" name="in_name" id="itemName" readonly required>
+                                            <input class="input100" type="text" placeholder="Item Name" name="in_name" id="itemName" readonly required>
                                         </div>
 
-                                        <div class="input-field">
+                                        <div class="input-field wrap-input100 validate-input">
                                             <label>Category</label>
                                             <select id="cat-select" readonly required>
                                                 <option disabled selected value="">Select Category</option>
@@ -99,7 +100,7 @@
                                             <input type="text" id="hiddenCategory" name="in_category" style="display:none">
                                         </div>
 
-                                        <div class="input-field">
+                                        <div class="input-field wrap-input100 validate-input">
                                             <label>Class</label>
                                             <select id="class-select" readonly required>
                                                 <option disabled selected value="">Select Category</option>
@@ -109,7 +110,7 @@
                                             <input type="text" id="hiddenCategory" name="in_category" style="display:none">
                                         </div>
 
-                                        <div class="input-field">
+                                        <div class="input-field wrap-input100 validate-input">
                                             <label>Type</label>
                                             <select id="type-select" readonly>
                                                 <option disabled selected>Select Type</option>
@@ -119,7 +120,7 @@
                                             <input type="text" id="hiddenType" name="in_type" style="display:none">
                                         </div>
 
-                                        <div class="input-field">
+                                        <div class="input-field wrap-input100 validate-input">
                                             <label>Size</label>
                                             <div class="input-field-size">
                                                 <input type="number" placeholder="00000" id="itemSize" readonly>
@@ -131,7 +132,7 @@
                                                 <input type="text" id="hiddenSize" name="in_size" style="display:none">
                                             </div>
                                         </div>
-                                        <div class="input-field">
+                                        <div class="input-field wrap-input100 validate-input">
                                             <label>Quantity</label>
                                             <div class="input-field-quantity">
                                                 @*onchange="AddValue(this.options[this.selectedIndex].value,'edit'*@
@@ -239,6 +240,7 @@
 
     </main>
 </div>
+<script src='@Url.Content("~/Scripts/valinv/invtst.js")'></script>
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>

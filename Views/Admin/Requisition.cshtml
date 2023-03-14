@@ -11,34 +11,151 @@
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            Requisition
+            Purchase Request
         </h2>
     </header>
 
     <main>
-
         <div class="upper-section">
             <div class="search-wrapper">
                 <span class="las la-search"></span>
-                <input type="text" placeholder="Search here" onkeyup="SearchItem(this.value)">
+                <input type="text" placeholder="Search here">
             </div>
         </div>
 
         <div class="purchase-grid">
             <div class="purchase-header">
-                <h3>REQUEST LISTS</h3>
+                <h3>PURCHASE REQUEST LISTS</h3>
                 <div class="purchase-buttons-style">
-                    <button class="add-btn" title="ADD NEW REQUEST" id="add-quant" onclick="addOpenPopupPur() + EmployeeList() + createRow()"><span class="las la-plus-circle"></span></button>
-                    <button class="pri-btn" title="PRINT REPORT" onclick="printOpenPopup()"><span class="las la-print"></span></button>
-                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()"><span class="las la-file-download"></span></button>
-                    <button class="purchase-sort-btn" onclick="userSortFunction()">
-                        <span></span>
-                        <span class="las la-chevron-down"></span>
+
+                    <!--NEW UPDATE -->
+
+                    <button class="create-req-btn" title="CREATE ORDER" onclick="addOpenPopupPur()">
+                        <a>
+                            CREATE REQUEST
+                            <span class="las la-file-alt"></span>
+                        </a>
                     </button>
-                    <div class="purchase-sort-content" id="purSortDropdown">
-                        <a href="#">Ascending</a>
-                        <a href="#">Descending</a>
+
+                    <button>
+                        <a onclick="openForm()">
+                            NOTIFICATION
+                            <span class="las la-bell"></span>
+                        </a>
+                    </button>
+
+                    <!-- NOTIFICATION CONTAINER -->
+
+                    <div class="notif-popup" id="notifForm">
+                        <div class="notif-container">
+
+
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+
+                        </div>
+                        <center>
+                            <button type="button" class="close-btn" onclick="closeForm()"><i class="las la-times-circle"></i></button>
+                        </center>
                     </div>
+
+                    <!-- END -->
+                    <!-- VEW NOTIFICATION CONTAINER -->
+
+                    <div class="view-popup" id="viewForm">
+                        <div class="view-container">
+
+                            <a onclick="openForm() + viewCloseForm()"><span class="las la-long-arrow-alt-left"></span> Back </a>
+
+                            <div class="view-list-container">
+                                <center>
+                                    <label>
+                                        <h3>RequestID: DEPREQ12</h3>
+                                    </label>
+                                </center>
+
+                            </div>
+
+                            <div class="acc-container">
+
+                            </div>
+                        </div>
+                        <center>
+
+                            <button type="button" class="appr-btn" onclick="">
+                                <a>
+                                    Approve
+                                    <span class="las la-check-circle"></span>
+                                </a>
+                            </button>
+
+                            <button type="button" class="appr-btn" onclick="">
+                                <a>
+                                    Decline
+                                    <span class="las la-times-circle"></span>
+                                </a>
+                            </button>
+                        </center>
+                    </div>
+
+                    <!-- END -->
+
+                    <select required>
+                        <option disabled selected>FILTER</option>
+                        <option>All</option>
+                        <option>Local</option>
+                        <option>Import</option>
+                    </select>
 
                 </div>
 
@@ -47,11 +164,10 @@
                 <div class="purchase">
                     <div class="purchase-body">
                         <div class="table-responsive" style="overflow-x: auto;">
-                            <table width="100%" id="myTable">
+                            <table width="100%">
                                 <thead>
                                     <tr>
-                                        <td>Request ID</td>
-                                        <td>Type</td>
+                                        <td><a>Request ID<i class="las la-sort-down"></td>
                                         <td>Requestor Name</td>
                                         <td>Employee ID</td>
                                         <td>Date Requested</td>
@@ -60,6 +176,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td>PREQ67490</td>
+                                        <td>Clarisse C. Vasques</td>
+                                        <td>008273126</td>
+                                        <td>Jan. 11, 2023</td>
+                                        <td><label class="stat-dec">Declined</label></td>
+                                        <td>
+                                            <div class="purchase-action-style">
+                                                <button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>
+                                                <button class="dec-btn" title="DECLINE REQUEST" onclick="canOpenPopup()"> <a href="#"><span class="las la-times-circle"></span></a></button>
+                                                <button class="pri-btn" title="PRINT" onclick=""> <a href="#"><span class="las la-print"></span></a></button>
+                                                <button class="dec-btn" title="DELETE" onclick=""> <a href="#"><span class="las la-trash-alt"></span></a></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -68,52 +202,44 @@
             </div>
         </div>
 
+        <!-- Purchasing Add -->
+
         <div class="add-popup-pur" id="add-popup-pur">
             <div class="purchase-add-container">
                 <div class="purchase-form-container">
-                    <form action="" id="formId">
+                    <form action="">
                         <div class="request-details">
                             <div class="purchase-form-header">
                                 REQUEST DETAILS
                             </div>
                             <div class="purchase-form-contents">
                                 <div class="fields">
-                                    <div class="input-field wrap-input100 validate-input" data-validation>
+                                    <div class="input-field">
                                         <label>
-                                            <a>Name: </a><br />
-                                            <input type="text" id="request_emp" oninput="setForm(this.value,'add')" list="itemList" name="request_emp" placeholder="Name" required>
-                                            <datalist id="itemList">
-                                            </datalist>
-                                            <br />
-                                            <label id="request_emp-error" class="error manual-error" for="request_emp"></label>
-                                        </label>
-                                    </div>
-                                    <br />
-                                    <div class="input-field wrap-input100 validate-input">
-                                        <label id="reqtype">
-                                            <a>Request Type: </a><br>
-                                            <select style="height:40px;" onchange="setReqId(this.selectedIndex)" id="select_type" name="select_type" required>
-                                                <option readonly value="">Choose Type</option>
-                                                <option value="Deploy">Deploy</option>
-                                                <option value="Purchase">Purchase</option>
-                                                <option value="Supply">Supply</option>
+                                            <a>Name: </a>
+                                            <select required>
+                                                <option disabled selected>Select Name</option>
+                                                <option>Supervisor</option>
+                                                <option>Office Manager</option>
+                                                <option>Warehouse Manager</option>
                                             </select>
-                                            <br />
-                                            <label id="select_type-error" class="error manual-error" for="select_type"></label>
                                         </label>
                                     </div>
-                                    <div class="input-field wrap-input100 validate-input">
-                                        <label>Postion:<span id="position"></span></label>
+                                    <div class="input-field">
+                                        <label><a>Role/Position: </a>Office Manager </label>
                                     </div>
-                                    <div class="input-field wrap-input100 validate-input">
-                                        <label>Employee ID:<span id="employeeId"></span></label>
+                                    <div class="input-field">
+                                        <label><a>Employee ID: </a>00001 </label>
                                     </div>
 
-                                    <div class="input-field wrap-input100 validate-input">
-                                        <label>Request Date:<span id="reqdate"></span></label>
+                                    <div class="input-field">
+                                        <label><a>Request Remarks: </a>Item for Deployment </label>
                                     </div>
-                                    <div class="input-field wrap-input100 validate-input">
-                                        <label>Request ID:<span id="reqid"></span></label>
+                                    <div class="input-field">
+                                        <label><a>Date Requested: </a>January 11, 2023 </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Request ID: </a>SREQ234567 </label>
                                     </div>
                                 </div>
                             </div>
@@ -123,41 +249,55 @@
                             <div class="purchase-form-header">
                                 ITEM DETAILS
                             </div>
-                            <br>
-                            <div>
-                                <label class="error" style="display:none;font-weight:bold" id="errorLabel"></label>
-                            </div>
                             <div class="purchase-form-contents">
                                 <div class="purchase-form-table">
                                     <div class="purchase-form-table-style">
-                                        <div class="table-responsive" style="overflow-x:auto;">
-                                            <table width="100%" id="formTable">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table width="100%">
                                                 <thead>
                                                     <tr>
+
                                                         <td>Item Name</td>
                                                         <td>Item Category</td>
                                                         <td>Item Size</td>
                                                         <td>Item Quantity</td>
                                                         <td>Item Type</td>
                                                         <td>Item Class</td>
-                                                        <td>Action</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <tr>
+                                                        <td contenteditable="false"><label>Gate Valve Flange Type</label></td>
+                                                        <td contenteditable="false"><label>Gate Valve</label></td>
+                                                        <td contenteditable="true"><label>4"</label></td>
+                                                        <td contenteditable="true"><label>5 PCS</label></td>
+                                                        <td contenteditable="false"><label>Null</label></td>
+                                                        <td contenteditable="false"><label>Imported</label></td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td contenteditable="false"><label>Gate Valve Flange Type</label></td>
+                                                        <td contenteditable="false"><label>Gate Valve</label></td>
+                                                        <td contenteditable="true"><label>4"</label></td>
+                                                        <td contenteditable="true"><label>5 PCS</label></td>
+                                                        <td contenteditable="false"><label>Null</label></td>
+                                                        <td contenteditable="false"><label>Local</label></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
 
 
                     </form>
                     <center>
                         <div class="form-add-btns">
-                            @*onclick="checkForm()"*@
-                            <button class="save" id="saveBtn">
+                            <button class="save" onclick="infoOpenPopup()">
                                 <span class="btnText">Save</span>
                                 <i class="las la-check-square"></i>
                             </button>
@@ -171,196 +311,165 @@
                 </div>
             </div>
         </div>
-        <input type="text" id="formType" style="display:none">
+
         <div class="info-pop-container" id="info-popup">
-            <img src="@Url.Content("~/images/information.png")">
+            <img src="../../../images/information.png">
             <h2>System Warning!</h2>
-            <p>Do you want to save employee's request?</p>
-            <button type="button" onclick="saveRequest()">Yes</button>
+            <p>Do you want to accept employee's request?</p>
+            <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="@Url.Content("~/images/tick.png")">
+            <img src="../../../images/tick.png">
             <h2>Accepted!</h2>
-            <p>@Session["message"]</p>
+            <p>Request has been accepted!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="@Url.Content("~/images/warning.png")">
+            <img src="../../../images/warning.png">
             <h2>System Warning!</h2>
-            <p>Do you want to cancel any changes?</p>
-            <button type="button" onclick="remOpenPopup() + canClosePopup() + addClosePopupPur() + resetForm()">Yes</button>
+            <p>Are you sure you want to delete item on the list?</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="@Url.Content("~/images/remove.png")">
+            <img src="../../../images/remove.png">
             <h2>Deleted!</h2>
-            <p>Request Discarded!</p>
+            <p>Item details has deleted in the list!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
         <div class="print-pop-container" id="print-popup">
-            <img src="@Url.Content("~/images/printer.png")">
+            <img src="../../../images/printer.png">
             <h2>Print!</h2>
             <p>Print successfully!</p>
             <button type="button" onclick="printClosePopup()">OK</button>
         </div>
 
         <div class="expo-pop-container" id="expo-popup">
-            <img src="@Url.Content("~/images/export.png")">
+            <img src="../../../images/export.png">
             <h2>Export!</h2>
             <p>Exported Successfully!</p>
             <button type="button" onclick="expoClosePopup()">OK</button>
         </div>
 
     </main>
-</div>
-<script src='@Url.Content("~/Scripts/validations/RequisitionValidation.js")'></script>
-<script src="@Url.Content("~/Scripts/Requisition.js")"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
-<script>
+    <div class="footer">
+        <center>
+            <div class="footer-con">
+                <img src="../../../images/codepheuse.png" alt="">
+                <h4>CodePheus | 2022</h4>
+            </div>
+        </center>
+    </div>
 
-    //function checkForm() {
-    //    var bool = $('#formId').valid();
-    //    if (bool) {
-    //        infoOpenPopup();
-    //    }
-    //}
+</div>    
+    <script>
 
-    function exportToPdf() {
-        const actionButtons = document.querySelectorAll('.purchase-action-style');
-        actionButtons.forEach(button => button.style.display = 'none');
-
-
-        const element = document.querySelector('#myTable');
-        const options = {
-            margin: [0, 0, 0, 0],
-            filename: 'invoice.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
-            // Add header option
-            header: {
-                height: '1cm',
-                contents: '<div id="header"><img id="logo" src="~/images/LogoNameFull.png"></div>',
-                onBeforeParse: (pdf, doc, pages, callback) => {
-                    const header = document.getElementById('header');
-                    const logo = document.getElementById('logo');
-                    callback(header);
+        function userSortFunction() {
+            document.getElementById("purSortDropdown").classList.toggle("purchase-sort-show");
+        }
+            
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(e) {
+            if (!e.target.matches('.purchase-sort-btn')) {
+                var myDropdown = document.getElementById("purSortDropdown");
+                if (myDropdown.classList.contains('purchase-sort-show')) {
+                  myDropdown.classList.remove('purchase-sort-show');
                 }
-            }
-        };
-        html2pdf()
-            .set(options)
-            .from(element)
-            .save()
-            .then(() => {
-                // Show action buttons again after exporting
-                actionButtons.forEach(button => button.style.display = 'block');
-            });
-    }
+              }
+            } 
 
-</script>
-<script>
-
-    window.onload = function () {
-        GetAll();
-        GetAllEmployee();
-        GetAllItem();
-        localStorage.setItem('increment', null);
-        let success = localStorage.getItem("success");
-        if (success == "true") {
-            openPopup();
+        <!-- Messege Box -->    
+        
+        let addpopuppur = document.getElementById("add-popup-pur");
+        function addOpenPopupPur() {
+            addpopuppur.classList.add("add-popup-pur-show")
         }
-        localStorage.setItem("success", "false");
-    }
 
-    function userSortFunction() {
-        document.getElementById("purSortDropdown").classList.toggle("purchase-sort-show");
-    }
+        function addClosePopupPur() {
+            addpopuppur.classList.remove("add-popup-pur-show")
+        }           
 
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.purchase-sort-btn')) {
-            var myDropdown = document.getElementById("purSortDropdown");
-            if (myDropdown.classList.contains('purchase-sort-show')) {
-                myDropdown.classList.remove('purchase-sort-show');
-            }
+        let infopopup = document.getElementById("info-popup");        
+        function infoOpenPopup() {
+            infopopup.classList.add("info-popup-show")
         }
-    }
 
+        function infoClosePopup() {
+            infopopup.classList.remove("info-popup-show")
+        }  
+        
+        let popup = document.getElementById("popup");
+        
+        function openPopup() {
+            popup.classList.add("open-popup-show")
+        }
 
-    let addpopuppur = document.getElementById("add-popup-pur");
-    function addOpenPopupPur() {
-        addpopuppur.classList.add("add-popup-pur-show")
-        document.getElementById("formType").value = "add";
-    }
+        function closePopup() {
+            popup.classList.remove("open-popup-show")
+        }
 
-    function addClosePopupPur() {
-        addpopuppur.classList.remove("add-popup-pur-show")
-    }
+        let canpopup = document.getElementById("can-popup");
+        
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
 
-    let infopopup = document.getElementById("info-popup");
-    function infoOpenPopup() {
-        infopopup.classList.add("info-popup-show")
-    }
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
 
-    function infoClosePopup() {
-        infopopup.classList.remove("info-popup-show")
-    }
+        let rempopup = document.getElementById("rem-popup");
+        
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
 
-    let popup = document.getElementById("popup");
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+        
+        let printpopup = document.getElementById("print-popup");
+        
+        function printOpenPopup() {
+            printpopup.classList.add("print-popup-show")
+        }
 
-    function openPopup() {
-        popup.classList.add("open-popup-show")
-    }
+        function printClosePopup() {
+            printpopup.classList.remove("print-popup-show")
+        } 
 
-    function closePopup() {
-        popup.classList.remove("open-popup-show")
-    }
+        let expopopup = document.getElementById("expo-popup");
+        
+        function expoOpenPopup() {
+            expopopup.classList.add("expo-popup-show")
+        }
 
-    let canpopup = document.getElementById("can-popup");
+        function expoClosePopup() {
+            expopopup.classList.remove("expo-popup-show")
+        } 
 
-    function canOpenPopup() {
-        canpopup.classList.add("can-popup-show")
-    }
+        // SCRIPT FOR NOTIFICATION
+        function openForm() {
+        document.getElementById("notifForm").style.display = "block";
+        }
 
-    function canClosePopup() {
-        canpopup.classList.remove("can-popup-show")
-    }
+        function closeForm() {
+        document.getElementById("notifForm").style.display = "none";
+        }
 
-    let rempopup = document.getElementById("rem-popup");
+        function viewOpenForm() {
+        document.getElementById("viewForm").style.display = "block";
+        }
 
-    function remOpenPopup() {
-        rempopup.classList.add("rem-popup-show")
-    }
+        function viewCloseForm() {
+        document.getElementById("viewForm").style.display = "none";
+        }
 
-    function remClosePopup() {
-        rempopup.classList.remove("rem-popup-show")
-    }
-
-    let printpopup = document.getElementById("print-popup");
-
-    function printOpenPopup() {
-        printpopup.classList.add("print-popup-show")
-    }
-
-    function printClosePopup() {
-        printpopup.classList.remove("print-popup-show")
-    }
-
-    let expopopup = document.getElementById("expo-popup");
-
-    function expoOpenPopup() {
-        expopopup.classList.add("expo-popup-show")
-    }
-
-    function expoClosePopup() {
-        expopopup.classList.remove("expo-popup-show")
-    }
-</script>
+    </script>
 

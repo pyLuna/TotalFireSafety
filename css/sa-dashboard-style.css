@@ -13,88 +13,9 @@
     11 - PROJECT STYLES
     12 - RESPONSIVE STYLES - TENTATIVE DO NOT EDIT
 */
-.validate-input {
-    position: relative;
-}
-.alert-validate::before {
-    content: attr(data-validate);
-    position: absolute;
-    max-width: 70%;
-    background-color: white;
-    border: 1px solid #c80000;
-    border-radius: 13px;
-    padding: 4px 25px 4px 10px;
-    top: 60%;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
-    right: 8px;
-    pointer-events: none;
-    font-family: Poppins-Medium;
-    color: #c80000;
-    font-size: 13px;
-    line-height: 1.4;
-    text-align: left;
-    visibility: hidden;
-    opacity: 0;
-    -webkit-transition: opacity 0.4s;
-    -o-transition: opacity 0.4s;
-    -moz-transition: opacity 0.4s;
-    transition: opacity 0.4s;
-}
-
-.alert-validate::after {
-    content: "\f06a";
-    font-family: FontAwesome;
-    display: block;
-    position: absolute;
-    color: #c80000;
-    font-size: 15px;
-    top: 60%;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
-    right: 13px;
-}
-
-.alert-validate:hover:before {
-    visibility: visible;
-    opacity: 1;
-}
-
-@media (max-width: 992px) {
-    .alert-validate::before {
-        visibility: visible;
-        opacity: 1;
-    }
-}
 
 
-/*---------------------------------------------*/
-.wrap-input100 {
-    position: relative;
-    width: 100%;
-    z-index: 1;
-    margin-bottom: 10px;
-}
 
-.input100 {
-    font-family: Poppins-Medium;
-    font-size: 15px;
-    line-height: 1.5;
-    color: #16215B;
-    border: .1px solid #B2B2B2;
-    display: block;
-    width: 100%;
-    /*background: #e6e6e6;*/
-    height: 50px;
-    border-radius: 5px;
-    padding: 0 30px 0 68px;
-}
 
 
 /* 00 -  GENERAL STYLES*/
@@ -102,8 +23,8 @@
 [ FONT ]*/
 
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;800&display=swap');
 
 @font-face {
     font-family: Poppins-Regular;
@@ -125,29 +46,6 @@
     src: url('../fonts/montserrat/Montserrat-Bold.ttf');
 }
 
-/*PRINT TABLE DO NOT REMOVE OR EDIT*/
-@media print {
-    body *{
-        visibility: hidden;
-    }
-    .myTable{
-        width:100%;
-    }
-    .printable,
-    .printable * {
-        width:auto;
-        height:auto;
-        visibility: visible;
-    }
-
-    .printable {
-        position: absolute;
-        left: 0;
-        top: 0;
-    }
-}
-/* END OF PRINT */
-
 /*///////////////////////////////////////////////////////////////*/
 * {
     padding: 0;
@@ -160,16 +58,7 @@
 
 body {
     height: 100%;
-    font-family: Poppins-Regular, sans-serif;
-}
-
-.manual-error {
-    color: red;
-    min-height: 10px;
-}
-
-label.error{
-    color:red !important;
+    font-family: 'Inter', sans-serif;
 }
 
     body::-webkit-scrollbar {
@@ -181,9 +70,6 @@ table {
     border-collapse: collapse;
 }
 
-thead tr {
-    border-bottom: 2px solid #000;
-}
 
 thead td {
     font-weight: 700;
@@ -211,6 +97,7 @@ main {
     padding: 2rem 1.5rem;
     background: #f1f5f9;
     min-height: 100vh;
+    overflow-y: auto;
 }
 
 input::-webkit-outer-spin-button,
@@ -232,10 +119,7 @@ input::-webkit-inner-spin-button {
     box-sizing: border-box;
 }
 
-body {
-    padding: 0;
-    margin: 0;
-}
+
 
 #notfound {
     position: relative;
@@ -1085,20 +969,6 @@ right .m-drop-btn {
     display: block;
 }
 
-right select {
-    height: 20px;
-    width: 100px;
-    cursor: pointer;
-    font-size: .8rem;
-    outline: none;
-    color: var(--text-color-black);
-    background-color: #fff;
-    border-radius: 2px;
-    border: 1px solid #B2B2B2;
-    margin: 0;
-}
-
-
 right .d-drop-btn {
     height: 20px;
     width: 80px;
@@ -1154,6 +1024,30 @@ right .d-drop-btn {
 
 /******************************* END ********************************/
 /********************** 04 - DASHBOARD STYLES ***********************/
+
+label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+input[type="month"] {
+    width: 180px;
+    height: 30px;
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+
+/* TEST */
+
+
+
+
+/* END */
+
 right .inv-sum-date {
 }
 
@@ -1173,6 +1067,7 @@ right .inv-sum-date {
         right .inv-sum-date input::-webkit-calendar-picker-indicator {
             margin-right: 10px;
         }
+
 .cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1354,10 +1249,10 @@ right .inv-sum-date {
 
 
 .legend-grp {
-    margin-left: 55%;
+    margin-left: 45%;
     margin-right: 2%;
     height: 30px;
-    width: 350px;
+    width: 450px;
     background-color: #fff;
     background-color: #fff;
     border-radius: 2px;
@@ -1396,12 +1291,27 @@ right .inv-sum-date {
     display: flex;
     height: 20px;
     width: 20px;
-    background-color: #FF0000;
+    background-color: #FF932F;
     border: 1px solid #000;
     margin-left: 100px;
 }
 
     .legend-content .legend-content-2 label {
+        margin-left: 25px;
+        margin-top: 1px;
+        font-size: .9rem;
+    }
+
+.legend-content .legend-content-3 {
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: #FF0000;
+    border: 1px solid #000;
+    margin-left: 90px;
+}
+
+    .legend-content .legend-content-3 label {
         margin-left: 25px;
         margin-top: 1px;
         font-size: .9rem;
@@ -1576,15 +1486,17 @@ right .inv-sum-date {
         }
 
         .dsh-body table td .stat-appr {
-            color: #A8E890;
+            color: #09AF10;
+            ;
         }
 
         .dsh-body table td .stat-dec {
-            color: #EC7272;
+            color: #FF0000;
         }
 
         .dsh-body table td .stat-pen {
-            color: #39B5E0;
+            color: #FF932F;
+            ;
         }
 
 
@@ -1705,6 +1617,8 @@ right .inv-sum-date {
 
 /* END */
 
+
+
 /************************** END *************************/
 /***************** 05 - INVENTORY STYLES ****************/
 .upper-section {
@@ -1720,9 +1634,9 @@ right .inv-sum-date {
     display: flex;
     align-items: center;
     overflow-x: hidden;
-    border: .1px solid #B2B2B2;
+    border: 1px solid #B2B2B2;
     border-radius: 5px;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    box-shadow: 4px 4px 3px #B2B2B2;
 }
 
     .search-wrapper span {
@@ -1748,22 +1662,59 @@ right .inv-sum-date {
     text-align: left;
     height: 40px;
     font-size: 1rem;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    box-shadow: 4px 4px 3px #B2B2B2;
     padding: 2px;
 }
 
-.inventory {
+/* NEW UPDATE 03-13 */
+
+.upper-section .datepick-container {
+    height: 40px;
+    width: 350px;
     background-color: #fff;
+    box-shadow: 4px 4px 3px #B2B2B2;
+    border: 1px solid #B2B2B2;
     border-radius: 5px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    max-height: 400px;
-    overflow: scroll;
-    /* border: 1px solid #181823;*/
+    display: flex;
+    position: absolute;
+    right: 50px;
 }
 
-    .inventory::-webkit-scrollbar {
-        display: none;
+    .upper-section .datepick-container span {
+        margin-top: 8px;
+        margin-left: 10px;
+        font-size: 1.5rem;
     }
+
+    .upper-section .datepick-container .date-grp {
+        margin-left: 10px;
+        margin-top: 8px;
+    }
+
+        .upper-section .datepick-container .date-grp input {
+            border: none;
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+
+        .upper-section .datepick-container .date-grp label {
+            font-weight: 800;
+        }
+
+        .upper-section .datepick-container .date-grp input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+/* END */
+
+.inventory {
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 5px 5px 3px #B2B2B2;
+    max-height: 600px;
+    height: 600px;
+    overflow: auto;
+}
 
 .inventory-projects {
     margin-top: 10px;
@@ -1775,10 +1726,6 @@ right .inv-sum-date {
     border-spacing: 1px;
 }
 
-.inventory-body {
-    padding: 30px;
-}
-
 .inventory-header {
     margin-left: 40px;
     margin-top: 50px;
@@ -1786,34 +1733,49 @@ right .inv-sum-date {
 }
 
     .inventory-header h3 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         color: #000;
         margin-bottom: -20px;
     }
 
-.inventory-body table td label {
-    color: #000;
-    font-size: 1rem;
-    font-weight: 500;
+.inventory-body table {
+    margin: 0;
 }
 
+    .inventory-body table thead {
+        background-color: #DDDDDD;
+    }
+
+        .inventory-body table thead a:hover {
+            color: blue;
+            cursor: pointer;
+        }
+
+    .inventory-body table td label {
+        color: #000;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .inventory-body table td .stat-standard {
+        color: #09AF10;
+    }
+
+    .inventory-body table td .stat-average {
+        color: #FF932F;
+    }
+
+    .inventory-body table td .stat-re-order {
+        color: #FF0000;
+    }
 
 
-.inventory-header .inventory-buttons-style {
+.inventory-header .inventory-buttons-style,
+.inventory-buttons-style select {
     display: flex;
     justify-content: right;
 }
 
-.inventory-header button {
-    width: 100px;
-    height: 35px;
-    margin-left: 10px;
-    border-radius: 2px;
-    transition: all ease-in-out 0.2s;
-    cursor: pointer;
-    background-color: #fff;
-    border: 1px solid #B2B2B2;
-}
 
 .inventory-buttons-style {
     display: flex;
@@ -1821,30 +1783,47 @@ right .inv-sum-date {
     margin-top: -30px;
 }
 
+    .inventory-buttons-style select {
+        display: flex;
+        justify-content: right;
+        margin-top: 0px;
+    }
+
 .inventory-header label {
     font-size: 1rem;
     margin-right: 5px;
 }
 
 
-.inventory-header .inventory-buttons-style span {
-    font-size: 1.2rem;
+.inventory-header .inventory-buttons-style button,
+.inventory-buttons-style select {
+    width: 130px;
+    height: 35px;
+    margin-left: 10px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
 }
 
-.inventory-header .inventory-buttons-style button {
-    width: 50px;
-    color: #000;
-}
-
-    .inventory-header .inventory-buttons-style button:hover {
+    .inventory-header .inventory-buttons-style button:hover,
+    .inventory-buttons-style select:hover {
         color: #fff;
         border: 1px solid var(--text-color-black);
         background-color: #16215B;
     }
 
-
 .inventory-header button span {
     font-size: 1.2rem;
+    padding-left: 10px;
+    padding-top: 5px;
+    margin-left: 25px;
+    border-left: 1px solid #000;
+    border-radius: 5px;
+    height: 100%;
 }
 
 .inventory-header button a {
@@ -1865,6 +1844,7 @@ right .inv-sum-date {
         cursor: pointer;
         background-color: #fff;
         border: 1px solid #B2B2B2;
+        box-shadow: 5px 5px 3px #B2B2B2;
         padding-top: .2rem;
         font-size: 1.3rem;
     }
@@ -1881,59 +1861,6 @@ right .inv-sum-date {
 
 .inventory-action-style button a {
     color: inherit;
-}
-
-.inventory-header .inventory-sort-btn {
-    height: 35px;
-    width: 70px;
-    cursor: pointer;
-    font-size: 1rem;
-    outline: none;
-    color: var(--text-color-black);
-    background-color: #fff;
-    border-radius: 2px;
-    border: 1px solid #B2B2B2;
-    margin: 0;
-    margin-left: 10px;
-}
-
-    .inventory-header .inventory-sort-btn span {
-        margin-top: auto;
-        margin-left: auto;
-        font-size: 1rem;
-    }
-
-.inventory-sort-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 100px;
-    border-radius: 5px;
-    border: 1px solid #B2B2B2;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-    .inventory-sort-content a {
-        font-size: .8rem;
-        float: none;
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        text-align: center;
-    }
-
-        .inventory-sort-content a:hover {
-            color: var(--6th-color);
-            background-color: #16215B;
-            border-radius: 2px;
-        }
-
-.inventory-sort-show {
-    margin-top: 35px;
-    margin-right: -30px;
-    display: block;
 }
 
 /*ADD POPUP INVENTORY*/
@@ -1955,6 +1882,32 @@ right .inv-sum-date {
 }
 
 .add-popup-inv-show {
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+/* END */
+
+/*ADD QUANTITY POPUP INVENTORY*/
+
+.add-qty-popup-inv {
+    height: auto;
+    width: 70%;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.1);
+    color: #fff;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.add-qty-popup-inv-show {
     visibility: visible;
     top: 50%;
     transform: translate(-50%,-50%) scale(1);
@@ -2004,36 +1957,15 @@ right .inv-sum-date {
     width: 100%;
     border-radius: 6px;
     padding: 30px;
-    background-color: #fff;
-    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
-}
-
-    .inventory-add-container .inventory-form-container .inventory-buttons-style button {
-        width: 120px;
-        padding: 0;
-        margin: 0;
-        margin-top: 10px;
-        background: #fff;
-        color: #333;
-        border: .1px solid #B2B2B2;
-        outline: 0;
-        font-size: 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-    }
-
-.inventory-form-container .inventory-buttons-style button:hover {
-    color: #fff;
-    background-color: #16215B;
-    cursor: pointer;
+    background-color: #EDEDED;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .inventory-form-container .inventory-form-header::before {
     content: "";
     position: absolute;
     left: 0;
-    bottom: 20px;
+    bottom: -5px;
     height: 3px;
     width: 35px;
     border-radius: 8px;
@@ -2044,7 +1976,6 @@ right .inv-sum-date {
     position: relative;
     margin-top: 16px;
     min-height: 290px;
-    background-color: #fff;
     overflow: hidden;
 }
 
@@ -2119,13 +2050,15 @@ right .inv-sum-date {
     color: #2e2e2e;
 }
 
-.inventory-form-container .input-field input, select {
+.inventory-form-container .input-field input,
+.inventory-form-container .input-field select {
     outline: none;
     font-size: 14px;
     font-weight: 400;
     color: #333;
     border-radius: 5px;
-    border: 1px solid #aaa;
+    box-shadow: 4px 4px 3px #B2B2B2;
+    border: none;
     padding: 0 15px;
     height: 42px;
     margin: 8px 0;
@@ -2145,12 +2078,29 @@ right .inv-sum-date {
             color: #333;
         }
 
+.inventory-form-container .input-field .img-bar-grp {
+    background-color: #fff;
+    height: 200px;
+    width: 100%;
+    margin-top: -10px;
+    position: absolute;
+    border-radius: 5px;
+}
+
+    .inventory-form-container .input-field .img-bar-grp img {
+        width: 400px;
+        height: 200px;
+        padding: 0;
+        margin-top: -20px;
+        margin-left: .5%;
+    }
+
 .inventory-form-container form button, .btnText {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 45px;
-    max-width: 200px;
+    max-width: 150px;
     width: 100%;
     border: none;
     outline: none;
@@ -2186,27 +2136,17 @@ right .inv-sum-date {
     align-items: center;
 }
 
-/*ARCHIVE INVENTORY*/
-
-
-
-/* END */
-
 /************** NEW UPDATE INVENTORY REPORT STYLE  ******************/
 
 
 .inventory-repo {
     background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    max-height: 400px;
-    overflow: scroll;
-    /* border: 1px solid #181823;*/
+    border-radius: 2px;
+    box-shadow: 5px 5px 3px #B2B2B2;
+    max-height: 600px;
+    height: 600px;
+    overflow: auto;
 }
-
-    .inventory-repo::-webkit-scrollbar {
-        display: none;
-    }
 
 .inventory-repo-projects {
     margin-top: 10px;
@@ -2218,8 +2158,8 @@ right .inv-sum-date {
     border-spacing: 1px;
 }
 
-.inventory-repo-body {
-    padding: 30px;
+.inventory-repo-body table {
+    margin: 0;
 }
 
 .inventory-repo-header {
@@ -2229,15 +2169,35 @@ right .inv-sum-date {
 }
 
     .inventory-repo-header h3 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         color: #000;
         margin-bottom: -20px;
+    }
+
+.inventory-repo table thead {
+    background-color: #DDDDDD;
+}
+
+    .inventory-repo table thead a:hover {
+        color: blue;
+        cursor: pointer;
     }
 
 .inventory-repo-body table td label {
     color: #000;
     font-size: 1rem;
-    font-weight: 500;
+}
+
+.inventory-repo-body table td .rem-standard {
+    color: #09AF10;
+}
+
+.inventory-repo-body table td .rem-average {
+    color: #FF932F;
+}
+
+.inventory-repo-body table td .rem-critical {
+    color: #FF0000;
 }
 
 .inventory-repo-header .inventory-repo-buttons-style {
@@ -2245,16 +2205,22 @@ right .inv-sum-date {
     justify-content: right;
 }
 
-.inventory-repo-header button {
-    width: 100px;
-    height: 35px;
-    margin-left: 10px;
-    border-radius: 2px;
-    transition: all ease-in-out 0.2s;
-    cursor: pointer;
-    background-color: #fff;
-    border: 1px solid #B2B2B2;
-}
+    .inventory-repo-header .inventory-repo-buttons-style button {
+        width: 130px;
+        height: 35px;
+        margin-left: 10px;
+        border-radius: 5px;
+        transition: all ease-in-out 0.2s;
+        cursor: pointer;
+        background-color: #fff;
+        border: 1px solid #B2B2B2;
+        box-shadow: 4px 3px 3px #B2B2B2;
+        font-weight: 800;
+    }
+
+    .inventory-repo-header .inventory-repo-buttons-style .create-btn {
+        width: 170px;
+    }
 
 .inventory-repo-buttons-style {
     display: flex;
@@ -2262,36 +2228,36 @@ right .inv-sum-date {
     margin-top: -30px;
 }
 
-    .inventory-repo-buttons-style label {
-        margin-top: 5px;
-        font-weight: 400;
-    }
-
-    .inventory-repo-buttons-style input {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-
-.inventory-repo-header label {
-    font-size: 1rem;
-    margin-right: 5px;
-}
-
-
 .inventory-repo-header .inventory-repo-buttons-style span {
     font-size: 1.2rem;
+    padding-left: 10px;
+    padding-top: 5px;
+    margin-left: 25px;
+    border-left: 1px solid #000;
+    border-radius: 5px;
+    height: 100%;
 }
 
-.inventory-repo-header .inventory-repo-buttons-style button {
-    width: 50px;
-    color: #000;
+.inventory-repo-buttons-style .notif-btn {
+    position: relative;
+    display: inline-block;
 }
 
-    .inventory-repo-header .inventory-repo-buttons-style button:hover {
-        color: #fff;
-        border: 1px solid var(--text-color-black);
-        background-color: #16215B;
+    .inventory-repo-buttons-style .notif-btn .notif-badge {
+        position: absolute;
+        top: -10px;
+        right: -20px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: red;
+        color: white;
     }
+
+.inventory-repo-header .inventory-repo-buttons-style button:hover {
+    color: #fff;
+    border: 1px solid var(--text-color-black);
+    background-color: #16215B;
+}
 
 
 .inventory-repo-header button span {
@@ -2306,21 +2272,19 @@ right .inv-sum-date {
 
 /************************* END ********************************/
 
+
 /************************* END ********************************/
 
 /************* 06 - PURCHASE REQUEST STYLES *******************/
 
 .purchase {
     background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    max-height: 400px;
-    overflow: scroll;
+    border-radius: 2px;
+    box-shadow: 5px 5px 3px #B2B2B2;
+    max-height: 600px;
+    height: 600px;
+    overflow: auto;
 }
-
-    .purchase::-webkit-scrollbar {
-        display: none;
-    }
 
 .purchase-projects {
     margin-top: 10px;
@@ -2332,7 +2296,7 @@ right .inv-sum-date {
 }
 
 .purchase-body {
-    padding: 30px;
+    padding: 0;
 }
 
 .purchase-header {
@@ -2342,11 +2306,24 @@ right .inv-sum-date {
 }
 
     .purchase-header h3 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         color: #000;
         margin-bottom: -40px;
     }
 
+.purchase-body table {
+    margin: 0;
+    padding: 0;
+}
+
+    .purchase-body table thead {
+        background-color: #DDDDDD;
+    }
+
+.purchase table thead a:hover {
+    color: blue;
+    cursor: pointer;
+}
 
 .purchase-body table td label {
     color: #000;
@@ -2355,32 +2332,22 @@ right .inv-sum-date {
 }
 
 .purchase-body table td .stat-appr {
-    color: #A8E890;
+    color: #09AF10;
 }
 
 .purchase-body table td .stat-dec {
-    color: #EC7272;
+    color: #FF0000;
 }
 
 .purchase-body table td .stat-pen {
-    color: #39B5E0;
+    color: #FF932F;
 }
 
 
-.purchase-header .purchase-buttons-style {
+.purchase-header .purchase-buttons-style,
+.purchase-buttons-style select {
     display: flex;
     justify-content: right;
-}
-
-.purchase-header button {
-    width: 100px;
-    height: 35px;
-    margin-left: 10px;
-    border-radius: 2px;
-    transition: all ease-in-out 0.2s;
-    cursor: pointer;
-    background-color: #fff;
-    border: 1px solid #B2B2B2;
 }
 
 .purchase-buttons-style {
@@ -2389,22 +2356,35 @@ right .inv-sum-date {
     margin-top: -30px;
 }
 
+    .purchase-buttons-style select {
+        display: flex;
+        justify-content: right;
+        margin-top: 0px;
+    }
+
 .purchase-header label {
     font-size: 1rem;
     margin-right: 5px;
 }
 
-
-.purchase-header .purchase-buttons-style span {
-    font-size: 1.2rem;
+.purchase-header .purchase-buttons-style button,
+.purchase-buttons-style select {
+    width: 150px;
+    height: 35px;
+    margin-left: 10px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
 }
 
-.purchase-header .purchase-buttons-style button {
-    width: 50px;
-    color: #000;
-}
 
-    .purchase-header .purchase-buttons-style button:hover {
+
+    .purchase-header .purchase-buttons-style button:hover,
+    .purchase-buttons-style select:hover {
         color: #fff;
         border: 1px solid var(--text-color-black);
         background-color: #16215B;
@@ -2413,6 +2393,12 @@ right .inv-sum-date {
 
 .purchase-header button span {
     font-size: 1.2rem;
+    padding-left: 10px;
+    padding-top: 5px;
+    margin-left: 10px;
+    border-left: 1px solid #000;
+    border-radius: 5px;
+    height: 100%;
 }
 
 .purchase-header button a {
@@ -2433,9 +2419,14 @@ right .inv-sum-date {
         cursor: pointer;
         background-color: #fff;
         border: 1px solid #B2B2B2;
+        box-shadow: 5px 5px 3px #B2B2B2;
         padding-top: .2rem;
         font-size: 1.3rem;
     }
+
+.purchase-header .purchase-buttons-style .create-req-btn {
+    width: 170px;
+}
 
 .purchase-action-style button {
     color: #000;
@@ -2610,9 +2601,6 @@ right .inv-sum-date {
     font-weight: 800;
 }
 
-
-
-
 .purchase-form-container .input-field input, select {
     outline: none;
     font-size: 14px;
@@ -2634,8 +2622,6 @@ right .inv-sum-date {
     .purchase-form-container .input-field input[type="date"] {
         color: #707070;
     }
-
-
 
         .purchase-form-container .input-field input[type="date"]:valid {
             color: #333;
@@ -2705,6 +2691,180 @@ right .inv-sum-date {
     color: #000;
     font-size: .9rem;
 }
+
+/* NOTIFICATION STYLE */
+
+.notif-popup {
+    display: none;
+    position: absolute;
+    top: 206px;
+    right: 150px;
+    z-index: 9;
+    box-shadow: 5px 5px 3px #B2B2B2;
+    border-radius: 5px;
+    border: 1px solid #B2B2B2;
+}
+
+/* Add styles to the form container */
+.notif-container {
+    max-width: 300px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: auto;
+    height: 500px;
+}
+
+    .notif-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .notif-container .notif-list-container {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        border: none;
+        border-radius: 2px;
+        background: #D9D9D9;
+        box-shadow: 4px 3px 3px #B2B2B2;
+        min-height: 50px;
+        overflow: hidden;
+        justify-content: flex-start;
+    }
+
+
+
+.purchase-buttons-style .notif-container .notif-list-container label {
+    font-size: .9rem;
+}
+
+.purchase-buttons-style .notif-container a {
+    margin-left: 145px;
+    font-size: .9rem;
+    color: blue;
+    cursor: pointer;
+}
+
+    .purchase-buttons-style .notif-container a:hover {
+        text-decoration: underline;
+    }
+
+/* Set a style for the submit/send button */
+.purchase-buttons-style .notif-popup button {
+    width: 45px;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+}
+
+.notif-popup .close-btn i {
+    margin: 0;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+/* VIEW NOTIFICATION STYLE */
+
+.view-popup {
+    display: none;
+    position: absolute;
+    top: 100px;
+    right: 20%;
+    z-index: 9;
+    box-shadow: 5px 5px 3px #B2B2B2;
+    border-radius: 5px;
+    border: 1px solid #B2B2B2;
+    background-color: white;
+}
+
+/* Add styles to the form container */
+.view-container {
+    width: 1000px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: auto;
+    height: 700px;
+}
+
+    .view-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    .view-container .view-list-container {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        border: none;
+        border-radius: 2px;
+        box-shadow: 4px 3px 3px #B2B2B2;
+        background: #16215B;
+        min-height: 50px;
+        overflow: hidden;
+        justify-content: flex-start;
+    }
+
+.purchase-buttons-style .view-container .view-list-container label h3 {
+    font-size: .9rem;
+    color: #fff;
+}
+
+.purchase-buttons-style .view-container a {
+    margin-left: 0px;
+    font-size: .9rem;
+    color: blue;
+    cursor: pointer;
+}
+
+    .purchase-buttons-style .view-container a:hover {
+        text-decoration: underline;
+    }
+
+.view-container .acc-container {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: 1px solid #B2B2B2;
+    border-radius: 2px;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    background: #fff;
+    height: 560px;
+    overflow: auto;
+    justify-content: flex-start;
+    overflow: auto;
+}
+
+/* Set a style for the submit/send button */
+.purchase-buttons-style .view-popup center button {
+    width: 120px;
+    height: 35px;
+    margin-left: 10px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+    .purchase-buttons-style .view-popup center button span {
+        font-size: 1.2rem;
+        padding-left: 10px;
+        padding-top: 5px;
+        margin-left: 10px;
+        border-left: 1px solid #000;
+        border-radius: 5px;
+        height: 100%;
+    }
+
+/* END */
+
+/* END */
 
 /********************** END ************************/
 
@@ -3288,8 +3448,8 @@ right .inv-sum-date {
 
 .print-save-btns {
     display: inline-block;
-    margin-left: 720px;
-    margin-top: -200px;
+    /* margin-left: 535px; */
+    /* margin-top: -200px; */
 }
 
 
@@ -5178,7 +5338,6 @@ right .inv-sum-date {
 /****************************** END *********************************/
 /********************* 11 - PROJECT STYLES **************************/
 
-/** UPDATE 03/5 **/
 
 .proj-sum {
     width: auto;
@@ -5914,6 +6073,8 @@ right .inv-sum-date {
             color: #000;
         }
 
+/* END */
+
 /************************* END ********************************/
 
 /******** 12 - RESPONSIVE STYLES - TENTATIVE DO NOT EDIT ******/
@@ -6001,23 +6162,7 @@ right .inv-sum-date {
         min-width: calc(90vh - 70px);
     }
 
-    .cards {
-        grid-template-columns: repeat(3,1fr);
-    }
 
-    .recent-grid {
-        grid-template-columns: 2fr 1fr;
-    }
-
-    .inventory-grid {
-        grid-template-columns: 100%;
-    }
-
-        .inventory-grid .current-card {
-            margin-left: 250px;
-            align-items: center;
-            max-width: 200px;
-        }
 
     .sidebar {
         left: -100% !important;
@@ -6124,6 +6269,44 @@ right .inv-sum-date {
     .dropdown {
         margin-top: 20px;
     }
+
+    /* DASHBOARD STYLE RESPONSIVE max-width: 1200px;*/
+
+    .cards {
+        grid-template-columns: repeat(4,1fr);
+    }
+
+    .recent-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+
+    .inventory-grid {
+        grid-template-columns: 100%;
+    }
+
+        .inventory-grid .current-card {
+            margin-left: 250px;
+            align-items: center;
+            max-width: 200px;
+        }
+
+    .progress-bar {
+        margin-right: 0;
+    }
+
+    .project-sum-btns {
+        margin-top: -60px;
+        margin-bottom: 80px;
+    }
+
+        .project-sum-btns .drp-wrapper {
+            margin-right: 10px;
+        }
+
+
+
+    /* END */
+
 }
 
 @media all and (max-width: 1199px) {
@@ -6418,9 +6601,9 @@ right .inv-sum-date {
     /* END */
 
 
-    /* DASHBOARD STYLE RESPONSIVE */
+    /* DASHBOARD STYLE RESPONSIVE max-width: 768px;*/
     .cards {
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: repeat(1,1fr);
     }
 
     .recent-grid {
@@ -6445,10 +6628,26 @@ right .inv-sum-date {
             margin-top: -5px;
         }
 
+
+
     .progress-bar {
-        margin-right: -100px;
-        width: 250px;
+        margin-right: 0;
     }
+
+    .project-sum-btns {
+        margin-top: -60px;
+        margin-bottom: 70px;
+    }
+
+        .project-sum-btns .drp-wrapper {
+            margin-right: 20px;
+        }
+
+        .project-sum-btns select {
+            width: 80px;
+            height: 30px;
+            font-size: .9rem;
+        }
     /* END */
 
     /* SEARCH AND DROP DOWN RESPONSIVE */
@@ -6467,9 +6666,11 @@ right .inv-sum-date {
     .upper-section select {
         font-size: .9rem;
     }
+
+
     /* END */
 
-    /* INVENTORY STYLE RESPONSIVE */
+    /* INVENTORY STYLE RESPONSIVE max-width: 768px;*/
     .inventory-projects {
         margin: 0;
         padding: 0;
@@ -6535,7 +6736,7 @@ right .inv-sum-date {
     }
     /* END */
 
-    /* PURCHASE REQUST STYLE RESPONSIVE */
+    /* PURCHASE REQUST STYLE RESPONSIVE max-width: 768px;*/
 
     .purchase-projects {
         margin: 0;
@@ -6588,19 +6789,19 @@ right .inv-sum-date {
 
     /* END */
 
-    /* DEPLOYMENT REQUST STYLE RESPONSIVE */
+    /* DEPLOYMENT REQUST STYLE RESPONSIVE max-width: 768px;*/
 
     /* END */
 
-    /* SUPPLY REQUST STYLE RESPONSIVE */
+    /* SUPPLY REQUST STYLE RESPONSIVE max-width: 768px;*/
 
     /* END */
 
-    /* PROJECTS STYLE RESPONSIVE */
+    /* PROJECTS STYLE RESPONSIVE max-width: 768px;*/
 
     /* END */
 
-    /* USERS STYLE RESPONSIVE */
+    /* USERS STYLE RESPONSIVE max-width: 768px;*/
     .user-projects {
         margin: 0;
         padding: 0;
@@ -6673,7 +6874,7 @@ right .inv-sum-date {
     header h3 span {
         display: none;
     }
-    /* DASHBOARD STYLE */
+    /* DASHBOARD STYLE max-width: 480px;*/
 
     .sum-chart-card {
         padding-left: 0;
@@ -6705,6 +6906,21 @@ right .inv-sum-date {
     .progress-bar {
         margin-right: 0;
     }
+
+    .project-sum-btns {
+        margin-top: -60px;
+        margin-bottom: 70px;
+    }
+
+        .project-sum-btns .drp-wrapper {
+            margin-right: 20px;
+        }
+
+        .project-sum-btns select {
+            width: 80px;
+            height: 30px;
+            font-size: .9rem;
+        }
 
     /* END */
 

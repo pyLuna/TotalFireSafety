@@ -24,6 +24,12 @@ let addFormSel = document.querySelectorAll('#addForm select');
 let formBtns = document.querySelectorAll('#addForm .form-add-btns button');
 //#endregion
 
+let selcat3 = document.getElementById('selcat2');
+let name3 = document.getElementById('in_name2');
+let selclass3 = document.getElementById('selclass2');
+let in_code3 = document.getElementById('in_code2');
+let formType3 = document.getElementById('formType2');
+
 let qtyCode = document.getElementById('in_code1');
 let qtyFormSel = document.querySelectorAll('#qtyForm select');
 let qty = document.querySelectorAll('#qtyForm');
@@ -43,6 +49,9 @@ let EditFormBtns = document.querySelectorAll('#editForm .form-add-btns button');
 let QtyFormBtns = document.querySelectorAll('#qtyForm .form-add-btns button');
 
 //#region Listener area
+//selcat3.addEventListener("change", SetItemCode1);
+//selclass3.addEventListener("change", SetItemCode1);
+//name3.addEventListener("keyup", SetItemCode1);
 class1.addEventListener("change", SetItemCode);
 category.addEventListener("input", SetItemCode);
 name.addEventListener("input", SetItemCode);
@@ -436,6 +445,28 @@ function AppendOption(array) {
 //#endregion
 
 //#region set item code
+function SetItemCode1() {
+	formType3.value = in_code3.value;
+	var catVal = selcat3.value === '' ? '' : selcat3.value;
+	var classVal = selclass3.options[selclass3.selectedIndex].value === '' ? '' : selclass3.options[selclass3.selectedIndex].value;
+	var nameVal = name3.value === '' ? '' : name3.value;
+	var itemNum = '';
+	//var code = itemCode.value;
+	//class2.value = classVal;
+	var classabbr = abbreviateString(classVal);
+	var categoryabbr = abbreviateString(catVal);
+	var nameabbr = abbreviateString(nameVal);
+	prevVal = in_code3.value;
+	var string = `${classabbr}-${categoryabbr}-${nameabbr}${itemNum}`;
+	if (catVal !== "" && classVal !== "" && nameVal !== "") {
+		in_code3.value = string;
+		GetBarcode();
+	}
+	else {
+		in_code3.value = '';
+		document.getElementById('barcodeImg').remove();
+	}
+}
 function SetItemCode() {
 	var catVal = category.value === '' ? '': category.value  ;
 	var classVal = class1.options[class1.selectedIndex].value === '' ? '': class1.options[class1.selectedIndex].value  ;

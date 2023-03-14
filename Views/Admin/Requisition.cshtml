@@ -30,7 +30,7 @@
                 <div class="purchase-buttons-style">
                     <!--NEW UPDATE -->
 
-                    <button class="create-req-btn" title="CREATE ORDER" onclick="addOpenPopupPur()">
+                    <button class="create-req-btn" title="CREATE ORDER" onclick="addOpenPopupPur() + createRow() + EmployeeList()">
                         <a>
                             CREATE REQUEST
                             <span class="las la-file-alt"></span>
@@ -167,12 +167,12 @@
                             <table width="100%" id="myTable">
                                 <thead>
                                     <tr>
-                                        <td><a>Request ID<i class="las la-sort-down"></td>
+                                        <td><a onclick="Sort(this,'Id')">Request ID<i class="las la-sort-down"></a></td>
                                         <td>Request Type</td>
-                                        <td>Requestor Name</td>
+                                        <td>Request Name</td>
                                         <td>Employee ID</td>
                                         <td>Date Requested</td>
-                                        <td>Status</td>
+                                        <td><a onclick="Sort(this,'request_status')">Status<i class="las la-sort-down"></a></td>
                                         <td>Action</td>
                                     </tr>
                                 </thead>

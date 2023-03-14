@@ -980,7 +980,10 @@ namespace TotalFireSafety.Controllers
                      */
                     if (_item != null)
                     {
-                        var itemDB = _context.Inventories.Where(x => x.in_code == _item.in_code).SingleOrDefault();
+                        var itemDB = _context.Inventories.Where(x => x.in_code == _item.in_code || x.in_code == _item.formType).SingleOrDefault();
+                        var ups = _context.Inv_Update.Where(x => x.update_item_id == _item.in_code || x.update_item_id == _item.formType).ToList();
+                        var reqs = _context.Requests.Where(x => x.request_item == _item.in_code || x.request_item == _item.formType).ToList();
+
                         if (itemDB != null)
                         {
                             //  Convert _item into itemDB
@@ -990,7 +993,21 @@ namespace TotalFireSafety.Controllers
                             itemDB.in_size = _item.in_size;
                             itemDB.in_quantity = _item.in_quantity;
                             UpdateNewItem(itemDB);
+                            //if(_item.formType != null)
+                            //{
+                            //    itemDB.in_code = _item.in_code;
+                            //    foreach (var item in ups)
+                            //    {
+                            //        item.update_item_id = _item.in_code;
+                            //    }
+                            //    foreach (var item in reqs)
+                            //    {
+                            //        item.request_item = _item.in_code;
+                            //    }
+                            //}
                             _context.Entry(itemDB);
+                            _context.Entry(reqs);
+                            _context.Entry(ups);
                             _context.SaveChanges();     //  Save to Database
                             return Ok("Process Completed!");
                         }

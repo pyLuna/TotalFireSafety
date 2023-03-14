@@ -1,4 +1,5 @@
 ﻿let inputVal = [];
+let inputQuant = [];
 let viewData = [];
 let quantityList = [];
 let codeList = [];
@@ -204,11 +205,11 @@ function setTable(array) {
             row += `<td><label class="${className}" style="font-weight:bold;">${array[i].request_status}</label></td>`;
             row += `<td id="hideActionBtn">`;
             row += `<div class="purchase-action-style">`;
-            row += `<button class="acc-btn" id="appr${i}" title="ACCEPT REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','approve')" ${disable}> <a href="#"><span class="las la-check-circle"></span></a></button>`;
+            row += `<button class="acc-btn" id="appr${i}" title="ACCEPT REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','approve')"> <a href="#"><span class="las la-check-circle"></span></a></button>`;
             row += `<button class="dec-btn" id="dec${i}" title="DECLINE REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','decline')"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
             //row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="OpenEdit('${array[i].request_type_id}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
-            row += `<button class="pri-btn" title="PRINT REPORT" > <a href="#"><span class="las la-print"></span></a></button>`;
-            row += `<button class="expo-btn"  onclick="window.location.href='/Admin/ExportRequest?id=${array[i].request_type_id}'" title="EXPORT REPORT" > <a href="#"><span class="las la-file-download"></span></a></button>`;
+            //row += `<button class="pri-btn" title="PRINT REPORT" > <a href="#"><span class="las la-print"></span></a></button>`;
+            row += `<button class="expo-btn"  onclick="window.location.href='/Admin/ExportRequest?id=${array[i].request_type_id}'" title="EXPORT REPORT"> <a href="#"><span class="las la-file-download"></span></a></button>`;
             row += `</div></td>`;
             row += `</tr>`;
             table.innerHTML += row;
@@ -216,10 +217,14 @@ function setTable(array) {
             if (array[i].request_status === "Declined") {
                 button = document.getElementById(`dec${i}`);
                 button.disabled = true;
+                button.style.cursor = "not-allowed";
+                button.style.opacity = 0.5;
             }
             if (array[i].request_status === "Approved") {
                 button = document.getElementById(`appr${i}`);
                 button.disabled = true;
+                button.style.cursor = "not-allowed";
+                button.style.opacity = 0.5;
             }
         }
         filtered.length = 0;
@@ -435,16 +440,22 @@ function GetSetRowInput(method) {
     if (rows != 1) {
         if (method == "get") {
             inputVal.length = 0;
+            inputQuant.length = 0;
             for (var index = 0; index < rows.length; index++) {
-                var value = GetInputValue(index);
+                var value = GetInputValue(index).newVal;
+                var quant = GetInputValue(index).newQuant;
                 inputVal.push(value);
+                inputQuant.push(quant);
             }
         }
         else {
             for (var index = 0; index < rows.length - 1; index++) {
                 const firstCell = rows[index].cells[0];
+                const quant = rows[index].cells[3];
                 const textbox = firstCell.querySelector('input[type="text"]');
+                const textbox1 = quant.querySelector('input[type="text"]');
                 textbox.value = inputVal[index];
+                textbox1.value = inputQuant[index];
             }
         }
     }
@@ -484,7 +495,7 @@ function saveRequest() {
                 quantityList.push(value);
             }
             if (cell == 0) {
-                newValue = GetInputValue(row-1);
+                newValue = GetInputValue(row - 1).newVal;
                 codeList.push(itemCode);
             }
             else {
@@ -547,15 +558,49 @@ function setTemplate(array,formType) {
 function GetInputValue(num) {
     const rows = Array.from(table1.getElementsByTagName('tr')).slice(1);
     var newVal = "";
+    var newQuant = "";
     for (var i = 0; i < rows.length; i++) {
         const firstCell = rows[i].cells[0];
+        const quant = rows[i].cells[3];
         const textbox = firstCell.querySelector('input[type="text"]');
+        const textbox1 = quant.querySelector('input[type="text"]');
         if (i === num) {
             newVal = textbox.value === null ? "" : textbox.value;
+            newQuant = textbox.value === null ? "" : textbox1.value;
             break;
         }
     }
-    return newVal;
+    return { newVal, newQuant};
+}
+function SortDescending(array, itemToSort) {
+    return array.sort((a, b) => {
+        if (a[itemToSort] < b[itemToSort]) return 1;
+        if (a[itemToSort] > b[itemToSort]) return -1;
+        return 0;
+    });
+}
+function SortAscending(array, itemToSort) {
+    return array.sort((a, b) => {
+        if (a[itemToSort] < b[itemToSort]) return -1;
+        if (a[itemToSort] > b[itemToSort]) return 1;
+        return 0;
+    });
+}
+function Sort(item, value) {
+    let iElement = item.querySelector('i');
+    let arrayToSend = viewData;
+    let catcher = [];
+
+    if (iElement.classList.contains('la-sort-down')) {
+        iElement.classList.remove('la-sort-down');
+        iElement.classList.add('la-sort-up');
+        catcher = SortAscending(arrayToSend, value);
+    } else {
+        iElement.classList.remove('la-sort-up');
+        iElement.classList.add('la-sort-down');
+        catcher = SortDescending(arrayToSend, value);
+    }
+    setTable(catcher);
 }
 
 function sendRequest(jsonData,formType) {

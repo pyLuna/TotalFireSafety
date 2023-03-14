@@ -1,4 +1,5 @@
 ﻿let jsonArray = [];
+let jsonArray = [];
 let filtered = [];
 let fixedArray = [];
 let name = document.querySelector('#emp_name');

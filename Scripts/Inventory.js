@@ -203,7 +203,9 @@ function setTable(array) {
 			 * stat-average
 			 * stat-re-order
 			 */
-			let row = `<tr>`; /*onclick = "canOpenPopup()"*/
+			let row = `<tr>`;
+			row += `<form action="/Admin/AddItem1?item=${array[i].emp_no}" method="post" id="tableList">`;
+/*onclick = "canOpenPopup()"*/
 			row += `<td id="in_code"><label>${array[i].in_code}</label></td>`;
 			row += `<td name="in_name"><label>${array[i].in_name}</label></td>`;
 			row += `<td name ="in_category"> <label>${array[i].in_category}</label></td>`;
@@ -217,6 +219,7 @@ function setTable(array) {
 			row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick = "delOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
 			row += `</div></td>`;
 			row += `</tr>`;
+			row += `</form>`;
 			table.innerHTML += row;
 		}
 	}

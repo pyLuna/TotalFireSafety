@@ -401,21 +401,19 @@ namespace TotalFireSafety.Controllers
             }
             var serializedModel = JsonConvert.SerializeObject(item);
             var userToken = Session["access_token"].ToString();
-            string uri,message;
+            string uri;
 
-            if( item.formType == "add")
+            if ( item.formType == "add")
             {
                 uri = "Warehouse/Inventory/Add";
-                message = "Item has added successfully";
             }
-            else
+            if (item.formType == "edit")
             {
                 uri = "Warehouse/Inventory/Edit";
                 message = "Item has updated successfully";
             }
-
             var response = api_req.SetMethod(uri, userToken, serializedModel);
-
+            ViewBag.Message = message;
             if (response == "BadRequest")
             {
                 //return Json("error", JsonRequestBehavior.AllowGet);
@@ -427,6 +425,7 @@ namespace TotalFireSafety.Controllers
                 //return Json("error", JsonRequestBehavior.AllowGet);
             }
             var json = JsonConvert.DeserializeObject(response);
+          
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             Session["added"] = message;
             return RedirectToAction("Inventory");
@@ -472,45 +471,6 @@ namespace TotalFireSafety.Controllers
             {
                 Session["edit"] = "pending";
             }
-            //Session["added"] = null;
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Inventory(Inventory items,string type)
-        {
-            var empId = Session["emp_no"]?.ToString();
-            if (empId == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            var serializedModel = JsonConvert.SerializeObject(items);
-            var userToken = Session["access_token"].ToString();
-            string uri,message;
-            if (type == "add")
-            {
-                uri = "Warehouse/Inventory/Add";
-                message = "Item has added successfully";
-            }
-            else
-            {
-                uri = "Warehouse/Inventory/Edit";
-                message = "Item has updated successfully";
-            }
-
-            var response = api_req.SetMethod(uri, userToken, serializedModel);
-
-            if (response == "BadRequest")
-            {
-                //return Json("error", JsonRequestBehavior.AllowGet);
-                return RedirectToAction("BadRequest", "Error");
-            }
-            if (response == "InternalServerError")
-            {
-                return RedirectToAction("InternalServerError", "Error");
-                //return Json("error", JsonRequestBehavior.AllowGet);
-            }
-            var json = JsonConvert.DeserializeObject(response);
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             Session["added"] = message;
             //ViewBag.Added = "Item has updated successfully";

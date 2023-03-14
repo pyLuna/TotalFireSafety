@@ -1,6 +1,9 @@
 ﻿let jsonArray = [];
+let filtered = [];
 let fixedArray = [];
 const table = document.querySelector('#myTable tbody');
+const fromDateInput = document.querySelector('#dt1');
+const toDateInput = document.querySelector('#dt2');
 
 function GetAll() {
     fetch('/Admin/FindDataOf?requestType=report')
@@ -72,3 +75,16 @@ function setTable(array) {
         table.appendChild(errorMessageRow);
     }
 }
+
+function filterByDateRange() {
+    const fromDate = dt1.value;
+    const toDate = dt2.value;
+    const loop = fixedArray.forEach (item => {
+        const itemDate = new Date(item.FormattedDate);
+        return itemDate >= new Date(dt1) && itemDate <= new Date(dt2);
+    });
+    setTable(loop);
+}
+
+fromDateInput.addEventListener('change', filterByDateRange);
+toDateInput.addEventListener('change', filterByDateRange);

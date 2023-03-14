@@ -247,6 +247,7 @@
     <Content Include="images\printer.png" />
     <Content Include="images\profile.png" />
     <Content Include="images\remove.png" />
+    <Content Include="images\tfsti-logo-inventory.png" />
     <Content Include="images\tfsti-logo-name.png" />
     <Content Include="images\tfsti-logo-noname.png" />
     <Content Include="images\tfsti-logo.png" />
@@ -425,6 +426,8 @@
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <Content Include="Views\Error\Unauthorize.cshtml" />
     <Content Include="Views\Admin\Inventory_bak.cshtml" />
+    <Content Include="Views\Admin\InvReportExport.cshtml" />
+    <Content Include="Views\Admin\InvReportPrint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

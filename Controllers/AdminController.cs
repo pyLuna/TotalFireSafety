@@ -48,6 +48,14 @@ namespace TotalFireSafety.Controllers
                 return "~/images/profile.png";
             }
         }
+        public ActionResult InvReportPrint()
+        {
+            return View();
+        }
+        public ActionResult InvReportExport()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {

@@ -15,19 +15,55 @@
         </h2>
     </header>
     <main>
+        <div class="upper-section">
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="text" placeholder="Search here">
+            </div>
+            &nbsp;
+            <div class="drp-wrapper">
+                <select required>
+                    <option disabled selected>Select Category</option>
+                    <option>Fittings</option>
+                    <option>Gate Valves</option>
+                    <option>Power Tools</option>
+                    <option>Fire Extinguisher</option>
+                    <option>Scaffolding</option>
+                    <option>Others</option>
+                </select>
+            </div>
+
+            <div class="datepick-container">
+                <span class="lar la-calendar"></span>
+
+                <div class="date-grp">
+                    <input type="date">
+                    <label for=""> - </label>
+                    <input type="date">
+                </div>
+
+            </div>
+        </div>
+
+
         <div class="inventory-repo-grid">
             <div class="inventory-repo-header">
                 <h3>INVENTORY REPORT</h3>
                 <div class="inventory-repo-buttons-style">
 
-                    <label>Date:</label>
-                    <input type="date">
+                    <button class="notif-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()">
+                        <a>
+                            RE-ORDER
+                            <label class="notif-badge">5</label>
+                        </a>
+                    </button>
 
-                    <label>-</label>
-                    <input type="date">
-
-                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()"><a><span class="las la-print"></span></a></button>
-                    <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()"><a><span class="las la-file-download"></span></a></button>
+                    <button class="expo-btn" title="EXPORT">
+                        <a href="@Url.Action("InvReportExport","Admin")">
+                            EXPORT
+                            <span class="las la-file-download"></span>
+                        </a>
+                    </button>
 
                 </div>
 
@@ -36,20 +72,32 @@
                 <div class="inventory-repo">
                     <div class="inventory-repo-body">
                         <div class="table-responsive" style="overflow-x: auto;">
-                            <table width="100%" id="myTable">
+                            <table width="100%">
                                 <thead>
                                     <tr>
-                                        <td>Code</td>
-                                        <td>Name</td>
+                                        <td>Date Added</td>
+                                        <td><a>Code<i class="las la-sort-down"></i></a></td>
+                                        <td><a>Name<i class="las la-sort-down"></i></a></td>
                                         <td>Category</td>
                                         <td>Type</td>
                                         <td>Size</td>
                                         <td>Quantity</td>
-                                        <td>Transaction</td>
-                                        <td>Date Added</td>
+                                        <td>Remarks</td>
+                                        <td><a>Class<i class="las la-sort-down"></i></a></td>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td>March 10, 2023</td>
+                                        <td>IMP-X</td>
+                                        <td>Fire Extinguisher</td>
+                                        <td>FE</td>
+                                        <td>HFC</td>
+                                        <td>N/A</td>
+                                        <td><label>250</label>&nbsp; pcs</td>
+                                        <td><a class="rem-standard">Standard</a></td>
+                                        <td>Class</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -57,6 +105,7 @@
                 </div>
             </div>
         </div>
+
     </main>
     </div>
     <script src="@Url.Content("~/Scripts/InvReport.js")"></script>

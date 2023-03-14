@@ -1369,10 +1369,10 @@ right .inv-sum-date {
 
 
 .legend-grp {
-    margin-left: 55%;
+    margin-left: 45%;
     margin-right: 2%;
     height: 30px;
-    width: 350px;
+    width: 450px;
     background-color: #fff;
     background-color: #fff;
     border-radius: 2px;
@@ -1411,12 +1411,27 @@ right .inv-sum-date {
     display: flex;
     height: 20px;
     width: 20px;
-    background-color: #FF0000;
+    background-color: #FF932F;
     border: 1px solid #000;
     margin-left: 100px;
 }
 
     .legend-content .legend-content-2 label {
+        margin-left: 25px;
+        margin-top: 1px;
+        font-size: .9rem;
+    }
+
+.legend-content .legend-content-3 {
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: #FF0000;
+    border: 1px solid #000;
+    margin-left: 90px;
+}
+
+    .legend-content .legend-content-3 label {
         margin-left: 25px;
         margin-top: 1px;
         font-size: .9rem;
@@ -1499,8 +1514,22 @@ right .inv-sum-date {
         display: flex;
         height: 20px;
         width: 20px;
+        background-color: #09AF10;
+        border: 1px solid #000;
+    }
+
+    .card-headers .fst-legend-content label {
+        margin-left: 10px;
+        margin-top: 1px;
+    }
+
+    .card-headers .fst-legend-content .slw-content-1 {
+        display: flex;
+        height: 20px;
+        width: 20px;
         background-color: #FF932F;
         border: 1px solid #000;
+        margin-left: 10px;
     }
 
     .card-headers .fst-legend-content label {

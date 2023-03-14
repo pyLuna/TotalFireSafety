@@ -205,71 +205,76 @@ namespace TotalFireSafety.Controllers
             var update = db.Basecounts.ToList();
             var Request = db.Requests.ToList();
 
-           /* List<Inventory> newList = new List<Inventory>();
-            foreach(var item in products)
-            {
-                var check = update.Where(x => x.update_item_id == item.in_code).ToList();
-                Inventory newInv = new Inventory()
-                {
-                   
-                    in_category = item.in_category,
-                    in_class = item.in_class,
-                    in_code = item.in_code,
-                    in_dateAdded = item.in_dateAdded,
-                    in_name = item.in_name,
-                    in_quantity = item.in_quantity,
-                    in_size = item.in_size,
-                    in_type = item.in_type,
-                    Inv_Update = check*//* == null ? check : null*//*
-                };
-                newList.Add(newInv);
-            }*/
-            
-     /* .SelectMany(p => p.Inv_Update.DefaultIfEmpty(), (p, u) => new {
-          Name = p.in_name,
-          Quantity = (u == null ? 0 : int.Parse(new string(u.update_quantity.ToString().Where(char.IsDigit).ToArray()))) +
-           (p == null ? 0 : int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray()))),
-          Class = p.in_class,
-          Category = p.in_category
-      })
-      .GroupBy(d => d.Name)
-      .Select(g => new {
-          Name = g.Key,
-          Quantity = g.Sum(x => x.Quantity),
-          Class = g.FirstOrDefault()?.Class,
-          Category = g.FirstOrDefault()?.Category
-      })
-      .ToList();*/
+            /* List<Inventory> newList = new List<Inventory>();
+             foreach(var item in products)
+             {
+                 var check = update.Where(x => x.update_item_id == item.in_code).ToList();
+                 Inventory newInv = new Inventory()
+                 {
 
-                 var data = products.Select(g => new {
-                     Code = g.bc_itemCode,
-                     Name = g.Inventory.in_name,
-                     Category = g.Inventory.in_category,
-                     Class = g.Inventory.in_class,
-                     Quantity = int.Parse(new string(g.bc_count.ToString().Where(char.IsDigit).ToArray())),
-                     Date = g.bc_date.ToString("M/dd/yyyy") // format the date
-                 }).ToList();
+                     in_category = item.in_category,
+                     in_class = item.in_class,
+                     in_code = item.in_code,
+                     in_dateAdded = item.in_dateAdded,
+                     in_name = item.in_name,
+                     in_quantity = item.in_quantity,
+                     in_size = item.in_size,
+                     in_type = item.in_type,
+                     Inv_Update = check*//* == null ? check : null*//*
+                 };
+                 newList.Add(newInv);
+             }*/
+
+            /* .SelectMany(p => p.Inv_Update.DefaultIfEmpty(), (p, u) => new {
+                 Name = p.in_name,
+                 Quantity = (u == null ? 0 : int.Parse(new string(u.update_quantity.ToString().Where(char.IsDigit).ToArray()))) +
+                  (p == null ? 0 : int.Parse(new string(p.in_quantity.ToString().Where(char.IsDigit).ToArray()))),
+                 Class = p.in_class,
+                 Category = p.in_category
+             })
+             .GroupBy(d => d.Name)
+             .Select(g => new {
+                 Name = g.Key,
+                 Quantity = g.Sum(x => x.Quantity),
+                 Class = g.FirstOrDefault()?.Class,
+                 Category = g.FirstOrDefault()?.Category
+             })
+             .ToList();*/
+
+            var data = products.GroupBy(g => new { g.Inventory.in_code, g.Inventory.in_name })
+       .Select(g => new {
+           Name = g.Key.in_name,
+           Quantity = g.Sum(x => {
+               var bcCount = new string(x.bc_count.ToString().Where(char.IsDigit).ToArray());
+               return string.IsNullOrEmpty(bcCount) ? 0 : int.Parse(bcCount);
+           }),
+           Category = g.First().Inventory.in_category,
+           Class = g.First().Inventory.in_class,
+           Code = g.Select(x => x.Inventory.in_code).ToList(),
+           Date = g.First().bc_date.ToString("M/dd/yyyy")
+       })
+       .ToList();
 
             ViewBag.Data = data;
 
             //chart 2
             var data1 = Request
-     .Where(g => g.request_type == "Deploy")
-     .Select(g => new {
-         Code = g.request_type,
-         Name1 = g.Inventory.in_name,
-         Type = g.request_item,
-         Quantity1 = int.Parse(new string(g.request_item_quantity.ToString().Where(char.IsDigit).ToArray())),
-         Date = g.request_date.ToString("M/dd/yyyy")
-     })
-     .GroupBy(g => g.Name1)
-     .Select(g => new {
-         Name1 = g.Key,
-         g.First().Code,
-         Type = g.First().Code,
-         Quantity1 = g.Sum(x => x.Quantity1),
-         g.First().Date
-     })
+       .Where(g => g.request_type == "Deploy")
+       .Select(g => new {
+           Code = g.request_type,
+           Name1 = g.Inventory.in_name,
+           Type = g.Inventory.in_code,
+           Quantity1 = int.Parse(new string(g.request_item_quantity.ToString().Where(char.IsDigit).ToArray())),
+           Date = g.request_date.ToString("M/dd/yyyy")
+       })
+       .GroupBy(g => g.Type )
+       .Select(g => new {
+           Type = g.Key,
+           Code = g.First().Code,
+           Name1 = g.First().Name1,
+           Quantity1 = g.Sum(x => x.Quantity1),
+           Date = g.First().Date
+       })
      .ToList();
 
             ViewBag.Chart = data1;

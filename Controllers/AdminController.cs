@@ -251,7 +251,7 @@ namespace TotalFireSafety.Controllers
            Category = g.First().Inventory.in_category,
            Class = g.First().Inventory.in_class,
            Code = g.Select(x => x.Inventory.in_code).ToList(),
-           Date = g.First().bc_date.ToString("M/dd/yyyy")
+           Date = g.First().bc_date.ToString("MM/dd/yyyy")
        })
        .ToList();
 
@@ -259,27 +259,23 @@ namespace TotalFireSafety.Controllers
 
             //chart 2
             var data1 = Request
-       .Where(g => g.request_type == "Deploy")
-       .Select(g => new {
-           Code = g.request_type,
-           Name1 = g.Inventory.in_name,
-           Type = g.Inventory.in_code,
-           Quantity1 = int.Parse(new string(g.request_item_quantity.ToString().Where(char.IsDigit).ToArray())),
-           Date = g.request_date.ToString("M/dd/yyyy")
-       })
-       .GroupBy(g => g.Type )
-       .Select(g => new {
-           Type = g.Key,
-           Code = g.First().Code,
-           Name1 = g.First().Name1,
-           Quantity1 = g.Sum(x => x.Quantity1),
-           Date = g.First().Date
-       })
-     .ToList();
+    .Where(g => g.request_type == "Deploy")
+    .GroupBy(g => new { g.request_type, g.Inventory.in_name })
+    .Select(g => new {
+        Name1 = g.Key.in_name,
+        Quantity1 = g.Sum(x => {
+            var quantity1 = new string(x.request_item_quantity.ToString().Where(char.IsDigit).ToArray());
+            return string.IsNullOrEmpty(quantity1) ? 0 : int.Parse(quantity1);
+        }),
+        Type = g.First().Inventory.in_code,
+        Code = g.Select(x => x.request_type).ToList(),
+        Date = g.First().request_date.ToString("MM/dd/yyyy")
+    })
+    .ToList();
 
             ViewBag.Chart = data1;
 
-           
+
 
 
             ViewBag.ProfilePath = GetPath(int.Parse(empId));

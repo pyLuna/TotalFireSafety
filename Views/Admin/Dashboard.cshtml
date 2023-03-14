@@ -271,244 +271,123 @@
                                 });
 
                                 // Get references to the select element and chart canvas
-                                var select = document.getElementById('itemCategory');
+                              
                                 var canvas = document.getElementById('barchart1');
                                
 
-                                select.addEventListener('change', function () {
-                                    var selectedCategory = select.value;
-                                    var filteredData;
-                                    if (selectedCategory === "Clear") {
-                                        filteredData = data;
-                                    } else {
-                                        filteredData = data.filter(function (item) {
-                                            return (item.Category === selectedCategory) || (item.parentCategory === selectedCategory);
-                                        });
-                                    }
-
-                                    // Filter the critical, warning, and good values based on the filtered data
-                                    var criticalValues = filteredData.map(function (item) {
-                                        if (item.Category === selectedCategory && item.Quantity < 50) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)'
-                                            };
+                                var itemCategory = document.getElementById('itemCategory');
+                                itemCategory.addEventListener('change', function () {
+                                    var selectedOption = itemCategory.value;
+                                    var filteredData = data.filter(function (item) {
+                                        return item.Category === selectedOption || selectedOption === 'Clear';
+                                    });
+                                    // update the chart data with the filtered data
+                                    chart.data.labels = filteredData.map(item => item.Name);
+                                    chart.data.datasets[0].data = filteredData.map(item => {
+                                        if (item.Quantity < 50) {
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
-
-                                    var warningValues = filteredData.map(function (item) {
-                                        if (item.Category === selectedCategory && item.Quantity >= 51 && item.Quantity <= 249) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 147, 47)'
-                                            };
+                                    });
+                                    chart.data.datasets[1].data = filteredData.map(item => {
+                                        if (item.Quantity >= 51 && item.Quantity <= 249) {
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
-
-                                    var goodValues = filteredData.map(function (item) {
-                                        if (item.Category === selectedCategory && item.Quantity >= 250 && item.Quantity <= 5000) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0, 1)'
-                                            };
+                                    });
+                                    chart.data.datasets[2].data = filteredData.map(item => {
+                                        if (item.Quantity >= 250 && item.Quantity <= 5000) {
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
-
-                                    // Update the chart data and labels
-                                    if (selectedCategory === "Clear") {
-                                        chart.data.datasets[0].data = data.map(function (item) {
-                                            if (item.Quantity < 50) {
-                                                return item.Quantity;
-                                            } else {
-                                                return null;
-                                            }
-                                        });
-                                        chart.data.datasets[1].data = data.map(function (item) {
-                                            if (item.Quantity >= 51 && item.Quantity <= 249) {
-                                                return item.Quantity;
-                                            } else {
-                                                return null;
-                                            }
-                                        });
-                                        chart.data.datasets[2].data = data.map(function (item) {
-                                            if (item.Quantity >= 250 && item.Quantity <= 5000) {
-                                                return item.Quantity;
-                                            } else {
-                                                return null;
-                                            }
-                                        });
-                                        chart.data.datasets[0].backgroundColor = criticalValues.map(function (item) { return item.color; });
-                                        chart.data.datasets[1].backgroundColor = warningValues.map(function (item) { return item.color; });
-                                        chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
-                                    } else {
-                                        chart.data.datasets[0].data = criticalValues.map(function (item) { return item.value; });
-                                        chart.data.datasets[1].data = warningValues.map(function (item) { return item.value; });
-                                        chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
-                                        chart.data.datasets[0].backgroundColor = criticalValues.map(function (item) { return item.color; });
-                                        chart.data.datasets[1].backgroundColor = warningValues.map(function (item) { return item.color; });
-                                        chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
-                                    }
-                                    chart.data.labels = filteredData.map(function (item) { return item.Name; });
+                                    });
                                     chart.update();
                                 });
                                
-                                var selectclass = document.getElementById('class');
-                                selectclass.addEventListener('change', function () {
-                                    // Get the selected option value
-                                    var selectedClass = selectclass.value;
-
-                                    // Filter the data array based on the selected option
-                                   
-                                    var filteredData1;
-                                    if (selectedClass === "All") {
-                                        filteredData1 = data;
-                                    } else {
-                                        filteredData1 = data.filter(function (item) {
-                                            return (item.Class === selectedClass);
-                                        });
-                                    }
-
-                                    // Filter the critical, warning, and good values based on the filtered data
-                                    var criticalValues = filteredData1.map(function (item) {
-                                        if (item.Class === selectedClass && item.Quantity < 50) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)'
-                                            };
+                                var itemClass = document.getElementById('class');
+                                itemClass.addEventListener('change', function () {
+                                    var selectedOption = itemClass.value;
+                                    var filteredData1 = data.filter(function (item) {
+                                        return item.Class === selectedOption || selectedOption === 'All';
+                                    });
+                                    // update the chart data with the filtered data
+                                    chart.data.labels = filteredData1.map(item => item.Name);
+                                    chart.data.datasets[0].data = filteredData1.map(item => {
+                                        if (item.Quantity < 50) {
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
-
-                                    var warningValues = filteredData1.map(function (item) {
-                                        if (item.Class === selectedClass && item.Quantity >= 51 && item.Quantity <= 249) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 147, 47)'
-                                            };
+                                    });
+                                    chart.data.datasets[1].data = filteredData1.map(item => {
+                                        if (item.Quantity >= 51 && item.Quantity <= 249) {
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
-
-                                    var goodValues = filteredData1.map(function (item) {
-                                        if (item.Class === selectedClass && item.Quantity >= 250 && item.Quantity <= 5000) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0, 1)'
-                                            };
+                                    });
+                                    chart.data.datasets[2].data = filteredData1.map(item => {
+                                        if (item.Quantity >= 250 && item.Quantity <= 5000) {
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
-
-                                    // Update the chart data and labels
-                                    if (selectedClass === "All") {
-                                        chart.data.datasets[0].data = data.map(function (item) {
-                                            if (item.Quantity < 50) {
-                                                return item.Quantity;
-                                            } else {
-                                                return null;
-                                            }
-                                        });
-                                        chart.data.datasets[1].data = data.map(function (item) {
-                                            if (item.Quantity >= 51 && item.Quantity <= 249) {
-                                                return item.Quantity;
-                                            } else {
-                                                return null;
-                                            }
-                                        });
-                                        chart.data.datasets[2].data = data.map(function (item) {
-                                            if (item.Quantity >= 250 && item.Quantity <= 5000) {
-                                                return item.Quantity;
-                                            } else {
-                                                return null;
-                                            }
-                                        });
-                                        chart.data.datasets[0].backgroundColor = criticalValues.map(function (item) { return item.color; });
-                                        chart.data.datasets[1].backgroundColor = warningValues.map(function (item) { return item.color; });
-                                        chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
-                                    } else {
-                                        chart.data.datasets[0].data = criticalValues.map(function (item) { return item.value; });
-                                        chart.data.datasets[1].data = warningValues.map(function (item) { return item.value; });
-                                        chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
-                                        chart.data.datasets[0].backgroundColor = criticalValues.map(function (item) { return item.color; });
-                                        chart.data.datasets[1].backgroundColor = warningValues.map(function (item) { return item.color; });
-                                        chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
-                                    }
-                                    chart.data.labels = filteredData1.map(function (item) { return item.Name; });
+                                    });
                                     chart.update();
                                 });
                                   
-                                
-                            
-                               
-                                var startDateInput = document.getElementById('startDate');
-                                var endDateInput = document.getElementById('endDate');
+                                const startDateInput = document.getElementById('startDate');
+                                const endDateInput = document.getElementById('endDate');
 
-                                startDateInput.addEventListener('change', updateChart);
-                                endDateInput.addEventListener('change', updateChart);
+                                startDateInput.addEventListener('change', handleDateRangeChange);
+                                endDateInput.addEventListener('change', handleDateRangeChange);
 
-                                function updateChart() {
-                                    var startDate = new Date(startDateInput.value);
-                                    var endDate = new Date(endDateInput.value);
+                                // function to handle the date range change
+                                function handleDateRangeChange() {
+                                    // get the start and end date values
+                                    const startDate = new Date(startDateInput.value);
+                                    const endDate = new Date(endDateInput.value);
 
-                                    // Filter the data based on the selected date range
-                                    var filteredData4 = data.filter(function (item) {
-                                        var itemDate = new Date(item.Date);
-                                        return itemDate >= startDate && itemDate <= endDate;
+                                    // filter the data based on the selected date range
+                                    const filteredData2 = data.filter(item => {
+                                        const date = new Date(item.Date);
+                                        return date >= startDate && date <= endDate;
                                     });
 
-                                    // Calculate the critical, warning, and good values for the filtered data
-                                    var criticalValues = filteredData4.map(function (item) {
+                                    // update the chart with the filtered data
+                                    updateChart(filteredData2);
+                                }
+
+                                // function to update the chart with new data
+                                function updateChart(newData) {
+                                    // update the chart data
+                                    chart.data.labels = newData.map(item => item.Name);
+                                    chart.data.datasets[0].data = newData.map(item => {
                                         if (item.Quantity < 50) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)'
-                                            };
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
-
-                                    var warningValues = filteredData4.map(function (item) {
+                                    });
+                                    chart.data.datasets[1].data = newData.map(item => {
                                         if (item.Quantity >= 51 && item.Quantity <= 249) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 147, 47)'
-                                            };
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
-
-                                    var goodValues = filteredData4.map(function (item) {
+                                    });
+                                    chart.data.datasets[2].data = newData.map(item => {
                                         if (item.Quantity >= 250 && item.Quantity <= 5000) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0, 1)'
-                                            };
+                                            return item.Quantity;
                                         } else {
                                             return null;
                                         }
-                                    }).filter(Boolean);
+                                    });
 
-                                    // Update the chart with the filtered data
-                                    chart.data.datasets[0].data = criticalValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = criticalValues.map(function (item) { return item.color; });
-
-                                    chart.data.datasets[1].data = warningValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = warningValues.map(function (item) { return item.color; });
-
-                                    chart.data.datasets[2].data = goodValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[2].backgroundColor = goodValues.map(function (item) { return item.color; });
-
+                                    // update the chart
                                     chart.update();
                                 }
 
@@ -653,7 +532,7 @@
                 <h3>&nbsp;</h3>
                 <div class="card">
                     <div class="card-header">
-                        <h3>Fast Moving Item</h3>
+                        <h3>Most Requested Item</h3>
 
                         <div class="fst-grp">
                             <select id="moving" required>
@@ -680,60 +559,79 @@
                                         return item.Quantity1;
                                     });
 
-                                    var movingSelect = document.getElementById('moving');
-                                    movingSelect.addEventListener('change', function () {
-                                        var selectedOption = this.options[this.selectedIndex].id;
-                                        var filteredData = [];
-
+                                    var select = document.getElementById('moving');
+                                    select.addEventListener('change', function () {
+                                        var selectedOption = select.options[select.selectedIndex].id;
                                         if (selectedOption === 'fast') {
-                                            filteredData = data1.filter(function (item) {
-                                                return item.Quantity1 >= 51 && item.Quantity1 <= 5000;
-                                            });
-
-                                            Chart.data.datasets[0].label = '';
-                                            Chart.data.datasets[0].hidden = true;
-                                            Chart.data.datasets[1].label = 'Fast Moving';
-                                            Chart.data.datasets[1].hidden = false;
-                                            Chart.options.plugins.legend.display = false;
+                                            Chart.data.datasets[0].data = null; // set slow moving data to null
+                                            Chart.data.datasets[1].data = data1.map(item => {
+                                                if (item.Quantity1 >= 51 && item.Quantity1 <= 5000) {
+                                                    return item.Quantity1;
+                                                } else {
+                                                    return null;
+                                                }
+                                            }); // set fast moving data
                                         } else if (selectedOption === 'slow') {
-                                            filteredData = data1.filter(function (item) {
-                                                return item.Quantity1 <= 50;
-                                            });
-
-                                            Chart.data.datasets[0].label = 'Slow Moving';
-                                            Chart.data.datasets[0].hidden = false;
-                                            Chart.data.datasets[1].label = '';
-                                            Chart.data.datasets[1].hidden = true;
-                                            Chart.options.plugins.legend.display = false;
+                                            Chart.data.datasets[0].data = data1.map(item => {
+                                                if (item.Quantity1 <= 50) {
+                                                    return item.Quantity1;
+                                                } else {
+                                                    return null;
+                                                }
+                                            }); // set slow moving data
+                                            Chart.data.datasets[1].data = null; // set fast moving data to null
                                         }
-
-                                        var filteredSlowMoving = filteredData.map(function (item) {
-                                            if (item.Quantity1 <= 50) {
-                                                return {
-                                                    value: item.Quantity1,
-                                                    color: 'rgba(255, 147, 47)'
-                                                };
-                                            }
-                                        }).filter(Boolean);
-
-                                        var filteredFastMoving = filteredData.map(function (item) {
-                                            if (item.Quantity1 >= 51 && item.Quantity1 <= 5000) {
-                                                return {
-                                                    value: item.Quantity1,
-                                                    color: 'rgba(0,128,0, 1)'
-                                                };
-                                            }
-                                        }).filter(Boolean);
-
-                                        Chart.data.datasets[0].data = filteredSlowMoving.map(function (item) { return item.value; });
-                                        Chart.data.datasets[0].backgroundColor = filteredSlowMoving.map(function (item) { return item.color; });
-                                        Chart.data.datasets[0].hidden = (selectedOption === 'fast'); // hide slow moving labels when fast moving is selected
-
-                                        Chart.data.datasets[1].data = filteredFastMoving.map(function (item) { return item.value; });
-                                        Chart.data.datasets[1].backgroundColor = filteredFastMoving.map(function (item) { return item.color; });
 
                                         Chart.update();
                                     });
+
+                                    // function to update the chart with new data
+                                  @*  const startDateInput1 = document.getElementById('startDate');
+                                    const endDateInput1 = document.getElementById('endDate');
+
+                                    startDateInput1.addEventListener('change', handleDateRangeChange);
+                                    endDateInput1.addEventListener('change', handleDateRangeChange);
+
+                                    // function to handle the date range change
+                                    function handleDateRangeChange() {
+                                        // get the start and end date values
+                                        const startDate = new Date(startDateInput.value);
+                                        const endDate = new Date(endDateInput.value);
+
+                                        // filter the data based on the selected date range
+                                        const filteredData3 = data.filter(item => {
+                                            const date = new Date(item.Date);
+                                            return date >= startDate && date <= endDate;
+                                        });
+
+                                        // update the chart with the filtered data
+                                        updateChart(filteredData3);
+                                    }
+
+                                    // function to update the chart with new data
+                                    function updateChart(newData1) {
+                                        // update the chart data
+                                        chart.data.labels = newData1.map(item => item.Name1);
+                                        chart.data.datasets[0].data = newData1.map(item => {
+                                            if (item.Quantity1 < 50) {
+                                                return item.Quantity1;
+                                            } else {
+                                                return null;
+                                            }
+                                        });
+                                        chart.data.datasets[1].data = newData1.map(item => {
+                                            if (item.Quantity1 >= 51) {
+                                                return item.Quantity1;
+                                            } else {
+                                                return null;
+                                            }
+
+                                        });
+                                            // update the chart
+                                            chart.update();
+                                        }*@
+                                            
+
 
                                     
                                     var Slowmoving = data1.map(function (item) {
@@ -741,7 +639,7 @@
                                             return {
                                                 value: item.Quantity1,
                                                 color: 'rgba(255, 147, 47)',
-                                                label: item.Name1
+                                                
                                             };
                                         }
                                     }).filter(Boolean);
@@ -751,7 +649,7 @@
                                             return {
                                                 value: item.Quantity1,
                                                 color: 'rgba(0,128,0, 1)',
-                                                label: item.Name1
+                                               
                                             };
                                         }
                                     }).filter(Boolean);
@@ -760,19 +658,32 @@
                                     var Chart = new Chart(ctx, {
                                         type: 'bar',
                                         data: {
-                                            labels: data1.map(item => item.Type),
+                                            labels: data1.map(item => item.Name1),
                                             datasets: [
+                                                
                                                 {
                                                     label: 'Slow Moving',
-                                                    data: Slowmoving.map(function (item) { return item.value; }),
-                                                    backgroundColor: Slowmoving.map(function (item) { return item.color; }),
-                                                    borderColor: 'rgba(255,0,0)',
+                                                    data: data1.map(item => {
+                                                        if (item.Quantity1 <= 50) {
+                                                            return item.Quantity1;
+                                                        } else {
+                                                            return null;
+                                                        }
+                                                    }),
+                                                    backgroundColor: Slowmoving.map(item => item.color),
+                                                    borderColor: 'rgba(255, 147, 47)',
                                                     borderWidth: 1
                                                 },
                                                 {
                                                     label: 'Fast Moving',
-                                                    data: Fastmoving.map(function (item) { return item.value; }),
-                                                    backgroundColor: Fastmoving.map(function (item) { return item.color; }),
+                                                    data: data1.map(item => {
+                                                        if (item.Quantity1 >= 51) {
+                                                            return item.Quantity1;
+                                                        } else {
+                                                            return null;
+                                                        }
+                                                    }),
+                                                    backgroundColor: Fastmoving.map(item => item.color),
                                                     borderColor: 'rgba(0,128,0, 1)',
                                                     borderWidth: 1
                                                 }
@@ -794,18 +705,6 @@
                                                         beginAtZero: true
                                                     }
                                                 }]
-                                            },
-                                            tooltips: {
-                                                callbacks: {
-                                                    label: function (tooltipItem, data) {
-                                                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                                                        if (label) {
-                                                            label += ': ';
-                                                        }
-                                                        label += tooltipItem.yLabel + ' (' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].label + ')';
-                                                        return label;
-                                                    }
-                                                }
                                             }
                                         }
                                     });

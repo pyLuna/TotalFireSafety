@@ -367,12 +367,11 @@ namespace TotalFireSafety.Controllers
                 uri = "Warehouse/Inventory/Add";
                 message = "Item has added successfully";
             }
-            else
+            if (item.formType == "edit")
             {
                 uri = "Warehouse/Inventory/Edit";
                 message = "Item has updated successfully";
             }
-
             var response = api_req.SetMethod(uri, userToken, serializedModel);
 
             if (response == "BadRequest")
@@ -471,6 +470,7 @@ namespace TotalFireSafety.Controllers
             {
                 Session["edit"] = "pending";
             }
+
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             Session["added"] = message;
             //ViewBag.Added = "Item has updated successfully";

@@ -122,7 +122,7 @@ function GetAll() {
             }
         })
         .catch(error => {
-            window.location.replace('/Error/InternalServerError');
+            //window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
@@ -181,6 +181,7 @@ function fixArray(array, boolean) {
 function setTable(array) {
     table.innerHTML = '';
     var className = "";
+    var button;
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
 
@@ -203,13 +204,23 @@ function setTable(array) {
             row += `<td><label class="${className}" style="font-weight:bold;">${array[i].request_status}</label></td>`;
             row += `<td id="hideActionBtn">`;
             row += `<div class="purchase-action-style">`;
-            row += `<button class="acc-btn" title="ACCEPT REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','approve')"> <a href="#"><span class="las la-check-circle"></span></a></button>`;
-            row += `<button class="dec-btn" title="DECLINE REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','decline')"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
-            row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="OpenEdit('${array[i].request_type_id}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+            row += `<button class="acc-btn" id="appr${i}" title="ACCEPT REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','approve')" ${disable}> <a href="#"><span class="las la-check-circle"></span></a></button>`;
+            row += `<button class="dec-btn" id="dec${i}" title="DECLINE REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','decline')"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
+            //row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="OpenEdit('${array[i].request_type_id}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
             row += `<button class="pri-btn" title="PRINT REPORT" > <a href="#"><span class="las la-print"></span></a></button>`;
-            row += `<button class="expo-btn"  onclick="window.location.href='/Admin/ExportRequest?id=${array[i].request_type_id}'" title="EXPORT REPORT" > <a href="#"><span class="las la-file-download"></span></a></button>`;            row += `</div></td>`;
+            row += `<button class="expo-btn"  onclick="window.location.href='/Admin/ExportRequest?id=${array[i].request_type_id}'" title="EXPORT REPORT" > <a href="#"><span class="las la-file-download"></span></a></button>`;
+            row += `</div></td>`;
             row += `</tr>`;
             table.innerHTML += row;
+
+            if (array[i].request_status === "Declined") {
+                button = document.getElementById(`dec${i}`);
+                button.disabled = true;
+            }
+            if (array[i].request_status === "Approved") {
+                button = document.getElementById(`appr${i}`);
+                button.disabled = true;
+            }
         }
         filtered.length = 0;
     }

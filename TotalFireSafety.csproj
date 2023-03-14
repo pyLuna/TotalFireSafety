@@ -250,6 +250,7 @@
     <Content Include="images\tfsti-logo-name.png" />
     <Content Include="images\tfsti-logo-noname.png" />
     <Content Include="images\tfsti-logo.png" />
+    <Content Include="images\tfsti-new.png" />
     <Content Include="images\tick.png" />
     <Content Include="images\warning.png" />
     <Content Include="favicon.ico" />

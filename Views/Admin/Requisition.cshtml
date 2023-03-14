@@ -28,17 +28,134 @@
             <div class="purchase-header">
                 <h3>REQUEST LISTS</h3>
                 <div class="purchase-buttons-style">
-                    <button class="add-btn" title="ADD NEW REQUEST" id="add-quant" onclick="addOpenPopupPur() + EmployeeList() + createRow()"><span class="las la-plus-circle"></span></button>
-                    <button class="pri-btn" title="PRINT REPORT" onclick="printOpenPopup()"><span class="las la-print"></span></button>
-                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()"><span class="las la-file-download"></span></button>
-                    <button class="purchase-sort-btn" onclick="userSortFunction()">
-                        <span></span>
-                        <span class="las la-chevron-down"></span>
+                    <!--NEW UPDATE -->
+
+                    <button class="create-req-btn" title="CREATE ORDER" onclick="addOpenPopupPur()">
+                        <a>
+                            CREATE REQUEST
+                            <span class="las la-file-alt"></span>
+                        </a>
                     </button>
-                    <div class="purchase-sort-content" id="purSortDropdown">
-                        <a href="#">Ascending</a>
-                        <a href="#">Descending</a>
+
+                    <button>
+                        <a onclick="openForm()">
+                            NOTIFICATION
+                            <span class="las la-bell"></span>
+                        </a>
+                    </button>
+
+                    <!-- NOTIFICATION CONTAINER -->
+
+                    <div class="notif-popup" id="notifForm">
+                        <div class="notif-container">
+
+
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+                            <div class="notif-list-container">
+                                <label>
+                                    There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                                </label>
+                                <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                            </div>
+
+                        </div>
+                        <center>
+                            <button type="button" class="close-btn" onclick="closeForm()"><i class="las la-times-circle"></i></button>
+                        </center>
                     </div>
+
+                    <!-- END -->
+                    <!-- VEW NOTIFICATION CONTAINER -->
+
+                    <div class="view-popup" id="viewForm">
+                        <div class="view-container">
+
+                            <a onclick="openForm() + viewCloseForm()"><span class="las la-long-arrow-alt-left"></span> Back </a>
+
+                            <div class="view-list-container">
+                                <center>
+                                    <label>
+                                        <h3>RequestID: DEPREQ12</h3>
+                                    </label>
+                                </center>
+
+                            </div>
+
+                            <div class="acc-container">
+
+                            </div>
+                        </div>
+                        <center>
+
+                            <button type="button" class="appr-btn" onclick="">
+                                <a>
+                                    Approve
+                                    <span class="las la-check-circle"></span>
+                                </a>
+                            </button>
+
+                            <button type="button" class="appr-btn" onclick="">
+                                <a>
+                                    Decline
+                                    <span class="las la-times-circle"></span>
+                                </a>
+                            </button>
+                        </center>
+                    </div>
+
+                    <!-- END -->
+
+                    <select required>
+                        <option disabled selected>FILTER</option>
+                        <option>All</option>
+                        <option>Local</option>
+                        <option>Import</option>
+                    </select>
 
                 </div>
 
@@ -50,8 +167,8 @@
                             <table width="100%" id="myTable">
                                 <thead>
                                     <tr>
-                                        <td>Request ID</td>
-                                        <td>Type</td>
+                                        <td><a>Request ID<i class="las la-sort-down"></td>
+                                        <td>Request Type</td>
                                         <td>Requestor Name</td>
                                         <td>Employee ID</td>
                                         <td>Date Requested</td>
@@ -291,6 +408,23 @@
                 myDropdown.classList.remove('purchase-sort-show');
             }
         }
+    }
+
+    // SCRIPT FOR NOTIFICATION
+    function openForm() {
+        document.getElementById("notifForm").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("notifForm").style.display = "none";
+    }
+
+    function viewOpenForm() {
+        document.getElementById("viewForm").style.display = "block";
+    }
+
+    function viewCloseForm() {
+        document.getElementById("viewForm").style.display = "none";
     }
 
 

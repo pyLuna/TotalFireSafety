@@ -20,10 +20,11 @@
             <div class="inv-sum-date">
                 <div class="sum-date-con">
                     <label></label>
-                    <input type="date">
+                    <input type="date" id="startDate">
+
 
                     <label>-</label>
-                    <input type="date">
+                    <input type="date" id="endDate">
                 </div>
 
             </div>
@@ -235,12 +236,12 @@
 
                         <h3>Item Categories Summary</h3>
 
-                        <div class="cat-grp">
-                            <select required>
+                        <div  class="cat-grp">
+                            <select id="class" required>
                                 <option disabled selected>Item Class</option>
-                                <option>All</option>
-                                <option>Local</option>
-                                <option>Import</option>
+                                <option value="All">All</option>
+                                <option value="Local">Local</option>
+                                <option value="Import">Import</option>
                             </select>
 
                             <select id="itemCategory" required>
@@ -249,6 +250,7 @@
                                 <option value="Power Tools">Power Tools</option>
                                 <option value="Fittings">Fittings</option>
                                 <option value="Scaffolding">Scaffolding</option>
+                                <option value="Others">Others</option>
                                 <option value="Clear">Clear</option>
                             </select>
                         </div>
@@ -265,68 +267,134 @@
 
 
                                 var labels = data.map(function (item) {
-
-                                    return item.Name
+                                    return item.Name;
                                 });
-
 
                                 // Get references to the select element and chart canvas
-                                var select = document.getElementById('itemCategory');
-
+                              
                                 var canvas = document.getElementById('barchart1');
-
-
-                                select.addEventListener('change', function () {
-                                    // Get the selected option value
-                                    var selectedCategory = select.value;
-
-                                    // Filter the data array based on the selected option
-                                    var filteredData = selectedCategory === "Clear" ? data : data.filter(function (item) {
-                                        return item.Category === selectedCategory;
-                                    });
-
-                                    
-
-                                    var criticalValues = filteredData.map(function (item) {
-                                        if (item.Total < 50) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(255,0,0)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean);
-
-                                    var goodValues = filteredData.map(function (item) {
-                                        if (item.Total >= 51 && item.Total <= 5000) {
-                                            return {
-                                                value: item.Total,
-                                                color: 'rgba(0,128,0, 1)'
-                                            };
-                                        } else {
-                                            return null;
-                                        }
-                                    }).filter(Boolean);
-
-                                    chart.data.datasets[0].data = goodValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = goodValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = criticalValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = criticalValues.map(function (item) { return item.color; });
-                                    chart.data.labels = filteredData.map(function (item) { return item.Name; });
-                                    chart.update();
-
-                                    // Return the filtered data
-                                    return filteredData;
-                                });
-
-
                                
 
+                                var itemCategory = document.getElementById('itemCategory');
+                                itemCategory.addEventListener('change', function () {
+                                    var selectedOption = itemCategory.value;
+                                    var filteredData = data.filter(function (item) {
+                                        return item.Category === selectedOption || selectedOption === 'Clear';
+                                    });
+                                    // update the chart data with the filtered data
+                                    chart.data.labels = filteredData.map(item => item.Name);
+                                    chart.data.datasets[0].data = filteredData.map(item => {
+                                        if (item.Quantity < 50) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+                                    chart.data.datasets[1].data = filteredData.map(item => {
+                                        if (item.Quantity >= 51 && item.Quantity <= 249) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+                                    chart.data.datasets[2].data = filteredData.map(item => {
+                                        if (item.Quantity >= 250 && item.Quantity <= 5000) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+                                    chart.update();
+                                });
+                               
+                                var itemClass = document.getElementById('class');
+                                itemClass.addEventListener('change', function () {
+                                    var selectedOption = itemClass.value;
+                                    var filteredData1 = data.filter(function (item) {
+                                        return item.Class === selectedOption || selectedOption === 'All';
+                                    });
+                                    // update the chart data with the filtered data
+                                    chart.data.labels = filteredData1.map(item => item.Name);
+                                    chart.data.datasets[0].data = filteredData1.map(item => {
+                                        if (item.Quantity < 50) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+                                    chart.data.datasets[1].data = filteredData1.map(item => {
+                                        if (item.Quantity >= 51 && item.Quantity <= 249) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+                                    chart.data.datasets[2].data = filteredData1.map(item => {
+                                        if (item.Quantity >= 250 && item.Quantity <= 5000) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+                                    chart.update();
+                                });
+                                  
+                                const startDateInput = document.getElementById('startDate');
+                                const endDateInput = document.getElementById('endDate');
+
+                                startDateInput.addEventListener('change', handleDateRangeChange);
+                                endDateInput.addEventListener('change', handleDateRangeChange);
+
+                                // function to handle the date range change
+                                function handleDateRangeChange() {
+                                    // get the start and end date values
+                                    const startDate = new Date(startDateInput.value);
+                                    const endDate = new Date(endDateInput.value);
+
+                                    // filter the data based on the selected date range
+                                    const filteredData2 = data.filter(item => {
+                                        const date = new Date(item.Date);
+                                        return date >= startDate && date <= endDate;
+                                    });
+
+                                    // update the chart with the filtered data
+                                    updateChart(filteredData2);
+                                }
+
+                                // function to update the chart with new data
+                                function updateChart(newData) {
+                                    // update the chart data
+                                    chart.data.labels = newData.map(item => item.Name);
+                                    chart.data.datasets[0].data = newData.map(item => {
+                                        if (item.Quantity < 50) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+                                    chart.data.datasets[1].data = newData.map(item => {
+                                        if (item.Quantity >= 51 && item.Quantity <= 249) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+                                    chart.data.datasets[2].data = newData.map(item => {
+                                        if (item.Quantity >= 250 && item.Quantity <= 5000) {
+                                            return item.Quantity;
+                                        } else {
+                                            return null;
+                                        }
+                                    });
+
+                                    // update the chart
+                                    chart.update();
+                                }
+
                                 var criticalValues = data.map(function (item) {
-                                    if (item.Total < 50) {
+                                    if (item.Quantity < 50) {
                                         return {
-                                            value: item.Total,
+                                            value: item.Quantity,
                                             color: 'rgba(255,0,0)'
                                         };
                                     } else {
@@ -334,10 +402,21 @@
                                     }
                                 }).filter(Boolean);
 
-                                var goodValues = data.map(function (item) {
-                                    if (item.Total >= 51 && item.Total <= 5000) {
+                                var warningValues = data.map(function (item) {
+                                    if (item.Quantity >= 51 && item.Quantity <= 249) {
                                         return {
-                                            value: item.Total,
+                                            value: item.Quantity,
+                                            color: 'rgba(255, 147, 47)'
+                                        };
+                                    } else {
+                                        return null;
+                                    }
+                                }).filter(Boolean);
+
+                                var goodValues = data.map(function (item) {
+                                    if (item.Quantity >= 250 && item.Quantity <= 5000) {
+                                        return {
+                                            value: item.Quantity,
                                             color: 'rgba(0,128,0, 1)'
                                         };
                                     } else {
@@ -349,20 +428,44 @@
                                 var chart = new Chart(ctx, {
                                     type: 'bar',
                                     data: {
-                                        labels: labels,
+                                        labels: data.map(item => item.Name),
                                         datasets: [
-
                                             {
                                                 label: 'Critical',
-                                                data: criticalValues.map(function (item) { return item.value; }),
-                                                backgroundColor: criticalValues.map(function (item) { return item.color; }),
-                                                borderColor: 'rgba(255,0,0, 1)',
+                                                data: data.map(item => {
+                                                    if (item.Quantity < 50) {
+                                                        return item.Quantity;
+                                                    } else {
+                                                        return null;
+                                                    }
+                                                }),
+                                                backgroundColor: criticalValues.map(item => item.color),
+                                                borderColor: 'rgba(255,0,0)',
+                                                borderWidth: 1
+                                            },
+                                            {
+                                                label: 'Warning',
+                                                data: data.map(item => {
+                                                    if (item.Quantity >= 51 && item.Quantity <= 249) {
+                                                        return item.Quantity;
+                                                    } else {
+                                                        return null;
+                                                    }
+                                                }),
+                                                backgroundColor: warningValues.map(item => item.color),
+                                                borderColor: 'rgba(255, 147, 47)',
                                                 borderWidth: 1
                                             },
                                             {
                                                 label: 'Good',
-                                                data: goodValues.map(function (item) { return item.value; }),
-                                                backgroundColor: goodValues.map(function (item) { return item.color; }),
+                                                data: data.map(item => {
+                                                    if (item.Quantity >= 250 && item.Quantity <= 5000) {
+                                                        return item.Quantity;
+                                                    } else {
+                                                        return null;
+                                                    }
+                                                }),
+                                                backgroundColor: goodValues.map(item => item.color),
                                                 borderColor: 'rgba(0,128,0, 1)',
                                                 borderWidth: 1
                                             }
@@ -372,10 +475,8 @@
                                         responsive: true,
                                         plugins: {
                                             legend: {
-                                                display:
-                                                    false
-
-                                }
+                                                display: false
+                                            }
                                         },
                                         stacked: false,
                                         maintainAspectRatio: false,
@@ -384,13 +485,12 @@
                                             yAxes: [{
                                                 ticks: {
                                                     beginAtZero: true
-                                                }
+                                                },
+                                                maxBarThickness: 100 // set this to a value that works for your chart
                                             }]
-                                        },
-
+                                        }
                                     }
                                 });
-                                chart.update();
 
                             </script>
 
@@ -406,9 +506,17 @@
                                     <div class="legend-color">
 
                                     </div>
-                                    <label> A.Average </label>
+                                    <label> Standard </label>
                                 </div>
+
                                 <div class="legend-content-2">
+                                    <div class="legend-color">
+
+                                    </div>
+                                    <label> Average </label>
+                                </div>
+
+                                <div class="legend-content-3">
                                     <div class="legend-color">
 
                                     </div>
@@ -427,10 +535,10 @@
                         <h3>Most Requested Item</h3>
 
                         <div class="fst-grp">
-                            <select required>
+                            <select id="moving" required>
                                 <option disabled selected>Choose</option>
-                                <option>...</option>
-                                <option>..</option>
+                                <option id="fast">Fast Moving Item</option>
+                                <option id="slow">Slow Moving Item</option>
                             </select>
                         </div>
                         <div class="project-sum-btns"></div>
@@ -442,7 +550,7 @@
                                 <canvas id="barcharthori1" width="auto" height="auto"></canvas>
 
                                 <script>
-                                     var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));
+                                    var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));
                                     var labels1 = data1.map(function (item) {
                                         return item.Name1;
                                     });
@@ -451,26 +559,146 @@
                                         return item.Quantity1;
                                     });
 
+                                    var select = document.getElementById('moving');
+                                    select.addEventListener('change', function () {
+                                        var selectedOption = select.options[select.selectedIndex].id;
+                                        if (selectedOption === 'fast') {
+                                            Chart.data.datasets[0].data = null; // set slow moving data to null
+                                            Chart.data.datasets[1].data = data1.map(item => {
+                                                if (item.Quantity1 >= 51 && item.Quantity1 <= 5000) {
+                                                    return item.Quantity1;
+                                                } else {
+                                                    return null;
+                                                }
+                                            }); // set fast moving data
+                                        } else if (selectedOption === 'slow') {
+                                            Chart.data.datasets[0].data = data1.map(item => {
+                                                if (item.Quantity1 <= 50) {
+                                                    return item.Quantity1;
+                                                } else {
+                                                    return null;
+                                                }
+                                            }); // set slow moving data
+                                            Chart.data.datasets[1].data = null; // set fast moving data to null
+                                        }
+
+                                        Chart.update();
+                                    });
+
+                                    // function to update the chart with new data
+                                  @*  const startDateInput1 = document.getElementById('startDate');
+                                    const endDateInput1 = document.getElementById('endDate');
+
+                                    startDateInput1.addEventListener('change', handleDateRangeChange);
+                                    endDateInput1.addEventListener('change', handleDateRangeChange);
+
+                                    // function to handle the date range change
+                                    function handleDateRangeChange() {
+                                        // get the start and end date values
+                                        const startDate = new Date(startDateInput.value);
+                                        const endDate = new Date(endDateInput.value);
+
+                                        // filter the data based on the selected date range
+                                        const filteredData3 = data.filter(item => {
+                                            const date = new Date(item.Date);
+                                            return date >= startDate && date <= endDate;
+                                        });
+
+                                        // update the chart with the filtered data
+                                        updateChart(filteredData3);
+                                    }
+
+                                    // function to update the chart with new data
+                                    function updateChart(newData1) {
+                                        // update the chart data
+                                        chart.data.labels = newData1.map(item => item.Name1);
+                                        chart.data.datasets[0].data = newData1.map(item => {
+                                            if (item.Quantity1 < 50) {
+                                                return item.Quantity1;
+                                            } else {
+                                                return null;
+                                            }
+                                        });
+                                        chart.data.datasets[1].data = newData1.map(item => {
+                                            if (item.Quantity1 >= 51) {
+                                                return item.Quantity1;
+                                            } else {
+                                                return null;
+                                            }
+
+                                        });
+                                            // update the chart
+                                            chart.update();
+                                        }*@
+                                            
+
+
+                                    
+                                    var Slowmoving = data1.map(function (item) {
+                                        if (item.Quantity1 <= 50) {
+                                            return {
+                                                value: item.Quantity1,
+                                                color: 'rgba(255, 147, 47)',
+                                                
+                                            };
+                                        }
+                                    }).filter(Boolean);
+
+                                    var Fastmoving = data1.map(function (item) {
+                                        if (item.Quantity1 >= 51 && item.Quantity1 <= 5000) {
+                                            return {
+                                                value: item.Quantity1,
+                                                color: 'rgba(0,128,0, 1)',
+                                               
+                                            };
+                                        }
+                                    }).filter(Boolean);
 
                                     var ctx = document.getElementById('barcharthori1').getContext('2d');
                                     var Chart = new Chart(ctx, {
                                         type: 'bar',
                                         data: {
-                                            labels: labels1,
-                                            datasets: [{
-                                                label: 'Quantity',
-
-                                                data: values1,
-                                                backgroundColor: 'rgba(37,109,133)',
-                                                borderColor: 'rgba(54, 162, 235, 1)',
-                                                borderWidth: 1
-                                            }]
+                                            labels: data1.map(item => item.Name1),
+                                            datasets: [
+                                                
+                                                {
+                                                    label: 'Slow Moving',
+                                                    data: data1.map(item => {
+                                                        if (item.Quantity1 <= 50) {
+                                                            return item.Quantity1;
+                                                        } else {
+                                                            return null;
+                                                        }
+                                                    }),
+                                                    backgroundColor: Slowmoving.map(item => item.color),
+                                                    borderColor: 'rgba(255, 147, 47)',
+                                                    borderWidth: 1
+                                                },
+                                                {
+                                                    label: 'Fast Moving',
+                                                    data: data1.map(item => {
+                                                        if (item.Quantity1 >= 51) {
+                                                            return item.Quantity1;
+                                                        } else {
+                                                            return null;
+                                                        }
+                                                    }),
+                                                    backgroundColor: Fastmoving.map(item => item.color),
+                                                    borderColor: 'rgba(0,128,0, 1)',
+                                                    borderWidth: 1
+                                                }
+                                            ]
                                         },
                                         options: {
                                             indexAxis: 'y',
                                             responsive: true,
                                             maintainAspectRatio: false,
                                             aspectRatio: 4 / 3,
+                                            plugins: {
+                                                legend: {
+                                                    display: false
+                                                }
+                                            },
                                             scales: {
                                                 yAxes: [{
                                                     ticks: {
@@ -491,10 +719,14 @@
                             <div class="fst-content-1">
 
                             </div>
-                            <label> Quantity </label>
+                            <label> Fast Moving Item </label>
+                            <div class="slw-content-1">
+
+                            </div>
+                            <label> Slow Moving Item </label>
                         </div>
 
-                        <label class="fst-date">03/08/2023 - 03/08/2023</label>
+                        <label class="fst-date"></label>
                     </div>
 
                 </div>

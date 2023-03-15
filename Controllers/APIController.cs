@@ -1006,8 +1006,8 @@ namespace TotalFireSafety.Controllers
                             //    }
                             //}
                             _context.Entry(itemDB);
-                            _context.Entry(reqs);
-                            _context.Entry(ups);
+                            //_context.Entry(reqs);
+                            //_context.Entry(ups);
                             _context.SaveChanges();     //  Save to Database
                             return Ok("Process Completed!");
                         }

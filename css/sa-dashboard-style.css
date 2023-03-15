@@ -1186,7 +1186,7 @@ right .inv-sum-date {
 
     .card-details .card-active,
     .card-details .card-active {
-        color: #68B984;
+        color: #FF0000;
     }
 
 
@@ -1445,8 +1445,22 @@ right .inv-sum-date {
         display: flex;
         height: 20px;
         width: 20px;
+        background-color: #09AF10;
+        border: 1px solid #000;
+    }
+
+    .card-headers .fst-legend-content label {
+        margin-left: 10px;
+        margin-top: 1px;
+    }
+
+    .card-headers .fst-legend-content .slw-content-1 {
+        display: flex;
+        height: 20px;
+        width: 20px;
         background-color: #FF932F;
         border: 1px solid #000;
+        margin-left: 10px;
     }
 
     .card-headers .fst-legend-content label {

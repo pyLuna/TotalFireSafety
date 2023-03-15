@@ -1,5 +1,8 @@
 ﻿let jsonArray = [];
 let fixedArray = [];
+let filteredArray = [];
+const fromDateInput = document.querySelector('#dt1');
+const toDateInput = document.querySelector('#dt2');
 const table = document.querySelector('#myTable tbody');
 
 function GetAll() {
@@ -72,3 +75,16 @@ function setTable(array) {
         table.appendChild(errorMessageRow);
     }
 }
+function filterByDate() {
+    const startDate = new Date(document.getElementById("dt1").value);
+    const endDate = new Date(document.getElementById("dt2").value);
+    const filteredArray = fixedArray.filter((item) => {
+        const itemDate = new Date(item.FormattedDate);
+        return itemDate >= startDate && itemDate <= endDate;
+    });
+    setTable(filteredArray);
+}
+
+fromDateInput.addEventListener('change', filterByDateRange);
+toDateInput.addEventListener('change', filterByDateRange);
+//Call

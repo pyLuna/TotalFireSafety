@@ -5,7 +5,7 @@
 }
 
 
-<div class="details-grid-add">
+@*<div class="details-grid-add">
     <div class="details-sum-add">
         <div class="details-add">
             <div class="details-header-add">
@@ -93,5 +93,159 @@
     </div>
 
 
-</div>
+</div>*@
 
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            Project Lists
+        </h2>
+    </header>
+    <main>
+
+        <div class="proj-main-content">
+            <div class="proj-back-container">
+                <a href="../projects/sa-projects-ongoing.html"><span class="las la-long-arrow-alt-left"></span> VIEW PROJECT</a>
+            </div>
+
+            <div class="proj-main-container">
+                <div class="proj-task-list">
+                    <div class="task-header">
+                        <h2>Task List</h2>
+                        <div class="right-container">
+                            <a href="#">
+                                <span class="lar la-plus-square"></span>Add Report
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="task-grid">
+
+                        <div class="task-projects">
+                            <div class="task">
+                                <div class="task-body">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td>Task</td>
+                                                    <td>Status</td>
+                                                    <td>Description</td>
+                                                    <td>Start Date</td>
+                                                    <td>ECD</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>UI Design</td>
+                                                    <td><label class="on-going">On-going</label></td>
+                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
+                                                    <td>Mar. 11, 2023</td>
+                                                    <td>Mar. 11, 2023</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>UI Design</td>
+                                                    <td><label class="in-line">On-going</label></td>
+                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
+                                                    <td>Mar. 11, 2023</td>
+                                                    <td>Mar. 11, 2023</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>UI Design</td>
+                                                    <td><label class="delayed">On-going</label></td>
+                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
+                                                    <td>Mar. 11, 2023</td>
+                                                    <td>Mar. 11, 2023</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="proj-right-container">
+                    <div class="proj-incharge-container">
+                        <div class="incharge">
+                            <div class="incharge-header">
+                                <h3>Vincent M. Cordero</h3>
+                                <label>Person-in-charge</label>
+                            </div>
+
+                            <div class="date">
+                                <label class="title">Start Date: </label>
+                                <label>Mar. 11, 2023</label>
+                            </div>
+
+                            <div class="date">
+                                <label class="title">Finish Date: </label>
+                                <label>Mar. 11, 2023</label>
+                            </div>
+
+                            <div class="status">
+                                <label class="title">Status:</label>
+                                <label class="on-going">Mar. 11, 2023</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="proj-des-container">
+                        <div class="descri-main">
+                            <div class="descri-title">
+                                <h3>Project Title</h3>
+                            </div>
+                            <div class="descri-content">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="proj-mems-container">
+                        <div class="mems-main">
+                            <div class="mems-title">
+                                <h3>Team Members</h3>
+                            </div>
+                            <div class="mems-list">
+                                <h5>Vincent M. Cordero</h5>
+                                <label>Person-in-charge</label>
+
+                                <h5>Vincent M. Cordero</h5>
+                                <label>Person-in-charge</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="can-pop-container" id="can-popup">
+            <img src="../../images/warning.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to remove the user on the list?</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
+
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="../../images/remove.png">
+            <h2>Deleted!</h2>
+            <p>User removed in the list successfully!</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
+        </div>
+
+    </main>
+
+    <div class="footer">
+        <center>
+            <div class="footer-con">
+                <img src="../../images/codepheuse.png" alt="">
+                <h4>CodePheus | 2022</h4>
+            </div>
+        </center>
+    </div>

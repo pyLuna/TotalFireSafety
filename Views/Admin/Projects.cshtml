@@ -16,123 +16,197 @@
     </header>
     <main>
 
-        
 
-        <div class="proj-sum">
-            <h3>Project Summary</h3>
-        </div>
-        <div class="proj-sum-btns">
-            <div class="drp-wrapper">
-                <a href="@Url.Action("ProjectAdd","Admin")">
-                    <button class="proj-sum-add">ADD</button>
-                </a>
-                <select required>
-                    <option disabled selected>Status</option>
-                    <option>On-going</option>
-                    <option>In-line</option>
-                    <option>Delayed</option>
-                </select>
-                <select required>
-                    <option disabled selected>Proj. Lead</option>
-                    <option>Clarisse Vasquez</option>
-                </select>
-            </div>
 
+        <!--<div class="proj-sum">
+        <h3>Project Summary</h3>
+    </div>
+    <div class="proj-sum-btns">
+        <div class="drp-wrapper">
+            <a href="@Url.Action("ProjectAdd","Admin")">
+                <button class="proj-sum-add">ADD</button>
+            </a>
+            <select required>
+                <option disabled selected>Status</option>
+                <option>On-going</option>
+                <option>In-line</option>
+                <option>Delayed</option>
+            </select>
+            <select required>
+                <option disabled selected>Proj. Lead</option>
+                <option>Clarisse Vasquez</option>
+            </select>
         </div>
 
-
+    </div>-->
         <!-- Project Summary -->
-
-        <div class="dash-proj">
-            <div class="dash">
-                <div class="dash-body">
-                    <div class="table-responsive" style="overflow-x: auto;">
-                        <table width="100%">
-                            <thead>
-                                <tr>
-                                    <td>Project Name</td>
-                                    <td>Project Lead</td>
-                                    <td>Start Date</td>
-                                    <td>Status</td>
-                                    <td>Tracker</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a href="../projects/sa-proj-details.html">Makati Global</a></td>
-                                    <td>Jewell Mayrena</td>
-                                    <td>Feb 27, 2023</td>
-                                    <td><label class="stat-pen">In-Line</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-complete">
+        <!--<div class="dash-proj">
+                <div class="dash">
+                    <div class="dash-body">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Project Name</td>
+                                        <td>Project Lead</td>
+                                        <td>Start Date</td>
+                                        <td>Status</td>
+                                        <td>Tracker</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="../projects/sa-proj-details.html">Makati Global</a></td>
+                                        <td>Jewell Mayrena</td>
+                                        <td>Feb 27, 2023</td>
+                                        <td><label class="stat-pen">In-Line</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-complete">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
 
-                                <tr>
-                                    <td><a href="../projects/sa-proj-details.html">Mang Inasal QCU</a></td>
-                                    <td>Fernan Yuki</td>
-                                    <td>Feb 12, 2023</td>
-                                    <td><label class="stat-appr">On-Going</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-half">
+                                    <tr>
+                                        <td><a href="../projects/sa-proj-details.html">Mang Inasal QCU</a></td>
+                                        <td>Fernan Yuki</td>
+                                        <td>Feb 12, 2023</td>
+                                        <td><label class="stat-appr">On-Going</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-half">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
 
-                                <tr>
-                                    <td><a href="../projects/sa-proj-details.html">Golden Disk</a></td>
-                                    <td>Carlo Millonte</td>
-                                    <td>Jan 27, 2023</td>
-                                    <td><label class="stat-appr">On-Going</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-halfhalf">
+                                    <tr>
+                                        <td><a href="../projects/sa-proj-details.html">Golden Disk</a></td>
+                                        <td>Carlo Millonte</td>
+                                        <td>Jan 27, 2023</td>
+                                        <td><label class="stat-appr">On-Going</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-halfhalf">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
 
-                                <tr>
-                                    <td><a href="../projects/sa-proj-details.html">Jollibee South Branch</a></td>
-                                    <td>Clark Steven Arcilla</td>
-                                    <td>Feb 23, 2023</td>
-                                    <td><label class="stat-dec">Declined</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-nothalf">
+                                    <tr>
+                                        <td><a href="../projects/sa-proj-details.html">Jollibee South Branch</a></td>
+                                        <td>Clark Steven Arcilla</td>
+                                        <td>Feb 23, 2023</td>
+                                        <td><label class="stat-dec">Declined</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-nothalf">
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
 
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>-->
+        <!-- NEW UPDATE -->
+
+        <div class="proj-grid">
+            <div class="proj-header">
+                <h3>PROJECT LISTS</h3>
+                <div class="proj-buttons-style">
+
+                    <!--NEW UPDATE -->
+
+                    <a href="../projects/sa-add-proj.html">
+                        <button class="add-btn" title="ADD NEW ITEM">ADD PROJECT</button>
+                    </a>
+                </div>
+
+            </div>
+            <div class="proj-projects">
+                <div class="proj">
+                    <div class="proj-body">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Project Name</td>
+                                        <td>Project Lead</td>
+                                        <td>Start Date</td>
+                                        <td>Status</td>
+                                        <td>Tracker</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td><a href="../projects/sa-proj-details.html">Makati Global</a></td>
+                                        <td>Jewell Mayrena</td>
+                                        <td>Feb 27, 2023</td>
+                                        <td><label class="stat-pen">In-Line</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-complete">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><a href="../projects/sa-proj-details.html">Golden Disk</a></td>
+                                        <td>Carlo Millonte</td>
+                                        <td>Jan 27, 2023</td>
+                                        <td><label class="stat-appr">On-Going</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-halfhalf">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><a href="../projects/sa-proj-details.html">Jollibee South Branch</a></td>
+                                        <td>Clark Steven Arcilla</td>
+                                        <td>Feb 23, 2023</td>
+                                        <td><label class="stat-dec">Declined</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-nothalf">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-</div>
 
-<div class="can-pop-container" id="can-popup">
-    <img src="~/images/warning.png">
-    <h2>System Warning!</h2>
-    <p>Do you want to remove the user on the list?</p>
-    <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
-    <button type="button" onclick="canClosePopup()">Cancel</button>
-</div>
+        <div class="can-pop-container" id="can-popup">
+            <img src="~/images/warning.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to remove the user on the list?</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
 
-<div class="rem-pop-container" id="rem-popup">
-    <img src="~/images/remove.png">
-    <h2>Deleted!</h2>
-    <p>User removed in the list successfully!</p>
-    <button type="button" onclick="remClosePopup()">OK</button>
-</div>
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="~/images/remove.png">
+            <h2>Deleted!</h2>
+            <p>User removed in the list successfully!</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
+        </div>
 
     </main>
 

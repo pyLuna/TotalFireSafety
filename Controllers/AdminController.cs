@@ -56,6 +56,10 @@ namespace TotalFireSafety.Controllers
         {
             return View();
         }
+        public ActionResult InvReorder()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {

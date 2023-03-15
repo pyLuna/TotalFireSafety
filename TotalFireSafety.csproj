@@ -428,6 +428,7 @@
     <Content Include="Views\Admin\Inventory_bak.cshtml" />
     <Content Include="Views\Admin\InvReportExport.cshtml" />
     <Content Include="Views\Admin\InvReportPrint.cshtml" />
+    <Content Include="Views\Admin\InvReorder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

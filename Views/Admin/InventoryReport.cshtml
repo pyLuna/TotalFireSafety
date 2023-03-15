@@ -37,9 +37,9 @@
                 <span class="lar la-calendar"></span>
 
                 <div class="date-grp">
-                    <input type="date">
+                    <input type="date" id="dt1">
                     <label for=""> - </label>
-                    <input type="date">
+                    <input type="date" id="dt2">
                 </div>
 
             </div>
@@ -52,7 +52,7 @@
                 <div class="inventory-repo-buttons-style">
 
                     <button class="notif-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()">
-                        <a>
+                        <a href="@Url.Action("InvReorder","Admin")">
                             RE-ORDER
                             <label class="notif-badge">5</label>
                         </a>

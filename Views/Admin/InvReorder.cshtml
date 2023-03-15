@@ -1,0 +1,357 @@
+﻿
+@{
+    ViewBag.Title = "InvReorder";
+    //Layout = "~/Views/AdminLayout.cshtml";
+    ViewBag.Report = "active";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TFSTI - Inventory</title>
+    <link rel="shortcut icon" type="image/icon" href="../../../images/tfsti-logo-noname.png" />
+
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="../../../css/sa-dashboard-style.css">
+</head>
+<body>
+
+    <input type="checkbox" id="nav-toggle">
+    <div class="sidebar">
+        <div class="user-wrapper">
+            <img src="~/images/profile.png" alt="" class="profile-user" width="40px" height="40px">
+            <div>
+                <h4>Juan Dela Cruz</h4>
+                <small>Super Admin</small>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="../../sa-dashboard.html">
+                        <span class="las la-tv"></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <button class="oper-dropdown-btn">
+                    <a>
+                        <span class="las la-warehouse"></span>
+                        <span>Inventories</span>
+                    </a>
+                </button>
+                <div class="dropdown-container">
+                <li>
+                    <a href="../sa-inventory/sa-inventory.html" class="active">
+                        <span class="las la-cubes"></span>
+                        <span>Inventory Lists</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../sa-inventory/sa-arch-inventory.html">
+                        <span class="las la-archive"></span>
+                        <span>Inventory Archive</span>
+                    </a>
+                </li>
+        </div>
+
+        <button class="oper-dropdown-btn">
+            <a>
+                <span class="las la-caret-down"></span>
+                <span>Requisition</span>
+            </a>
+        </button>
+        <div class="dropdown-container">
+            <li>
+                <a href="../requisition/sa-pur_requi.html">
+                    <span class="las la-file"></span>
+                    <span>Purchasing Request</span>
+                </a>
+            </li>
+            <li>
+                <a href="../requisition/sa-deploy_requi.html">
+                    <span class="las la-folder"></span>
+                    <span>Deployment Request</span>
+                </a>
+            </li>
+            <li>
+                <a href="../requisition/sa-supp-requi.html">
+                    <span class="lar la-folder-open"></span>
+                    <span>Supply Request</span>
+                </a>
+            </li>
+        </div>
+        <!-- ------ HIDE PURCHASE TAB --------
+                   <li>
+                       <a href="../operations/sa-purchasing/sa-purchasing.html"><span class="las la-dolly"></span>
+                           <span>Purchasing</span>
+                       </a>
+                   </li>
+               -->
+
+        <li>
+            <a href="../../projects/sa-projects-ongoing.html">
+                <span class="las la-pen-square"></span>
+                <span>Projects</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="../../administration/sa-users.html">
+                <span class="las la-user-tie"></span>
+                <span>Users</span>
+            </a>
+        </li>
+
+
+        <li>
+            <a href="../../../index.html">
+                <span class="las la-sign-out-alt"></span>
+                <span>Logout</span>
+            </a>
+        </li>
+        </ul>
+    </div>
+
+    <div class="logo-float">
+        <img src="../../../images/tfsti-logo.png" alt="">
+    </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle">
+                    <span class="las la-bars"></span>
+                </label>
+                Re-Order
+            </h2>
+        </header>
+
+        <main>
+
+            <div class="inventory-repo-grid">
+                <div class="inventory-repo-header">
+                    <h3>CRITICAL QUANTITY LEVEL</h3>
+                    <div class="inventory-repo-buttons-style">
+
+                        <button class="create-btn" title="CREATE ORDER">
+                            <a>
+                                CREATE ORDER
+                                <span class="las la-file-alt"></span>
+                            </a>
+                        </button>
+
+                    </div>
+
+                </div>
+                <div class="inventory-repo-projects">
+                    <div class="inventory-repo">
+                        <div class="inventory-repo-body">
+                            <div class="table-responsive" style="overflow-x: auto;">
+                                <table width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td>Date Added</td>
+                                            <td><a>Code<i class="las la-sort-down"></i></a></td>
+                                            <td><a>Name<i class="las la-sort-down"></i></a></td>
+                                            <td>Category</td>
+                                            <td>Type</td>
+                                            <td>Size</td>
+                                            <td>Quantity</td>
+                                            <td>Remarks</td>
+                                            <td><a>Class<i class="las la-sort-down"></i></a></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>March 10, 2023</td>
+                                            <td>IMP-X</td>
+                                            <td>Fire Extinguisher</td>
+                                            <td>FE</td>
+                                            <td>HFC</td>
+                                            <td>N/A</td>
+                                            <td><label>250</label>&nbsp; pcs</td>
+                                            <td><a class="rem-standard">Standard</a></td>
+                                            <td>Class</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="info-pop-container" id="info-popup">
+                <img src="../../../images/information.png">
+                <h2>System Warning!</h2>
+                <p>Do you want to save the user on the list?</p>
+                <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
+                <button type="button" onclick="infoClosePopup()">Cancel</button>
+            </div>
+
+            <div class="can-pop-container" id="can-popup">
+                <img src="../../../images/warning.png">
+                <h2>System Warning!</h2>
+                <p>Are you sure you want to delete item on the list?</p>
+                <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+                <button type="button" onclick="canClosePopup()">Cancel</button>
+            </div>
+
+            <div class="save-pop-container" id="popup">
+                <img src="../../../images/tick.png">
+                <h2>Added!</h2>
+                <p>User details has been added successfully!</p>
+                <button type="button" onclick="closePopup()">OK</button>
+            </div>
+
+            <div class="rem-pop-container" id="rem-popup">
+                <img src="../../../images/remove.png">
+                <h2>Deleted!</h2>
+                <p>Item details has deleted in the list!</p>
+                <button type="button" onclick="remClosePopup()">OK</button>
+            </div>
+
+            <div class="print-pop-container" id="print-popup">
+                <img src="../../../images/printer.png">
+                <h2>Print!</h2>
+                <p>Print successfully!</p>
+                <button type="button" onclick="printClosePopup()">OK</button>
+            </div>
+
+            <div class="expo-pop-container" id="expo-popup">
+                <img src="../../../images/export.png">
+                <h2>Export!</h2>
+                <p>Exported Successfully!</p>
+                <button type="button" onclick="expoClosePopup()">OK</button>
+            </div>
+        </main>
+
+        <div class="footer">
+            <center>
+                <div class="footer-con">
+                    <img src="../../../images/codepheuse.png" alt="">
+                    <h4>CodePheus | 2022</h4>
+                </div>
+            </center>
+        </div>
+
+        <script>
+
+
+            /* When the user clicks on the button,
+            toggle between hiding and showing the dropdown content */
+            function myFunction() {
+              document.getElementById("myDropdown").classList.toggle("show");
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(e) {
+              if (!e.target.matches('.drop-btn')) {
+              var myDropdown = document.getElementById("myDropdown");
+                if (myDropdown.classList.contains('show')) {
+                  myDropdown.classList.remove('show');
+                }
+              }
+            }
+
+            function userSortFunction() {
+              document.getElementById("invSortDropdown").classList.toggle("inventory-sort-show");
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(e) {
+              if (!e.target.matches('.inventory-sort-btn')) {
+              var myDropdown = document.getElementById("invSortDropdown");
+                if (myDropdown.classList.contains('inventory-sort-show')) {
+                  myDropdown.classList.remove('inventory-sort-show');
+                }
+              }
+            }
+
+        <!-- Messege Box -->
+
+        let addpopupinv = document.getElementById("add-popup-inv");
+        function addOpenPopupInv() {
+            addpopupinv.classList.add("add-popup-inv-show")
+        }
+
+        function addClosePopupInv() {
+            addpopupinv.classList.remove("add-popup-inv-show")
+        }
+
+        let archpopup = document.getElementById("arch-popup");
+        function OpenArchPopup() {
+            archpopup.classList.add("arch-popup-show")
+        }
+
+        function CloseArchPopup() {
+            archpopup.classList.remove("arch-popup-show")
+        }
+
+        let canpopup = document.getElementById("can-popup");
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
+
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
+
+        let infopopup = document.getElementById("info-popup");
+        function infoOpenPopup() {
+            infopopup.classList.add("info-popup-show")
+        }
+
+        function infoClosePopup() {
+            infopopup.classList.remove("info-popup-show")
+        }
+
+        let popup = document.getElementById("popup");
+        function openPopup() {
+            popup.classList.add("open-popup-show")
+        }
+
+        function closePopup() {
+            popup.classList.remove("open-popup-show")
+        }
+
+        let rempopup = document.getElementById("rem-popup");
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
+
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+
+        let printpopup = document.getElementById("print-popup");
+        function printOpenPopup() {
+            printpopup.classList.add("print-popup-show")
+        }
+
+        function printClosePopup() {
+            printpopup.classList.remove("print-popup-show")
+        }
+
+        let expopopup = document.getElementById("expo-popup");
+        function expoOpenPopup() {
+            expopopup.classList.add("expo-popup-show")
+        }
+
+        function expoClosePopup() {
+            expopopup.classList.remove("expo-popup-show")
+        }
+
+
+
+        </script>
+
+

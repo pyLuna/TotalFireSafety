@@ -260,10 +260,12 @@
                     </div>
                     <div class="chart-border">
                         <div class="chart">
-                            <canvas id="barchart1" width="250" height="300"></canvas>
+                            <canvas id="barchart" width="250" height="300"></canvas>
                             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                            <script>
-                            var data = @Html.Raw(Json.Encode(ViewBag.Data));
+                            <script> var data = @Html.Raw(Json.Encode(ViewBag.Data));</script>
+                          
+                            @*<script>
+                           
 
 
                                 var labels = data.map(function (item) {
@@ -492,7 +494,7 @@
                                     }
                                 });
 
-                            </script>
+                            </script>*@
 
                         </div>
                     </div>
@@ -547,9 +549,10 @@
                     <div class="chart-borders">
                         <div class="chart">
                             <div class="scatter">
-                                <canvas id="barcharthori1" width="auto" height="auto"></canvas>
+                                <canvas id="barcharthori" width="auto" height="auto"></canvas>
+                                <script src="~/Scripts/js/chart3.js"></script>
 
-                                <script>
+                                <!--<script>
                                     var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));
                                     var labels1 = data1.map(function (item) {
                                         return item.Name1;
@@ -585,7 +588,7 @@
                                         Chart.update();
                                     });
 
-                                    // function to update the chart with new data
+                                    // function to update the chart with new data-->
                                   @*  const startDateInput1 = document.getElementById('startDate');
                                     const endDateInput1 = document.getElementById('endDate');
 
@@ -634,7 +637,7 @@
 
 
                                     
-                                    var Slowmoving = data1.map(function (item) {
+                                    <!--var Slowmoving = data1.map(function (item) {
                                         if (item.Quantity1 <= 50) {
                                             return {
                                                 value: item.Quantity1,
@@ -708,7 +711,7 @@
                                             }
                                         }
                                     });
-                                </script>
+                                </script>-->
                             </div>
 
                         </div>

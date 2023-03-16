@@ -1,5 +1,3 @@
-//Global Options
-
 const ctx3 = document.getElementById('barcharthori').getContext('2d');
 const barcharthori = new Chart(ctx3, {
     type: 'bar',
@@ -9,7 +7,7 @@ const barcharthori = new Chart(ctx3, {
             label: 'Item Quantity',
             data: [881, 700, 500, 420, 350, 100],
             backgroundColor: [
-                '#256D85'
+                '#09AF10'
 
             ],
             borderColor: [
@@ -29,6 +27,11 @@ const barcharthori = new Chart(ctx3, {
         }]
     },
     options: {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
         indexAxis: 'y',
         responsive: true,
         maintainAspectRatio: false,
@@ -40,4 +43,3 @@ const barcharthori = new Chart(ctx3, {
         }
     }
 });
-

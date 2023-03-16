@@ -132,15 +132,15 @@
                     <h3>Users</h3>
                     <div class="card-single">
                         <div class="card-container">
-                            <h3>Employee</h3>
+                            <h3>Users</h3>
                             <div class="card-details">
-                                <label id="dataCountLabel"></label><span>Total Employees</span>
+                                <label id="dataCountLabel"></label><span>Total Users</span>
                                 <script>
                              var dataCount = @ViewBag.DataCount;
                              document.getElementById("dataCountLabel").textContent = dataCount;
                                 </script>
                                 <p></p>
-                                <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Employees</span>
+                                <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Users</span>
                                 <script>
                              var Active = @ViewBag.Active;
                              document.getElementById("dataCountLabel1").textContent = Active;

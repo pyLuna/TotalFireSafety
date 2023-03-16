@@ -392,7 +392,7 @@ input::-webkit-inner-spin-button {
     transition: transform 0.4s, top 0.4s;
 }
 
-.open-popup-show {
+.save-pop-container-show {
     visibility: visible;
     top: 50%;
     transform: translate(-50%,-50%) scale(1);
@@ -509,7 +509,8 @@ input::-webkit-inner-spin-button {
 }
 
 .del-pop-container button {
-    width: 100%;
+    display: inline-block;
+    width: 100px;
     margin-top: 50px;
     padding: 10px 0;
     background: #fff;

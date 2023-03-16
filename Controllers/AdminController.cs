@@ -170,6 +170,27 @@ namespace TotalFireSafety.Controllers
         }
         #endregion
 
+        public ActionResult ProjectView()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
+        public ActionResult ProjectAdd()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
+
         public ActionResult Dashboard()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -304,16 +325,16 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        public ActionResult ProjectAdd()
-        {
-            var empId = Session["emp_no"]?.ToString();
-            if (empId == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            return View();
-        }
+        //public ActionResult ProjectAdd()
+        //{
+        //    var empId = Session["emp_no"]?.ToString();
+        //    if (empId == null)
+        //    {
+        //        return RedirectToAction("Login", "Base");
+        //    }
+        //    ViewBag.ProfilePath = GetPath(int.Parse(empId));
+        //    return View();
+        //}
 
         #region Inventory
         [HttpPost]

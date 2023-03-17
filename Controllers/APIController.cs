@@ -9,11 +9,25 @@ using ZXing;
 using ZXing.QrCode;
 //using System.Web.Mvc;
 using System.Drawing;
+using Microsoft.AspNet.SignalR;
+using TotalFireSafety.Hubs;
+using System.Web;
+using System.Threading.Tasks;
 
 namespace TotalFireSafety.Controllers
 {
     public class APIController : ApiController
     {
+        //private readonly IHubContext<MyHub> _hubContext;
+
+        //public APIController(IHubContext<MyHub> hubContext)
+        //{
+        //    _hubContext = hubContext;
+        //}
+        //private void NotifyClients()
+        //{
+        //     _hubContext.Clients.All.Send("updated");
+        //}
         /*
          *  TO DO
          *  --AYUSIN ANG GetAll ng mga APIs
@@ -58,7 +72,7 @@ namespace TotalFireSafety.Controllers
         [Route("Admin/Status")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
-        public IHttpActionResult GetAllEmployeeStatus()
+        public async Task<IHttpActionResult> GetAllEmployeeStatus()
         {
             try
             {
@@ -106,7 +120,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Status/{id}")]
         [HttpGet]
-        public IHttpActionResult GetStatusById(int id)
+        public async Task<IHttpActionResult> GetStatusById(int id)
         {
             try
             {
@@ -131,7 +145,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Status/Add")]
         [HttpPost]
-        public IHttpActionResult AddStatus(Status items)
+        public async Task<IHttpActionResult> AddStatus(Status items)
         {
             try
             {
@@ -162,7 +176,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Status/Edit")]
         [HttpPost]
-        public IHttpActionResult UpdateStatus(Status item)
+        public async Task<IHttpActionResult> UpdateStatus(Status item)
         {
             try
             {
@@ -199,7 +213,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Status/Delete")]  //  Update Employee Route
         [HttpPost]
-        public IHttpActionResult DeleteStatus(int? id)
+        public async Task<IHttpActionResult> DeleteStatus(int? id)
         {
             try
             {
@@ -234,7 +248,7 @@ namespace TotalFireSafety.Controllers
         [Route("Admin/Credentials")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
-        public IHttpActionResult GetAllEmployeeCredentials()
+        public async Task<IHttpActionResult> GetAllEmployeeCredentials()
         {
             try
             {
@@ -260,7 +274,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Credentials/{id}")]
         [HttpGet]
-        public IHttpActionResult GetCredentialsById(int id)
+        public async Task<IHttpActionResult> GetCredentialsById(int id)
         {
             try
             {
@@ -285,7 +299,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Credentials/Add")]
         [HttpPost]
-        public IHttpActionResult AddCredentials(Credential items)
+        public async Task<IHttpActionResult> AddCredentials(Credential items)
         {
             try
             {
@@ -316,7 +330,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Credentials/Edit")]
         [HttpPost]
-        public IHttpActionResult UpdateCredential(Credential item)
+        public async Task<IHttpActionResult> UpdateCredential(Credential item)
         {
             try
             {
@@ -353,7 +367,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Credentials/Delete")]  //  Update Employee Route
         [HttpPost]
-        public IHttpActionResult DeleteCredential(int? id)
+        public async Task<IHttpActionResult> DeleteCredential(int? id)
         {
             try
             {
@@ -388,7 +402,7 @@ namespace TotalFireSafety.Controllers
         [Route("Admin/Roles")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
-        public IHttpActionResult GetAllEmployeeRoles()
+        public async Task<IHttpActionResult> GetAllEmployeeRoles()
         {
             try
             {
@@ -414,7 +428,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Roles/{id}")]
         [HttpGet]
-        public IHttpActionResult GetRolesById(int id)
+        public async Task<IHttpActionResult> GetRolesById(int id)
         {
             try
             {
@@ -439,7 +453,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Roles/Add")]
         [HttpPost]
-        public IHttpActionResult AddRoles(Role items)
+        public async Task<IHttpActionResult> AddRoles(Role items)
         {
             try
             {
@@ -469,7 +483,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Roles/Edit")]
         [HttpPost]
-        public IHttpActionResult UpdateRoles(Role item)
+        public async Task<IHttpActionResult> UpdateRoles(Role item)
         {
             try
             {
@@ -505,7 +519,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Roles/Delete")]  //  Update Employee Route
         [HttpPost]
-        public IHttpActionResult DeleteRole(int? id)
+        public async Task<IHttpActionResult> DeleteRole(int? id)
         {
             try
             {
@@ -541,7 +555,7 @@ namespace TotalFireSafety.Controllers
         [Route("Admin/Employee")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
-        public IHttpActionResult GetAllEmployee()
+        public async Task<IHttpActionResult> GetAllEmployee()
         {
             try
             {
@@ -606,7 +620,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Employee/{val}")]  //  Get Employee by any value Route
         [HttpGet]
-        public IHttpActionResult GetEmployeeById(string val)
+        public async Task<IHttpActionResult> GetEmployeeById(string val)
         {
             try
             {
@@ -642,7 +656,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Employee/Add")]  //  Add Employee Route
         [HttpPost]
-        public IHttpActionResult AddEemployee(Employee _emp)
+        public async Task<IHttpActionResult> AddEemployee(Employee _emp)
         {
             try
             {
@@ -680,7 +694,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin")]
         [Route("Admin/Employee/Update")]  //  Update Employee Route
         [HttpPost]
-        public IHttpActionResult UpdateEmployee(Employee _emp)
+        public async Task<IHttpActionResult> UpdateEmployee(Employee _emp)
         {
             try
             {
@@ -728,7 +742,7 @@ namespace TotalFireSafety.Controllers
 
         #region Inventory
 
-        private IHttpActionResult UpdateNewItem(Inventory item)
+        private async Task<IHttpActionResult> UpdateNewItem(Inventory item)
         {
             using (var _context = new TFSEntity())
             {
@@ -747,6 +761,7 @@ namespace TotalFireSafety.Controllers
                         };
                         _context.Inv_Update.Add(update);
                         _context.SaveChanges();
+
                 }
                 catch(Exception ex)
                 {
@@ -758,7 +773,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "warehouse,admin")]
         [Route("Warehouse/Inventory/Updates")]
         [HttpGet]
-        public IHttpActionResult AddedItemInfo()
+        public async Task<IHttpActionResult> AddedItemInfo()
         {
             try
             {
@@ -811,7 +826,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "warehouse,admin")]
         [Route("Warehouse/Inventory/Status")]
         [HttpPost]
-        public IHttpActionResult RestoreItem(Inventory val)
+        public async Task<IHttpActionResult> RestoreItem(Inventory val)
         {
             try
             {
@@ -824,8 +839,11 @@ namespace TotalFireSafety.Controllers
                     }
                     item.in_status = "active";
                     item.in_arch_date = null;
-                    _context.Entry(item);
+                    var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+                     await hubContext.Groups.Add(HttpContext.Current.Session.SessionID.ToString(), "active");
+                     await hubContext.Clients.All.SendAsync("Hello from the server!");
                     _context.SaveChanges();
+                    _context.Entry(item);
                     return Ok();
                 }
             }
@@ -837,7 +855,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "warehouse,admin")]
         [Route("Warehouse/Inventory/Archive")]
         [HttpGet]
-        public IHttpActionResult GetAllArchivedItem()
+        public async Task<IHttpActionResult> GetAllArchivedItem()
         {
             try
             {
@@ -863,7 +881,7 @@ namespace TotalFireSafety.Controllers
         [Authorize]
         [Route("Warehouse/Inventory")]
         [HttpGet]
-        public IHttpActionResult GetAllItem()
+        public async Task<IHttpActionResult> GetAllItem()
         {
             try
             {
@@ -909,7 +927,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin,warehouse")]
         [Route("Warehouse/Inventory/{val}")]
         [HttpGet]
-        public IHttpActionResult GetItemByValue(string val)
+        public async Task<IHttpActionResult> GetItemByValue(string val)
         {
             try
             {
@@ -944,7 +962,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin,warehouse")]
         [Route("Warehouse/Inventory/Add")]
         [HttpPost]
-        public IHttpActionResult AddItem(Inventory _item)
+        public async Task<IHttpActionResult> AddItem(Inventory _item)
         {
             try
             {
@@ -955,7 +973,8 @@ namespace TotalFireSafety.Controllers
                          var response = UpdateNewItem(_item);
                         _context.Inventories.Add(_item);
                         _context.SaveChanges();
-
+                        var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+                        hubContext.Clients.All.SendAsync("Hello from the server!");
                         return Ok("Item Added");
                     }
                     return BadRequest();
@@ -969,7 +988,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin,warehouse")]
         [Route("Warehouse/Inventory/Edit")]
         [HttpPost]
-        public IHttpActionResult UpdateItem(Inventory _item)
+        public async Task<IHttpActionResult> UpdateItem(Inventory _item)
         {
             try
             {
@@ -1009,6 +1028,8 @@ namespace TotalFireSafety.Controllers
                             //_context.Entry(reqs);
                             //_context.Entry(ups);
                             _context.SaveChanges();     //  Save to Database
+                            var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+                            hubContext.Clients.All.SendAsync("Hello from the server!");
                             return Ok("Process Completed!");
                         }
                         return BadRequest();
@@ -1024,7 +1045,7 @@ namespace TotalFireSafety.Controllers
         [Authorize(Roles = "admin,warehouse")]
         [Route("Warehouse/Inventory/Delete")]
         [HttpPost]
-        public IHttpActionResult DeleteItem(Inventory codeToFind)
+        public async Task<IHttpActionResult> DeleteItem(Inventory codeToFind)
         {
             try
             {
@@ -1038,6 +1059,8 @@ namespace TotalFireSafety.Controllers
                         _item.in_arch_date = DateTime.Now;
                         _context.Entry(_item);
                         _context.SaveChanges();
+                        var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+                        hubContext.Clients.All.SendAsync("Hello from the server!");
                         return Ok("Item Deleted Successfully!");
                     }
                     return BadRequest();
@@ -1053,7 +1076,7 @@ namespace TotalFireSafety.Controllers
         [Route("Warehouse/Inventory/Barcode")]
         [HttpPost]
         // Barcorde Generator
-        public IHttpActionResult GenerateBarcode(string value)
+        public async Task<IHttpActionResult> GenerateBarcode(string value)
         {
             Byte[] byteArray;
             var width = 350; // width of the Qr Code
@@ -1104,7 +1127,7 @@ namespace TotalFireSafety.Controllers
         [Authorize]
         [Route("Requests/All")]
         [HttpGet]
-        public IHttpActionResult AllRequests()
+        public async Task<IHttpActionResult> AllRequests()
         {
             try
             {
@@ -1180,7 +1203,7 @@ namespace TotalFireSafety.Controllers
         [Authorize]
         [Route("Requests/Add")]
         [HttpPost]
-        public IHttpActionResult AddRequests(List<Request> req)
+        public async Task<IHttpActionResult> AddRequests(List<Request> req)
         {
             try
             {
@@ -1219,7 +1242,7 @@ namespace TotalFireSafety.Controllers
         [Authorize]
         [Route("Requests/Edit")]
         [HttpPost]
-        public IHttpActionResult EditRequests(List<Request> req)
+        public async Task<IHttpActionResult> EditRequests(List<Request> req)
         {
             try
             {
@@ -1247,7 +1270,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        public IHttpActionResult DeleteRequests(Guid req)
+        public async Task<IHttpActionResult> DeleteRequests(Guid req)
         {
             try
             {

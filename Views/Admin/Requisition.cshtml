@@ -29,14 +29,15 @@
                 <h3>REQUEST LISTS</h3>
                 <div class="purchase-buttons-style">
                     <!--NEW UPDATE -->
-
-                    <button class="create-req-btn" title="CREATE ORDER" onclick="addOpenPopupPur() + createRow() + EmployeeList()">
-                        <a>
-                            CREATE REQUEST
-                            <span class="las la-file-alt"></span>
-                        </a>
-                    </button>
-
+                    @if (Int32.Parse(Session["system_role"].ToString()) == 2)
+                    {
+                        <button class="create-req-btn" title="CREATE ORDER" onclick="addOpenPopupPur() + createRow() + EmployeeList()">
+                            <a>
+                                CREATE REQUEST
+                                <span class="las la-file-alt"></span>
+                            </a>
+                        </button>
+                    }
                     <button>
                         <a onclick="openForm()">
                             NOTIFICATION

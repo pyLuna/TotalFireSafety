@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.SignalR;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Mvc;
+using TotalFireSafety.Hubs;
 using TotalFireSafety.Models;
 
 
@@ -61,6 +63,8 @@ namespace TotalFireSafety.Controllers
                         Session["access_token"] = token.access_token;
                         Session["emp_no"] = _user.emp_no;
                         Session["system_role"] = _roles.role1;
+                        //var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+                        //hubContext.Groups.Add("test",HttpContext.Current.Session.SessionID.ToString());
                         return RedirectToAction("Dashboard", "Admin");
                     }
                     else

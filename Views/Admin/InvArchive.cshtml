@@ -58,7 +58,9 @@
                                         <td>Quantity</td>
                                         <td>Class</td>
                                         <td>Date Archived</td>
-                                        <td>Action</td>
+                                        @if (Int32.Parse(Session["system_role"].ToString()) == 2){
+                                            <td>Action</td>
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -109,13 +111,31 @@
     </main>
     <script src="@Url.Content("~/Scripts/InvArchive.js")"></script>
     <script>
+        var sessionId = @Session["emp_no"];
+        var connection = $.hubConnection();
+        var hubProxy = connection.createHubProxy('MyHub');
+
         window.onload = function () {
-            GetAll();
-            var reload = localStorage.getItem("reload");
-            if (reload == "true") {
+
+            hubProxy.on('SendAsync', function (message) {
+                //console.log(message);
                 OpenSavePopup();
-                localStorage.setItem("reload", null);
-            }
+                GetAll();
+                @*hubProxy.invokeMethod("AddToGroup",'@HttpContext.Current.Session.SessionID');
+                hubProxy.invokeMethod("SendToGroup",'@HttpContext.Current.Session.SessionID',"success");*@
+
+            });
+            hubProxy.on('SendAsyncGroup', function (grpName) {
+                //if ('@HttpContext.Current.Session.SessionID' == grpName) {
+                    console.log(grpName)
+                //}
+            });
+            connection.start();
+            GetAll();
+            //var reload = localStorage.getItem("reload");
+            //if (reload == "true") {
+            //    localStorage.setItem("reload", null);
+            //}
         }
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */

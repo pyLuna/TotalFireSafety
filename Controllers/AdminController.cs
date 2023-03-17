@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.SignalR;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using TotalFireSafety.Hubs;
 using TotalFireSafety.Models;
 
 /*
@@ -105,7 +107,7 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("Dashboard", ex);
             }
         }
-
+        [HttpGet]
         public ActionResult FindDataOf(string requestType)
         {
             var empId = Session["emp_no"]?.ToString();
@@ -161,6 +163,7 @@ namespace TotalFireSafety.Controllers
                     //return Json("error", JsonRequestBehavior.AllowGet);
                 }
                 Response.ContentType = "application/json"; // Set the Content-Type header
+
                 return result;
             }
             catch (Exception ex)
@@ -342,6 +345,8 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
+                var act = Session["emp_no"];
+                Session["active"] = act;
                 var empId = Session["emp_no"]?.ToString();
                 if (empId == null)
                 {
@@ -368,6 +373,8 @@ namespace TotalFireSafety.Controllers
                 }
                 var json = JsonConvert.DeserializeObject(response);
                 JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+                var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+                hubContext.Clients.All.SendAsync("Hello from the server!");
                 return result;
             }
             catch (Exception ex)

@@ -11,6 +11,10 @@
 	@Styles.Render("~/style/admin")
 	@*<link rel="stylesheet" href="@Url.Content("~/css/util.css")">*@
 	<script src="@Url.Content("~/Scripts/vendor/jquery/jquery-3.2.1.min.js")"></script>
+	<script src="~/Scripts/jquery-1.6.4.min.js"></script>
+	<script src="~/Scripts/jquery.signalR-2.4.3.min.js"></script>
+	<script src="~/signalr/hubs"></script>
+	<script src="~/Scripts/signalr.js"></script>
 
 	@*<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>*@
 	@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -207,7 +211,8 @@
 				</center>
 			</div>
 
-			<script>
+            <script>
+        localStorage.setItem("emp_role", @Session["system_role"]);
 				let imageInput = document.getElementById('file-upload');
 
 				imageInput.addEventListener('change', function (event) {
@@ -236,6 +241,6 @@
 							console.error('Error:', error);
 						});
 				});
-			</script>
+            </script>
 		</body>
 </html>

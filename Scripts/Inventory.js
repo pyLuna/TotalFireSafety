@@ -47,11 +47,9 @@ let edit = document.querySelectorAll('#editForm');
 let imgContainer = document.getElementById("image-container");
 let EditFormBtns = document.querySelectorAll('#editForm .form-add-btns button');
 let QtyFormBtns = document.querySelectorAll('#qtyForm .form-add-btns button');
+let emp_role = localStorage.getItem("emp_role");
 
 //#region Listener area
-//selcat3.addEventListener("change", SetItemCode1);
-//selclass3.addEventListener("change", SetItemCode1);
-//name3.addEventListener("keyup", SetItemCode1);
 class1.addEventListener("change", SetItemCode);
 category.addEventListener("input", SetItemCode);
 name.addEventListener("input", SetItemCode);
@@ -212,10 +210,12 @@ function setTable(array) {
 			row += `<td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
 			row += `<td name="in_remarks"><label class="${remclass}">${remarks}</label></td>`;
 			row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
-			row += `<td id="hideActionBtn"><div class="inventory-action-style">`; 
+			if (emp_role == 2) {
+			row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
 			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="OpenEdit('${array[i].in_code}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
 			row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick = "delOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
 			row += `</div></td>`;
+			}
 			row += `</tr>`;
 			table.innerHTML += row;
 		}

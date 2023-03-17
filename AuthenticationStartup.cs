@@ -24,10 +24,15 @@ namespace TotalFireSafety
                 Provider = myProvider
             };
             //set config on start up
+            app.MapSignalR();
             app.UseOAuthAuthorizationServer(options);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
         }
+        //public void Configuration(IAppBuilder app)
+        //{
+        //    // Configure SignalR
+        //}
     }
 }

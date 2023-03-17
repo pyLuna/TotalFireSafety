@@ -10,7 +10,7 @@
  */
 
 /// <reference path="jquery-1.6.4.js" />
-/// <reference path="jquery.signalR.version.js" />
+/// <reference path="jquery.signalR-2.4.3.min.js" />
 (function ($, window, undefined) {
 
     var resources = {

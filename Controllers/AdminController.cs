@@ -374,6 +374,7 @@ namespace TotalFireSafety.Controllers
                 var json = JsonConvert.DeserializeObject(response);
                 JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+                hubContext.Clients.Group(act.ToString()).SendAsync(act.ToString());
                 hubContext.Clients.All.SendAsync("Hello from the server!");
                 return result;
             }

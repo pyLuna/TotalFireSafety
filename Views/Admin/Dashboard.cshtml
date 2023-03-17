@@ -881,6 +881,23 @@
 
 <script>
     `use strict`;
+    var connection = $.hubConnection();
+    var hubProxy = connection.createHubProxy('MyHub');
+
+    window.onload = function () {
+        connection.start().done(function () {
+            // The connection has been established successfully
+            console.log('Connection started');
+
+            // Now you can send data through the connection
+            var c = hubProxy.invoke("AddToGroup", '@Session["emp_no"]')
+            console.log(c);
+        }).fail(function () {
+            // An error occurred while starting the connection
+            console.log('Connection failed');
+        });
+
+    }
     //function refreshTime() {
     //    const timeDisplay = document.getElementById("dt");
     //    const dateString = new Date().toLocaleString();
@@ -907,6 +924,6 @@
 
     /* When the user clicks on the button,
        toggle between hiding and showing the dropdown content */
-   
+
 
 </script>

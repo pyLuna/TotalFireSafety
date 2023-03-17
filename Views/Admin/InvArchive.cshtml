@@ -58,7 +58,8 @@
                                         <td>Quantity</td>
                                         <td>Class</td>
                                         <td>Date Archived</td>
-                                        @if (Int32.Parse(Session["system_role"].ToString()) == 2){
+                                        @if (Int32.Parse(Session["system_role"].ToString()) == 2)
+                                        {
                                             <td>Action</td>
                                         }
                                     </tr>
@@ -111,32 +112,37 @@
     </main>
     <script src="@Url.Content("~/Scripts/InvArchive.js")"></script>
     <script>
-        var sessionId = @Session["emp_no"];
+        var sessionId = '@Session["emp_no"]';
         var connection = $.hubConnection();
         var hubProxy = connection.createHubProxy('MyHub');
 
         window.onload = function () {
-
             hubProxy.on('SendAsync', function (message) {
-                //console.log(message);
-                OpenSavePopup();
+                if (message == @Session["emp_no"]) {
+                    console.log('pumasok');
+                    OpenSavePopup();
+                }
                 GetAll();
-                @*hubProxy.invokeMethod("AddToGroup",'@HttpContext.Current.Session.SessionID');
-                hubProxy.invokeMethod("SendToGroup",'@HttpContext.Current.Session.SessionID',"success");*@
-
+                console.log(message);
             });
-            hubProxy.on('SendAsyncGroup', function (grpName) {
-                //if ('@HttpContext.Current.Session.SessionID' == grpName) {
-                    console.log(grpName)
-                //}
+            hubProxy.on("SendMessage", function (message) {
+                console.log
             });
-            connection.start();
+            //connection.start();
+            connection.start().done(function () {
+                // The connection has been established successfully
+                console.log('Connection started');
+                console.log('tt');
+                // Now you can send data through the connection
+                var c = hubProxy.invoke("AddToGroup", '@Session["emp_no"]')
+                console.log(c);
+            }).fail(function () {
+                // An error occurred while starting the connection
+                console.log('Connection failed');
+            });
             GetAll();
-            //var reload = localStorage.getItem("reload");
-            //if (reload == "true") {
-            //    localStorage.setItem("reload", null);
-            //}
         }
+
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */
         function myFunction() {

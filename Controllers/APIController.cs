@@ -839,9 +839,6 @@ namespace TotalFireSafety.Controllers
                     }
                     item.in_status = "active";
                     item.in_arch_date = null;
-                    var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
-                     await hubContext.Groups.Add(HttpContext.Current.Session.SessionID.ToString(), "active");
-                     await hubContext.Clients.All.SendAsync("Hello from the server!");
                     _context.SaveChanges();
                     _context.Entry(item);
                     return Ok();
@@ -973,8 +970,8 @@ namespace TotalFireSafety.Controllers
                          var response = UpdateNewItem(_item);
                         _context.Inventories.Add(_item);
                         _context.SaveChanges();
-                        var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
-                        hubContext.Clients.All.SendAsync("Hello from the server!");
+                        
+                        
                         return Ok("Item Added");
                     }
                     return BadRequest();
@@ -1028,8 +1025,8 @@ namespace TotalFireSafety.Controllers
                             //_context.Entry(reqs);
                             //_context.Entry(ups);
                             _context.SaveChanges();     //  Save to Database
-                            var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
-                            hubContext.Clients.All.SendAsync("Hello from the server!");
+                            
+                            
                             return Ok("Process Completed!");
                         }
                         return BadRequest();
@@ -1059,8 +1056,8 @@ namespace TotalFireSafety.Controllers
                         _item.in_arch_date = DateTime.Now;
                         _context.Entry(_item);
                         _context.SaveChanges();
-                        var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
-                        hubContext.Clients.All.SendAsync("Hello from the server!");
+                        
+                        
                         return Ok("Item Deleted Successfully!");
                     }
                     return BadRequest();

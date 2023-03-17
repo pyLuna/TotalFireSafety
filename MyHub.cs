@@ -9,21 +9,17 @@ namespace TotalFireSafety.Hubs
 {
     public class MyHub : Hub
     {
-        public void Hello()
-        {
-            Clients.All.hello();
-        }
         public async Task AddToGroup(string groupName)
         {
-            await Groups.Add(HttpContext.Current.Session.SessionID, groupName);
+            await Groups.Add(Context.ConnectionId, groupName);
         }
         public async Task Send(string message)
         {
             await Clients.All.SendAsync(message);
         }
-        public async Task SendToGroup(string grpName, string message)
+        public async Task SendToGroup(string groupName,string message)
         {
-            await Clients.Group(grpName).SendAsyncGroup(message);
+            await Clients.Group(groupName).SendAsync("SendMessage",groupName);
         }
     }
 }

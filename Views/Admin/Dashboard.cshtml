@@ -127,102 +127,131 @@
         </div>*@
 
         <div class="cards">
-            <div class="card-title">
-                <a href="@Url.Action("Users","Admin")">
-                    <h3>Users</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Users</h3>
-                            <div class="card-details">
-                                <label id="dataCountLabel"></label><span>Total Users</span>
-                                <script>
+            @if (Int32.Parse(Session["system_role"].ToString()) == 1 || Int32.Parse(Session["system_role"].ToString()) == 2)
+            {
+                <div class="card-title">
+                    <a href="@Url.Action("Inventory", "Admin")">
+                        <h3>Inventory</h3>
+                        <div class="card-single">
+                            <div class="card-container">
+                                <h3>Items</h3>
+                                <div class="card-details">
+                                    <label id="dataCountLabel"></label><span>Total Items</span>
+                                    <script>
                              var dataCount = @ViewBag.DataCount;
                              document.getElementById("dataCountLabel").textContent = dataCount;
-                                </script>
-                                <p></p>
-                                <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Users</span>
-                                <script>
+                                    </script>
+                                    <p></p>
+                                    <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Items</span>
+                                    <script>
                              var Active = @ViewBag.Active;
                              document.getElementById("dataCountLabel1").textContent = Active;
-                                </script>
+                                    </script>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Requisition</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Purchase Request</h3>
-                            <div class="card-details">
-                                <label id="purchase"></label><span>Total Entries</span>
-                                <script>
+                    </a>
+                </div>
+            }
+            @if (Int32.Parse(Session["system_role"].ToString()) != 2)
+            {
+                <div class="card-title">
+                    <a href="@Url.Action("Users", "Admin")">
+                        <h3>Users</h3>
+                        <div class="card-single">
+                            <div class="card-container">
+                                <h3>Users</h3>
+                                <div class="card-details">
+                                    <label id="dataCountLabel"></label><span>Total Users</span>
+                                    <script>
+                             var dataCount = @ViewBag.DataCount;
+                             document.getElementById("dataCountLabel").textContent = dataCount;
+                                    </script>
+                                    <p></p>
+                                    <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Users</span>
+                                    <script>
+                             var Active = @ViewBag.Active;
+                             document.getElementById("dataCountLabel1").textContent = Active;
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+                <div class="card-title">
+                    <a href="@Url.Action("Requisition","Admin")">
+                        <h3>Requisition</h3>
+                        <div class="card-single">
+                            <div class="card-container">
+                                <h3>Purchase Request</h3>
+                                <div class="card-details">
+                                    <label id="purchase"></label><span>Total Entries</span>
+                                    <script>
                                     var purchase = @ViewBag.Purchase;
                                     document.getElementById("purchase").textContent = purchase;
-                                </script>
-                                <p></p>
-                                <label class="card-active" id="entries"></label><span class="card-active">Pending Entries</span>
-                                <script>
+                                    </script>
+                                    <p></p>
+                                    <label class="card-active" id="entries"></label><span class="card-active">Pending Entries</span>
+                                    <script>
                                     var entries = @ViewBag.Entries;
                                     document.getElementById("entries").textContent = entries;
-                                </script>
+                                    </script>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Deploy</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Deployment Request</h3>
-                            <div class="card-details">
-                                <label id="deployment"></label><span>Total Entries</span>
-                                <script>
+                    </a>
+                </div>
+                <div class="card-title">
+                    <a href="@Url.Action("Requisition","Admin")">
+                        <h3>Deploy</h3>
+                        <div class="card-single">
+                            <div class="card-container">
+                                <h3>Deployment Request</h3>
+                                <div class="card-details">
+                                    <label id="deployment"></label><span>Total Entries</span>
+                                    <script>
                                     var deployment = @ViewBag.Deployment;
                                     document.getElementById("deployment").textContent = deployment;
-                                </script>
-                                <p></p>
-                                <label class="card-active" id="entrieses"></label><span class="card-active">Pending Entries</span>
-                                <script>
+                                    </script>
+                                    <p></p>
+                                    <label class="card-active" id="entrieses"></label><span class="card-active">Pending Entries</span>
+                                    <script>
                                     var entrieses = @ViewBag.Entrieses;
                                     document.getElementById("entrieses").textContent = entrieses;
-                                </script>
+                                    </script>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
 
-            <!-- NEW ADD CARD -->
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Supply</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Supply Request</h3>
-                            <div class="card-details">
-                                <label id="supply"></label><span>Total Entries</span>
-                                <script>
+                <!-- NEW ADD CARD -->
+                <div class="card-title">
+                    <a href="@Url.Action("Requisition","Admin")">
+                        <h3>Supply</h3>
+                        <div class="card-single">
+                            <div class="card-container">
+                                <h3>Supply Request</h3>
+                                <div class="card-details">
+                                    <label id="supply"></label><span>Total Entries</span>
+                                    <script>
                                     var supply = @ViewBag.Supply;
                                     document.getElementById("supply").textContent = supply;
-                                </script>
-                                <p></p>
-                                <label class="card-active" id="Sup"></label><span class="card-active">Pending Entries</span>
-                                <script>
+                                    </script>
+                                    <p></p>
+                                    <label class="card-active" id="Sup"></label><span class="card-active">Pending Entries</span>
+                                    <script>
                                     var Sup = @ViewBag.Sup;
                                     document.getElementById("Sup").textContent = Sup;
-                                </script>
+                                    </script>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
 
-        </div>
+            </div>
 
         <div class="recent-grid">
 
@@ -236,7 +265,7 @@
 
                         <h3>Item Categories Summary</h3>
 
-                        <div  class="cat-grp">
+                        <div class="cat-grp">
                             <select id="class" required>
                                 <option disabled selected>Item Class</option>
                                 <option value="All">All</option>
@@ -255,7 +284,7 @@
                             </select>
                         </div>
 
-                        
+
 
                     </div>
                     <div class="chart-border">
@@ -271,9 +300,9 @@
                                 });
 
                                 // Get references to the select element and chart canvas
-                              
+
                                 var canvas = document.getElementById('barchart1');
-                               
+
 
                                 var itemCategory = document.getElementById('itemCategory');
                                 itemCategory.addEventListener('change', function () {
@@ -306,7 +335,7 @@
                                     });
                                     chart.update();
                                 });
-                               
+
                                 var itemClass = document.getElementById('class');
                                 itemClass.addEventListener('change', function () {
                                     var selectedOption = itemClass.value;
@@ -338,7 +367,7 @@
                                     });
                                     chart.update();
                                 });
-                                  
+
                                 const startDateInput = document.getElementById('startDate');
                                 const endDateInput = document.getElementById('endDate');
 
@@ -630,16 +659,16 @@
                                             // update the chart
                                             chart.update();
                                         }*@
-                                            
 
 
-                                    
+
+
                                     var Slowmoving = data1.map(function (item) {
                                         if (item.Quantity1 <= 50) {
                                             return {
                                                 value: item.Quantity1,
                                                 color: 'rgba(255, 147, 47)',
-                                                
+
                                             };
                                         }
                                     }).filter(Boolean);
@@ -649,7 +678,7 @@
                                             return {
                                                 value: item.Quantity1,
                                                 color: 'rgba(0,128,0, 1)',
-                                               
+
                                             };
                                         }
                                     }).filter(Boolean);
@@ -660,7 +689,7 @@
                                         data: {
                                             labels: data1.map(item => item.Name1),
                                             datasets: [
-                                                
+
                                                 {
                                                     label: 'Slow Moving',
                                                     data: data1.map(item => {
@@ -738,139 +767,140 @@
         <!-- Project Summary -->
 
         <br>
-
-        <div class="project-sum">
-            <h3>PROJECT SUMMARY</h3>               
-        </div>
-
-        <div class="dsh-projects">
-            <div class="dsh">
-                <div class="drp-wrapper">
-                    <select required>
-                        <option disabled selected>Project Status</option>
-                        <option>On-going</option>
-                        <option>In-line</option>
-                        <option>Delayed</option>
-                    </select>
-
-                    <select required>
-                        <option disabled selected>Project Lead</option>
-                        <option>Clarisse Vasquez</option>
-                    </select>
-                </div>
-                <div class="dsh-body">
-                    <div class="table-responsive" style="overflow-x: auto;">
-                        <table width="100%">
-                            <thead>
-                                <tr>
-                                    <td>Project Name</td>
-                                    <td>Project Lead</td>
-                                    <td>Start Date</td>
-                                    <td>Status</td>
-                                    <td>Tracker</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Makati Global</td>
-                                    <td>Jewell Mayrena</td>
-                                    <td>Feb 27, 2023</td>
-                                    <td><label class="stat-pen">In-Line</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-complete">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Mang Inasal QCU</td>
-                                    <td>Fernan Yuki</td>
-                                    <td>Feb 12, 2023</td>
-                                    <td><label class="stat-appr">On-Going</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-half">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Golden Disk</td>
-                                    <td>Carlo Millonte</td>
-                                    <td>Jan 27, 2023</td>
-                                    <td><label class="stat-appr">On-Going</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-halfhalf">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Jollibee South Branch</td>
-                                    <td>Clark Steven Arcilla</td>
-                                    <td>Feb 23, 2023</td>
-                                    <td><label class="stat-dec">Declined</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-nothalf">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Jollibee South Branch</td>
-                                    <td>Clark Steven Arcilla</td>
-                                    <td>Feb 23, 2023</td>
-                                    <td><label class="stat-dec">Declined</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-nothalf">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="proj-legend-grp">
-                    <div class="proj-legend-content">
-                        <h3>Legend: </h3>
-                        <div class="proj-legend-content-1">
-                            <div class="legend-color">
-
-                            </div>
-                            <label> Ongoing </label>
-                        </div>
-                        <div class="proj-legend-content-2">
-                            <div class="legend-color">
-
-                            </div>
-                            <label> Delayed </label>
-                        </div>
-
-                        <div class="proj-legend-content-3">
-                            <div class="legend-color">
-
-                            </div>
-                            <label> Inline </label>
-                        </div>
-                    </div>
-                </div>
-
+        @if (Int32.Parse(Session["system_role"].ToString()) != 2)
+        {
+            <div class="project-sum">
+                <h3>PROJECT SUMMARY</h3>
             </div>
-        </div>
+
+            <div class="dsh-projects">
+                <div class="dsh">
+                    <div class="drp-wrapper">
+                        <select required>
+                            <option disabled selected>Project Status</option>
+                            <option>On-going</option>
+                            <option>In-line</option>
+                            <option>Delayed</option>
+                        </select>
+
+                        <select required>
+                            <option disabled selected>Project Lead</option>
+                            <option>Clarisse Vasquez</option>
+                        </select>
+                    </div>
+                    <div class="dsh-body">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Project Name</td>
+                                        <td>Project Lead</td>
+                                        <td>Start Date</td>
+                                        <td>Status</td>
+                                        <td>Tracker</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Makati Global</td>
+                                        <td>Jewell Mayrena</td>
+                                        <td>Feb 27, 2023</td>
+                                        <td><label class="stat-pen">In-Line</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-complete">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Mang Inasal QCU</td>
+                                        <td>Fernan Yuki</td>
+                                        <td>Feb 12, 2023</td>
+                                        <td><label class="stat-appr">On-Going</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-half">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Golden Disk</td>
+                                        <td>Carlo Millonte</td>
+                                        <td>Jan 27, 2023</td>
+                                        <td><label class="stat-appr">On-Going</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-halfhalf">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Jollibee South Branch</td>
+                                        <td>Clark Steven Arcilla</td>
+                                        <td>Feb 23, 2023</td>
+                                        <td><label class="stat-dec">Declined</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-nothalf">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Jollibee South Branch</td>
+                                        <td>Clark Steven Arcilla</td>
+                                        <td>Feb 23, 2023</td>
+                                        <td><label class="stat-dec">Declined</label></td>
+                                        <td>
+                                            <div class="progress-bar">
+                                                <div class="progress-nothalf">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
 
 
-    </main>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="proj-legend-grp">
+                        <div class="proj-legend-content">
+                            <h3>Legend: </h3>
+                            <div class="proj-legend-content-1">
+                                <div class="legend-color">
+
+                                </div>
+                                <label> Ongoing </label>
+                            </div>
+                            <div class="proj-legend-content-2">
+                                <div class="legend-color">
+
+                                </div>
+                                <label> Delayed </label>
+                            </div>
+
+                            <div class="proj-legend-content-3">
+                                <div class="legend-color">
+
+                                </div>
+                                <label> Inline </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+        </main>
 </div>
 
 @*<script src="../js/chart1.js"></script>

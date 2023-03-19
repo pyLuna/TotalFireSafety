@@ -81,54 +81,55 @@
 
                                         <div class="input-field">
                                             <label>Item Name</label>
-                                            <input type="text" id="in_name" name="in_name" placeholder="Enter item name">
+                                            <input type="text" id="in_name" name="in_name" placeholder="Enter item name" required>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Category</label>
-                                            <input type="text" id="in_category" name="in_category" list="catList" placeholder="Enter item category">
+                                            <input type="text" id="in_category" name="in_category" list="catList" placeholder="Enter item category" required>
                                             <datalist id="catList"></datalist>
                                         </div>
 
                                         <div class="input-field">
                                             <label>Class</label>
-                                            <select id="class">
-                                                <option disabled selected>Select Class</option>
+                                            <select id="class" required>
+                                                <option value="" selected>Select Class</option>
                                             </select>
                                         </div>
                                         <input type="text" id="in_class" name="in_class" style="display:none;">
 
                                         <div class="input-field">
                                             <label>Type</label>
-                                            <input type="text" id="in_type" list="typeList" name="in_type" placeholder="Enter item type">
+                                            <input type="text" id="in_type" list="typeList" name="in_type" placeholder="Enter item type" required>
                                             <datalist id="typeList"></datalist>
                                         </div>
-
-                                        <div class="input-field">
-                                            <label>Size</label>
-                                            <div class="input-field-size">
-                                                <input type="number" id="inpSizeSel" placeholder="00000">
-                                                <select id="sizeSel">
-                                                    <option disabled selected>Unit</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                            <div class="input-field">
+                                              <label>Size</label>
+                                                <div class="input-field-size">
+                                                  <input type="number" id="inpSizeSel" placeholder="00000" required>
+                                                    <select id="sizeSel" required >
+                                                      <option value="" selected>Unit</option>
+                                                    </select>
+                                                </div>
+                                                <label id="inpSizeSel-error" class="error manual-error" for="inpSizeSel"></label>
+                                             </div>
                                         <input type="text" id="in_size" name="in_size" style="display:none;">
 
                                         <div class="input-field">
                                             <label>Quantity</label>
                                             <div class="input-field-quantity">
-                                                <input type="number" id="inpSizeQuant" placeholder="00000">
-                                                <select id="sizeQuant">
-                                                    <option disabled selected>Unit</option>
+                                                <input type="number" id="inpSizeQuant" placeholder="00000" required>
+                                                <select id="sizeQuant" required>
+                                                    <option value="" selected>Unit</option>
                                                 </select>
                                             </div>
+                                            <label id="inpSizeQuant-error" class="error manual-error" for="inpSizeQuant"></label>
                                         </div>
                                         <input type="text" id="in_quantity" name="in_quantity" style="display:none;">
                                         <input type="text" id="in_remarks" name="in_remarks" style="display:none;">
                                         <div class="input-field">
                                             <label>Date Added</label>
-                                            <input type="text" id="dateAdded" name="in_dateAdded" readonly>
+                                            <input type="text" id="dateAdded" name="in_dateAdded" readonly required>
                                         </div>
                                         <div class="input-field">
                                             <div class="img-bar-grp" id="image-container">
@@ -171,7 +172,7 @@
                                     <div class="fields">
                                         <div class="input-field">
                                             <label>Item ID</label>
-                                            <input type="text" id="in_code1" name="in_code" placeholder="ABCD-EFG-HIJ">
+                                            <input type="text" id="in_code1" name="in_code" placeholder="ABCD-EFG-HIJ" required>
                                         </div>
 
                                         <div class="input-field">
@@ -213,10 +214,11 @@
                                             <label>Quantity</label>
                                             <div class="input-field-quantity">
                                                 <input type="number" id="inpQuant1" placeholder="00000" required>
-                                                <select id="inpQuant" required>
-                                                    <option disabled selected>Unit</option>
+                                                <select id="inpQuant">
+                                                    <option value="" disabled selected>Unit</option>
                                                 </select>
                                             </div>
+                                            <label id="inpQuant1-error" class="error manual-error" for="inpQuant1"></label>
                                         </div>
                                         <input type="text" id="in_category1" name="in_category" style="display:none;">
                                         <input type="text" id="in_class1" name="in_class" style="display:none;">
@@ -440,6 +442,13 @@
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
+
+    //function checkForm() {
+    //    var bool = $('#addForm').valid();
+    //    if (bool) {
+    //        infoOpenPopup();
+    //    }
+    //}
 
     let codeToDelete = "";
     window.onload = function () {

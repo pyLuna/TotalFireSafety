@@ -45,6 +45,14 @@
     font-family: Montserrat-Bold;
     src: url('../fonts/montserrat/Montserrat-Bold.ttf');
 }
+.error {
+    color: red;
+    background-color: #acf;
+}
+
+.manual-error {
+    display: none;
+}
 
 /*///////////////////////////////////////////////////////////////*/
 * {

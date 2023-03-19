@@ -6,6 +6,7 @@
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Users = "active";
 }
+
 <div class="main-content">
     <header>
 
@@ -115,7 +116,7 @@
 
                                     <div class="input-field wrap-input100 validate-input">
                                         <label>Hired Date</label>
-                                        <input type="date" id="emp_hiredDate" name="emp_hiredDate">
+                                        <input type="date" id="emp_hiredDate" name="emp_hiredDate" required>
                                     </div>
                                     <input type="text" id="formType" name="formType" style="display:none;" readonly>
 
@@ -165,7 +166,7 @@
                         <center>
                             <div class="form-add-btns">
                                 @*onclick="checkForm()"*@
-                                <button class="save" id="saveBtn">
+                                <button class="save" id="saveBtn" onclick="checkForm()">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>

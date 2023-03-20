@@ -273,8 +273,7 @@
                     </form>
                     <center>
                         <div class="form-add-btns">
-                            @*onclick="checkForm()"*@
-                            <button class="save" id="saveBtn">
+                            <button class="save" id="saveBtn" onclick="checkForm()">
                                 <span class="btnText">Save</span>
                                 <i class="las la-check-square"></i>
                             </button>
@@ -341,12 +340,12 @@
 
 <script>
 
-    //function checkForm() {
-    //    var bool = $('#formId').valid();
-    //    if (bool) {
-    //        infoOpenPopup();
-    //    }
-    //}
+    function checkForm() {
+        var bool = $('#formId').valid();
+        if (bool) {
+            infoOpenPopup();
+        }
+    }
 
     function exportToPdf() {
         const actionButtons = document.querySelectorAll('.purchase-action-style');

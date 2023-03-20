@@ -185,7 +185,7 @@ function setTable(array) {
     var button;
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
-
+            stat - pen
             if (array[i].request_status === "Pending") {
                 className = "stat-pen";
             }

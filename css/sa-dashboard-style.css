@@ -46,8 +46,7 @@
     src: url('../fonts/montserrat/Montserrat-Bold.ttf');
 }
 .error {
-    color: red;
-    background-color: #acf;
+    color: red !important;
 }
 
 .manual-error {

@@ -1,4 +1,13 @@
+$(document).ready(function () {
+	$("#emp_contact").keypress(function (e) {
+		var length = this.value.length;
+		if (length >= 11) {
+			e.preventDefault();
+			/*alert("not allow more than 11 character");*/
+		}
+	});
 
+});
 
 $(document).on('keypress', '#emp_name', function (event) {
 	var regex = new RegExp("^[a-zA-Z ]+$");
@@ -11,12 +20,13 @@ $(document).on('keypress', '#emp_name', function (event) {
 
 $(document).ready(function () {
 	let username = document.getElementById("Credential.username");
+	/*$("#sel-roles").attr('name', 'sel_roles');*/
 	$('#formId').validate({
 		rules: {
 			emp_name: {
 				required: true,
 				minlength: 4,
-				maxlength: 20
+				maxlength: 30
 			},
 			emp_contact: {
 				required: true,
@@ -33,13 +43,19 @@ $(document).ready(function () {
 			emp_position: {
 				required: true,
 				minlength: 5
+			},
+			sel_roles: {
+				required: true
+			},
+			sel_stats: {
+				required: true
 			}
 		},
 		messages: {
 			emp_name: {
 				required: "Please enter name.",
 				minlength: "Name must be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				maxlength: "Maximum length of name is 30 characters only."
 			},
 			emp_contact: {
 				required: "Please enter contact number.",
@@ -56,6 +72,12 @@ $(document).ready(function () {
 			emp_position: {
 				required: "Please enter position",
 				minlength: "Position must be at least 5 numbers."
+			},
+			sel_roles: {	
+				required: "Please enter roles"
+			},
+			sel_stats: {
+				required: "Please enter status"
 			}
 		}
 	});

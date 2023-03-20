@@ -1,9 +1,22 @@
-﻿$(document).ready(function () {
+﻿
+/*ADD NEW ITEM VALIDATION SECTION*/
+
+//$(document).on('keypress', '#in_name', function (event) {
+//    var regex = new RegExp("^[a-zA-Z ]+$");
+//    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+//    if (!regex.test(key)) {
+//        event.preventDefault();
+//        return false;
+//    }
+//})
+
+$(document).ready(function () {
     $('#addForm').validate({
         rules: {
             in_name: {
                 required: true,
-                minlength: 3
+                minlength: 4,
+                maxlength: 30
             },
             in_categort: {
                 required: true
@@ -30,13 +43,14 @@
         messages: {
             in_name: {
                 required: "Item name must be required.",
-                minlength: "Item name must be at least 3 characters long."
+                minlength: "Item name must be at least 4 characters long.",
+                maxlength: "Maximun of item name are 30 characters only."
             },
             in_category: {
                 required: "Category must be required"
             },
             class: {
-                required: "Category must be required"
+                required: "Class must be required"
             },
             in_type: {
                 required: "Type must be required"
@@ -44,18 +58,23 @@
             inpSizeSel: {
                 required: "Size must be required"
             },
-            inpSize: {
-                required: "Size unit must be required"
+            sizeSel: {
+                required: ""
             },
             inpSizeQuant: {
                 required: "Quantity must be required"
             },
             sizeQuant: {
-                required: "Quantity must be required"
+                required: ""
             }
         }
     });
 });
+
+ /*======================= END ==============================*/
+
+/*ADD QUANTITY VALIDATION SECTION*/
+
 $(document).ready(function () {
     $('#qtyForm').validate({
         rules: {
@@ -63,6 +82,9 @@ $(document).ready(function () {
                 required: true
             },
             inpQuant1: {
+                required: true
+            },
+            inpQuant: {
                 required: true
             }
         },
@@ -72,10 +94,78 @@ $(document).ready(function () {
             },
             inpQuant1: {
                 required: "Quantity must be required"
+            },
+            inpQuant: {
+                required: ""
             }
         }
     });
 });
+/*======================= END ==============================*/
+
+/*EDIT ITEM VALIDATION SECTION*/
+
+$(document).ready(function () {
+    $('#editForm').validate({
+        rules: {
+            in_name: {
+                required: true,
+                minlength: 4,
+                maxlength: 30
+            },
+            selcat2: {
+                required: true
+            },
+            selclass2: {
+                required: true
+            },
+            seltype2: {
+                required: true
+            },
+            inpSize2: {
+                required: true
+            },
+            inpSize2A: {
+                required: true
+            },
+            inpQuant2: {
+                required: true
+            },
+            inpQuant2A: {
+                required: true
+            }
+        },
+        messages: {
+            in_name: {
+                required: "Item name must be required",
+                minlength: "Item name must be at least 4 characters long.",
+                maxlength: "Maximun of item name are 30 characters only."
+            },
+            selcat2: {
+                required: "Category must be required"
+            },
+            selclass2: {
+                required: "Class must be required"
+            },
+            seltype2: {
+                required: "Type must be required"
+            },
+            inpSize2: {
+                required: "Size must be required"
+            },
+            inpSize2A: {
+                required: ""
+            },
+            inpQuant2: {
+                required: "Quantity must be required"
+            },
+            inpQuant2A: {
+                required: ""
+            }
+        }
+    });
+});
+/*======================= END ==============================*/
 
 //(function ($) {
 //	"use strict";

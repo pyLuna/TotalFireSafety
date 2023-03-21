@@ -588,6 +588,7 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("Login", "Base");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            ViewBag.EmpId = empId;
             return View();
         }
         #endregion

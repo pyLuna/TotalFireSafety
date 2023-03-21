@@ -4,6 +4,9 @@ let filteredArray = [];
 const fromDateInput = document.querySelector('#dt1');
 const toDateInput = document.querySelector('#dt2');
 const table = document.querySelector('#myTable tbody');
+let selcat = document.getElementById('selcat');
+let filter = document.getElementById('filter');
+
 
 function GetAll() {
     fetch('/Admin/FindDataOf?requestType=report')

@@ -1,4 +1,5 @@
-﻿
+﻿@using TotalFireSafety.Models
+
 @{
     ViewBag.Title = "Inventory Report";
     Layout = "~/Views/AdminLayout.cshtml";
@@ -6,6 +7,8 @@
 }
 
 <div class="main-content">
+
+   
     <header>
         <h2>
             <label for="nav-toggle">
@@ -22,7 +25,7 @@
             </div>
             &nbsp;
             <div class="drp-wrapper">
-                <select id="selcat" onchange="SortByCategory(this,this.value)">
+                <select id="selcat" ">
                     <option disabled selected>Select Category</option>
                     <option value="Fittings">Fittings</option>
                     <option value="Gate Valves">Gate Valves</option>
@@ -32,15 +35,16 @@
                     <option value="Others">Others</option>
                     <option value="">Clear</option>
                 </select>
+
             </div>
 
             <div class="datepick-container">
                 <span class="lar la-calendar"></span>
 
                 <div class="date-grp">
-                    <input type="date" id="dt1">
+                    <input type="date" id="startDate">
                     <label for=""> - </label>
-                    <input type="date" id="dt2">
+                    <input type="date" id="endDate">
                 </div>
 
             </div>
@@ -60,7 +64,7 @@
                     </button>
 
                     <button class="expo-btn" title="EXPORT">
-                        <a href="@Url.Action("InvReportExport","Admin")">
+                        <a href="@Url.Action("InvReportExport", "Admin", new { id =  ViewBag.EmpId })">
                             EXPORT
                             <span class="las la-file-download"></span>
                         </a>
@@ -76,15 +80,15 @@
                             <table width="100%" id="myTable" class="myTable">
                                 <thead>
                                     <tr>
-                                        <td>Date Added</td>
-                                        <td><a onclick="Sort(this,'update_item_id')">Code<i class="las la-sort-down"></i></a></td>
-                                        <td><a onclick="Sort(this,'inventory.in_name')">Name<i class="las la-sort-down"></i></a></td>
-                                        <td>Category</td>
-                                        <td>Type</td>
-                                        <td>Size</td>
-                                        <td>Quantity</td>
-                                        <td>Remarks</td>
-                                        <td><a onclick="Sort(this,'inventory.in_class')">Class<i class="las la-sort-down"></i></a></td>
+                                            <td>Date Added</td>
+                                            <td><a onclick="sortTableByColumnName('update_item_id')">Code<i class="las la-sort-down"></i></a></td>
+                                            <td><a onclick="sortTableByColumnName('Inventory.in_name')">Name<i class="las la-sort-down"></i></a></td>
+                                            <td>Category</td>
+                                            <td>Type</td>
+                                            <td>Size</td>
+                                            <td>Quantity</td>
+                                            <td>Remarks</td>
+                                            <td><a onclick="sortTableByColumnName('Inventory.in_class')">Class<i class="las la-sort-down"></i></a></td>
                                     </tr>
                                 </thead>
                                 <tbody>

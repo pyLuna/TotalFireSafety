@@ -3,13 +3,11 @@ let filtered = [];
 let itemCategories = [];
 let newArray = [];
 let fixedArray = [];
-let selcat = document.getElementById('selcat');
-let filter = document.getElementById('filter');
+var array = [];
+
 const fromDateInput = document.querySelector('#dt1');
 const toDateInput = document.querySelector('#dt2');
 const table = document.querySelector('#myTable tbody');
-
-
 
 
 function GetAll() {
@@ -50,38 +48,77 @@ function fixArray() {
         fixedArray.push(jsonArray[0][j]);
     }
 }
+var searchTerm = '';
+var selectedCategory = '';
+
+// Add event listeners to the search input and category select element
+document.querySelector('.search-wrapper input').addEventListener('keyup', function () {
+    searchTerm = this.value;
+    filterTable();
+});
+
+document.querySelector('#selcat').addEventListener('change', function () {
+    selectedCategory = this.value;
+    filterTable();
+});
+
+const startDateInput = document.getElementById('startDate');
+const endDateInput = document.getElementById('endDate');
+
+startDateInput.addEventListener('change', handleDateRangeChange);
+endDateInput.addEventListener('change', handleDateRangeChange);
+
+function handleDateRangeChange() {
+    const startDate = new Date(startDateInput.value);
+    const endDate = new Date(endDateInput.value);
+
+    // Filter the array based on the selected date range
+    filteredArray = array.filter(function (item) {
+        const timestamp = item.update_date.substring(6, 19);
+        const date = new Date(parseInt(timestamp));
+
+        return date >= startDate && date <= endDate;
+    });
+
+    // Update the table with the filtered data
+    setTable(filteredArray);
+}
 
 function setTable(array) {
     table.innerHTML = '';
     var size = '';
-    if (array.length != 0) {
-        for (var i = 0; i < array.length; i++) {
+    var filteredArray = array;
+
+   
+
+    // Filter the array based on the search term, selected category, and date range
+    if (searchTerm !== '') {
+        filteredArray = filteredArray.filter(function (item) {
+            return item.Inventory.in_name.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+    }
+
+    if (selectedCategory !== '') {
+        filteredArray = filteredArray.filter(function (item) {
+            return item.Inventory.in_category === selectedCategory;
+        });
+    }
+
+   
+
+   
+
+    // Display the filtered data in the table
+    if (filteredArray.length !== 0) {
+        for (var i = 0; i < filteredArray.length; i++) {
             const matchResult = array[i].update_quantity.match(/\d+/);
             const updateQuantity = matchResult ? parseInt(matchResult[0]) : 0;
-           
-            let remarks = '';
-            let remclass = "";
 
-            if (updateQuantity <= 50) {
-                remarks = 'critical';
-                remclass = '#FF0000';
-                
-            } else if (updateQuantity >= 51 && updateQuantity <= 100 )  {
-                remarks = 'average';
-                remclass = '#FFFF00';
-            } else if (updateQuantity >= 101) {
-                remarks = 'Standard';
-                remclass = '#7CFC00';
-               
-            } else {
-                remarks = ''; // set to empty string if no update_quantity value
-            }
-            
 
             const timestamp = array[i].update_date.substring(6, 19);
             const date = new Date(parseInt(timestamp));
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
+            const month = ("0" + (date.getMonth() + 1)).slice(-2);
+            const day = ("0" + date.getDate()).slice(-2);
             const year = date.getFullYear();
             const formattedDate = `${month}/${day}/${year}`;
 
@@ -89,18 +126,32 @@ function setTable(array) {
             var row = `<tr>`;
             row += `<td><label>${formattedDate}</label></td>`;
             row += `<td id='update_item_id'><label>${array[i].update_item_id}</label></td>`;
-            row += `<td name="inventory.in_name"><label>${array[i].Inventory.in_name}</label></td>`;
+            row += `<td id="inventory.in_name"><label>${array[i].Inventory.in_name}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_category}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_type}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_size === null ? "" : array[i].Inventory.in_size}</label></td>`;
             row += `<td><label>${array[i].update_quantity}</label></td>`;
-            row += `<td><label class="${remclass}">${remarks}</label></td>`;
+
+            if (updateQuantity <= 50) {
+                row += `<td><label style="color: red">critical</label></td>`;
+            } else if (updateQuantity >= 51 && updateQuantity <= 100) {
+                row += `<td><label style="color: yellow">average</label></td>`;
+            } else if (updateQuantity >= 101) {
+                row += `<td><label style="color: green">Standard</label></td>`;
+            } else {
+                row += `<td><label></label></td>`;
+            }
+
             row += `<td name="inventory.in_class"><label>${array[i].Inventory.in_class}</label></td>`;
             row += `</tr>`;
+
+            // Get the label element within the row and set its class attribute
+
             table.innerHTML += row;
         }
         filtered.length = 0;
     }
+
     else {
         //error handler if input value not found
         table.innerHTML = " ";
@@ -112,110 +163,59 @@ function setTable(array) {
         table.appendChild(errorMessageRow);
     }
 }
-function filterByDate() {
-    const startDate = new Date(document.getElementById("dt1").value);
-    const endDate = new Date(document.getElementById("dt2").value);
-    const filteredArray = fixedArray.filter((item) => {
-        const itemDate = new Date(item.FormattedDate);
-        return itemDate >= startDate && itemDate <= endDate;
-    });
-    setTable(filteredArray);
-}
 
-fromDateInput.addEventListener('change', filterByDateRange);
-toDateInput.addEventListener('change', filterByDateRange);
-//Call
 
-//#region Sort By Column
-// sort function start
-// General sort function
-function SortDescending(array, itemToSort) {
-    return array.sort((a, b) => {
-        if (a[itemToSort] < b[itemToSort]) return 1;
-        if (a[itemToSort] > b[itemToSort]) return -1;
-        return 0;
-    });
-}
-function SortAscending(array, itemToSort) {
-    return array.sort((a, b) => {
-        if (a[itemToSort] < b[itemToSort]) return -1;
-        if (a[itemToSort] > b[itemToSort]) return 1;
-        return 0;
-    });
-}
-// sort from columns
-function Sort(item, value) {
-    let iElement = item.querySelector('i');
-    let arrayToSend = [];
-    let catcher = [];
-
-    if (filtered.length != 0) {
-        arrayToSend = filtered;
-    }
-    else {
-        arrayToSend = fixedArray;
-    }
-
-    if (iElement.classList.contains('la-sort-down')) {
-        iElement.classList.remove('la-sort-down');
-        iElement.classList.add('la-sort-up');
-        catcher = SortAscending(arrayToSend, value);
-    } else {
-        iElement.classList.remove('la-sort-up');
-        iElement.classList.add('la-sort-down');
-        catcher = SortDescending(arrayToSend, value);
-    }
-    setTable(catcher);
-}
-//sort by category
-function SortByCategory(element, value) {
-    let focuselement = "";
-    if (value != '') {
-        FilterItem(value.toLowerCase(), fixedArray);
-    }
-    else {
-        FilterItem("", fixedArray);
-        element.selectedIndex = 0;
-    }
-    setTable(filtered);
-}
-//#endregion
 
 //#region Search Item
-function filterArray(value) {
-    filtered.length = 0;
-    for (let j = 0; j < fixedArray.length; j++) {
-        if (JSON.stringify(fixedArray[j]).toLowerCase().includes(value)) {
-            filtered.push(fixedArray[j]);
+function filterTable() {
+    var tableRows = document.querySelectorAll('#myTable tbody tr');
+
+    tableRows.forEach(function (row) {
+        var itemName = row.querySelector('td:nth-child(3) label').textContent.toLowerCase();
+        var itemCategory = row.querySelector('td:nth-child(4) label').textContent;
+
+        if ((itemName.includes(searchTerm.toLowerCase()) || searchTerm === '') &&
+            (itemCategory === selectedCategory || selectedCategory === '')) {
+            row.style.display = 'table-row';
+        } else {
+            row.style.display = 'none';
         }
-    }
+    });
 }
 
-function SearchItem(value) {
-    filterArray(value.toLowerCase());
-    if (value == '') {
-        setTable(fixedArray);
-    }
-    else {
-        setTable(filtered);
-    }
-}
-// wag galawin
-function FilterItem(value, array) {
-    filtered.length = 0;
-    let catvalue = selcat.options[selcat.selectedIndex].value.toLocaleLowerCase();
-    let filvalue = filter.options[filter.selectedIndex].value.toLocaleLowerCase();
-    for (let j = 0; j < array.length; j++) {
-        if (filter.selectedIndex != 0 && selcat.selectedIndex != 0) {
-            if (JSON.stringify(array[j].Inventory.in_category).toLowerCase().includes(catvalue)) {
-                filtered.push(array[j]);
-            }
+var sortAscending = true; // initialize sort order to ascending
+
+function sortTableByColumnName(columnName) {
+    // Get the table rows
+    var tableRows = document.querySelectorAll('#myTable tbody tr');
+
+    // Convert the table rows to an array
+    var rowsArray = Array.from(tableRows);
+
+    // Sort the array based on the chosen column
+    rowsArray.sort(function (row1, row2) {
+        var value1 = row1.querySelector('td:nth-child(3) label').textContent.toLowerCase();
+        var value2 = row2.querySelector('td:nth-child(3) label').textContent.toLowerCase();
+
+        if (value1 < value2) {
+            return sortAscending ? -1 : 1; // use ternary operator to change sort order
+        } else if (value1 > value2) {
+            return sortAscending ? 1 : -1; // use ternary operator to change sort order
+        } else {
+            return 0;
         }
-        else {
-            if (JSON.stringify(array[j].Inventory.in_category).toLowerCase().includes(value)) {
-                filtered.push(array[j]);
-            }
-        }
-    }
+    });
+
+    // Remove the current rows from the table
+    tableRows.forEach(function (row) {
+        row.remove();
+    });
+
+    // Add the sorted rows back to the table
+    rowsArray.forEach(function (row) {
+        document.querySelector('#myTable tbody').appendChild(row);
+    });
+
+    sortAscending = !sortAscending; // toggle sort order
 }
-//#endregion
+

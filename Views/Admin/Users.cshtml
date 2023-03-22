@@ -63,7 +63,7 @@
     </div>-->
 
                     <div class="user-buttons-style">
-                        <button class="add-btn" title="ADD NEW USER" onclick="addOpenPopup()">ADD NEW ITEM</button>
+                        <button class="add-btn" title="ADD NEW USER" onclick="addOpenPopup()">ADD NEW USER</button>
                         <select required>
                             <option disabled selected>FILTER</option>
                             <option>All</option>
@@ -253,8 +253,9 @@
         }
 
         let addpopup = document.getElementById("add-popup");
-        window.onload = function () {
-            @*@if ( Session["editUser"] == null || int.Parse(Session["editUser"].ToString()) == 1 )
+        //window.onload = function () {
+        function OnLoad() {
+        @*@if ( Session["editUser"] == null || int.Parse(Session["editUser"].ToString()) == 1 )
             {
                 Session["editUser"] = 0;
             }*@

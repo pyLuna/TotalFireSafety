@@ -47,7 +47,7 @@ let edit = document.querySelectorAll('#editForm');
 let imgContainer = document.getElementById("image-container");
 let EditFormBtns = document.querySelectorAll('#editForm .form-add-btns button');
 let QtyFormBtns = document.querySelectorAll('#qtyForm .form-add-btns button');
-//let emp_role = localStorage.getItem("emp_role");
+let sessionId = localStorage.getItem("emp_role");
 
 //#region Listener area
 class1.addEventListener("change", SetItemCode);

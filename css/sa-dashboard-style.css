@@ -1251,6 +1251,20 @@ right .inv-sum-date {
     margin-right: 10px;
 }
 
+.recent-grid .inventory-sum .card .card-header input {
+    max-width: 100%;
+    width: 180px;
+    height: 30px;
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #000;
+    display: inline-block;
+    margin-right: 10px;
+}
+
 .recent-grid .inventory-sum .test {
     margin-left: -100px;
 }

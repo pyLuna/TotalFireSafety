@@ -83,71 +83,75 @@
                                                 <input type="text" id="in_code" name="in_code" placeholder="ABC-DEF-GHI-000" readonly>
                                             </div>
 
-                                            <div class="input-field">
-                                                <label>Item Name</label>
-                                                <input type="text" id="in_name" name="in_name" placeholder="Enter item name">
-                                            </div>
+                                        <div class="input-field">
+                                            <label>Item Name</label>
+                                            <input type="text" id="in_name" name="in_name" placeholder="Enter item name" required>
+                                        </div>
 
-                                            <div class="input-field">
-                                                <label>Category</label>
-                                                <input type="text" id="in_category" name="in_category" list="catList" placeholder="Enter item category">
-                                                <datalist id="catList"></datalist>
-                                            </div>
+                                        <div class="input-field">
+                                            <label>Category</label>
+                                            <input type="text" id="in_category" name="in_category" list="catList" placeholder="Enter item category" required>
+                                            <datalist id="catList"></datalist>
+                                        </div>
 
-                                            <div class="input-field">
-                                                <label>Class</label>
-                                                <select id="class">
-                                                    <option disabled selected>Select Class</option>
+                                        <div class="input-field">
+                                            <label>Class</label>
+                                            <select id="class" name="class" required>
+                                                <option value="" selected>Select Class</option>
+                                            </select>
+                                        </div>
+                                        <input type="text" id="in_class" name="in_class" style="display:none;">
+
+                                        <div class="input-field">
+                                            <label>Type</label>
+                                            <input type="text" id="in_type" list="typeList" name="in_type" placeholder="Enter item type" required>
+                                            <datalist id="typeList"></datalist>
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Size</label>
+                                            <div class="input-field-size">
+                                                <input type="number" id="inpSizeSel" name="inpSizeSel" placeholder="00000" required>
+                                                <select id="sizeSel" name="sizeSel" required>
+                                                    <option value="" selected>Unit</option>
                                                 </select>
                                             </div>
-                                            <input type="text" id="in_class" name="in_class" style="display:none;">
+                                            <label id="inpSizeSel-error" class="error manual-error" for="inpSizeSel"></label>
+                                            <label id="sizeSel-error" class="error manual-error" for="sizeSel"></label>
+                                        </div>
+                                        <input type="text" id="in_size" name="in_size" style="display:none;" required>
 
-                                            <div class="input-field">
-                                                <label>Type</label>
-                                                <input type="text" id="in_type" list="typeList" name="in_type" placeholder="Enter item type">
-                                                <datalist id="typeList"></datalist>
+                                        <div class="input-field">
+                                            <label>Quantity</label>
+                                            <div class="input-field-quantity">
+                                                <input type="number" id="inpSizeQuant" name="inpSizeQuant" placeholder="00000" required>
+                                                <select id="sizeQuant" name="sizeQuant" required>
+                                                    <option value="" selected>Unit</option>
+                                                </select>
                                             </div>
-
-                                            <div class="input-field">
-                                                <label>Size</label>
-                                                <div class="input-field-size">
-                                                    <input type="number" id="inpSizeSel" placeholder="00000">
-                                                    <select id="sizeSel">
-                                                        <option disabled selected>Unit</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <input type="text" id="in_size" name="in_size" style="display:none;">
-
-                                            <div class="input-field">
-                                                <label>Quantity</label>
-                                                <div class="input-field-quantity">
-                                                    <input type="number" id="inpSizeQuant" placeholder="00000">
-                                                    <select id="sizeQuant">
-                                                        <option disabled selected>Unit</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <input type="text" id="in_quantity" name="in_quantity" style="display:none;">
-                                            <input type="text" id="in_remarks" name="in_remarks" style="display:none;">
-                                            <div class="input-field">
-                                                <label>Date Added</label>
-                                                <input type="text" id="dateAdded" name="in_dateAdded" readonly>
-                                            </div>
-                                            <div class="input-field">
-                                                <div class="img-bar-grp" id="image-container">
-                                                    @*<img src="~/images/barcode.png" alt="">*@
-                                                </div>
+                                            <label id="inpSizeQuant-error" class="error manual-error" for="inpSizeQuant"></label>
+                                            <label id="sizeQuant-error" class="error manual-error" for="sizeQuant"></label>
+                                        </div>
+                                        <input type="text" id="in_quantity" name="in_quantity" style="display:none!important;" required>
+                                        <input type="text" id="in_remarks" name="in_remarks" style="display:none;" required>
+                                        <div class="input-field">
+                                            <label>Date Added</label>
+                                            <input type="text" id="dateAdded" name="in_dateAdded" readonly required>
+                                        </div>
+                                        <div class="input-field">
+                                            <div class="img-bar-grp" id="image-container">
+                                                @*<img src="~/images/barcode.png" alt="">*@
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="form-add-btns">
-                                    <button class="save" onclick="infoOpenPopup('addForm') + SetHiddenValues()">
-                                        <span class="btnText">Save</span>
-                                        <i class="las la-check-square"></i>
-                                    </button>
+                            <div class="form-add-btns">
+                                <button class="save" onclick="checkForm() + SetHiddenValues()">
+                                    @*infoOpenPopup('addForm')*@
+                                    <span class="btnText">Save</span>
+                                    <i class="las la-check-square"></i>
+                                </button>
 
                                     <button class="cancel">
                                         <span class="btnText" onclick="canOpenPopup()">Cancel</span>
@@ -165,18 +169,18 @@
 
                         <!-- Inventory Add Quantity -->
 
-                        <div class="inventory-form-container">
-                            <form action="/Admin/AddItem1?type=edit" id="qtyForm" method="post">
-                                <div class="details-personal">
-                                    <div class="inventory-form-header">
-                                        ADD QUANTITY
-                                    </div>
-                                    <div class="inventory-form-contents">
-                                        <div class="fields">
-                                            <div class="input-field">
-                                                <label>Item ID</label>
-                                                <input type="text" id="in_code1" name="in_code" placeholder="ABCD-EFG-HIJ">
-                                            </div>
+                    <div class="inventory-form-container">
+                        <form action="/Admin/AddItem1?type=edit" id="qtyForm" method="post">
+                            <div class="details-personal">
+                                <div class="inventory-form-header">
+                                    ADD QUANTITY
+                                </div>
+                                <div class="inventory-form-contents">
+                                    <div class="fields">
+                                        <div class="input-field">
+                                            <label>Item ID</label>
+                                            <input type="text" id="in_code1" name="in_code" placeholder="ABCD-EFG-HIJ" required>
+                                        </div>
 
                                             <div class="input-field">
                                                 <label>Item Name</label>
@@ -204,30 +208,32 @@
                                                 </select>
                                             </div>
 
-                                            <div class="input-field">
-                                                <label>Size</label>
-                                                <div class="input-field-size">
-                                                    <input type="number" id="inpSize1" placeholder="00000" readonly>
-                                                    <select id="inpSize" disabled>
-                                                        <option disabled selected>Unit</option>
-                                                    </select>
-                                                </div>
+                                        <div class="input-field">
+                                            <label>Size</label>
+                                            <div class="input-field-size">
+                                                <input type="number" id="inpSize1" name="inpSize1" placeholder="00000" readonly>
+                                                <select id="inpSize" disabled>
+                                                    <option disabled selected>Unit</option>
+                                                </select>
                                             </div>
-                                            <div class="input-field">
-                                                <label>Quantity</label>
-                                                <div class="input-field-quantity">
-                                                    <input type="number" id="inpQuant1" placeholder="00000" required>
-                                                    <select id="inpQuant" required>
-                                                        <option disabled selected>Unit</option>
-                                                    </select>
-                                                </div>
+                                            @*<label id="inpSize1-error" class="error manual-error" for="inpSize1"></label>*@
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Quantity</label>
+                                            <div class="input-field-quantity">
+                                                <input type="number" id="inpQuant1" name="inpQuant1" placeholder="00000" required>
+                                                <select id="inpQuant" name="inpQuant">
+                                                    <option value="" disabled selected>Unit</option>
+                                                </select>
                                             </div>
-                                            <input type="text" id="in_category1" name="in_category" style="display:none;">
-                                            <input type="text" id="in_class1" name="in_class" style="display:none;">
-                                            <input type="text" id="in_type1" name="in_type" style="display:none;">
-                                            <input type="text" id="in_size1" name="in_size" style="display:none;">
-                                            <input type="text" id="in_quantity1" name="in_quantity" style="display:none;">
-                                            <input type="text" id="in_remarks1" name="in_remarks" style="display:none;">
+                                            <label id="inpQuant1-error" class="error manual-error" for="inpQuant1"></label>
+                                        </div>
+                                        <input type="text" id="in_category1" name="in_category" style="display:none;">
+                                        <input type="text" id="in_class1" name="in_class" style="display:none;">
+                                        <input type="text" id="in_type1" name="in_type" style="display:none;">
+                                        <input type="text" id="in_size1" name="in_size" style="display:none;">
+                                        <input type="text" id="in_quantity1" name="in_quantity" style="display:none;">
+                                        <input type="text" id="in_remarks1" name="in_remarks" style="display:none;">
 
                                             <div class="input-field">
                                                 <label>Date Added</label>
@@ -242,11 +248,12 @@
                                     </div>
                                 </div>
 
-                                <div class="form-add-btns">
-                                    <button class="save" onclick="infoOpenPopup('qtyForm') + setHiddens()">
-                                        <span class="btnText">Save</span>
-                                        <i class="las la-check-square"></i>
-                                    </button>
+                            <div class="form-add-btns">
+                                <button class="save" onclick="checkForm_Add_Quan() + setHiddens()">
+                                    @*infoOpenPopup('qtyForm')*@
+                                    <span class="btnText">Save</span>
+                                    <i class="las la-check-square"></i>
+                                </button>
 
                                     <button class="cancel">
                                         <span class="btnText" onclick="canOpenPopup()">Cancel</span>
@@ -304,49 +311,52 @@
                                                 </select>
                                             </div>
 
-                                            <div class="input-field">
-                                                <label>Size</label>
-                                                <div class="input-field-size">
-                                                    <input type="number" id="inpSize2" name="inpSize2" placeholder="00000">
-                                                    <select id="inpSize2A">
-                                                        <option disabled selected>Measurement</option>
-                                                    </select>
-                                                </div>
+                                        <div class="input-field">
+                                            <label>Size</label>
+                                            <div class="input-field-size">
+                                                <input type="number" id="inpSize2" name="inpSize2" placeholder="00000">
+                                                <select id="inpSize2A" name="inpSize2A">
+                                                    <option disabled selected>Measurement</option>
+                                                </select>
                                             </div>
-                                            <div class="input-field">
-                                                <label>Quantity</label>
-                                                <div class="input-field-quantity">
-                                                    <input type="number" id="inpQuant2" name="inpQuant2" placeholder="00000" required>
-                                                    <select id="inpQuant2A" required>
-                                                        <option disabled selected>Measurement</option>
-                                                    </select>
-                                                </div>
+                                            <label id="inpSize2-error" class="error manual-error" for="inpSize2" style=""></label>
+                                        </div>
+                                        <div class="input-field">
+                                            <label>Quantity</label>
+                                            <div class="input-field-quantity">
+                                                <input type="number" id="inpQuant2" name="inpQuant2" placeholder="00000" required>
+                                                <select id="inpQuant2A" name="inpQuant2A" required>
+                                                    <option disabled selected>Measurement</option>
+                                                </select>
                                             </div>
-                                            <input type="text" id="formType2" name="formType" style="display:none;">
-                                            <input type="text" id="in_category2" name="in_category" style="display:none;">
-                                            <input type="text" id="in_class2" name="in_class" style="display:none;">
-                                            <input type="text" id="in_type2" name="in_type" style="display:none;">
-                                            <input type="text" id="in_size2" name="in_size" style="display:none;">
-                                            <input type="text" id="in_quantity2" name="in_quantity" style="display:none;">
-                                            <input type="text" id="in_remarks2" name="in_remarks" style="display:none;">
-                                            <div class="input-field">
-                                                <label>Date Added</label>
-                                                <input type="text" id="inpDate2" name="in_dateAdded" placeholder="00/00/00" readonly>
-                                            </div>
-                                            <div class="input-field">
-                                                <div class="img-bar-grp" id="image-container">
-                                                    @*<img src="~/images/barcode.png" alt="">*@
-                                                </div>
+                                            <label id="inpQuant2-error" class="error manual-error" for="inpQuant2" style=""></label>
+                                        </div>
+                                        <input type="text" id="formType2" name="formType" style="display:none;">
+                                        <input type="text" id="in_category2" name="in_category" style="display:none;">
+                                        <input type="text" id="in_class2" name="in_class" style="display:none;">
+                                        <input type="text" id="in_type2" name="in_type" style="display:none;">
+                                        <input type="text" id="in_size2" name="in_size" style="display:none;">
+                                        <input type="text" id="in_quantity2" name="in_quantity" style="display:none;">
+                                        <input type="text" id="in_remarks2" name="in_remarks" style="display:none;">
+                                        <div class="input-field">
+                                            <label>Date Added</label>
+                                            <input type="text" id="inpDate2" name="in_dateAdded" placeholder="00/00/00" readonly>
+                                        </div>
+                                        <div class="input-field">
+                                            <div class="img-bar-grp" id="image-container">
+                                                @*<img src="~/images/barcode.png" alt="">*@
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="form-add-btns">
-                                    <button class="save" onclick="infoOpenPopup('editForm') + setHiddensEdit()">
-                                        <span class="btnText">Save</span>
-                                        <i class="las la-check-square"></i>
-                                    </button>
+                            <div class="form-add-btns">
+                                <button class="save" onclick="checkForm_Edit_Itm() + setHiddensEdit()">
+                                    @*infoOpenPopup('editForm')*@
+                                    <span class="btnText">Save</span>
+                                    <i class="las la-check-square"></i>
+                                </button>
 
                                     <button class="cancel">
                                         <span class="btnText" onclick="canOpenPopup()">Cancel</span>
@@ -446,9 +456,30 @@
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
-    var sessionId = '@Session["system_role"]';
-    var connection = $.hubConnection();
-    var hubProxy = connection.createHubProxy('MyHub');
+    /*ADD NEW ITEM CHECKFORM VALIDATION*/
+    function checkForm() {
+        var bool = $('#addForm').valid();
+        if (bool) {
+            infoOpenPopup();
+        }
+    }
+
+    /*ADD QUANTITY ITEM CHECKFORM VALIDATION*/
+    function checkForm_Add_Quan() {
+        var bool = $('#qtyForm').valid();
+        if (bool) {
+            infoOpenPopup();
+        }
+    }
+
+    /*EDIT ITEM CHECKFORM VALIDATION*/
+    function checkForm_Edit_Itm() {
+        var bool = $('#editForm').valid();
+        if (bool) {
+            infoOpenPopup();
+        }
+    }
+
 
     let codeToDelete = "";
     //window.onload = function () {

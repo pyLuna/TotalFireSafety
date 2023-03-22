@@ -64,7 +64,7 @@ function updateChartData() {
     const selectedCategory = itemCategorySelect.value;
     const selectedName = itemNameInput.value;
 
-    let filteredData = data;
+    let filteredData = data; // initialize filteredData to the original data array
 
     // Filter by item class
     if (selectedClass !== 'All') {

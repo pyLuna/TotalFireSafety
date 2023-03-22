@@ -19,7 +19,11 @@ namespace TotalFireSafety.Hubs
         }
         public async Task SendToGroup(string groupName,string message)
         {
-            await Clients.Group(groupName).SendAsync("SendMessage",groupName);
+            await Clients.Group(groupName).SendAsyncGroup("SendMessage",groupName,message);
+        }
+        public void SendMessage(string message)
+        {
+            Clients.All.receiveMessage(message);
         }
     }
 }

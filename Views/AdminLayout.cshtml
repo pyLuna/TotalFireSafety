@@ -112,15 +112,20 @@
 							<i class="las la-camera" style="top: 20px; display: grid; align-items: start;"></i>
 						</label>
 						@*<form method="post" action="@Url.Action("SaveImage","Admin")" enctype="multipart/form-data" id="SaveImage">
-							</form>*@
+					</form>*@
 						<input type="file" id="file-upload">
 					</div>
 				</div>
 			</div>
 			<div>
-				<h4>Juan Dela Cruz</h4>
-				<small>Supervisor</small>
+				<h4>@Session["name"]</h4>
+				<small>@Session["position"]</small>
 			</div>
+
+			@* NEW UPDATE *@
+
+			<a id="notif" onclick="openForm()"><span class="las la-bell"></span> </a>
+
 		</div>
 
 		<div class="sidebar-menu">
@@ -206,15 +211,190 @@
 				<center>
 					<div class="footer-con">
 						<img src="~/images/codepheuse.png" alt="">
-						<h4>CodePheus | 2022</h4>
+						<h4>CodePheus | @DateTime.Now.Year</h4>
 					</div>
 				</center>
 			</div>
 
-            <script>
-        localStorage.setItem("emp_role", @Session["system_role"]);
+			<div class="purchase-buttons-style">
+				<!-- NOTIFICATION CONTAINER -->
+
+				<div class="notif-popup" id="notifForm">
+
+					<div class="notif-header">
+						<h3>Notifcation</h3>
+					</div>
+
+					<div class="notif-container">
+
+
+						@*<div class="notif-list-container-active">
+							<label>
+								There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+							</label>
+							<a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+						</div>
+
+						<div class="notif-list-container">
+							<label>
+								There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+							</label>
+							<a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+						</div>
+
+						<div class="notif-list-container">
+							<label>
+								There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+							</label>
+							<a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+						</div>
+
+						<div class="notif-list-container">
+							<label>
+								There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+							</label>
+							<a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+						</div>
+						<div class="notif-list-container">
+							<label>
+								There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+							</label>
+							<a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+						</div>
+						<div class="notif-list-container">
+							<label>
+								There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+							</label>
+							<a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+						</div>
+						<div class="notif-list-container">
+							<label>
+								There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+							</label>
+							<a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+						</div>*@
+
+					</div>
+					<center>
+						<button type="button" class="close-btn" onclick="closeForm()"><i class="las la-times-circle"></i></button>
+					</center>
+				</div>
+
+				<!-- END -->
+				<!-- VEW NOTIFICATION CONTAINER -->
+
+				<div class="view-popup" id="viewForm">
+					<div class="view-container">
+
+						<a onclick="openForm() + viewCloseForm()"><span class="las la-long-arrow-alt-left"></span> Back </a>
+
+						<div class="view-list-container">
+							<center>
+								<label>
+									<h3>RequestID: DEPREQ12</h3>
+								</label>
+							</center>
+
+						</div>
+
+						<div class="acc-container">
+
+						</div>
+					</div>
+					<center>
+						<button type="button" class="appr-btn" onclick="">
+							<a>
+								Approve
+								<span class="las la-check-circle"></span>
+							</a>
+						</button>
+
+						<button type="button" class="appr-btn" onclick="">
+							<a>
+								Decline
+								<span class="las la-times-circle"></span>
+							</a>
+						</button>
+
+					</center>
+				</div>
+
+				<!-- END -->
+
+			</div>
+
+			<script>
+
+				// SCRIPT FOR NOTIFICATION
+				function openForm() {
+					document.getElementById("notifForm").style.display = "block";
+				}
+
+				function closeForm() {
+					document.getElementById("notifForm").style.display = "none";
+				}
+
+				function viewOpenForm() {
+					document.getElementById("viewForm").style.display = "block";
+				}
+
+				function viewCloseForm() {
+					document.getElementById("viewForm").style.display = "none";
+				}
+
+				//END
+
+				var connection = $.hubConnection();
+				var hubProxy = connection.createHubProxy('MyHub');
+				localStorage.setItem("emp_role", @Session["system_role"]);
+				localStorage.setItem("emp_name", '@Session["name"]');
+				localStorage.setItem("emp_no", '@Session["emp_no"]');
 				let imageInput = document.getElementById('file-upload');
 
+				window.onload = function () {
+					hubProxy.on('SendAsync', function (groupName,message) {
+						if (message == @Session["emp_no"]) {
+							window.location.reload();
+						}
+						else {
+							console.log('pumasok');
+							OnLoad();
+						}
+					});
+					hubProxy.on('receiveMessage', function (message) {
+						console.log("working");
+					});
+					connection.start().done(function () {
+						// The connection has been established successfully
+						console.log('Connection started');
+						console.log('tt');
+						// Now you can send data through the connection
+						var c = hubProxy.invoke("AddToGroup", '@Session["emp_no"]')
+					console.log(c);
+					}).fail(function () {
+						// An error occurred while starting the connection
+						console.log('Connection failed');
+					});
+					OnLoad();
+				}
+				function CreateNotification() {
+					var container = document.querySelector(".notif-container");
+
+					var display = ""
+					display += `<div class="notif-list-container">`;
+					display += `<label>`;
+					display += `There’s a new submitted Deployment Request with RequestID: DEPREQ12.`;
+					display += `</label>`;
+					display += `<a onclick="viewOpenForm() + closeForm()"> View Details < span class="las la-long-arrow-alt-right"></span></a>`;
+					display += `</div>`;
+					container.innerHTML += display;
+				}
 				imageInput.addEventListener('change', function (event) {
 					const file = event.target.files[0];
 
@@ -241,6 +421,6 @@
 							console.error('Error:', error);
 						});
 				});
-            </script>
+			</script>
 		</body>
 </html>

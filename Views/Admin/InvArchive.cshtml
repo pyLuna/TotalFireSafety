@@ -113,33 +113,12 @@
     <script src="@Url.Content("~/Scripts/InvArchive.js")"></script>
     <script>
         var sessionId = '@Session["emp_no"]';
-        var connection = $.hubConnection();
-        var hubProxy = connection.createHubProxy('MyHub');
-
-        window.onload = function () {
-            hubProxy.on('SendAsync', function (message) {
-                if (message == @Session["emp_no"]) {
-                    console.log('pumasok');
-                    OpenSavePopup();
-                }
-                GetAll();
-                console.log(message);
-            });
-            hubProxy.on("SendMessage", function (message) {
-                console.log
-            });
-            //connection.start();
-            connection.start().done(function () {
-                // The connection has been established successfully
-                console.log('Connection started');
-                console.log('tt');
-                // Now you can send data through the connection
-                var c = hubProxy.invoke("AddToGroup", '@Session["emp_no"]')
-                console.log(c);
-            }).fail(function () {
-                // An error occurred while starting the connection
-                console.log('Connection failed');
-            });
+        function OnLoad() {
+            var reload = localStorage.getItem("reload");
+            if (reload == "true") {
+                OpenSavePopup();
+                localStorage.setItem("reload", "false");
+            }
             GetAll();
         }
 

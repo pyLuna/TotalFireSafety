@@ -141,7 +141,6 @@ function RestoreItem(value) {
             console.log(data);
             //window.location.reload();
             localStorage.setItem("reload", "true");
-            //connection.invoke("SendUpdate");
         })
         .catch(error => {
             console.error(error);

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -20,9 +21,25 @@ namespace TotalFireSafety.Controllers
 {
     public class AdminController : Controller
     {
+
+        private async Task SendNotif(string message)
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+            await hubContext.Clients.All.SendAsync(message);
+        }
+        private async Task GroupNotif(string group,string message)
+        {
+            //var act = Session["system_role"].ToString();
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+            await hubContext.Clients.Group(group).SendAsyncGroup(message);
+        }
+        private async Task SendMessage(string message)
+        {
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
+            await hubContext.Clients.All.receiveMessage(message);
+        }
         // GET: Admin
         readonly APIRequestHandler api_req = new APIRequestHandler();
-        #region Others
         //private Tuple<string,string> setUri(int isEdit)
         //{
         //    string uri,message;
@@ -38,6 +55,7 @@ namespace TotalFireSafety.Controllers
         //    }
         //    return new Tuple<string, string> (uri,message);
         //}
+        #region Others
         protected string GetPath(int emp_no)
         {
             using(var _context = new TFSEntity())
@@ -50,20 +68,20 @@ namespace TotalFireSafety.Controllers
                 return "~/images/profile.png";
             }
         }
-        public ActionResult InvReportPrint()
+        public async Task<ActionResult> InvReportPrint()
         {
             return View();
         }
-        public ActionResult InvReportExport()
+        public async Task<ActionResult> InvReportExport()
         {
             return View();
         }
-        public ActionResult InvReorder()
+        public async Task<ActionResult> InvReorder()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
+        public async Task<ActionResult> SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -108,7 +126,7 @@ namespace TotalFireSafety.Controllers
             }
         }
         [HttpGet]
-        public ActionResult FindDataOf(string requestType)
+        public async Task<ActionResult> FindDataOf(string requestType)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -126,21 +144,21 @@ namespace TotalFireSafety.Controllers
                 if (requestType == "inventory")
                 {
                     uri = "/Warehouse/Inventory";
-                    response = api_req.GetAllMethod(uri, userToken);
+                    response = await api_req.GetAllMethod(uri, userToken);
                     inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
                     result = Json(inv, JsonRequestBehavior.AllowGet);
                 }
                 if (requestType == "report")
                 {
                     uri = "Warehouse/Inventory/Updates";
-                    response = api_req.GetAllMethod(uri, userToken);
+                    response = await api_req.GetAllMethod(uri, userToken);
                     reports = JsonConvert.DeserializeObject<List<Inv_Update>>(response);
                     result = Json(reports, JsonRequestBehavior.AllowGet);
                 }
                 if (requestType == "deleted")
                 {
                     uri = "/Warehouse/Inventory/Archive";
-                    response = api_req.GetAllMethod(uri, userToken);
+                    response = await api_req.GetAllMethod(uri, userToken);
                     inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
                     result = Json(inv, JsonRequestBehavior.AllowGet);
                 }
@@ -148,7 +166,7 @@ namespace TotalFireSafety.Controllers
                 if (requestType == "requisition")
                 {
                     uri = "/Requests/All";
-                    response = api_req.GetAllMethod(uri, userToken);
+                    response = await api_req.GetAllMethod(uri, userToken);
                     requisition = JsonConvert.DeserializeObject<List<Request>>(response);
                     result = Json(requisition, JsonRequestBehavior.AllowGet);
                 }
@@ -172,8 +190,7 @@ namespace TotalFireSafety.Controllers
             }
         }
         #endregion
-
-        public ActionResult ProjectView()
+        public async Task<ActionResult> ProjectView()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -183,7 +200,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-        public ActionResult ProjectAdd()
+        public async Task<ActionResult> ProjectAdd()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -194,7 +211,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        public ActionResult Dashboard()
+        public async Task<ActionResult> Dashboard()
         {
             var empId = Session["emp_no"]?.ToString();
             if (Session["emp_no"] == null)
@@ -317,7 +334,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-        public ActionResult Projects()
+        public async Task<ActionResult> Projects()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -328,7 +345,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        //public ActionResult ProjectAdd()
+        //public async Task<ActionResult> ProjectAdd()
         //{
         //    var empId = Session["emp_no"]?.ToString();
         //    if (empId == null)
@@ -341,7 +358,7 @@ namespace TotalFireSafety.Controllers
 
         #region Inventory
         [HttpPost]
-        public ActionResult RestoreItem([System.Web.Http.FromUri] string itemCode)
+        public async Task<ActionResult> RestoreItem([System.Web.Http.FromUri] string itemCode)
         {
             try
             {
@@ -373,9 +390,8 @@ namespace TotalFireSafety.Controllers
                 }
                 var json = JsonConvert.DeserializeObject(response);
                 JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
-                var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
-                hubContext.Clients.Group(act.ToString()).SendAsync(act.ToString());
-                hubContext.Clients.All.SendAsync("Hello from the server!");
+                await SendNotif(Session["emp_no"].ToString());
+                await SendNotif("notification");
                 return result;
             }
             catch (Exception ex)
@@ -385,7 +401,7 @@ namespace TotalFireSafety.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetBarcode(string itemCode)
+        public async Task<ActionResult> GetBarcode(string itemCode)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -411,7 +427,7 @@ namespace TotalFireSafety.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddItem2(Inventory item)
+        public async Task<ActionResult> AddItem2(Inventory item)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -452,7 +468,7 @@ namespace TotalFireSafety.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddItem1(Inventory item)
+        public async Task<ActionResult> AddItem1(Inventory item)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -493,7 +509,7 @@ namespace TotalFireSafety.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteItem(string item)
+        public async Task<ActionResult> DeleteItem(string item)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -509,19 +525,19 @@ namespace TotalFireSafety.Controllers
             var response = api_req.SetMethod("Warehouse/Inventory/Delete", userToken, serializedModel);
             if (response == "BadRequest")
             {
-                //return Json("error", JsonRequestBehavior.AllowGet);
                 return RedirectToAction("BadRequest", "Error");
             }
             if (response == "InternalServerError")
             {
                 return RedirectToAction("InternalServerError", "Error");
-                //return Json("error", JsonRequestBehavior.AllowGet);
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            await SendNotif(Session["emp_no"].ToString());
+            await SendMessage("notification");
             return Json("Item Deleted");
         }
 
-        public ActionResult Inventory()
+        public async Task<ActionResult> Inventory()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -537,7 +553,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Inventory(Inventory items,string type)
+        public async Task<ActionResult> Inventory(Inventory items,string type)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -577,7 +593,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        public ActionResult InvArchive()
+        public async Task<ActionResult> InvArchive()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -601,7 +617,7 @@ namespace TotalFireSafety.Controllers
         #endregion
 
         #region Users
-        public ActionResult Users()
+        public async Task<ActionResult> Users()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -613,7 +629,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Users(Employee employee)
+        public async Task<ActionResult> Users(Employee employee)
         {
             var empId = Session["emp_no"]?.ToString();
             if(empId == null)
@@ -652,7 +668,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        public ActionResult SearchEmployee()
+        public async Task<ActionResult> SearchEmployee()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -662,7 +678,7 @@ namespace TotalFireSafety.Controllers
             try
             {
                 var userToken = Session["access_token"].ToString();
-                var response = api_req.GetAllMethod("/Admin/Employee", userToken);
+                var response = await api_req.GetAllMethod("/Admin/Employee", userToken);
                 var json = JsonConvert.DeserializeObject<List<Employee>>(response);
                 JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 Response.ContentType = "application/json"; // Set the Content-Type header
@@ -687,17 +703,7 @@ namespace TotalFireSafety.Controllers
         #endregion
 
         #region Requisition
-        public ActionResult Requisition()
-        {
-            var empId = Session["emp_no"]?.ToString();
-            if (empId == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            return View();
-        }
-        public ActionResult ExportRequest(int? id)
+        public async Task<ActionResult> ExportRequest(int? id)
         {
             var empId = Session["emp_no"].ToString();
             TFSEntity db = new TFSEntity();
@@ -714,8 +720,18 @@ namespace TotalFireSafety.Controllers
             //var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
             //return View(datas);
         }
+        public async Task<ActionResult> Requisition()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
         [HttpPost]
-        public ActionResult Requisition([System.Web.Http.FromBody] Request[] jsonData,[System.Web.Http.FromUri] string formType)
+        public async Task<ActionResult> Requisition([System.Web.Http.FromBody] Request[] jsonData,[System.Web.Http.FromUri] string formType)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -759,12 +775,12 @@ namespace TotalFireSafety.Controllers
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            Session["message"] = message;
+            ViewBag.Message = message;
             return result;
         }
         #endregion
 
-        public ActionResult Logout()
+        public async Task<ActionResult> Logout()
         {
             Session.Clear();
             return RedirectToAction("Login", "Base");

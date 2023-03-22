@@ -446,19 +446,20 @@
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
-
+    var sessionId = '@Session["system_role"]';
     var connection = $.hubConnection();
     var hubProxy = connection.createHubProxy('MyHub');
 
     let codeToDelete = "";
-    window.onload = function () {
-        hubProxy.on('SendAsync', function (message) {
-            //console.log(message);
-            OpenSavePopup();
+    //window.onload = function () {
+    function OnLoad() {
+        let removed = localStorage.getItem("removed");
+            if (removed == "success") {
+                rempopup.classList.add("rem-popup-show");
+                localStorage.setItem("removed","pending");
+            }
+            localStorage.clear();
             GetAll();
-        });
-        connection.start();
-        GetAll();
     }
 
     // Close the dropdown if the user clicks outside of it

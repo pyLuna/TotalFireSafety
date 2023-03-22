@@ -245,6 +245,7 @@
     <Content Include="images\bg-logo.jpg" />
     <Content Include="images\bg001.jpg" />
     <Content Include="images\codepheuse.png" />
+    <Content Include="images\comment.png" />
     <Content Include="images\delete.png" />
     <Content Include="images\edit.png" />
     <Content Include="images\export.png" />
@@ -349,6 +350,7 @@
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery.signalR-2.4.3.js" />
     <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
+    <Content Include="Scripts\Requisition.js" />
     <Content Include="Scripts\signalR.js" />
     <Content Include="Scripts\validations\InventoryValidation.js" />
     <Content Include="Scripts\validations\RequisitionValidation.js" />
@@ -365,7 +367,7 @@
     <Content Include="Scripts\js\main.js" />
     <Content Include="Scripts\js\user.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\Requisition.js" />
+    <Content Include="Scripts\Requisition_bak.js" />
     <Content Include="Scripts\user.js" />
     <Content Include="Scripts\vendor\animate\animate.css" />
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap-grid.css" />

@@ -92,12 +92,12 @@ namespace TotalFireSafety
                         context.SetError("invalid_grant", "Inactive Account. Contact Admin");
                         return;
                     }
-                    context.SetError("invalid_grant", "Provided username and password is incorrect");
+                    context.SetError("invalid_grant", "Username or Password is incorrect");
                     return;
                 }
                 catch(InvalidOperationException)
                 {
-                    context.SetError("invalid_grant", "Provided username and password is incorrect");
+                    context.SetError("invalid_grant", "Username or Password is incorrect");
                     return;
                 }
             }

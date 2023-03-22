@@ -753,7 +753,6 @@ namespace TotalFireSafety.Controllers
 
                         Inv_Update update = new Inv_Update()
                         {
-                            update_id = newGUID,
                             update_date = DateTime.Now,
                             update_item_id = item.in_code,
                             update_quantity = item.in_quantity,
@@ -1220,7 +1219,7 @@ namespace TotalFireSafety.Controllers
                             request_id = item.request_id,
                             request_item = item.request_item,
                             request_item_quantity = item.request_item_quantity,
-                            request_status = "pending",
+                            request_status = "On Process",
                             request_type = item.request_type,
                             request_type_id = item.request_type_id
                         };

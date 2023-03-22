@@ -39,9 +39,9 @@ namespace TotalFireSafety.Models
                 string newID = "";
                 if (request_type.ToLower() == "purchase")
                 {
-                    newID = "PRE" + request_type_id;
+                    newID = "PUR" + request_type_id;
                 }
-                if (request_type.ToLower() == "deploy")
+                if (request_type.ToLower() == "deploy" || request_type.ToLower() == "deployment")
                 {
                     newID = "DEP" + request_type_id;
                 }

@@ -27,9 +27,14 @@
                     <input type="date" id="endDate">
                 </div>
 
-            </div>
-
-
+            </div>            
+                <button class="create-req-btn" title="CREATE ORDER">
+                    <a onclick="openForm()">
+                        Notification
+                        <span class="las la-bell"></span>
+                        <label class="notif-badge">5</label>
+                    </a>
+                </button>
         </right>
     </header>
 
@@ -571,7 +576,7 @@
                 <h3>&nbsp;</h3>
                 <div class="card">
                     <div class="card-header">
-                        <h3>Most Requested Item</h3>
+                        <h3>Moving Items</h3>
 
                         <div class="fst-grp">
                             <select id="moving" required>
@@ -919,7 +924,6 @@
 
 <script>
     // get data from ViewBag
-  
 
     // define function to filter data based on category
     function filterData(category) {

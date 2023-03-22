@@ -6,94 +6,94 @@
 
 
 @*<div class="details-grid-add">
-    <div class="details-sum-add">
-        <div class="details-add">
-            <div class="details-header-add">
-                <h3>Proejct UI (*remove this - title of the project)</h3>
-            </div>
-
-            <div class="det-desc-add">
-                <h3>Description</h3>
-                <button class="add-btn" title="Bold"><a><span class="las la-bold"></span></a></button>
-                <button class="add-btn" title="Italic"><a><span class="las la-italic"></span></a></button>
-                <button class="add-btn" title="Underline"><a><span class="las la-underline"></span></a></button>
-            </div>
-
-            <div class="details-content-add">
-                <textarea name="" id="" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></textarea>
-            </div>
-        </div>
-    </div>
-
-    <div class="details-sum-add">
-        <div class="details-add">
-            <div class="header-proj-lead-add">
-                <img src="~/images/profile.png" alt="">
-                <div class="det-txt-add">
-                    <h3>Clarisse Vasquez</h3>
-                    <label>Person-in-charge</label>
+        <div class="details-sum-add">
+            <div class="details-add">
+                <div class="details-header-add">
+                    <h3>Proejct UI (*remove this - title of the project)</h3>
                 </div>
 
-            </div>
+                <div class="det-desc-add">
+                    <h3>Description</h3>
+                    <button class="add-btn" title="Bold"><a><span class="las la-bold"></span></a></button>
+                    <button class="add-btn" title="Italic"><a><span class="las la-italic"></span></a></button>
+                    <button class="add-btn" title="Underline"><a><span class="las la-underline"></span></a></button>
+                </div>
 
-
-            <div class="details-date-content-add">
-                <label>Start Date:</label><input type="date">
-                <br>
-                <br>
-                <label>Target Finish Date:</label><input type="date">
-                <br>
-                <br>
-                <label>No. of Days</label><input type="text">
-                <br>
-                <br>
-
+                <div class="details-content-add">
+                    <textarea name="" id="" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></textarea>
+                </div>
             </div>
         </div>
-        <div class="details-add">
-            <div class="details-header-add">
-                <h3>Laborer Team</h3>
 
+        <div class="details-sum-add">
+            <div class="details-add">
+                <div class="header-proj-lead-add">
+                    <img src="~/images/profile.png" alt="">
+                    <div class="det-txt-add">
+                        <h3>Clarisse Vasquez</h3>
+                        <label>Person-in-charge</label>
+                    </div>
+
+                </div>
+
+
+                <div class="details-date-content-add">
+                    <label>Start Date:</label><input type="date">
+                    <br>
+                    <br>
+                    <label>Target Finish Date:</label><input type="date">
+                    <br>
+                    <br>
+                    <label>No. of Days</label><input type="text">
+                    <br>
+                    <br>
+
+                </div>
             </div>
-            <div class="details-content-add">
-                <div class="details-team-body-add">
-                    <div class="table-responsive" style="overflow-x: auto;">
-                        <table width="100%">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td contenteditable="false">Ian Cenera</td>
-                                </tr>
-                                <tr>
-                                    <td contenteditable="true"></td>
-                                </tr>
+            <div class="details-add">
+                <div class="details-header-add">
+                    <h3>Laborer Team</h3>
+
+                </div>
+                <div class="details-content-add">
+                    <div class="details-team-body-add">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Name</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td contenteditable="false">Ian Cenera</td>
+                                    </tr>
+                                    <tr>
+                                        <td contenteditable="true"></td>
+                                    </tr>
 
 
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="details-grid-add">
-    <div class="details-sum-add">
+    <div class="details-grid-add">
+        <div class="details-sum-add">
 
-        <div class="details-btn-add">
-            <button title="Save Project">Save</button>
-            <button title="Save Project">Cancel</i></button>
+            <div class="details-btn-add">
+                <button title="Save Project">Save</button>
+                <button title="Save Project">Cancel</i></button>
+            </div>
         </div>
-    </div>
 
 
-</div>*@
+    </div>*@
 
 <div class="main-content">
     <header>
@@ -135,11 +135,11 @@
                                                     <td>Status</td>
                                                     <td>Description</td>
                                                     <td>Start Date</td>
-                                                    <td>ECD</td>
+                                                    <td>Est. Completion Date</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <tr onclick="openDailyReportForm()">
                                                     <td>UI Design</td>
                                                     <td><label class="on-going">On-going</label></td>
                                                     <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
@@ -175,23 +175,34 @@
                     <div class="proj-incharge-container">
                         <div class="incharge">
                             <div class="incharge-header">
-                                <h3>Vincent M. Cordero</h3>
+                                <select required>
+                                    <option disabled selected>Select In-charge</option>
+                                    <option>Vincent M. Cordero</option>
+                                </select>
+
                                 <label>Person-in-charge</label>
                             </div>
 
                             <div class="date">
                                 <label class="title">Start Date: </label>
-                                <label>Mar. 11, 2023</label>
+                                <label><input type="date"></label>
                             </div>
 
                             <div class="date">
                                 <label class="title">Finish Date: </label>
-                                <label>Mar. 11, 2023</label>
+                                <label><input type="date"></label>
                             </div>
 
                             <div class="status">
                                 <label class="title">Status:</label>
-                                <label class="on-going">Mar. 11, 2023</label>
+                                <label class="on-going">
+                                    <select required>
+                                        <option>Select Status</option>
+                                        <option>On-going</option>
+                                        <option>In-going</option>
+                                        <option>delay</option>
+                                    </select>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -201,7 +212,8 @@
                                 <h3>Project Title</h3>
                             </div>
                             <div class="descri-content">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                <textarea placeholder="Place your project description here."></textarea>
+
                             </div>
                         </div>
 
@@ -209,14 +221,41 @@
                     <div class="proj-mems-container">
                         <div class="mems-main">
                             <div class="mems-title">
-                                <h3>Team Members</h3>
+                                <h3>
+                                    Team Members
+                                    <a onclick="openInputMemForm()">
+                                        <span class="lar la-plus-square"></span>
+                                    </a>
+                                </h3>
+
                             </div>
                             <div class="mems-list">
-                                <h5>Vincent M. Cordero</h5>
-                                <label>Person-in-charge</label>
+                                <div class="mems-grid">
 
-                                <h5>Vincent M. Cordero</h5>
-                                <label>Person-in-charge</label>
+                                    <div class="mems-projects">
+                                        <div class="mems">
+                                            <div class="mems-body">
+                                                <div class="table-responsive" style="overflow-x: auto;">
+                                                    <table width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <td>Name</td>
+                                                                <td>Position</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><b>Vincent M. Cordero</b></td>
+                                                                <td>Person-in-charge</label></td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -224,8 +263,78 @@
             </div>
         </div>
 
+        <div class="input-mem-container" id="input-mem-container">
+            <div class="input-mems-main">
+                <div class="input-mems-title">
+                    <h3>Team Members</h3>
+
+                </div>
+                <div class="input-mems-list">
+                    <div class="input-mems-grid">
+                        <div class="input-mems-projects">
+                            <div class="input-mems">
+                                <div class="input-mems-body">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Position</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td contenteditable="true"><b>Vincent M. Cordero</b></td>
+                                                    <td contenteditable="true">Person-in-charge</label></td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <center>
+                    <button onclick="closeInputMemForm()">Save</button>
+                    <button onclick="closeInputMemForm()">Cancel</button>
+                </center>
+            </div>
+        </div>
+
+        <div class="report-container" id="report-container">
+            <h3>DAILY REPORT</h3>
+            <div class="report-grp">
+                <div class="left-grp">
+                    <div class="descript-container">
+                        <textarea placeholder="<DESCRIPTION>"></textarea>
+                    </div>
+                    <div class="img-container">
+                        <h3><i>IMAGE PREVIEW GRID</i></h3>
+                    </div>
+
+                </div>
+                <div class="right-grp">
+                    <div class="right-upper">
+
+                    </div>
+                    <div class="right-lower">
+
+                    </div>
+                </div>
+            </div>
+
+            <center>
+                <button onclick="closeInputMemForm()">Save</button>
+                <button onclick="closeInputMemForm()">Cancel</button>
+            </center>
+
+        </div>
+
         <div class="can-pop-container" id="can-popup">
-            <img src="~/images/warning.png">
+            <img src="../../images/warning.png">
             <h2>System Warning!</h2>
             <p>Do you want to remove the user on the list?</p>
             <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
@@ -233,10 +342,80 @@
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="~/images/remove.png">
+            <img src="../../images/remove.png">
             <h2>Deleted!</h2>
             <p>User removed in the list successfully!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
     </main>
+
+
+    <script>
+
+
+        function userFiltFunction() {
+            document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.user-filter-btn')) {
+                var myDropdown = document.getElementById("userFiltDropdown");
+                if (myDropdown.classList.contains('user-filter-show')) {
+                    myDropdown.classList.remove('user-filter-show');
+                }
+            }
+        }
+
+        function userSortFunction() {
+            document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.user-sort-btn')) {
+                var myDropdown = document.getElementById("userSortDropdown");
+                if (myDropdown.classList.contains('user-sort-show')) {
+                    myDropdown.classList.remove('user-sort-show');
+                }
+            }
+        }
+
+        let canpopup = document.getElementById("can-popup");
+
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
+
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
+
+        let rempopup = document.getElementById("rem-popup");
+
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
+
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+
+        function openInputMemForm() {
+            document.getElementById("input-mem-container").style.display = "block";
+        }
+
+        function closeInputMemForm() {
+            document.getElementById("input-mem-container").style.display = "none";
+        }
+
+        function openDailyReportForm() {
+            document.getElementById("report-container").style.display = "block";
+        }
+
+        function closeDailyReportForm() {
+            document.getElementById("report-container").style.display = "none";
+        }
+
+    </script>

@@ -72,8 +72,7 @@ namespace TotalFireSafety.Controllers
         {
             return View();
         }
-        public ActionResult InvReportExport(int? id)
-        public async Task<ActionResult> InvReportExport()
+        public async Task<ActionResult> InvReportExport(int? id)
         {
             
             TFSEntity db = new TFSEntity();
@@ -88,9 +87,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.Position = data.FirstOrDefault()?.emp_position;
             ViewBag.Id = data.FirstOrDefault()?.emp_no;
 
-
             return View(data);
-           
         }
         public async Task<ActionResult> InvReorder()
         {

@@ -7317,9 +7317,9 @@ right .inv-sum-date {
         }
 
     .proj-main-content .proj-main-container {
-        background-color: #fff;
+        /* background-color: #fff; */
         border-radius: 5px;
-        box-shadow: 5px 5px 3px #B2B2B2;
+        /* box-shadow: 5px 5px 3px #B2B2B2;  */
         height: 600px;
         overflow: auto;
         margin-top: 10px;
@@ -7327,8 +7327,13 @@ right .inv-sum-date {
         grid-template-columns: 2fr 1fr;
     }
 
+
+
+
         .proj-main-content .proj-main-container .proj-task-list {
+            background-color: #fff;
             border: 2px solid #AEAEAE;
+            box-shadow: 5px 5px 3px #B2B2B2;
             width: auto;
             height: auto;
             margin: 20px;
@@ -7426,6 +7431,12 @@ right .inv-sum-date {
         color: blue;
     }
 
+    .task-body table tbody tr:hover {
+        background-color: #707070;
+        color: #fff;
+        cursor: pointer;
+    }
+
     .task-body table td .on-going {
         color: #09AF10;
     }
@@ -7439,12 +7450,16 @@ right .inv-sum-date {
     }
 
 .proj-right-container .proj-incharge-container .incharge {
-    margin: 10px;
+    height: 170px;
     font-size: .9rem;
+    margin-left: 20px;
 }
 
-.incharge .incharge-header h3 {
-    font-size: 1.1rem;
+.incharge .incharge-header select {
+    border: none;
+    border-bottom: 1px solid #000;
+    border-radius: 0;
+    font-size: 1rem;
 }
 
 .incharge .incharge-header label {
@@ -7456,17 +7471,33 @@ right .inv-sum-date {
     margin-top: 20px;
 }
 
+    .incharge .date label input {
+        border: none;
+        border-bottom: 1px solid #000;
+        border-radius: 0;
+        font-size: .9rem;
+    }
+
     .incharge .date .title {
         font-weight: 600;
     }
 
 .incharge .status {
-    margin-top: 20px;
-    margin-bottom: -100px;
+    margin-bottom: -80px;
 }
 
     .incharge .status .title {
         font-weight: 600;
+    }
+
+    .incharge .status select {
+        border: none;
+        border-bottom: 1px solid #000;
+        border-radius: 0;
+        font-size: .9rem;
+        width: 150px;
+        font-weight: 600;
+        margin-left: 10px;
     }
 
     .incharge .status .on-going {
@@ -7483,7 +7514,9 @@ right .inv-sum-date {
 }
 
     .proj-main-content .proj-main-container .proj-right-container .proj-incharge-container {
+        background-color: #fff;
         border: 2px solid #AEAEAE;
+        box-shadow: 5px 5px 3px #B2B2B2;
         width: auto;
         height: auto;
         border-radius: 5px;
@@ -7492,6 +7525,7 @@ right .inv-sum-date {
 
 .proj-des-container .descri-main {
     margin: 10px;
+    height: 60px;
 }
 
     .proj-des-container .descri-main .descri-title h3 {
@@ -7501,11 +7535,29 @@ right .inv-sum-date {
     .proj-des-container .descri-main .descri-content {
         font-size: .9rem;
         margin-top: 10px;
-        margin-bottom: -100px;
+        margin-bottom: -40px;
     }
 
+        .proj-des-container .descri-main .descri-content textarea {
+            width: 100%;
+            height: 60px;
+            overflow: auto;
+            resize: none;
+            font-size: 1rem;
+        }
+
+            .proj-des-container .descri-main .descri-content textarea::-webkit-scrollbar {
+                display: none;
+            }
+
+            .proj-des-container .descri-main .descri-content textarea::-webkit-input-placeholder {
+                font-style: italic;
+            }
+
 .proj-main-content .proj-main-container .proj-right-container .proj-des-container {
+    background-color: #fff;
     border: 2px solid #AEAEAE;
+    box-shadow: 5px 5px 3px #B2B2B2;
     width: auto;
     height: auto;
     border-radius: 5px;
@@ -7513,7 +7565,9 @@ right .inv-sum-date {
 }
 
 .proj-main-content .proj-main-container .proj-right-container .proj-mems-container {
+    background-color: #fff;
     border: 2px solid #AEAEAE;
+    box-shadow: 5px 5px 3px #B2B2B2;
     width: auto;
     height: auto;
     border-radius: 5px;
@@ -7527,6 +7581,16 @@ right .inv-sum-date {
         font-size: 1rem;
     }
 
+        .proj-mems-container .mems-main .mems-title h3 a {
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+            .proj-mems-container .mems-main .mems-title h3 a:hover {
+                cursor: pointer;
+                color: blue;
+            }
+
     .proj-mems-container .mems-main .mems-list {
         margin-top: 20px;
     }
@@ -7538,6 +7602,231 @@ right .inv-sum-date {
 
         .proj-mems-container .mems-main .mems-list label {
             font-size: .8rem;
+        }
+
+.mems {
+    margin-top: 10px;
+    height: 100px;
+    overflow: auto;
+    margin-bottom: -20px;
+}
+
+.mems-projects {
+    margin: 0;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: 100% auto;
+    border-spacing: 1px;
+}
+
+.mems-body table {
+    margin: 0;
+}
+
+    .mems-body table thead {
+        background-color: #DDDDDD;
+    }
+
+        .mems-body table thead td {
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+    .mems-body table td {
+        font-weight: 400;
+        font-size: .8rem;
+    }
+
+.input-mem-container {
+    display: none;
+    width: 700px;
+    height: 400px;
+    background-color: #fff;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
+    z-index: 100;
+    position: fixed;
+    top: 20%;
+    right: 30%;
+    border-radius: 5px;
+}
+
+    .input-mem-container .input-mems-main {
+        padding: 50px;
+    }
+
+        .input-mem-container .input-mems-main .input-mems-title h3 {
+            font-size: 1rem;
+        }
+
+.input-mems {
+    margin-top: 10px;
+    height: 240px;
+    overflow: auto;
+    margin-bottom: -20px;
+    box-shadow: 3px 5px 5px 3px #B2B2B2;
+}
+
+.input-mems-projects {
+    margin: 0;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: 100% auto;
+    border-spacing: 1px;
+}
+
+.input-mems-body table {
+    margin: 0;
+}
+
+    .input-mems-body table thead {
+        background-color: #DDDDDD;
+    }
+
+        .input-mems-body table thead td {
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+    .input-mems-body table td {
+        font-weight: 400;
+        font-size: .8rem;
+    }
+
+.input-mems-main button {
+    width: 90px;
+    height: 35px;
+    margin-top: 40px;
+    margin-left: 10px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
+}
+
+    .input-mems-main button:hover {
+        color: #fff;
+        border: 1px solid #fff;
+        background-color: #16215B;
+        box-shadow: none;
+    }
+
+.report-container {
+    display: none;
+    width: 70%;
+    height: 700px;
+    position: fixed;
+    top: 10%;
+    left: 20%;
+    background-color: #f1f5f9;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
+    border-radius: 5px;
+    z-index: 100;
+    position: fixed;
+}
+
+    .report-container h3 {
+        padding: 40px;
+        font-size: 1.3rem;
+    }
+
+    .report-container .report-grp {
+        display: flex;
+        padding-left: 40px;
+        padding-right: 40px;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .report-container .report-grp .left-grp {
+            height: 500px;
+            width: 100%;
+            background-color: #fff;
+            display: block;
+        }
+
+            .report-container .report-grp .left-grp .descript-container {
+                margin: 10px;
+                height: 30%;
+                width: auto;
+            }
+
+                .report-container .report-grp .left-grp .descript-container textarea {
+                    resize: none;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 5px;
+                    border: 3px solid #000;
+                    font-size: 1.2rem;
+                    overflow: auto;
+                }
+
+                    .report-container .report-grp .left-grp .descript-container textarea::-webkit-scrollbar {
+                        display: none;
+                    }
+
+            .report-container .report-grp .left-grp .img-container {
+                margin: 10px;
+                height: 315px;
+                width: auto;
+                background-color: #B2B2B2;
+                border-radius: 5px;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+
+                .report-container .report-grp .left-grp .img-container h3 {
+                    padding-top: 20%;
+                    color: #5B5B7B;
+                    font-weight: 400;
+                }
+
+                    .report-container .report-grp .left-grp .img-container h3:hover {
+                        color: blue;
+                        cursor: pointer;
+                    }
+
+        .report-container .report-grp .right-grp {
+            height: 500px;
+            width: 100%;
+            background-color: #fff;
+            display: block;
+        }
+
+            .report-container .report-grp .right-grp .right-upper {
+                border: 1px solid #000;
+                width: auto;
+                height: 80px;
+            }
+
+            .report-container .report-grp .right-grp .right-lower {
+                border: 1px solid #000;
+                width: auto;
+                height: 400px;
+            }
+
+    .report-container button {
+        width: 90px;
+        height: 35px;
+        margin-top: 20px;
+        margin-left: 10px;
+        border-radius: 5px;
+        transition: all ease-in-out 0.2s;
+        cursor: pointer;
+        background-color: #fff;
+        border: 1px solid #B2B2B2;
+        box-shadow: 4px 3px 3px #B2B2B2;
+        font-weight: 800;
+    }
+
+        .report-container button:hover {
+            color: #fff;
+            border: 1px solid #fff;
+            background-color: #16215B;
+            box-shadow: none;
         }
 
 /* END */

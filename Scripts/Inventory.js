@@ -1,4 +1,4 @@
-﻿let jsonArray = [];
+﻿	let jsonArray = [];
 let filtered = [];
 let itemCategories = [];
 let newArray = [];
@@ -271,7 +271,7 @@ function resetForm() {
 //#region Sort By Column
 // sort function start
 // General sort function
-function SortDescending(array, itemToSort) {
+	function SortDescending(array, itemToSort) {
 	return array.sort((a, b) => {
 		if (a[itemToSort] < b[itemToSort]) return 1;
 		if (a[itemToSort] > b[itemToSort]) return -1;

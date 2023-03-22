@@ -19,11 +19,15 @@ namespace TotalFireSafety.Models
         public string update_quantity { get; set; }
         public Nullable<System.DateTime> update_date { get; set; }
         public string update_type { get; set; }
-    
+
         public virtual Inventory Inventory { get; set; }
+
+        public virtual Employee Employee { get; set; }
         public string FormattedDate
         {
             get { return update_date?.ToString("MMMM dd, yyyy"); }
         }
+
+        public object Inv_Update_Date { get; internal set; }
     }
 }

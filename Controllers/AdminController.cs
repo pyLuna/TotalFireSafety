@@ -72,9 +72,25 @@ namespace TotalFireSafety.Controllers
         {
             return View();
         }
+        public ActionResult InvReportExport(int? id)
         public async Task<ActionResult> InvReportExport()
         {
-            return View();
+            
+            TFSEntity db = new TFSEntity();
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            var empId = Session["emp_no"].ToString();
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            var data = db.Employees.Where(d => d.emp_no == id).ToList();
+            ViewBag.Name = data.FirstOrDefault()?.emp_name;
+            ViewBag.Position = data.FirstOrDefault()?.emp_position;
+            ViewBag.Id = data.FirstOrDefault()?.emp_no;
+
+
+            return View(data);
+           
         }
         public async Task<ActionResult> InvReorder()
         {
@@ -612,6 +628,7 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("Login", "Base");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            ViewBag.EmpId = empId;
             return View();
         }
         #endregion

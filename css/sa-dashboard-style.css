@@ -1702,7 +1702,7 @@ right .inv-sum-date {
 
 .upper-section .datepick-container {
     height: 40px;
-    width: 350px;
+    width: 440px;
     background-color: #fff;
     box-shadow: 4px 4px 3px #B2B2B2;
     border: 1px solid #B2B2B2;
@@ -1719,23 +1719,28 @@ right .inv-sum-date {
     }
 
     .upper-section .datepick-container .date-grp {
-        margin-left: 10px;
+        margin-left: 50px;
         margin-top: 8px;
+        display: flex;
     }
 
         .upper-section .datepick-container .date-grp input {
             border: none;
             font-size: 1rem;
-            margin-left: 10px;
+            margin-left: 0px;
         }
 
-        .upper-section .datepick-container .date-grp label {
-            font-weight: 800;
-        }
+            .upper-section .datepick-container .date-grp input::-webkit-calendar-picker-indicator {
+                margin-left: -10px;
+            }
 
-        .upper-section .datepick-container .date-grp input[type="date"]::-webkit-calendar-picker-indicator {
-            display: none;
-        }
+            .upper-section .datepick-container .date-grp label {
+                font-weight: 800;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+
 
 /* END */
 
@@ -2195,6 +2200,8 @@ right .inv-sum-date {
 }
 
 /************** NEW UPDATE INVENTORY REPORT STYLE  ******************/
+
+
 
 
 .inventory-repo {

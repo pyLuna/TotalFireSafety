@@ -18,18 +18,19 @@
         <div class="upper-section">
             <div class="search-wrapper">
                 <span class="las la-search"></span>
-                <input type="text" placeholder="Search here">
+                <input type="text" placeholder="Search here" onkeyup="SearchItem(this.value)">
             </div>
             &nbsp;
             <div class="drp-wrapper">
-                <select required>
+                <select id="selcat" onchange="SortByCategory(this,this.value)">
                     <option disabled selected>Select Category</option>
-                    <option>Fittings</option>
-                    <option>Gate Valves</option>
-                    <option>Power Tools</option>
-                    <option>Fire Extinguisher</option>
-                    <option>Scaffolding</option>
-                    <option>Others</option>
+                    <option value="Fittings">Fittings</option>
+                    <option value="Gate Valves">Gate Valves</option>
+                    <option value="Power Tools">Power Tools</option>
+                    <option value="Fire Extinguisher">Fire Extinguisher</option>
+                    <option value="Scaffolding">Scaffolding</option>
+                    <option value="Others">Others</option>
+                    <option value="">Clear</option>
                 </select>
             </div>
 
@@ -72,32 +73,22 @@
                 <div class="inventory-repo">
                     <div class="inventory-repo-body">
                         <div class="table-responsive" style="overflow-x: auto;">
-                            <table width="100%">
+                            <table width="100%" id="myTable" class="myTable">
                                 <thead>
                                     <tr>
                                         <td>Date Added</td>
-                                        <td><a>Code<i class="las la-sort-down"></i></a></td>
-                                        <td><a>Name<i class="las la-sort-down"></i></a></td>
+                                        <td><a onclick="Sort(this,'update_item_id')">Code<i class="las la-sort-down"></i></a></td>
+                                        <td><a onclick="Sort(this,'inventory.in_name')">Name<i class="las la-sort-down"></i></a></td>
                                         <td>Category</td>
                                         <td>Type</td>
                                         <td>Size</td>
                                         <td>Quantity</td>
                                         <td>Remarks</td>
-                                        <td><a>Class<i class="las la-sort-down"></i></a></td>
+                                        <td><a onclick="Sort(this,'inventory.in_class')">Class<i class="las la-sort-down"></i></a></td>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>March 10, 2023</td>
-                                        <td>IMP-X</td>
-                                        <td>Fire Extinguisher</td>
-                                        <td>FE</td>
-                                        <td>HFC</td>
-                                        <td>N/A</td>
-                                        <td><label>250</label>&nbsp; pcs</td>
-                                        <td><a class="rem-standard">Standard</a></td>
-                                        <td>Class</td>
-                                    </tr>
+                                   
                                 </tbody>
                             </table>
                         </div>
@@ -107,10 +98,66 @@
         </div>
 
     </main>
-    </div>
-    <script src="@Url.Content("~/Scripts/InvReport.js")"></script>
-    <script>
-        window.onload = function () {
-            GetAll();
+</div>
+<script src="@Url.Content("~/Scripts/ReportInv.js")"></script>
+<script>
+    window.onload = function () {
+        GetAll();
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+
+    let codeToDelete = "";
+    window.onload = function () {
+        let message = '@Session["added"]';
+        let success = localStorage.getItem("removed");
+        if (message !== '') {
+            saveOpenPopup();
+            @{
+                Session["added"] = "";
+            }
         }
-    </script>
+        if (success == "success") {
+            remOpenPopup();
+            localStorage.setItem("removed", null);
+        }
+        GetAll();
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.drop-btn')) {
+            var myDropdown = document.getElementById("myDropdown");
+            if (myDropdown.classList.contains('show')) {
+                myDropdown.classList.remove('show');
+
+            }
+        }
+    }
+
+    function userSortFunction() {
+        document.getElementById("invSortDropdown").classList.toggle("InventoryReport-sort-show");
+    }
+
+    let archpopup = document.getElementById("arch-popup");
+    function OpenArchPopup() {
+        archpopup.classList.add("arch-popup-show")
+    }
+
+    function CloseArchPopup() {
+        archpopup.classList.remove("arch-popup-show")
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.InventoryReport-sort-btn')) {
+            var myDropdown = document.getElementById("invSortDropdown");
+            if (myDropdown.classList.contains('InventoryReport-sort-show')) {
+                myDropdown.classList.remove('InventoryReport-sort-show');
+            }
+        }
+    }
+    //Messege Box
+   
+</script>

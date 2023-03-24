@@ -404,7 +404,7 @@ namespace TotalFireSafety.Controllers
                 var json = JsonConvert.DeserializeObject(response);
                 JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
                 await SendNotif(Session["emp_no"].ToString());
-                await SendNotif("notification");
+                //await SendNotif("notification");
                 return result;
             }
             catch (Exception ex)
@@ -679,6 +679,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.Success = json.ToString();
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             Session["editUser"] = 0;
+                await SendNotif("notification");
             return View();
         }
 

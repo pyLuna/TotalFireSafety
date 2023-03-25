@@ -82,13 +82,13 @@
                                     <tr>
                                         <td>Date Added</td>
                                         <td><a onclick="sortTableByColumnName('update_item_id')">Code<i class="las la-sort-down"></i></a></td>
-                                        <td><a onclick="sortTableByColumnName('Inventory.in_name')">Name<i class="las la-sort-down"></i></a></td>
+                                        <td><a onclick="sortTableByColumnName('inventory.in_name')">Name<i class="las la-sort-down"></i></a></td>
                                         <td>Category</td>
                                         <td>Type</td>
                                         <td>Size</td>
                                         <td>Quantity</td>
                                         <td>Remarks</td>
-                                        <td><a onclick="sortTableByColumnName('Inventory.in_class')">Class<i class="las la-sort-down"></i></a></td>
+                                        <td><a onclick="sortTableByColumnName('inventory.in_class')">Class<i class="las la-sort-down"></i></a></td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -103,7 +103,18 @@
 
     </main>
 </div>
-<script src="@Url.Content("~/Scripts/ReportInv.js")"></script>
+<script src="@Url.Content("~/Scripts/reportinventory.js")"></script>
+
+<script>
+    const today = new Date().toISOString().split('T')[0];
+
+    // Set the max attribute of the startDate input to today
+    document.getElementById("startDate").max = today;
+
+    // Set the max attribute of the endDate input to today
+    document.getElementById("endDate").max = today;
+</script>
+
 <script>
     window.onload = function () {
         GetAll();

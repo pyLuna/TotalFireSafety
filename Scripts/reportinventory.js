@@ -102,15 +102,7 @@ function setTable(array) {
         });
     }
 
-    if (sortByColumnName) {
-        filteredArray.sort(function (a, b) {
-            const aLabel = a[sortByColumnName].toLowerCase()[0];
-            const bLabel = b[sortByColumnName].toLowerCase()[0];
-            if (aLabel < bLabel) return -1;
-            if (aLabel > bLabel) return 1;
-            return 0;
-        });
-    }
+   
 
     // Display the filtered data in the table
     if (filteredArray.length !== 0) {
@@ -130,23 +122,23 @@ function setTable(array) {
             var row = `<tr>`;
             row += `<td><label>${formattedDate}</label></td>`;
             row += `<td id='update_item_id'><label>${array[i].update_item_id}</label></td>`;
-            row += `<td id="inventory.in_name"><label>${array[i].Inventory.in_name}</label></td>`;
+            row += `<td id="inventory.in_name"><label>${array[i].Inventory.in_name.toUpperCase()}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_category}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_type}</label></td>`;
             row += `<td><label>${array[i].Inventory.in_size === null ? "" : array[i].Inventory.in_size}</label></td>`;
             row += `<td><label>${array[i].update_quantity}</label></td>`;
 
             if (updateQuantity <= 50) {
-                row += `<td><label style="color: red">critical</label></td>`;
+                row += `<td><label style="color: red">CRITICAL</label></td>`;
             } else if (updateQuantity >= 51 && updateQuantity <= 100) {
-                row += `<td><label style="color: yellow">average</label></td>`;
+                row += `<td><label style="color: yellow">AVERAGE</label></td>`;
             } else if (updateQuantity >= 101) {
-                row += `<td><label style="color: green">Standard</label></td>`;
+                row += `<td><label style="color: green">STANDARD</label></td>`;
             } else {
                 row += `<td><label></label></td>`;
             }
 
-            row += `<td name="inventory.in_class"><label>${array[i].Inventory.in_class}</label></td>`;
+            row += `<td name="inventory.in_class"><label>${array[i].Inventory.in_class.toUpperCase()}</label></td>`;
             row += `</tr>`;
 
             // Get the label element within the row and set its class attribute

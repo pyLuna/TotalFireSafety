@@ -81,16 +81,25 @@
                     <tbody>
                     </tbody>
                 </table>
-                <script src="@Url.Content("~/Scripts/ReportInv.js")"></script>
-            </div>
+                <script src="@Url.Content("~/Scripts/reportinventory.js")"></script>
 
+            </div>
+            <script>
+                const today = new Date().toISOString().split('T')[0];
+
+                // Set the max attribute of the startDate input to today
+                document.getElementById("startDate").max = today;
+
+                // Set the max attribute of the endDate input to today
+                document.getElementById("endDate").max = today;
+            </script>
 
             <br>
 
             <!-- <script>
-                const d = new Date();
-                document.getElementById("demo").innerHTML = d.toDateString();
-            </script> -->
+        const d = new Date();
+        document.getElementById("demo").innerHTML = d.toDateString();
+    </script> -->
         </center>
 
         <style media="print">
@@ -103,7 +112,7 @@
             <div class="d-flex justify-content-between">
                 <button type="button" onclick="exportToPdf()" class="btn btn-primary btn-lg buttons1 ml-2">EXPORT</button>
                 <button type="button" onclick="window.print();" class="btn btn-primary btn-lg buttons1 ml-2">PRINT</button>
-                <button type="button" class="btn btn-outline-primary buttons2 ml-2">CANCEL</button>
+                <a href="@Url.Action("InventoryReport","Admin")"><button type="button" class="btn btn-outline-primary buttons2 ml-2">CANCEL</button></a>
             </div>
         </div>
 

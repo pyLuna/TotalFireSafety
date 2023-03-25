@@ -12,7 +12,7 @@ let selcat = document.getElementById('selcat');
 let filter = document.getElementById('filter');
 //#region add form elements
 let category = document.getElementById('in_category');
-let class1 = document.getElementById('class');
+let class1 = document.getElementById('classInp');
 let class2 = document.getElementById('in_class');
 let name = document.getElementById('in_name');
 let type = document.getElementById('in_type');
@@ -47,6 +47,7 @@ let edit = document.querySelectorAll('#editForm');
 let imgContainer = document.getElementById("image-container");
 let EditFormBtns = document.querySelectorAll('#editForm .form-add-btns button');
 let QtyFormBtns = document.querySelectorAll('#qtyForm .form-add-btns button');
+// laging null lumalabas dito
 let sessionId = localStorage.getItem("emp_role");
 
 //#region Listener area

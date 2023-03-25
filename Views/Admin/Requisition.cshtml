@@ -236,17 +236,21 @@
                                 <div class="view-request-form-contents">
                                     <div class="fields">
                                         <div class="input-field">
-                                            <label><a>Request ID: </a>SREQ234567 </label>
+                                            <label><a>Request ID: </a></label>
+                                            <label id="edit-reqId"></label>
                                         </div>
 
                                         <div class="input-field">
-                                            <label><a>Name: </a>Juan Karlos </label>
+                                            <label><a>Name: </a></label>
+                                            <label id="edit-reqName"></label>
                                         </div>
                                         <div class="input-field">
-                                            <label><a>Request Type: </a>Purchase Request </label>
+                                            <label><a>Request Type: </a></label>
+                                            <label id="edit-reqType"></label>
                                         </div>
                                         <div class="input-field">
-                                            <label><a>Date Requested: </a>January 11, 2023 </label>
+                                            <label><a>Date Requested: </a></label>
+                                            <label id="edit-reqDate"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -254,37 +258,37 @@
 
                             <div class="view-request-details">
                                 <div class="view-request-form-header">
-                                    ITEM DETAILS
+                                    REQUESTED ITEMS
                                 </div>
                                 <div class="view-request-form-contents">
                                     <div class="view-request-form-table">
                                         <div class="view-request-form-table-style">
                                             <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%">
+                                                <table width="100%" id="reqDetails">
                                                     <thead>
                                                         <tr>
-                                                            <td></td>
+                                                            <td class="checkbox-view edit-td"></td>
                                                             <td>Name</td>
                                                             <td>Category</td>
                                                             <td>Type</td>
                                                             <td>Size</td>
                                                             <td>Quantity</td>
-                                                            <td>Remarks</td>
-                                                            <td></td>
+                                                            <td>Request Quantity</td>
+                                                            <td>Status</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
+                                                        @*<tr>
                                                             <td><input type="checkbox"></td>
-                                                            <td><label>Ball Wave</label></td>
-                                                            <td><label>Others</label></td>
-                                                            <td><label>HFC</label></td>
-                                                            <td><label>N/A</label></td>
-                                                            <td><label>N/A</label></td>
-                                                            <td><label class="stat-crit">Critical</label></td>
+                                                            <td><label>ball wave</label></td>
+                                                            <td><label>others</label></td>
+                                                            <td><label>hfc</label></td>
+                                                            <td><label>n/a</label></td>
+                                                            <td><label>n/a</label></td>
+                                                            <td><label class="stat-crit">critical</label></td>
                                                             <td>
                                                             </td>
-                                                        </tr>
+                                                        </tr>*@
 
                                                     </tbody>
                                                 </table>
@@ -299,28 +303,27 @@
 
                             <div class="view-request-details">
                                 <div class="view-request-form-header">
-                                    APPROVED DETAILS
+                                    APPROVED ITEMS
                                 </div>
                                 <div class="view-request-form-contents">
                                     <div class="view-request-form-table">
                                         <div class="view-request-form-table-style">
                                             <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%">
+                                                <table width="100%" id="apprItems">
                                                     <thead>
                                                         <tr>
-                                                            <td></td>
+                                                            <td class="checkbox-view edit-td"></td>
                                                             <td>Name</td>
                                                             <td>Category</td>
                                                             <td>Type</td>
                                                             <td>Size</td>
                                                             <td>Quantity</td>
                                                             <td>Request Quantity</td>
-                                                            <td>Remarks</td>
-                                                            <td>Action</td>
+                                                            <td>Status</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
+                                                        @*<tr>
                                                             <td></td>
                                                             <td><label>Gate Valve Flange Type</label></td>
                                                             <td><label>Gate Valve</label></td>
@@ -334,7 +337,7 @@
                                                                     <a>delete</a>
                                                                 </div>
                                                             </td>
-                                                        </tr>
+                                                        </tr>*@
 
                                                     </tbody>
                                                 </table>
@@ -347,8 +350,8 @@
 
                         </form>
                         <center>
-                            <div class="form-add-btns">
-                                <button class="save" onclick="infoOpenPopup()">
+                            <div class="form-add-btns checkbox-view edit-td">
+                                <button class="save" onclick="infoOpenPopup() + EditSetTemplate()">
                                     <span class="btnText">Confirm</span>
                                     <i class="las la-check-square"></i>
                                 </button>
@@ -358,6 +361,10 @@
                                     <i class="las la-window-close"></i>
                                 </button>
                             </div>
+                            <button class="cancel" id="closeBtn">
+                                <span class="btnText" onclick="viewrequestClosePopupPur()">Close</span>
+                                <i class="las la-window-close"></i>
+                            </button>
                         </center>
                     </div>
                 </div>
@@ -695,8 +702,9 @@
     function HideApprovedItems() {
         approveddetails.style.display = "none";
     }
-    function viewrequestOpenPopupPur() {
-        viewrequest.classList.add("view-request-popup-pur-show")
+    function viewrequestOpenPopupPur(reqId,type) {
+        viewrequest.classList.add("view-request-popup-pur-show");
+        DisplayDataOnRow(reqId,type);
     }
 
     function viewrequestClosePopupPur() {

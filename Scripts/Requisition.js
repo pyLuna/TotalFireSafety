@@ -1,4 +1,6 @@
-﻿let viewData = [];
+﻿//const { type } = require("jquery");
+
+let viewData = [];
 let tableData = [];
 let jsonArray = [];
 let filtered = [];
@@ -15,6 +17,12 @@ let addItem = document.getElementById('add-item');
 let table = document.querySelector('#myTable tbody');
 let emp_role = localStorage.getItem('emp_role');
 let emp_name = localStorage.getItem('emp_name');
+let reqDetails = document.querySelector('#reqDetails tbody');
+let apprItems = document.querySelector('#apprItems tbody');
+let reqId = document.getElementById('edit-reqId');
+let reqDate = document.getElementById('edit-reqDate');
+let reqName = document.getElementById('edit-reqName');
+let reqType = document.getElementById('edit-reqType');
 let message = "";
 
 
@@ -26,14 +34,16 @@ const template = {
 	"request_date": "",
 	"request_employee_id": "",
 	"request_status": "",
-	"request_type_id": 0
+	"request_type_id": 0,
+	"request_type_status" : ""
 };
 
 const template2 = {
 	"request_type": "",
 	"request_date": "",
 	"request_employee_id": "",
-	"request_type_id": 0
+	"request_type_id": 0,
+	"request_type_status" : ""
 };
 
 addItem.addEventListener("click", function (event) {
@@ -50,6 +60,8 @@ document.getElementById('create-table').addEventListener("click", function (even
 });
 document.getElementById('cnfBtn').addEventListener("click", function () {
 	var body = setTemplate('#create-fields label', 'add');
+	localStorage.setItem('bodyData', '');
+	localStorage.setItem('typeData', '');
 	localStorage.setItem('bodyData', JSON.stringify(body));
 	localStorage.setItem('typeData', 'add');
 });
@@ -71,7 +83,7 @@ function GetAllItem() {
 			console.log(`inventory`);
 		})
 		.catch(error => {
-			window.location.replace('/Error/InternalServerError');
+			/*window.location.replace('/Error/InternalServerError');*/
 			console.error(error);
 		});
 }
@@ -91,7 +103,7 @@ function GetAllEmployee() {
 			console.log(`Employee`);
 		})
 		.catch(error => {
-			window.location.replace('/Error/InternalServerError');
+			/*window.location.replace('/Error/InternalServerError');*/
 			console.error(error);
 		});
 }
@@ -125,7 +137,7 @@ function GetAll() {
 			}
 		})
 		.catch(error => {
-			//window.location.replace('/Error/InternalServerError');
+			/*//window.location.replace('/Error/InternalServerError');*/
 			console.error(error);
 		});
 }
@@ -198,17 +210,17 @@ function extractNum(value) {
 function DataToAdd(quantity, itemCode) {
 	filterArray1(itemCode.toLowerCase());
 
-	var increment = localStorage.getItem('increment');
-	var newNum = 0;
-	if (increment == "null") {
-		localStorage.setItem('increment', 1);
-		newNum = localStorage.getItem('increment');
-	} else {
-		newNum = Number(increment) + 1;
-		localStorage.setItem('increment', newNum);
-	}
+	//var increment = localStorage.getItem('increment');
+	//var newNum = 0;
+	//if (increment == "null") {
+	//	localStorage.setItem('increment', 1);
+	//	newNum = localStorage.getItem('increment');
+	//} else {
+	//	newNum = Number(increment) + 1;
+	//	localStorage.setItem('increment', newNum);
+	//}
 
-	var size = extractNum(filtered[0].in_size);
+	var size = extractNum(filtered[0].in_quantity);
 	var newUnit = "";
 	if (size.measurement == ".IN" || size.measurement == "X.IN" || size.measurement == "XIN") {
 		newUnit = 'IN';
@@ -241,7 +253,8 @@ function DataToAdd(quantity, itemCode) {
 	row += `<td><label>${filtered[0].in_size}</label></td>`;
 	row += `<td><label class="${remclass}" style="font-weight:bold;">${remarks}</label></td>`;
 	row += `<td><label>${quantity + " " + newUnit}</label></td>`;
-	row += `<td><a style="text-decoration:underline;" href="#" id="delBtn${newNum}" class="delete-row">Delete</a></td>`;
+	//id = "delBtn${newNum}"
+	row += `<td><a style="text-decoration:underline;" href="#" class="delete-row">Delete</a></td>`;
 	row += `</tr>`;
 	crtable.innerHTML += row;
 }
@@ -257,26 +270,26 @@ function setTable(array) {
 			if (array[i].request_status === "On Process") {
 				className = "stat-pen";
 			}
-			if (array[i].request_status === "Declined") {
+			if (array[i].request_status === "Pending") {
 				className = "stat-dec";
 			}
 			if (array[i].request_status === "Approved") {
 				className = "stat-app";
 			}
 			//<a onclick="viewrequestOpenPopupPur()"></a>
-			var row = `<tr onclick="viewrequestOpenPopupPur()">`;
-			row += `<td class="view"> ${array[i].Id}</td>`;
-			row += `<td><label>${array[i].request_type}</label></td>`;
-			row += `<td><label>${array[i].Employee.emp_name}</label></td>`;
-			row += `<td><label>${array[i].Employee.emp_no}</label></td>`;
-			row += `<td><label>${array[i].FormattedDate}</label></td>`;
-			row += `<td><label class="${className}" style="font-weight:bold;">${array[i].request_status}</label></td>`;
+			var row = `<tr id="${array[i].request_type_id}">`;
+			row += `<td class="view" onclick="viewrequestOpenPopupPur()"> ${array[i].Id}</td>`;
+			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].request_type}</label></td>`;
+			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].Employee.emp_name}</label></td>`;
+			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].Employee.emp_no}</label></td>`;
+			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].FormattedDate}</label></td>`;
+			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label class="${className}" style="font-weight:bold;">${array[i].request_status}</label></td>`;
 			row += `<td id="hideActionBtn">`;
 			row += `<div class="purchase-action-style">`;
 			row += `<button class="acc-btn" id="appr${i}" title="ACCEPT REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','approve')"> <a href="#"><span class="las la-check-circle"></span></a></button>`;
-			row += `<button class="dec-btn" id="dec${i}" title="DECLINE REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','decline')"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
-			row += `<button class="edit-btn" title="EDIT SELECTED ITEM"> <a href="#"><span class="lar la-edit"></span></a></button>`;
-			row += `<button class="expo-btn"  onclick="window.location.href='/Admin/ExportRequest?id=${array[i].request_type_id}'" title="EXPORT REPORT"> <a href="#"><span class="las la-file-download"></span></a></button>`;
+			row += `<button class="dec-btn" id="dec${i}" title="DECLINE REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','pending')"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
+			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="viewrequestOpenPopupPur('${array[i].request_type_id}','edit')"><span class="lar la-edit"></span></button>`;
+			row += `<button class="expo-btn"  onclick="window.location.href='/Admin/ExportRequest?id=${array[i].request_type_id}'" title="EXPORT REPORT"><span class="las la-file-download"></span></button>`;
 			row += `</div></td>`;
 			row += `</tr>`;
 			table.innerHTML += row;
@@ -336,11 +349,21 @@ function SearchItem1(value) {
 		InvsetTable(filtered);
 	}
 }
+//Inventory
 function filterArray1(value) {
 	filtered.length = 0;
 	for (var j = 0; j < itemInv.length; j++) {
 		if (JSON.stringify(itemInv[j]).toLowerCase().includes(value)) {
 			filtered.push(itemInv[j]);
+		}
+	}
+}
+//Employee
+function filterArray2(value) {
+	filtered.length = 0;
+	for (var j = 0; j < newEmployee.length; j++) {
+		if (JSON.stringify(newEmployee[j]).toLowerCase().includes(value)) {
+			filtered.push(newEmployee[j]);
 		}
 	}
 }
@@ -392,12 +415,13 @@ function UpdateStatus(idToFind, type) {
 		message = "Request approved";
 	}
 	else {
-		edit = "Declined";
+		edit = "Pending";
 		requestType = "declined";
 		message = "Request declined";
 	}
 	arr.forEach((item) => {
 		item.request_status = edit;
+		item.request_type_status = "active";
 	});
 	sendRequest(arr, requestType)
 }
@@ -445,41 +469,47 @@ function sendRequest(jsonData, formType) {
 
 function setTemplate(Id,typeOf) {
 	//var fields = document.querySelectorAll(domId);
-	const rows = Array.from(crtable.getElementsByTagName('tr'));
 	let emp_no = localStorage.getItem('emp_no');
 
 	var fields = document.querySelectorAll(Id);
 	var arr = [];
 	var arr2 = [];
 	var stats = "";
+	var cell = 0;
 	if (typeOf == "add") {
+	const rows = Array.from(crtable.getElementsByTagName('tr'));
+		cell = 5;
 		stats = "on process";
+		fields.forEach((label) => {
+			if (label.getAttribute('id') == 'reqId') {
+				arr2.push(extractNum(label.innerText).num);
+			}
+			if (label.getAttribute('id') == 'reqName') {
+				arr2.push(emp_no);
+			}
+			if (label.getAttribute('id') == 'reqType') {
+				arr2.push(label.innerText);
+			}
+			if (label.getAttribute('id') == 'reqDate') {
+				arr2.push(label.innerText);
+			}
+		});
+		rows.forEach((row) => {
+			let newObj = Object.assign({}, template);
+			newObj.request_type_id = arr2[0];
+			newObj.request_employee_id = arr2[1];
+			newObj.request_type = arr2[2];
+			newObj.request_date = arr2[3];
+			newObj.request_status = stats;
+			newObj.request_item = row.getAttribute('id');
+			newObj.request_item_quantity = row.cells[cell].innerText;
+			arr.push(newObj);
+		});
 	}
-	fields.forEach((label) => {
-		if (label.getAttribute('id') == 'reqId') {
-			arr2.push(extractNum(label.innerText).num);
-		}
-		if (label.getAttribute('id') == 'reqName') {
-			arr2.push(emp_no);
-		}
-		if (label.getAttribute('id') == 'reqType') {
-			arr2.push(label.innerText);
-		}
-		if (label.getAttribute('id') == 'reqDate') {
-			arr2.push(label.innerText);
-		}
-	});
-	rows.forEach((row) => {
-		let newObj = Object.assign({}, template);
-		newObj.request_type_id = arr2[0];
-		newObj.request_employee_id = arr2[1];
-		newObj.request_type = arr2[2];
-		newObj.request_date = arr2[3];
-		newObj.request_status = 'on process';
-		newObj.request_item = row.getAttribute('id');
-		newObj.request_item_quantity = row.cells[5].innerText;
-		arr.push(newObj);
-	});
+	else if (typeOf == 'edit') {
+		// TO DO
+	}
+
 	return arr;
 }
 
@@ -542,6 +572,7 @@ function MaxRequestId() {
 	const maxRequestTypeId = Math.max(...requestTypeIds);
 	return maxRequestTypeId;
 }
+// on create request
 function SetLabels() {
 	let reqId = document.getElementById('reqId');
 	let reqDate = document.getElementById('reqDate');
@@ -574,5 +605,131 @@ function getDateNow() {
 	const options = { year: 'numeric', month: 'long', day: 'numeric' };
 	const formattedDate = now.toLocaleDateString('en-US', options);
 	return formattedDate;
+}
+//#endregion
+
+//#region set template on edit
+function EditSetTemplate() {
+	localStorage.setItem('bodyData', '');
+	localStorage.setItem('typeData', '');
+	let reqs = reqDetails.querySelectorAll('tr');
+	let apprs = apprItems.querySelectorAll('tr');
+	let newReqs = JSON.parse(localStorage.getItem("newReqsData"));
+	let arr = [];
+	//let range = Number(reqs.length) + Number(apprs.length);
+
+	newReqs.forEach((row) => {
+		let newObj = Object.assign({}, template);
+		newObj.request_id = row.request_id;
+		newObj.request_type_id = row.request_type_id;
+		newObj.request_employee_id = row.request_employee_id;
+		newObj.request_type = row.request_type;
+		newObj.request_date = row.request_date;
+		newObj.request_status = row.request_status;
+		newObj.request_item = row.request_item;
+		newObj.request_item_quantity = row.request_item_quantity;
+		//newObj.request_type_status = "Active";
+		reqs.forEach((item) => {
+			if (item.getAttribute('id') == row.request_item) {
+				newObj.request_type_status = "Active";
+			}
+		});
+		apprs.forEach((item) => {
+			if (item.getAttribute('id') == row.request_item) {
+				newObj.request_type_status = "Approved";
+			}
+		});
+		arr.push(newObj);
+	});
+	localStorage.setItem('bodyData', JSON.stringify(arr));
+	localStorage.setItem('typeData', 'edit');
+}
+//#endregion
+
+//#region display data when row is clicked
+function DisplayDataOnRow(idToFind,typeOf) {
+
+	reqDetails.innerHTML = "";
+	apprItems.innerHTML = "";
+	let emps = [];
+	let newReqs = [];
+	let items = [];
+	let row = "";
+
+	filterArray(idToFind);
+	newReqs = [...filtered];
+	filterArray2(newReqs[0].request_employee_id);
+	emps = [...filtered];
+	localStorage.setItem("newReqsData", JSON.stringify(newReqs));
+	//localStorage.setItem("req_status", newReqs[0].request_status);
+
+	for (var i = 0; i < newReqs.length; i++) {
+		for (var j = 0; j < itemInv.length; j++) {
+			if (newReqs[i].request_item == itemInv[j].in_code) {
+				items.push(itemInv[j]);
+			}
+		}
+	}
+	reqId.innerText = newReqs[0].Id;
+	reqDate.innerText = newReqs[0].FormattedDate;
+	reqName.innerText = emps[0].emp_name;
+	reqType.innerText = newReqs[0].request_type;
+
+	for (var ind = 0; ind < newReqs.length; ind++) {
+		row = '';
+		row += `<tr class="view" onclick="SeperateRow(this)" id="${items[ind].in_code}">`;
+		row += `<td class="checkbox-view edit-td"><input type="checkbox"></td>`;
+		row += `<td>${items[ind].in_name}</td>`;
+		row += `<td>${items[ind].in_category}</td>`;
+		row += `<td>${items[ind].in_type}</td>`;
+		row += `<td>${items[ind].in_size}</td>`;
+		row += `<td>${items[ind].in_quantity}</td>`;
+		row += `<td>${newReqs[ind].request_item_quantity}</td>`;
+		row += `<td>${newReqs[ind].request_type_status}</td>`;
+		row += `</tr>`;
+		if (newReqs[ind].request_type_status.trim() == 'Active') {
+			reqDetails.innerHTML += row;
+		}
+		else {
+			apprItems.innerHTML += row;
+		}
+	}
+
+	let edittd = document.querySelectorAll(".edit-td");
+	let closeBtn = document.getElementById("closeBtn");
+	if (typeOf == 'edit') {
+		edittd.forEach((td) => {
+			td.classList.remove('checkbox-view');
+		});
+		closeBtn.style.display = "none";
+	}
+	else {
+		edittd.forEach((td) => {
+			td.classList.add('checkbox-view');
+		});
+		closeBtn.style.display = "inline-flex";
+	}
+
+	let rows1 = apprItems.querySelectorAll('.edit-td');
+
+	rows1.forEach((row) => {
+		let checkbox = row.querySelector('input[type="checkbox"]');
+			checkbox.checked = true;
+	});
+}
+
+function SeperateRow(row) {
+	var checkbox = row.querySelector('input[type="checkbox"]');
+
+	if (!checkbox.checked) {
+		checkbox.checked = true;
+		apprItems.appendChild(row);
+		row.cells[7].innerText = "Approved";
+	}
+	else {
+		checkbox.checked = false;
+		reqDetails.appendChild(row);
+		row.cells[7].innerText = "Active";
+	}
 }
 //#endregion

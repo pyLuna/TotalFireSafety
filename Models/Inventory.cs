@@ -19,9 +19,11 @@ namespace TotalFireSafety.Models
         {
             this.Basecounts = new HashSet<Basecount>();
             this.Inv_Update = new HashSet<Inv_Update>();
+            this.Notifications = new HashSet<Notification>();
             this.Requests = new HashSet<Request>();
         }
     
+        public System.Guid in_guid { get; set; }
         public string in_code { get; set; }
         public string in_name { get; set; }
         public string in_category { get; set; }
@@ -38,6 +40,8 @@ namespace TotalFireSafety.Models
         public virtual ICollection<Basecount> Basecounts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inv_Update> Inv_Update { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
         public string formType { get; set; }

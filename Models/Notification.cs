@@ -12,17 +12,16 @@ namespace TotalFireSafety.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Basecount
+    public partial class Notification
     {
-        public System.Guid bc_id { get; set; }
-        public string bc_itemCode { get; set; }
-        public System.DateTime bc_date { get; set; }
-        public string bc_count { get; set; }
+        public System.Guid guid { get; set; }
+        public int emp_no { get; set; }
+        public string in_code { get; set; }
+        public string ntf_title { get; set; }
+        public string ntf_content { get; set; }
+        public System.DateTime ntf_date { get; set; }
     
+        public virtual Employee Employee { get; set; }
         public virtual Inventory Inventory { get; set; }
-        public string FormattedDate
-        {
-            get { return bc_date.ToString("MMMM dd, yyyy"); }
-        }
     }
 }

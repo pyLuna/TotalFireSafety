@@ -13,7 +13,7 @@ using TotalFireSafety.Models;
 
 /*
  * TODO
- * -LAGYAN NG SCROLL BAR BAWAT TABLE
+ * -LAGYAN NG SCROLL BAR BAWAT TABLERequisition
  * -YUNG IBA NASA CP MO CHECK MO JUST YOU
  */
 
@@ -340,9 +340,6 @@ namespace TotalFireSafety.Controllers
     .ToList();
 
             ViewBag.Chart = data1;
-
-
-
 
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();

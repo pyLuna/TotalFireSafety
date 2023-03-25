@@ -60,6 +60,16 @@ namespace TotalFireSafety.Controllers
                         {
                             return Validate("additem");
                         }
+                    case "newitem":
+                        var checkitem = _context.Inventories.Where(x => x.in_guid == newGuid).SingleOrDefault();
+                        if (checkitem == null)
+                        {
+                            return new Tuple<Guid, Boolean>(newGuid, true);
+                        }
+                        else
+                        {
+                            return Validate("newitem");
+                        }
                     case "done":
                         return new Tuple<Guid, Boolean>(newGuid, false);
                 }
@@ -753,6 +763,7 @@ namespace TotalFireSafety.Controllers
 
                         Inv_Update update = new Inv_Update()
                         {
+                            update_id = newGUID,
                             update_date = DateTime.Now,
                             update_item_id = item.in_code,
                             update_quantity = item.in_quantity,
@@ -888,8 +899,10 @@ namespace TotalFireSafety.Controllers
 
                     foreach (var item in items)
                     {
+                        var newGUID = GetNewGuid("NewItem");
                         Inventory newItems = new Inventory()
                         {
+                            in_guid = newGUID,
                             in_code = item.in_code,
                             in_category = item.in_category,
                             in_arch_date = item.in_arch_date,
@@ -964,9 +977,11 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new TFSEntity())
                 {
+                    var newGuid = GetNewGuid("newitem");
                     if (_item != null)
                     {
                          var response = UpdateNewItem(_item);
+                        _item.in_guid = newGuid;
                         _context.Inventories.Add(_item);
                         _context.SaveChanges();
                         
@@ -1007,7 +1022,7 @@ namespace TotalFireSafety.Controllers
                             itemDB.in_type = _item.in_type;
                             itemDB.in_size = _item.in_size;
                             itemDB.in_quantity = _item.in_quantity;
-                            UpdateNewItem(itemDB);
+                            await UpdateNewItem(itemDB);
                             //if(_item.formType != null)
                             //{
                             //    itemDB.in_code = _item.in_code;
@@ -1147,6 +1162,7 @@ namespace TotalFireSafety.Controllers
                             request_item_quantity = item.request_item_quantity,
                             request_status = item.request_status.Trim(' '),
                             request_type_id = item.request_type_id,
+                            request_type_status = item.request_type_status,
                             Employee = newEmployee?.emp_no == item.request_employee_id ? new Employee
                             {
                                 emp_no = newEmployee.emp_no,
@@ -1221,7 +1237,8 @@ namespace TotalFireSafety.Controllers
                             request_item_quantity = item.request_item_quantity,
                             request_status = "On Process",
                             request_type = item.request_type,
-                            request_type_id = item.request_type_id
+                            request_type_id = item.request_type_id,
+                            request_type_status = "Active"
                         };
                         _context.Requests.Add(newReqs);
                         _context.SaveChanges();
@@ -1254,6 +1271,7 @@ namespace TotalFireSafety.Controllers
                         request.request_type = item.request_type;
                         request.request_item = item.request_item;
                         request.request_item_quantity = item.request_item_quantity;
+                        request.request_type_status = item.request_type_status;
                         _context.Entry(request);
                         _context.SaveChanges();
                     }
@@ -1266,28 +1284,28 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        public async Task<IHttpActionResult> DeleteRequests(Guid req)
-        {
-            try
-            {
-                using (var _context = new TFSEntity())
-                {
-                    var request = _context.Requests.Where(x => x.request_id == req).SingleOrDefault();
-                    if (request == null)
-                    {
-                        return BadRequest("Request Not Found");
-                    }
-                    request.request_status = "archived";
-                    _context.Entry(request);
-                    _context.SaveChanges();
-                    return Ok("Requests Deleted Successfully!");
-                }
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
+        //public async Task<IHttpActionResult> DeleteRequests(Guid req)
+        //{
+        //    try
+        //    {
+        //        using (var _context = new TFSEntity())
+        //        {
+        //            var request = _context.Requests.Where(x => x.request_id == req).SingleOrDefault();
+        //            if (request == null)
+        //            {
+        //                return BadRequest("Request Not Found");
+        //            }
+        //            request.request_status = "archived";
+        //            _context.Entry(request);
+        //            _context.SaveChanges();
+        //            return Ok("Requests Deleted Successfully!");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return InternalServerError(ex);
+        //    }
+        //}
         #endregion
     }
 }

@@ -19,9 +19,10 @@ namespace TotalFireSafety.Models
         public string request_item { get; set; }
         public string request_item_quantity { get; set; }
         public System.DateTime request_date { get; set; }
-        public int request_employee_id { get; set; }
+        public Nullable<int> request_employee_id { get; set; }
         public string request_status { get; set; }
-        public Nullable<int> request_type_id { get; set; }
+        public int request_type_id { get; set; }
+        public string request_type_status { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual Inventory Inventory { get; set; }
@@ -52,6 +53,5 @@ namespace TotalFireSafety.Models
                 return newID;
             }
         }
-
     }
 }

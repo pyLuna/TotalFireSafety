@@ -47,7 +47,7 @@
 		.upload-button {
 			position: absolute;
 			bottom: -10px;
-			left: 50%;
+			left: 55%;
 			transform: translateX(-50%);
 			opacity: 0;
 			transition: opacity 0.3s ease-in-out;
@@ -123,8 +123,6 @@
 			</div>
 
 			@* NEW UPDATE *@
-
-			<a id="notif" onclick="openForm()"><span class="las la-bell"></span> </a>
 
 		</div>
 
@@ -373,10 +371,8 @@
 					connection.start().done(function () {
 						// The connection has been established successfully
 						console.log('Connection started');
-						console.log('tt');
 						// Now you can send data through the connection
 						var c = hubProxy.invoke("AddToGroup", '@Session["emp_no"]')
-					console.log(c);
 					}).fail(function () {
 						// An error occurred while starting the connection
 						console.log('Connection failed');

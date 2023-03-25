@@ -325,7 +325,7 @@ namespace TotalFireSafety.Controllers
 
             //chart 2
             var data1 = Request
-    .Where(g => g.request_type == "Deploy")
+    .Where(g => g.request_type == "Deployment")
     .GroupBy(g => new { g.request_type, g.Inventory.in_name })
     .Select(g => new {
         Name1 = g.Key.in_name,

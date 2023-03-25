@@ -4,9 +4,6 @@ let itemCategories = [];
 let newArray = [];
 let fixedArray = [];
 var array = [];
-
-const fromDateInput = document.querySelector('#dt1');
-const toDateInput = document.querySelector('#dt2');
 const table = document.querySelector('#myTable tbody');
 
 
@@ -50,8 +47,24 @@ function fixArray() {
 }
 var searchTerm = '';
 var selectedCategory = '';
+var startDate = null;
+var endDate = null;
 
-// Add event listeners to the search input and category select element
+
+
+document.querySelector('#startDate').addEventListener('change', function () {
+    startDate = new Date(this.value);
+    console.log(startDate.toLocaleDateString('en-US'));
+    filterTable();
+});
+
+document.querySelector('#endDate').addEventListener('change', function () {
+    endDate = new Date(this.value);
+    console.log(endDate.toLocaleDateString('en-US'));
+    filterTable();
+});
+
+// Add event listeners to the search input, category select element, and date inputs
 document.querySelector('.search-wrapper input').addEventListener('keyup', function () {
     searchTerm = this.value;
     filterTable();
@@ -62,34 +75,12 @@ document.querySelector('#selcat').addEventListener('change', function () {
     filterTable();
 });
 
-const startDateInput = document.getElementById('startDate');
-const endDateInput = document.getElementById('endDate');
 
-startDateInput.addEventListener('change', handleDateRangeChange);
-endDateInput.addEventListener('change', handleDateRangeChange);
-
-function handleDateRangeChange() {
-    const startDate = new Date(startDateInput.value);
-    const endDate = new Date(endDateInput.value);
-
-    // Filter the array based on the selected date range
-    filteredArray = array.filter(function (item) {
-        const timestamp = item.update_date.substring(6, 19);
-        const date = new Date(parseInt(timestamp));
-
-        return date >= startDate && date <= endDate;
-    });
-
-    // Update the table with the filtered data
-    setTable(filteredArray);
-}
 
 function setTable(array) {
     table.innerHTML = '';
     var size = '';
     var filteredArray = array;
-
-   
 
     // Filter the array based on the search term, selected category, and date range
     if (searchTerm !== '') {
@@ -104,9 +95,12 @@ function setTable(array) {
         });
     }
 
-   
-
-   
+    if (startDate && endDate) {
+        filteredArray = filteredArray.filter(function (item) {
+            const updateDate = new Date(Date.parse(item.update_date));
+            return updateDate >= startDate && updateDate <= endDate;
+        });
+    }
 
     // Display the filtered data in the table
     if (filteredArray.length !== 0) {
@@ -120,7 +114,7 @@ function setTable(array) {
             const month = ("0" + (date.getMonth() + 1)).slice(-2);
             const day = ("0" + date.getDate()).slice(-2);
             const year = date.getFullYear();
-            const formattedDate = `${month}/${day}/${year}`;
+            const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 
 
             var row = `<tr>`;
@@ -165,7 +159,6 @@ function setTable(array) {
 }
 
 
-
 //#region Search Item
 function filterTable() {
     var tableRows = document.querySelectorAll('#myTable tbody tr');
@@ -173,15 +166,21 @@ function filterTable() {
     tableRows.forEach(function (row) {
         var itemName = row.querySelector('td:nth-child(3) label').textContent.toLowerCase();
         var itemCategory = row.querySelector('td:nth-child(4) label').textContent;
+        var updateDate = row.querySelector('td:nth-child(1) label').textContent;
+        var date = new Date(Date.parse(updateDate));
 
         if ((itemName.includes(searchTerm.toLowerCase()) || searchTerm === '') &&
-            (itemCategory === selectedCategory || selectedCategory === '')) {
+            (itemCategory === selectedCategory || selectedCategory === '') &&
+            (startDate === null || startDate === 'mm/dd/yyyy' || date >= startDate) &&
+            (endDate === null || endDate === 'mm/dd/yyyy' || date <= endDate)) {
             row.style.display = 'table-row';
         } else {
             row.style.display = 'none';
         }
     });
 }
+
+
 
 var sortAscending = true; // initialize sort order to ascending
 

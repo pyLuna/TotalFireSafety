@@ -39,22 +39,7 @@
                                 <td colspan="2">Employee ID: @ViewBag.Id</td>
                                 <td colspan="2">Date Printed: @DateTime.Now.ToString("MMMM dd, yyyy")</td>
                             </tr>
-                            <tr>
-                                <td colspan="3">
-                                    Date Request: <div class="datepick-container">
-                                        <span></span>
-
-                                        <div class="date-grp">
-                                            <input type="date" id="startDate">
-                                            <label for=""> - </label>
-                                            <input type="date" id="endDate">
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
+                           
                         </table>
                     </div>
                 </div>
@@ -67,7 +52,7 @@
                 <table id="myTable" class="myTable">
                     <thead>
                         <tr style="background-color: rgb(255, 255, 0);" class="font-weight-bold">
-                            <td class="font-weight-bold">Date Added <span></span></td>
+                            
                             <td class="font-weight-bold">Code</td>
                             <td class="font-weight-bold">Name</td>
                             <td class="font-weight-bold">Category</td>
@@ -81,7 +66,7 @@
                     <tbody>
                     </tbody>
                 </table>
-                <script src="@Url.Content("~/Scripts/reportinventory.js")"></script>
+                <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
 
             </div>
             <script>

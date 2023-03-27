@@ -14,20 +14,7 @@
             Overview
 
         </h2>
-
-        <right>
-
-            <div class="inv-sum-date">
-                <div class="sum-date-con">
-                    <label></label>
-                    <input type="date" id="startDate">
-
-
-                    <label>-</label>
-                    <input type="date" id="endDate">
-                </div>
-
-            </div>            
+    <right>      
                 <button class="create-req-btn" title="CREATE ORDER">
                     <a onclick="openForm()">
                         Notification
@@ -137,20 +124,21 @@
                 <div class="card-title">
                     <a href="@Url.Action("Inventory", "Admin")">
                         <h3>Inventory</h3>
+
                         <div class="card-single">
                             <div class="card-container">
                                 <h3>Items</h3>
                                 <div class="card-details">
-                                    <label id="dataCountLabel"></label><span>Total Items</span>
-                                    <script>
-                             var dataCount = @ViewBag.DataCount;
-                             document.getElementById("dataCountLabel").textContent = dataCount;
-                                    </script>
+                                    <label id="totalitem"></label><span>Total Items</span>
+                                                                  <script>
+                             var inventory = @ViewBag.Inventory;
+                                        document.getElementById("totalitem").textContent = inventory;
+                                                                  </script>
                                     <p></p>
-                                    <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Items</span>
+                                    <label id="archiveitem" class="card-active"></label><span class="card-active">Active Items</span>
                                     <script>
-                             var Active = @ViewBag.Active;
-                             document.getElementById("dataCountLabel1").textContent = Active;
+                             var archive = @ViewBag.archive;
+                                        document.getElementById("archiveitem").textContent = archive;
                                     </script>
                                 </div>
                             </div>
@@ -167,16 +155,16 @@
                             <div class="card-container">
                                 <h3>Users</h3>
                                 <div class="card-details">
-                                    <label id="dataCountLabel"></label><span>Total Users</span>
+                                    <label id="totaluser"></label><span>Total Users</span>
                                     <script>
                              var dataCount = @ViewBag.DataCount;
-                             document.getElementById("dataCountLabel").textContent = dataCount;
+                                        document.getElementById("totaluser").textContent = dataCount;
                                     </script>
                                     <p></p>
-                                    <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Users</span>
+                                    <label id="activeuser" class="card-active"></label><span class="card-active">Active Users</span>
                                     <script>
-                             var Active = @ViewBag.Active;
-                             document.getElementById("dataCountLabel1").textContent = Active;
+                             var Active = @ViewBag.active;
+                                        document.getElementById("activeuser").textContent = Active;
                                     </script>
                                 </div>
                             </div>
@@ -263,7 +251,17 @@
             <div class="inventory-sum">
                 <div class="inv-sum-header">
                     <h3>Inventories</h3>
+
+                    <div class="inv-sum-date">
+                        <div class="sum-date-con">
+                            <label></label>
+                            <input type="date" id="startDate">
+                            <label>-</label>
+                            <input type="date" id="endDate">
+                        </div>
+                    </div>
                 </div>
+
                 <div class="card">
                     <div class="card-header">
 
@@ -307,7 +305,7 @@
                             <script> var data = @Html.Raw(Json.Encode(ViewBag.Data));</script>
                             <script src="@Url.Content("~/Scripts/js/mainchart.js")"></script>
 
-                          
+
 
                         </div>
                     </div>
@@ -344,7 +342,20 @@
             </div>
 
             <div class="inventory-sum">
-                <h3>&nbsp;</h3>
+
+                <h3>
+
+                    <div class="inv-sum-date2">
+                        <div class="sum-date-con">
+                            <label></label>
+                            <input type="date" id="startDate1">
+                            <label>-</label>
+                            <input type="date" id="endDate1">
+                        </div>
+                    </div>
+
+                </h3>
+
                 <div class="card">
                     <div class="card-header">
                         <h3>Moving Items</h3>
@@ -367,7 +378,7 @@
                                 <script> var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));</script>
                                 <script src="@Url.Content("~/Scripts/js/barchart.js")"></script>
 
-                              
+
                             </div>
 
                         </div>
@@ -527,7 +538,7 @@
 
                 </div>
             </div>
-        }
+        
 
         </main>
 </div>

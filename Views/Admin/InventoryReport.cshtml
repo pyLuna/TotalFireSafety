@@ -56,12 +56,7 @@
                 <h3>INVENTORY REPORT</h3>
                 <div class="inventory-repo-buttons-style">
 
-                    <button class="notif-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()">
-                        <a href="@Url.Action("InvReorder","Admin")">
-                            RE-ORDER
-                            <label class="notif-badge">5</label>
-                        </a>
-                    </button>
+                    
 
                     <button class="expo-btn" title="EXPORT">
                         <a href="@Url.Action("InvReportExport", "Admin", new { id =  ViewBag.EmpId })">
@@ -103,7 +98,7 @@
 
     </main>
 </div>
-<script src="@Url.Content("~/Scripts/reportinventory.js")"></script>
+<script src="@Url.Content("~/Scripts/InventoryExport.js")"></script>
 
 <script>
     const today = new Date().toISOString().split('T')[0];

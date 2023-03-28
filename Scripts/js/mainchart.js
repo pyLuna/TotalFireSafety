@@ -22,7 +22,7 @@ var filteredData = filterDataByDateRange(data, startDate, endDate);
 const barchart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: data.map(d => `${d.Name} (${d.Size ?? ""})`),
+        labels: data.map(d => `${d.Name} (${d.Size ? d.Size : ""})`),
         datasets: [{
             label: 'Quantity',
             data: data.map(d => d.Quantity),

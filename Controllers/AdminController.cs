@@ -332,25 +332,18 @@ namespace TotalFireSafety.Controllers
                  Category = g.FirstOrDefault()?.Category
              })
              .ToList();*/
-            var baseCounts = db.Basecounts.ToList();
-
-           
-
             var data = update
-                .GroupBy(g => new { g.Inventory.in_code, g.Inventory.in_name, g.Inventory.in_size })
-                .Select(g => new {
-                    Name = g.Key.in_name,
-                    Quantity1 = g.Select(x => {
-                        var quantity = new string(x.bc_count.ToString().Where(char.IsDigit).ToArray());
-                        return string.IsNullOrEmpty(quantity) ? 0 : int.Parse(quantity);
-                    }),
-                    Size = g.First().Inventory.in_size,
-                    Category = g.First().Inventory.in_category,
-                    Class = g.First().Inventory.in_class,
-                    Code = g.Select(x => x.Inventory.in_code).ToList(),
-                    Date = g.First().bc_date != null ? ((DateTime)g.First().bc_date).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture) : null
-                })
-                .ToList();
+     .GroupBy(g => new { g.Inventory.in_code, g.Inventory.in_name, g.Inventory.in_size })
+     .Select(g => new {
+         Name = g.Key.in_name,
+         Quantity = g == null ? 0 : int.Parse(new string(g.First().bc_count.ToString().Where(char.IsDigit).ToArray())),
+         Size = g.First().Inventory.in_size,
+         Category = g.First().Inventory.in_category,
+         Class = g.First().Inventory.in_class,
+         Code = g.Select(x => x.Inventory.in_code).ToList(),
+         Date = g.First().bc_date != null ? ((DateTime)g.First().bc_date).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture) : null
+     })
+     .ToList();
 
             ViewBag.Data = data;
 

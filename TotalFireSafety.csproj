@@ -347,12 +347,17 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\InventoryExport.js" />
     <Content Include="Scripts\inv_bak.js" />
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
     <Content Include="Scripts\jquery.signalR-2.4.3.js" />
     <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
+    <Content Include="Scripts\js\barchart.js" />
+    <Content Include="Scripts\js\mainchart.js" />
+    <Content Include="Scripts\reportinventory.js" />
+    <Content Include="Scripts\reportInvs.js" />
     <Content Include="Scripts\Requisition.js" />
     <Content Include="Scripts\signalR.js" />
     <Content Include="Scripts\validations\InventoryValidation.js" />
@@ -364,9 +369,7 @@
     <Content Include="Scripts\InvArchive.js" />
     <Content Include="Scripts\InvReport.js" />
     <Content Include="Scripts\js\app.js" />
-    <Content Include="Scripts\js\chart1.js" />
     <Content Include="Scripts\js\chart2.js" />
-    <Content Include="Scripts\js\chart3.js" />
     <Content Include="Scripts\js\main.js" />
     <Content Include="Scripts\js\user.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
@@ -401,6 +404,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Admin\InventorylistExport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

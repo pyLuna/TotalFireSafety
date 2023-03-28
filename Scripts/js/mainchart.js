@@ -1,13 +1,28 @@
-console.log(data);
+﻿console.log(data);
 
 const ctx = document.getElementById('barchart').getContext('2d');
+// Define a function to filter data by date range
+function filterDataByDateRange(data, startDate, endDate) {
+    return data.filter(function (item) {
+        var date = new Date(item.Date);
+        return date >= startDate && date <= endDate;
+    });
+}
 
+// Get the start and end date from the input fields
+var startDateInput = document.getElementById('startDate');
+var endDateInput = document.getElementById('endDate');
+var startDate = new Date(startDateInput.value);
+var endDate = new Date(endDateInput.value);
+
+// Filter the data by date range
+var filteredData = filterDataByDateRange(data, startDate, endDate);
 
 
 const barchart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: data.map(d => d.Name),
+        labels: data.map(d => `${d.Name} (${d.Size ? d.Size : ""})`),
         datasets: [{
             label: 'Quantity',
             data: data.map(d => d.Quantity),
@@ -41,6 +56,12 @@ const barchart = new Chart(ctx, {
         maintainAspectRatio: false,
         aspectRatio: 4 / 3,
         scales: {
+            x: {
+                padding: {
+                    left: 50,
+                    right: 50
+                }
+            },
             y: {
                 beginAtZero: true
             }
@@ -101,3 +122,19 @@ function updateChartData() {
     // Update the chart
     barchart.update();
 }
+
+startDateInput.addEventListener('change', function () {
+    startDate = new Date(startDateInput.value);
+    filteredData = filterDataByDateRange(data, startDate, endDate);
+    barchart.data.labels = filteredData.map(d => d.Name);
+    barchart.data.datasets[0].data = filteredData.map(d => d.Quantity);
+    barchart.update();
+});
+
+endDateInput.addEventListener('change', function () {
+    endDate = new Date(endDateInput.value);
+    filteredData = filterDataByDateRange(data, startDate, endDate);
+    barchart.data.labels = filteredData.map(d => d.Name);
+    barchart.data.datasets[0].data = filteredData.map(d => d.Quantity);
+    barchart.update();
+});

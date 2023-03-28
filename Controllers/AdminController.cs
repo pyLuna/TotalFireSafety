@@ -2,8 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
@@ -224,6 +227,26 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
+
+        private Timer updateTimer;
+
+        public AdminController()
+        {
+            // Schedule the update to run once per day
+            var updateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 0);
+            var dueTime = updateTime - DateTime.Now;
+            if (dueTime < TimeSpan.Zero)
+            {
+                dueTime = TimeSpan.Zero;
+            }
+
+            // Create and start the timer
+            this.updateTimer = new Timer(async state =>
+            {
+                await this.Dashboard();
+            }, null, dueTime, TimeSpan.FromDays(1));
+        }
+
         public async Task<ActionResult> Dashboard()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -244,30 +267,33 @@ namespace TotalFireSafety.Controllers
             int inventoryCount = db.Inventories.Count(); // Replace "Data" with your model class name
             ViewBag.Inventory = inventoryCount;
 
+            int stats = db.Inventories.Count(x => x.in_status == "Active" && x.in_status == "Active");
+            ViewBag.archive = stats;
+
 
 
             //count request
             int purchase = db.Requests.Count(x => x.request_type == "Purchase");
             ViewBag.Purchase = purchase;
 
-            int entries = db.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "pending");
+            int entries = db.Requests.Count(x => x.request_type == "Purchase" && x.request_status == "Pending");
             ViewBag.Entries = entries;
 
-            int entrieses = db.Requests.Count(x => x.request_type == "Deploy" && x.request_status == "pending");
+            int entrieses = db.Requests.Count(x => x.request_type == "Deployment" && x.request_status == "Pending");
             ViewBag.Entrieses = entrieses;
 
-            int Sup = db.Requests.Count(x => x.request_type == "Supply" && x.request_status == "pending");
+            int Sup = db.Requests.Count(x => x.request_type == "Supply" && x.request_status == "Pending");
             ViewBag.Sup = Sup;
 
             int supply = db.Requests.Count(x => x.request_type == "Supply");
             ViewBag.Supply = supply;
 
-            int deployment = db.Requests.Count(x => x.request_type == "Deploy");
+            int deployment = db.Requests.Count(x => x.request_type == "Deployment");
             ViewBag.Deployment = deployment;
 
     
             //chart
-            var products = db.Basecounts.ToList();
+            var products = db.Inv_Update.ToList();
             var update = db.Basecounts.ToList();
             var Request = db.Requests.ToList();
 
@@ -306,26 +332,24 @@ namespace TotalFireSafety.Controllers
                  Category = g.FirstOrDefault()?.Category
              })
              .ToList();*/
-
-            var data = products.GroupBy(g => new { g.Inventory.in_code, g.Inventory.in_name })
-       .Select(g => new {
-           Name = g.Key.in_name,
-           Quantity = g.Sum(x => {
-               var bcCount = new string(x.bc_count.ToString().Where(char.IsDigit).ToArray());
-               return string.IsNullOrEmpty(bcCount) ? 0 : int.Parse(bcCount);
-           }),
-           Category = g.First().Inventory.in_category,
-           Class = g.First().Inventory.in_class,
-           Code = g.Select(x => x.Inventory.in_code).ToList(),
-           Date = g.First().bc_date.ToString("MM/dd/yyyy")
-       })
-       .ToList();
+            var data = update
+     .GroupBy(g => new { g.Inventory.in_code, g.Inventory.in_name, g.Inventory.in_size })
+     .Select(g => new {
+         Name = g.Key.in_name,
+         Quantity = g == null ? 0 : int.Parse(new string(g.First().bc_count.ToString().Where(char.IsDigit).ToArray())),
+         Size = g.First().Inventory.in_size,
+         Category = g.First().Inventory.in_category,
+         Class = g.First().Inventory.in_class,
+         Code = g.Select(x => x.Inventory.in_code).ToList(),
+         Date = g.First().bc_date != null ? ((DateTime)g.First().bc_date).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture) : null
+     })
+     .ToList();
 
             ViewBag.Data = data;
 
             //chart 2
             var data1 = Request
-    .Where(g => g.request_type == "Deploy")
+    .Where(g => g.request_type == "Deployment")
     .GroupBy(g => new { g.request_type, g.Inventory.in_name })
     .Select(g => new {
         Name1 = g.Key.in_name,
@@ -340,10 +364,82 @@ namespace TotalFireSafety.Controllers
     .ToList();
 
             ViewBag.Chart = data1;
-
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+
+
+            // Include previous data from Inv_Update in the calculation
+            var inventories = await db.Inventories.ToListAsync();
+            var invUpdates = await db.Inv_Update.ToListAsync();
+
+            // Calculate the sum of in_quantity and update_quantity for each item code
+            var itemCodeSumDict = new Dictionary<string, int>();
+            foreach (var inventory in inventories)
+            {
+                if (int.TryParse(inventory.in_quantity.Split(' ')[0], out int quantity))
+                {
+                    if (!itemCodeSumDict.ContainsKey(inventory.in_code))
+                    {
+                        itemCodeSumDict[inventory.in_code] = 0;
+                    }
+                    itemCodeSumDict[inventory.in_code] += quantity;
+                }
+            }
+            foreach (var invUpdate in invUpdates)
+            {
+                if (int.TryParse(invUpdate.update_quantity.Split(' ')[0], out int quantity))
+                {
+                    if (!itemCodeSumDict.ContainsKey(invUpdate.update_item_id))
+                    {
+                        itemCodeSumDict[invUpdate.update_item_id] = 0;
+                    }
+                    itemCodeSumDict[invUpdate.update_item_id] += quantity;
+                }
+            }
+
+            // Include previous data from Inv_Update in the calculation
+            var prevInvUpdateIds = invUpdates.Select(iu => iu.update_id).ToList();
+            var prevInvUpdates = await db.Inv_Update
+                .Where(iu => !prevInvUpdateIds.Contains(iu.update_id) && !itemCodeSumDict.Keys.Contains(iu.update_item_id))
+                .ToListAsync();
+            foreach (var invUpdate in prevInvUpdates)
+            {
+                if (int.TryParse(invUpdate.update_quantity, out int quantity))
+                {
+                    if (!itemCodeSumDict.ContainsKey(invUpdate.update_item_id))
+                    {
+                        itemCodeSumDict[invUpdate.update_item_id] = 0;
+                    }
+                    itemCodeSumDict[invUpdate.update_item_id] += quantity;
+                }
+            }
+
+            var currentDate = DateTime.Now.Date;
+            foreach (var itemCodeSum in itemCodeSumDict)
+            {
+                var existingRecord = db.Basecounts.FirstOrDefault(bc => bc.bc_itemCode == itemCodeSum.Key && bc.bc_date == currentDate);
+                if (existingRecord != null)
+                {
+                    existingRecord.bc_count = itemCodeSum.Value.ToString() + " pcs";
+                }
+                else
+                {
+                    Basecount bc = new Basecount
+                    {
+                        bc_id = Guid.NewGuid(),
+                        bc_itemCode = itemCodeSum.Key,
+                        bc_date = currentDate,
+                        bc_count = itemCodeSum.Value.ToString() + " pcs"
+                    };
+                    db.Basecounts.Add(bc);
+                }
+            }
+            await db.SaveChangesAsync();
+
             return View();
         }
+
+
+
         public async Task<ActionResult> Projects()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -560,6 +656,7 @@ namespace TotalFireSafety.Controllers
             }
             //Session["added"] = null;
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            ViewBag.EmpId = empId;
             return View();
         }
         [HttpPost]
@@ -615,6 +712,18 @@ namespace TotalFireSafety.Controllers
         }
 
         public ActionResult InventoryReport()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            ViewBag.EmpId = empId;
+            return View();
+        }
+
+        public ActionResult InventorylistExport()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)

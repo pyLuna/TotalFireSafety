@@ -1058,25 +1058,9 @@ input[type="month"] {
 
 /* END */
 
-right .inv-sum-date {
-}
 
-    right .inv-sum-date label {
-        margin: 10px;
-        color: #fff;
-    }
 
-    right .inv-sum-date input {
-        font-size: .9rem;
-        width: 150px;
-        height: 30px;
-        border: none;
-        border-radius: 5px;
-    }
 
-        right .inv-sum-date input::-webkit-calendar-picker-indicator {
-            margin-right: 10px;
-        }
 
 .cards {
     display: grid;
@@ -1179,20 +1163,94 @@ right .inv-sum-date {
         }
 
 
-    .inventory-sum .inv-sum-date {
-        margin-top: 5px;
-        margin-bottom: 4%;
+/* Calendar Edit 1 */
+
+.inventory-sum {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+}
+
+    .inventory-sum .inv-sum-header {
+        display: flex;
     }
 
-        .inventory-sum .inv-sum-date label {
-            font-weight: 800;
-            font-size: .9rem;
+        .inventory-sum .inv-sum-header h3 {
+            margin-left: 2%;
+            margin-top: 5px;
         }
 
-        .inventory-sum .inv-sum-date input {
-            height: 30px;
-            width: 150px;
+
+    .inventory-sum .inv-sum-date {
+        margin-top: 0px;
+        margin-bottom: 5px;
+    }
+
+.inv-sum-date label {
+    margin: 5px;
+    color: black;
+}
+
+
+.inv-sum-date input {
+    font-size: .9rem;
+    width: 150px;
+    height: 30px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: 4px 3px 3px #B2B2B2;
+}
+
+    .inv-sum-date input::-webkit-calendar-picker-indicator {
+        margin-right: 10px;
+    }
+
+/* End */
+
+/* Calendar Edit 2 */
+
+.inventory-sum {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+}
+
+    .inventory-sum .inv-sum-header {
+        display: flex;
+    }
+
+        .inventory-sum .inv-sum-header h3 {
+            margin-left: 2%;
+            margin-top: 5px;
         }
+
+
+    .inventory-sum .inv-sum-date2 {
+        margin-top: -5px;
+        margin-bottom: 10px;
+    }
+
+.inv-sum-date2 label {
+    margin: 5px;
+    color: black;
+    margin-top: 10px;
+}
+
+
+.inv-sum-date2 input {
+    font-size: .9rem;
+    width: 150px;
+    height: 30px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: 4px 3px 3px #B2B2B2;
+}
+
+    .inv-sum-date2 input::-webkit-calendar-picker-indicator {
+        margin-right: 10px;
+    }
+
+/* End */
 
 
 .recent-grid .inventory-sum .card .card-header select {
@@ -1734,10 +1792,6 @@ right .inv-sum-date {
             font-size: 1rem;
             margin-left: 0px;
         }
-
-            .upper-section .datepick-container .date-grp input::-webkit-calendar-picker-indicator {
-                margin-left: -10px;
-            }
 
             .upper-section .datepick-container .date-grp label {
                 font-weight: 800;
@@ -2308,12 +2362,12 @@ right .inv-sum-date {
     height: 100%;
 }
 
-.inventory-repo-buttons-style .notif-btn {
+.notif-btn {
     position: relative;
     display: inline-block;
 }
 
-    .inventory-repo-buttons-style .notif-btn .notif-badge {
+   .notif-btn .notif-badge {
         position: absolute;
         top: -10px;
         right: -20px;

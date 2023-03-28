@@ -42,14 +42,22 @@
                 <div class="inventory-buttons-style" id="hideBtn">
 
                     @*<button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()">ADD NEW ITEM</button>
-                <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
+        <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
                     @if (Int32.Parse(Session["system_role"].ToString()) == 2)
                     {
                         <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + AppendOption(addFormSel) + setDatalist();">ADD NEW ITEM</button>
                         <button class="qty-add-btn" title="ADD QUANTIY" onclick="qtyOpenPopupInv() + AppendOption(qtyFormSel)">ADD QUANTITY</button>
                     }
+
+                    <button class="notif-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv()">
+                        <a href="@Url.Action("InvReorder","Admin")">
+                            RE-ORDER
+                            <label class="notif-badge">5</label>
+                        </a>
+                    </button>
+
                     <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup()">
-                        <a>
+                        <a href="@Url.Action("InventorylistExport", "Admin", new { id =  ViewBag.EmpId })">
                             EXPORT
                             <span class="las la-file-download"></span>
                         </a>

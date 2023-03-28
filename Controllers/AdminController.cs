@@ -332,21 +332,25 @@ namespace TotalFireSafety.Controllers
                  Category = g.FirstOrDefault()?.Category
              })
              .ToList();*/
+            var baseCounts = db.Basecounts.ToList();
 
-            var data = products.GroupBy(g => new { g.Inventory.in_code, g.Inventory.in_name, g.Inventory.in_size })
-       .Select(g => new {
-           Name = g.Key.in_name,
-           Quantity = g.Sum(x => {
-               var bcCount = new string(x.update_quantity.ToString().Where(char.IsDigit).ToArray());
-               return string.IsNullOrEmpty(bcCount) ? 0 : int.Parse(bcCount);
-           }),
-           Size = g.First().Inventory.in_size,
-           Category = g.First().Inventory.in_category,
-           Class = g.First().Inventory.in_class,
-           Code = g.Select(x => x.Inventory.in_code).ToList(),
-           Date = g.First().update_date != null ? ((DateTime)g.First().update_date).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture) : null
-       })
-       .ToList();
+           
+
+            var data = update
+                .GroupBy(g => new { g.Inventory.in_code, g.Inventory.in_name, g.Inventory.in_size })
+                .Select(g => new {
+                    Name = g.Key.in_name,
+                    Quantity1 = g.Select(x => {
+                        var quantity = new string(x.bc_count.ToString().Where(char.IsDigit).ToArray());
+                        return string.IsNullOrEmpty(quantity) ? 0 : int.Parse(quantity);
+                    }),
+                    Size = g.First().Inventory.in_size,
+                    Category = g.First().Inventory.in_category,
+                    Class = g.First().Inventory.in_class,
+                    Code = g.Select(x => x.Inventory.in_code).ToList(),
+                    Date = g.First().bc_date != null ? ((DateTime)g.First().bc_date).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture) : null
+                })
+                .ToList();
 
             ViewBag.Data = data;
 
@@ -369,36 +373,73 @@ namespace TotalFireSafety.Controllers
             ViewBag.Chart = data1;
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
 
-           
-            // Retrieve the data from the database
+
+            // Include previous data from Inv_Update in the calculation
             var inventories = await db.Inventories.ToListAsync();
             var invUpdates = await db.Inv_Update.ToListAsync();
 
-            // Calculate the sum of in_quantity and update_quantity
-            int sum = 0;
+            // Calculate the sum of in_quantity and update_quantity for each item code
+            var itemCodeSumDict = new Dictionary<string, int>();
             foreach (var inventory in inventories)
             {
-                if (int.TryParse(inventory.in_quantity, out int quantity))
+                if (int.TryParse(inventory.in_quantity.Split(' ')[0], out int quantity))
                 {
-                    sum += quantity;
+                    if (!itemCodeSumDict.ContainsKey(inventory.in_code))
+                    {
+                        itemCodeSumDict[inventory.in_code] = 0;
+                    }
+                    itemCodeSumDict[inventory.in_code] += quantity;
                 }
             }
             foreach (var invUpdate in invUpdates)
             {
-                if (int.TryParse(invUpdate.update_quantity, out int quantity))
+                if (int.TryParse(invUpdate.update_quantity.Split(' ')[0], out int quantity))
                 {
-                    sum += quantity;
+                    if (!itemCodeSumDict.ContainsKey(invUpdate.update_item_id))
+                    {
+                        itemCodeSumDict[invUpdate.update_item_id] = 0;
+                    }
+                    itemCodeSumDict[invUpdate.update_item_id] += quantity;
                 }
             }
-            // Save the sum to the bc_count field in the Basecount table
-            Basecount bc = new Basecount
+
+            // Include previous data from Inv_Update in the calculation
+            var prevInvUpdateIds = invUpdates.Select(iu => iu.update_id).ToList();
+            var prevInvUpdates = await db.Inv_Update
+                .Where(iu => !prevInvUpdateIds.Contains(iu.update_id) && !itemCodeSumDict.Keys.Contains(iu.update_item_id))
+                .ToListAsync();
+            foreach (var invUpdate in prevInvUpdates)
             {
-                bc_id = Guid.NewGuid(),
-                bc_itemCode = invUpdates.FirstOrDefault()?.update_item_id,
-                bc_date = DateTime.Now.Date,
-                bc_count = sum.ToString()
-            };
-            db.Basecounts.Add(bc);
+                if (int.TryParse(invUpdate.update_quantity, out int quantity))
+                {
+                    if (!itemCodeSumDict.ContainsKey(invUpdate.update_item_id))
+                    {
+                        itemCodeSumDict[invUpdate.update_item_id] = 0;
+                    }
+                    itemCodeSumDict[invUpdate.update_item_id] += quantity;
+                }
+            }
+
+            var currentDate = DateTime.Now.Date;
+            foreach (var itemCodeSum in itemCodeSumDict)
+            {
+                var existingRecord = db.Basecounts.FirstOrDefault(bc => bc.bc_itemCode == itemCodeSum.Key && bc.bc_date == currentDate);
+                if (existingRecord != null)
+                {
+                    existingRecord.bc_count = itemCodeSum.Value.ToString() + " pcs";
+                }
+                else
+                {
+                    Basecount bc = new Basecount
+                    {
+                        bc_id = Guid.NewGuid(),
+                        bc_itemCode = itemCodeSum.Key,
+                        bc_date = currentDate,
+                        bc_count = itemCodeSum.Value.ToString() + " pcs"
+                    };
+                    db.Basecounts.Add(bc);
+                }
+            }
             await db.SaveChangesAsync();
 
             return View();

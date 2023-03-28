@@ -354,6 +354,7 @@
     <Content Include="Scripts\js\barchart.js" />
     <Content Include="Scripts\js\mainchart.js" />
     <Content Include="Scripts\reportinventory.js" />
+    <Content Include="Scripts\reportInvs.js" />
     <Content Include="Scripts\Requisition.js" />
     <Content Include="Scripts\signalR.js" />
     <Content Include="Scripts\validations\InventoryValidation.js" />

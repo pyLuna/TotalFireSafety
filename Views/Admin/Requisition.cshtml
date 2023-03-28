@@ -13,17 +13,16 @@
             </label>
             Requisition
         </h2>
-
-        <right>
-            <button class="create-req-btn" title="CREATE ORDER">
-                <a onclick="openForm()">
-                    Notification
-                    <span class="las la-bell"></span>
-                    <label class="notif-badge">5</label>
-                </a>
-            </button>
-        </right>
-    </header>
+                <right>
+                    <button class="create-req-btn" title="CREATE ORDER">
+                        <a onclick="openForm()">
+                            Notification
+                            <span class="las la-bell"></span>
+                            <label class="notif-badge" id="badge">0</label>
+                        </a>
+                    </button>
+                </right>
+        </header>
 
     <div class="purchase-buttons-style">
 
@@ -36,10 +35,10 @@
                 <h3>Notification</h3>
             </div>
 
-            <div class="notif-container">
+            <div class="notif-container" id="ntfCont">
 
 
-                <div class="notif-list-container-active">
+                @*<div class="notif-list-container-active">
                     <label>
                         There’s a new submitted Deployment Request with RequestID: DEPREQ12.
                     </label>
@@ -90,7 +89,7 @@
                     </label>
                     <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
 
-                </div>
+                </div>*@
 
             </div>
         </div>
@@ -166,13 +165,15 @@
                 <h3>REQUEST LISTS</h3>
                 <div class="purchase-buttons-style">
                     <!--NEW UPDATE -->
-                    <button class="create-req-btn" title="CREATE ORDER" onclick="createrequestOpenPopupPur() + SetLabels() + HideApprovedItems()">
-                        <a onclick="createrequestOpenPopupPur() + SetLabels()">
-                            CREATE REQUEST
-                            <span class="las la-file-alt"></span>
-                        </a>
-                    </button>
-
+                    @if (Int32.Parse(Session["system_role"].ToString()) != 1)
+                    {
+                        <button class="create-req-btn" title="CREATE ORDER" onclick="createrequestOpenPopupPur() + SetLabels() + HideApprovedItems()">
+                            <a onclick="createrequestOpenPopupPur() + SetLabels()">
+                                CREATE REQUEST
+                                <span class="las la-file-alt"></span>
+                            </a>
+                        </button>
+                    }
                     @*<select id="filter" onchange="SortByCategory(this,this.value)">
                     <option disabled selected>FILTER</option>
                     <option>All</option>
@@ -226,7 +227,7 @@
 
             <div class="view-request-popup-pur" id="view-request-popup-pur">
                 <div class="view-request-container">
-                    <div class="view-request-form-container">
+                    <div class="view-request-form-container" id="cont">
                         <form action="">
 
                             <div class="view-request-details">
@@ -256,6 +257,16 @@
                                 </div>
                             </div>
 
+                            @*  COLOR CLASS FOR STATUS
+                        .view-request-form-table table td .stat-approved {
+                            color: #09AF10;
+                        }
+
+                        .view-request-form-table table td .stat-active {
+                            color: #FF932F;
+                        }
+                            *@
+
                             <div class="view-request-details">
                                 <div class="view-request-form-header">
                                     REQUESTED ITEMS
@@ -275,20 +286,21 @@
                                                             <td>Quantity</td>
                                                             <td>Request Quantity</td>
                                                             <td>Status</td>
+                                                            <td style="display:none" id="actCol">Action</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @*<tr>
-                                                            <td><input type="checkbox"></td>
-                                                            <td><label>ball wave</label></td>
-                                                            <td><label>others</label></td>
-                                                            <td><label>hfc</label></td>
-                                                            <td><label>n/a</label></td>
-                                                            <td><label>n/a</label></td>
-                                                            <td><label class="stat-crit">critical</label></td>
-                                                            <td>
-                                                            </td>
-                                                        </tr>*@
+                                                        <td><input type="checkbox"></td>
+                                                        <td><label>ball wave</label></td>
+                                                        <td><label>others</label></td>
+                                                        <td><label>hfc</label></td>
+                                                        <td><label>n/a</label></td>
+                                                        <td><label>n/a</label></td>
+                                                        <td><label class="stat-crit">critical</label></td>
+                                                        <td>
+                                                        </td>
+                                                    </tr>*@
 
                                                     </tbody>
                                                 </table>
@@ -320,24 +332,25 @@
                                                             <td>Quantity</td>
                                                             <td>Request Quantity</td>
                                                             <td>Status</td>
+                                                            <td style="display:none" id="actCol1">Action</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @*<tr>
-                                                            <td></td>
-                                                            <td><label>Gate Valve Flange Type</label></td>
-                                                            <td><label>Gate Valve</label></td>
-                                                            <td><label></label></td>
-                                                            <td><label></label></td>
-                                                            <td><label>Null</label></td>
-                                                            <td><input type="number"></td>
-                                                            <td><label class="stat-crit">Critical</label></td>
-                                                            <td>
-                                                                <div class="view-action-style">
-                                                                    <a>delete</a>
-                                                                </div>
-                                                            </td>
-                                                        </tr>*@
+                                                        <td></td>
+                                                        <td><label>Gate Valve Flange Type</label></td>
+                                                        <td><label>Gate Valve</label></td>
+                                                        <td><label></label></td>
+                                                        <td><label></label></td>
+                                                        <td><label>Null</label></td>
+                                                        <td><input type="number"></td>
+                                                        <td><label class="stat-crit">Critical</label></td>
+                                                        <td>
+                                                            <div class="view-action-style">
+                                                                <a>delete</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>*@
 
                                                     </tbody>
                                                 </table>
@@ -350,8 +363,8 @@
 
                         </form>
                         <center>
-                            <div class="form-add-btns checkbox-view edit-td">
-                                <button class="save" onclick="infoOpenPopup() + EditSetTemplate()">
+                            <div class="form-add-btns checkbox-view edit-td" id="frmBtn">
+                                <button class="save" id="saveBtn">
                                     <span class="btnText">Confirm</span>
                                     <i class="las la-check-square"></i>
                                 </button>
@@ -518,12 +531,12 @@
                                                     <tbody>
                                                         @*<tr onclick="openInputQTYForm()">
 
-                                                            <td><label>Clarisse C. Vaquez</label></td>
-                                                            <td><label>Supervisor</label></td>
-                                                            <td><label>0923758923</label></td>
-                                                            <td><label>12341241</label></td>
-                                                            <td><label class="stat-standard">Standard</label></td>
-                                                        </tr>*@
+                                                        <td><label>Clarisse C. Vaquez</label></td>
+                                                        <td><label>Supervisor</label></td>
+                                                        <td><label>0923758923</label></td>
+                                                        <td><label>12341241</label></td>
+                                                        <td><label class="stat-standard">Standard</label></td>
+                                                    </tr>*@
 
                                                     </tbody>
                                                 </table>
@@ -561,6 +574,47 @@
                 <br>
                 <button id="conf">confirm</button>
                 <button onclick="closeInputQTYForm()">cancel</button>
+            </div>
+
+            <div class="input-popup1" id="input-popup1">
+                <h3>INPUT QUANTITY</h3>
+                <input type="number" id="quantVal1">
+                @*<input type="text" id="hiddenCode1" style="display:none;">*@
+
+                <br>
+                <br>
+                <button id="conf1">confirm</button>
+                <button onclick="closeInputQTYForm1()">cancel</button>
+            </div>
+
+            <!-- END -->
+
+            <!-- REMARKS BOX -->
+
+            <div class="remarks-popup" id="remarks-popup">               
+
+                <div class="remarks-header">
+                    <center>
+                        <h3>ADD REMARKS</h3>
+                    </center>                    
+                </div>
+
+                <div class="remarks-container">
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                </div>
+                <center>
+                    <button type="button" class="appr-btn" onclick="">
+                        <a>
+                            SAVE
+                        </a>
+                    </button>
+
+                    <button type="button" class="appr-btn" onclick="">
+                        <a>
+                            CANCEL
+                        </a>
+                    </button>
+                </center>
             </div>
 
             <!-- END -->
@@ -775,11 +829,38 @@
             closeInputQTYForm();
             document.getElementById('quantVal').value = '';
     });
-
     function closeInputQTYForm() {
         document.getElementById("input-popup").style.display = "none";
     }
+    let row = "";
+    function openInputQTYForm1(rows) {
+        document.getElementById("input-popup1").style.display = "block";
+        //document.getElementById('hiddenCode').value = itemCode;
+        row = rows;
+    }
+    var quant = document.getElementById('quantVal1');
 
+    quant.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            editRow();
+        }
+    });
+
+    const element = document.getElementById('conf1');
+    element.addEventListener("click", function () {
+        editRow();
+    });
+
+    function editRow() {
+        var unit = extractNum(row.cells[6].innerHTML).measurement;
+        row.cells[6].innerHTML = quant.value + " " + unit;
+        closeInputQTYForm1();
+        document.getElementById('quantVal1').value = '';
+    }
+
+    function closeInputQTYForm1() {
+        document.getElementById("input-popup1").style.display = "none";
+    }
 
     let addpopuppur = document.getElementById("add-popup-pur");
     function addOpenPopupPur() {

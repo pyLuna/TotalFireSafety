@@ -787,6 +787,7 @@ namespace TotalFireSafety.Controllers
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            await SendNotif("notification");
             ViewBag.Message = message;
             return result;
         }

@@ -109,6 +109,46 @@ function filterArray(value) {
     }
 }
 
+function FilterByActive(value) {
+    //filtered.length = 0;
+    let arr = [];
+    for (var j = 0; j < fixedArray.length; j++) {
+        if (JSON.stringify(fixedArray[j].Status.IsActive).toLowerCase().includes(value)) {
+            arr.push(fixedArray[j]);
+        }
+    }
+    return arr;
+}
+
+function FilterByLock(value) {
+    let arr = [];
+    for (var j = 0; j < fixedArray.length; j++) {
+        if (JSON.stringify(fixedArray[j].Status.IsLocked).toLowerCase().includes(value)) {
+            arr.push(fixedArray[j]);
+        }
+    }
+    return arr;
+}
+
+function FilterFunc(index) {
+    let num = 0;
+    let catcher = [];
+    catcher.length = 0;
+    if (index == 'active') {
+        num = 1;
+        catcher = FilterByActive(num);
+    }
+    else if (index == 'inactive') {
+        num = 0;
+        catcher = FilterByActive(num);
+    }
+    else {
+        num = 1;
+        catcher = FilterByLock(num);
+    }
+    setTable(catcher);
+}
+
 function SearchItem(value) {
     filterArray(value.toLowerCase());
     if (value == '') {

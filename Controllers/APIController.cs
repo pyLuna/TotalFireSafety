@@ -1275,7 +1275,7 @@ namespace TotalFireSafety.Controllers
                         _context.Entry(request);
                         _context.SaveChanges();
                     }
-                    return Ok("Requests Added Successfully!");
+                    return Ok("Requests Updated Successfully!");
                 }
             }
             catch (Exception ex)

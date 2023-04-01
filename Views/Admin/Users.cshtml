@@ -64,18 +64,18 @@
 
                     <div class="user-buttons-style">
                         <button class="add-btn" title="ADD NEW USER" id="addBtn" onclick="addOpenPopup()">ADD NEW USER</button>
-                        <select required>
+                        <select onchange="FilterFunc(this.options[this.selectedIndex].value.toLowerCase())">
                             <option disabled selected>FILTER</option>
-                            <option>All</option>
-                            <option>Local</option>
-                            <option>Import</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Locked">Locked</option>
                         </select>
-                        <select required>
+                        @*<select required>
                             <option disabled selected>SORT</option>
                             <option>All</option>
                             <option>Local</option>
                             <option>Import</option>
-                        </select>
+                        </select>*@
                     </div>
 
                 </div>

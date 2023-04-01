@@ -438,8 +438,6 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-
-
         public async Task<ActionResult> Projects()
         {
             var empId = Session["emp_no"]?.ToString();

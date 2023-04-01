@@ -1854,14 +1854,17 @@ input[type="month"] {
     }
 
     .inventory-body table td .stat-standard {
+        font-weight:bold;
         color: #09AF10;
     }
 
     .inventory-body table td .stat-average {
+        font-weight: bold;
         color: #FF932F;
     }
 
     .inventory-body table td .stat-re-order {
+        font-weight: bold;
         color: #FF0000;
     }
 

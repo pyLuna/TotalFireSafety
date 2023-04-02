@@ -59,13 +59,11 @@
                     </div>
                 </div>
                 <br><br>
-                <table>
-                    <tr>
-                        <td colspan="12" class="font-weight-bold text-center">INVENTORY STOCK REPORT</td>
-                    </tr>
-                </table>
                 <table id="myTable" class="myTable">
                     <thead>
+                        <tr>
+                            <td colspan="12" class="font-weight-bold text-center">INVENTORY STOCK REPORT</td>
+                        </tr>
                         <tr style="background-color: rgb(255, 255, 0);" class="font-weight-bold">
                             <td class="font-weight-bold">Date Added <span></span></td>
                             <td class="font-weight-bold">Code</td>
@@ -97,9 +95,9 @@
             <br>
 
             <!-- <script>
-        const d = new Date();
-        document.getElementById("demo").innerHTML = d.toDateString();
-    </script> -->
+            const d = new Date();
+            document.getElementById("demo").innerHTML = d.toDateString();
+        </script> -->
         </center>
 
         <style media="print">
@@ -112,7 +110,7 @@
             <div class="d-flex justify-content-between">
                 <button type="button" onclick="exportToPdf()" class="btn btn-primary btn-lg buttons1 ml-2">EXPORT</button>
                 <button type="button" onclick="window.print();" class="btn btn-primary btn-lg buttons1 ml-2">PRINT</button>
-              <button type="button"  class="btn btn-outline-primary buttons2 ml-2"><a href="@Url.Action("InventoryReport","Admin")">CANCEL</a></button>
+                <button type="button" class="btn btn-outline-primary buttons2 ml-2"><a href="@Url.Action("InventoryReport", "Admin")" onclick="window.close(); return false;">CANCEL</a></button>
             </div>
         </div>
 
@@ -143,9 +141,30 @@
                 const options = {
                     margin: [0, 0, 0, 0],
                     filename: 'Report.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
+                    pdf: {
+                        format: 'letter',
+                        orientation: 'portrait',
+                    },
                     html2canvas: { scale: getScaleFactor(element.offsetWidth, element.offsetHeight) },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
+                    jsPDF: {
+                        unit: 'in',
+                        repeatTableHeader: true, // Repeat table header on every page
+                        addPageContent: function (data) {
+                            var rowCount = document.querySelectorAll('.myTable tbody tr').length;
+                            if (rowCount > 10) {
+                                this.addPage();
+                                rowCount = 0;
+                            }
+                            if (data.pageCount > 1) {
+                                var header = document.querySelector('.myTable thead').cloneNode(true);
+                                var footer = document.querySelector('.myTable tfoot').cloneNode(true);
+                                document.querySelector('.myTable').deleteTHead();
+                                document.querySelector('.myTable').deleteTFoot();
+                                this.table(header, 1, 0);
+                                this.table(footer, -1, 0);
+                            }
+                        }
+                    }
                 };
                 html2pdf().set(options).from(element).save();
             }
@@ -157,7 +176,6 @@
                 const heightScale = height / maxHeight;
                 return Math.min(1, Math.min(widthScale, heightScale));
             }
-
         </script>
 
         <script>

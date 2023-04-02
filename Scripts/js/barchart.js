@@ -5,7 +5,7 @@ var ctx5 = document.getElementById('charta').getContext('2d');
 
 // Create the chart
 var charta = new Chart(ctx5, {
-    type: 'bar',
+    type: 'line',
     data: {
         labels: data1.map(function (item) {
             return item.Name1;
@@ -28,21 +28,38 @@ var charta = new Chart(ctx5, {
         }]
     },
     options: {
-        indexAxis: 'y',
+        responsive: true,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+        stacked: false,
         plugins: {
             legend: {
                 display: false
-            }
+            },
+
+          
         },
-        responsive: true,
-        maintainAspectRatio: false,
-        aspectRatio: 4 / 3,
         scales: {
-            x: {
-                beginAtZero: true
-            }
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+
+                // grid line settings
+                grid: {
+                    drawOnChartArea: false, // only want the grid lines for one axis to show up
+                },
+            },
         }
-    }
+    },
+
 });
 
 var select = document.getElementById('moving');

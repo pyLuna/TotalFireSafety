@@ -94,6 +94,12 @@ namespace TotalFireSafety.Controllers
         }
         public async Task<ActionResult> InvReorder()
         {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
         [HttpPost]

@@ -2337,15 +2337,19 @@ input[type="month"] {
         font-weight: 800;
     }
 
-    .inventory-repo-header .inventory-repo-buttons-style .create-btn {
-        width: 170px;
-    }
+        .inventory-repo-header .inventory-repo-buttons-style .create-btn {
+            width: 170px;
+        }
 
-.inventory-repo-buttons-style {
-    display: flex;
-    justify-content: right;
-    margin-top: -30px;
-}
+            .inventory-repo-header .inventory-repo-buttons-style .create-btn:hover {
+                cursor: pointer;
+            }
+
+            .inventory-repo-buttons-style {
+                display: flex;
+                justify-content: right;
+                margin-top: -30px;
+            }
 
 .inventory-repo-header .inventory-repo-buttons-style span {
     font-size: 1.2rem;
@@ -2376,6 +2380,7 @@ input[type="month"] {
     color: #fff;
     border: 1px solid var(--text-color-black);
     background-color: #16215B;
+    cursor: pointer;
 }
 
 

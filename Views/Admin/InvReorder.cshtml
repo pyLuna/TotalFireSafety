@@ -1,477 +1,642 @@
-﻿@using TotalFireSafety.Models
-@model Inventory
+﻿
 @{
     ViewBag.Title = "InvReorder";
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Report = "active";
 }
 
-    <div class="main-content">
-        <header>
-            <h2>
-                <label for="nav-toggle">
-                    <span class="las la-bars"></span>
-                </label>
-                Re-Order
-            </h2>
-        </header>
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            Re-Order
+        </h2>
+    </header>
 
-        <main>
+    <main>
 
-            <div class="inventory-repo-grid">
-                <div class="inventory-repo-header">
-                    <h3>CRITICAL QUANTITY LEVEL</h3>
-                    <div class="inventory-repo-buttons-style">
+        <div class="inventory-repo-grid">
+            <div class="inventory-repo-header">
+                <h3>CRITICAL QUANTITY LEVEL</h3>
+                <div class="inventory-repo-buttons-style">
 
-                        <button class="create-btn" title="CREATE ORDER">
-                            <a onclick="createrequestOpenPopupPur()">
-                                CREATE ORDER
-                                <span class="las la-file-alt"></span>
-                            </a>
-                        </button>
-
-                    </div>
+                    <button class="create-btn" title="CREATE ORDER">
+                        <a onclick="createrequestOpenPopupPur()">
+                            CREATE ORDER
+                            <span class="las la-file-alt"></span>
+                        </a>
+                    </button>
 
                 </div>
-                <div class="inventory-repo-projects">
-                    <div class="inventory-repo">
-                        <div class="inventory-repo-body">
-                            <div class="table-responsive" style="overflow-x: auto;">
-                                <table width="100%" id="myTable" class="myTable">
-                                    <thead>
-                                        <tr>
-                                            <td>Date Added</td>
-                                            <td><a onclick="Sort(this,'in_code')">Code<i class="las la-sort-down"></i></a></td>
-                                            <td><a onclick="Sort(this,'in_name')">Name<i class="las la-sort-down"></i></a></td>
-                                            <td>Category</td>
-                                            <td>Type</td>
-                                            <td>Size</td>
-                                            <td>Quantity</td>
-                                            <td>Remarks</td>
-                                            <td><a onclick="Sort(this,'in_class')">Class<i class="las la-sort-down"></i></a></td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+
+            </div>
+            <div class="inventory-repo-projects">
+                <div class="inventory-repo">
+                    <div class="inventory-repo-body">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table width="100%" id="myTable" class="myTable">
+                                <thead>
+                                    <tr>
+                                        <td>Date Added</td>
+                                        <td><a onclick="Sort(this,'in_code')">Code<i class="las la-sort-down"></i></a></td>
+                                        <td><a onclick="Sort(this,'in_name')">Name<i class="las la-sort-down"></i></a></td>
+                                        <td>Category</td>
+                                        <td>Type</td>
+                                        <td>Size</td>
+                                        <td>Quantity</td>
+                                        <td>Remarks</td>
+                                        <td><a onclick="Sort(this,'in_class')">Class<i class="las la-sort-down"></i></a></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            @* CREATE REQUEST FOR ITEM POPUP *@
+        @* CREATE REQUEST FOR ITEM POPUP *@
 
-            <div class="create-request-popup-pur" id="create-request-popup-pur">
-                <div class="create-request-container">
-                    <div class="create-request-form-container">
-                        <form action="" id="create-form">
+        <div class="view-request-popup-pur" id="view-request-popup-pur">
+            <div class="view-request-container">
+                <div class="view-request-form-container">
+                    <form action="">
 
-                            <div class="create-request-details">
-                                <div class="create-request-form-header">
-                                    REQUEST DETAILS
+                        <div class="view-request-details">
+                            <div class="view-request-form-header">
+                                REQUEST DETAILS
+                            </div>
+                            <div class="view-request-form-contents">
+                                <div class="fields">
+                                    <div class="input-field">
+                                        <label><a>Request ID: </a>SREQ234567 </label>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label><a>Name: </a>Juan Karlos </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Request Type: </a>Purchase Request </label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Date Requested: </a>January 11, 2023 </label>
+                                    </div>
                                 </div>
-                                <div class="create-request-form-contents">
-                                    <div class="fields" id="create-fields">
-                                        <div class="input-field">
-                                            <label><a>Request ID: </a></label>
-                                            <label id="reqId"></label>
-                                        </div>
+                            </div>
+                        </div>
 
-                                        <div class="input-field">
-                                            <label><a>Name: </a></label>
-                                            <label id="reqName"></label>
-                                        </div>
-                                        <div class="input-field">
-                                            <label><a>Request Type: </a></label>
-                                            <label id="reqType"></label>
-                                        </div>
-                                        <div class="input-field">
-                                            <label><a>Date Requested: </a></label>
-                                            <label id="reqDate"></label>
+                        <div class="view-request-details">
+                            <div class="view-request-form-header">
+                                ITEM DETAILS
+                            </div>
+                            <div class="view-request-form-contents">
+                                <div class="view-request-form-table">
+                                    <div class="view-request-form-table-style">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>Name</td>
+                                                        <td>Category</td>
+                                                        <td>Type</td>
+                                                        <td>Size</td>
+                                                        <td>Quantity</td>
+                                                        <td>Remarks</td>
+                                                        <td></td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><input type="checkbox"></td>
+                                                        <td><label>Ball Wave</label></td>
+                                                        <td><label>Others</label></td>
+                                                        <td><label>HFC</label></td>
+                                                        <td><label>N/A</label></td>
+                                                        <td><label>N/A</label></td>
+                                                        <td><label class="stat-crit">Critical</label></td>
+                                                        <td>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </br>
-                            </br>
-                            <div class="create-request-details">
-                                <div class="create-request-form-header">
-                                    ITEM DETAILS
-                                    <div class="add-item">
-                                        <button class="create-req-btn" title="CREATE ORDER">
-                                            <a onclick="itemlistOpenPopupPur()" id="add-item">
-                                                ADD ITEM
-                                                <span class="las la-file-alt"></span>
-                                            </a>
-                                        </button>
-                                    </div>
-                                </div>
+                        </div>
 
-                                <div class="create-request-form-contents">
-                                    <div class="create-request-form-table">
-                                        <div class="create-request-form-table-style">
-                                            <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%" id="create-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <td>Name</td>
-                                                            <td>Category</td>
-                                                            <td>Type</td>
-                                                            <td>Size</td>
-                                                            <td>Remarks</td>
-                                                            <td>Request Quantity</td>
-                                                            <td>Action</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @*<tr>
-                                                        <td><input type="checkbox"></td>
-                                                        <td><label>HXX-ASJ-0000</label></td>
+                        <br>
+                        <br>
+
+                        <div class="view-request-details">
+                            <div class="view-request-form-header">
+                                APPROVED DETAILS
+                            </div>
+                            <div class="view-request-form-contents">
+                                <div class="view-request-form-table">
+                                    <div class="view-request-form-table-style">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>Name</td>
+                                                        <td>Category</td>
+                                                        <td>Type</td>
+                                                        <td>Size</td>
+                                                        <td>Quantity</td>
+                                                        <td>Request Quantity</td>
+                                                        <td>Remarks</td>
+                                                        <td>Action</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td></td>
                                                         <td><label>Gate Valve Flange Type</label></td>
                                                         <td><label>Gate Valve</label></td>
                                                         <td><label></label></td>
                                                         <td><label></label></td>
                                                         <td><label>Null</label></td>
-                                                        <td><label>Imported</label></td>
+                                                        <td><input type="number"></td>
                                                         <td><label class="stat-crit">Critical</label></td>
                                                         <td>
-                                                            <div class="create-action-style">
+                                                            <div class="view-action-style">
                                                                 <a>delete</a>
                                                             </div>
                                                         </td>
-                                                    </tr>*@
+                                                    </tr>
 
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                        </form>
-                        </br>
-                        </br>
-                        </br>
-                        <center>
-                            <div class="form-add-btns">
-                                <button class="save" onclick="infoOpenPopup()">
-                                    <span class="btnText" id="cnfBtn">Confirm</span>
-                                    <i class="las la-check-square"></i>
-                                </button>
 
-                                <button class="cancel">
-                                    <span class="btnText" onclick="canOpenPopup()">Cancel</span>
-                                    <i class="las la-window-close"></i>
-                                </button>
-                            </div>
-                        </center>
-                    </div>
+                    </form>
+                    <center>
+                        <div class="form-add-btns">
+                            <button class="save" onclick="infoOpenPopup()">
+                                <span class="btnText">Confirm</span>
+                                <i class="las la-check-square"></i>
+                            </button>
+
+                            <button class="cancel">
+                                <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                <i class="las la-window-close"></i>
+                            </button>
+                        </div>
+                    </center>
                 </div>
             </div>
+        </div>
 
-            <!-- ADD INVENTORY LIST -->
+        <!-- END -->
+        <!-- CREATE REQUEST -->
 
-            <div class="itemlist-popup-pur" id="itemlist-popup-pur">
-                <div class="itemlist-container">
-                    <div class="itemlist-form-container">
-                        <form action="">
-                            <div class="itemlist-details">
-                                <div class="itemlist-form-header">
-                                    ITEM LISTS
-                                    <right>
-                                        <div class="item-section">
-                                            <div class="item-wrapper">
-                                                <span class="las la-search"></span>
-                                                <input type="text" placeholder="Search here">
-                                            </div>
-                                        </div>
-                                    </right>
+        <div class="create-request-popup-pur" id="create-request-popup-pur">
+            <div class="create-request-container">
+                <div class="create-request-form-container">
+                    <form action="" id="create-form">
+
+                        <div class="create-request-details">
+                            <div class="create-request-form-header">
+                                REQUEST DETAILS
+                            </div>
+                            <div class="create-request-form-contents">
+                                <div class="fields" id="create-fields">
+                                    <div class="input-field">
+                                        <label><a>Request ID: </a></label>
+                                        <label id="reqId"></label>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label><a>Name: </a></label>
+                                        <label id="reqName"></label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Request Type: </a></label>
+                                        <label id="reqType"></label>
+                                    </div>
+                                    <div class="input-field">
+                                        <label><a>Date Requested: </a></label>
+                                        <label id="reqDate"></label>
+                                    </div>
                                 </div>
-                                <div class="itemlist-form-contents">
-                                    <div class="itemlist-form-table">
-                                        <div class="itemlist-form-table-style">
-                                            <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%" id="InvTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <td><a>Name<i class="las la-sort-down"></i></a></td>
-                                                            <td>Category</td>
-                                                            <td>Type</td>
-                                                            <td>Size</td>
-                                                            <td>Remarks</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @*<tr onclick="openInputQTYForm()">
+                            </div>
+                        </div>
+                        </br>
+                        </br>
+                        <div class="create-request-details">
+                            <div class="create-request-form-header">
+                                ITEM DETAILS
+                                <div class="add-item">
+                                    <button class="create-req-btn" title="CREATE ORDER">
+                                        <a onclick="itemlistOpenPopupPur()" id="add-item">
+                                            ADD ITEM
+                                            <span class="las la-file-alt"></span>
+                                        </a>
+                                    </button>
+                                </div>
+                            </div>
 
-                                                        <td><label>Clarisse C. Vaquez</label></td>
-                                                        <td><label>Supervisor</label></td>
-                                                        <td><label>0923758923</label></td>
-                                                        <td><label>12341241</label></td>
-                                                        <td><label class="stat-standard">Standard</label></td>
-                                                    </tr>*@
+                            <div class="create-request-form-contents">
+                                <div class="create-request-form-table">
+                                    <div class="create-request-form-table-style">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table width="100%" id="create-table">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Name</td>
+                                                        <td>Category</td>
+                                                        <td>Type</td>
+                                                        <td>Size</td>
+                                                        <td>Remarks</td>
+                                                        <td>Request Quantity</td>
+                                                        <td>Action</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @*<tr>
+                                                            <td><input type="checkbox"></td>
+                                                            <td><label>HXX-ASJ-0000</label></td>
+                                                            <td><label>Gate Valve Flange Type</label></td>
+                                                            <td><label>Gate Valve</label></td>
+                                                            <td><label></label></td>
+                                                            <td><label></label></td>
+                                                            <td><label>Null</label></td>
+                                                            <td><label>Imported</label></td>
+                                                            <td><label class="stat-crit">Critical</label></td>
+                                                            <td>
+                                                                <div class="create-action-style">
+                                                                    <a>delete</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>*@
 
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <br>
-                            <br>
+                    </form>
+                    </br>
+                    </br>
+                    </br>
+                    <center>
+                        <div class="form-add-btns">
+                            <button class="save" onclick="infoOpenPopup()">
+                                <span class="btnText" id="cnfBtn">Confirm</span>
+                                <i class="las la-check-square"></i>
+                            </button>
 
-                        </form>
-                        <center>
-                            <div class="form-add-btns">
-                                <button class="cancel">
-                                    <span class="btnText" onclick="itemlistClosePopupPur()">Back</span>
-                                    <i class="las la-window-close"></i>
-                                </button>
-                            </div>
-                        </center>
-                    </div>
+                            <button class="cancel">
+                                <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                <i class="las la-window-close"></i>
+                            </button>
+                        </div>
+                    </center>
                 </div>
             </div>
+        </div>
 
-            <!-- END -->
-            <!-- INPUT POPUP -->
+        <!-- END -->
+        <!-- ADD INVENTORY LIST -->
 
-            <div class="input-popup" id="input-popup">
-                <h3>INPUT QUANTITY</h3>
-                <input type="number" id="quantVal">
-                <input type="text" id="hiddenCode" style="display:none;">
+        <div class="itemlist-popup-pur" id="itemlist-popup-pur">
+            <div class="itemlist-container">
+                <div class="itemlist-form-container">
+                    <form action="">
+                        <div class="itemlist-details">
+                            <div class="itemlist-form-header">
+                                ITEM LISTS
+                                <right>
+                                    <div class="item-section">
+                                        <div class="item-wrapper">
+                                            <span class="las la-search"></span>
+                                            <input type="text" placeholder="Search here" onkeyup="SearchItem1(this.value)">
+                                        </div>
+                                    </div>
+                                </right>
+                            </div>
+                            <div class="itemlist-form-contents">
+                                <div class="itemlist-form-table">
+                                    <div class="itemlist-form-table-style">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table width="100%" id="InvTable">
+                                                <thead>
+                                                    <tr>
+                                                        <td><a>Name<i class="las la-sort-down"></i></a></td>
+                                                        <td>Category</td>
+                                                        <td>Type</td>
+                                                        <td>Size</td>
+                                                        <td>Remarks</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @*<tr onclick="openInputQTYForm()">
 
-                <br>
-                <br>
-                <button id="conf">confirm</button>
-                <button onclick="closeInputQTYForm()">cancel</button>
+                                                            <td><label>Clarisse C. Vaquez</label></td>
+                                                            <td><label>Supervisor</label></td>
+                                                            <td><label>0923758923</label></td>
+                                                            <td><label>12341241</label></td>
+                                                            <td><label class="stat-standard">Standard</label></td>
+                                                        </tr>*@
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+                        <br>
+
+                    </form>
+                    <center>
+                        <div class="form-add-btns">
+                            <button class="cancel">
+                                <span class="btnText" onclick="itemlistClosePopupPur()">Back</span>
+                                <i class="las la-window-close"></i>
+                            </button>
+                        </div>
+                    </center>
+                </div>
             </div>
+        </div>
 
-            <!-- END -->
-            @* END *@
+        <!-- END -->
+        <!-- INPUT POPUP -->
 
-            <script src="@Url.Content("~/Scripts/Reorder.js")"></script>
+        <div class="input-popup" id="input-popup">
+            <h3>INPUT QUANTITY</h3>
+            <input type="number" id="quantVal">
+            <input type="text" id="hiddenCode" style="display:none;">
 
-            <div class="info-pop-container" id="info-popup">
-                <img src="~/images/information.png">
-                <h2>System Warning!</h2>
-                <p>Do you want to save the user on the list?</p>
-                <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
-                <button type="button" onclick="infoClosePopup()">Cancel</button>
-            </div>
+            <br>
+            <br>
+            <button id="conf">confirm</button>
+            <button onclick="closeInputQTYForm()">cancel</button>
+        </div>
 
-            <div class="can-pop-container" id="can-popup">
-                <img src="~/images/warning.png">
-                <h2>System Warning!</h2>
-                <p>Are you sure you want to delete item on the list?</p>
-                <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
-                <button type="button" onclick="canClosePopup()">Cancel</button>
-            </div>
+        <!-- END -->
 
-            <div class="save-pop-container" id="popup">
-                <img src="~/images/tick.png">
-                <h2>Added!</h2>
-                <p>User details has been added successfully!</p>
-                <button type="button" onclick="closePopup()">OK</button>
-            </div>
+        <div class="can-pop-container" id="can-popup1">
+            <img src="@Url.Content("~/images/warning.png")">
+            <h2>System Warning!</h2>
+            <p>Do you want to go back?</p>
+            <button type="button" onclick="">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
 
-            <div class="rem-pop-container" id="rem-popup">
-                <img src="~/images/remove.png">
-                <h2>Deleted!</h2>
-                <p>Item details has deleted in the list!</p>
-                <button type="button" onclick="remClosePopup()">OK</button>
-            </div>
+        <input type="text" id="formType" style="display:none">
+        <div class="info-pop-container" id="info-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>Do you want to save employee's request?</p>
+            <button type="button" onclick="saveRequest()">Yes</button>
+            <button type="button" onclick="infoClosePopup()">Cancel</button>
+        </div>
 
-            <div class="print-pop-container" id="print-popup">
-                <img src="~/images/printer.png">
-                <h2>Print!</h2>
-                <p>Print successfully!</p>
-                <button type="button" onclick="printClosePopup()">OK</button>
-            </div>
+        <div class="save-pop-container" id="popup">
+            <img src="@Url.Content("~/images/tick.png")">
+            <h2>Accepted!</h2>
+            <p>@ViewBag.Message</p>
+            <button type="button" onclick="closePopup()">OK</button>
+        </div>
 
-            <div class="expo-pop-container" id="expo-popup">
-                <img src="~/images/export.png">
-                <h2>Export!</h2>
-                <p>Exported Successfully!</p>
-                <button type="button" onclick="expoClosePopup()">OK</button>
-            </div>
-        </main>
+        <div class="can-pop-container" id="can-popup">
+            <img src="@Url.Content("~/images/warning.png")">
+            <h2>System Warning!</h2>
+            <p>Do you want to cancel any changes?</p>
+            <button type="button" onclick="remOpenPopup() + viewrequestClosePopupPur() + itemlistClosePopupPur() + createrequestClosePopupPur() + canClosePopup() + addClosePopupPur() + resetForm()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
 
-        <script>
-          
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="@Url.Content("~/images/remove.png")">
+            <h2>Deleted!</h2>
+            <p>Request Discarded!</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
+        </div>
+
+        <div class="print-pop-container" id="print-popup">
+            <img src="@Url.Content("~/images/printer.png")">
+            <h2>Print!</h2>
+            <p>Print successfully!</p>
+            <button type="button" onclick="printClosePopup()">OK</button>
+        </div>
+
+        <div class="expo-pop-container" id="expo-popup">
+            <img src="@Url.Content("~/images/export.png")">
+            <h2>Export!</h2>
+            <p>Exported Successfully!</p>
+            <button type="button" onclick="expoClosePopup()">OK</button>
+        </div>
+
+    </main>
+</div>
+<script src='@Url.Content("~/Scripts/validations/RequisitionValidation.js")'></script>
+<script src="@Url.Content("~/Scripts/Reorder.js")"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 
-            let codeToDelete = "";
-            //window.onload = function () {
-            function OnLoad() {
-                let removed = localStorage.getItem("removed");
-                if (removed == "success") {
-                    rempopup.classList.add("rem-popup-show");
-                    localStorage.setItem("removed", "pending");
-                }
-                localStorage.clear();
-                GetAll();
+<script>
+
+    //window.onload = function () {
+    function OnLoad() {
+        GetAll();
+        GetAllEmployee();
+        GetAllItem();
+        localStorage.setItem('increment', null);
+        let success = localStorage.getItem("success");
+        if (success != 'undefined' && success !== '' && success !== null) {
+            openPopup(success);
+            localStorage.setItem("success", "");
+        }
+    }
+
+    function userSortFunction() {
+        document.getElementById("purSortDropdown").classList.toggle("purchase-sort-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.purchase-sort-btn')) {
+            var myDropdown = document.getElementById("purSortDropdown");
+            if (myDropdown.classList.contains('purchase-sort-show')) {
+                myDropdown.classList.remove('purchase-sort-show');
             }
+        }
+    }
 
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function (e) {
-                if (!e.target.matches('.drop-btn')) {
-                    var myDropdown = document.getElementById("myDropdown");
-                    if (myDropdown.classList.contains('show')) {
-                        myDropdown.classList.remove('show');
+    //WAREHOUSE VIEW REQUEST
+    let viewrequest = document.getElementById("view-request-popup-pur");
+    let approveddetails = document.getElementById("view-request-details");
+    function HideApprovedItems() {
+        approveddetails.style.display = "none";
+    }
+    function viewrequestOpenPopupPur() {
+        viewrequest.classList.add("view-request-popup-pur-show")
+    }
 
-                    }
-                }
-            }
+    function viewrequestClosePopupPur() {
+        viewrequest.classList.remove("view-request-popup-pur-show")
+    }
 
-            function userSortFunction() {
-                document.getElementById("invSortDropdown").classList.toggle("inventory-sort-show");
-            }
+    let createrequest = document.getElementById("create-request-popup-pur");
+    function createrequestOpenPopupPur() {
+        createrequest.classList.add("create-request-popup-pur-show")
+    }
 
-    
+    function createrequestClosePopupPur() {
+        createrequest.classList.remove("create-request-popup-pur-show")
+    }
 
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function (e) {
-                if (!e.target.matches('.inventory-sort-btn')) {
-                    var myDropdown = document.getElementById("invSortDropdown");
-                    if (myDropdown.classList.contains('inventory-sort-show')) {
-                        myDropdown.classList.remove('inventory-sort-show');
-                    }
-                }
-            }
-          
+    let addpopupinv = document.getElementById("add-popup-inv");
+    function addOpenPopupInv() {
+        addpopupinv.classList.add("add-popup-inv-show")
+    }
 
-        </script>
+    function addClosePopupInv() {
+        addpopupinv.classList.remove("add-popup-inv-show")
+    }
 
-        <script>
+    let itemlist = document.getElementById("itemlist-popup-pur");
+    function itemlistOpenPopupPur() {
+        itemlist.classList.add("itemlist-popup-pur-show")
+    }
+
+    function itemlistClosePopupPur() {
+        itemlist.classList.remove("itemlist-popup-pur-show")
+    }
+
+    // SCRIPT FOR NOTIFICATION
+
+    function openForm() {
+        document.getElementById("notifForm").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("notifForm").style.display = "none";
+    }
+
+    function viewOpenForm() {
+        document.getElementById("viewForm").style.display = "block";
+    }
+
+    function viewCloseForm() {
+        document.getElementById("viewForm").style.display = "none";
+    }
+
+    function openRemarksForm() {
+        document.getElementById("remarks-popup").style.display = "block";
+    }
+
+    function closeRemarksForm() {
+        document.getElementById("remarks-popup").style.display = "none";
+    }
+
+    function openInputQTYForm(itemCode) {
+        document.getElementById("input-popup").style.display = "block";
+        document.getElementById('hiddenCode').value = itemCode;
+    }
+    document.getElementById('conf').addEventListener("click", function () {
+        var quant = document.getElementById('quantVal').value;
+        var code = document.getElementById('hiddenCode').value;
+        DataToAdd(quant, code);
+        closeInputQTYForm();
+        document.getElementById('quantVal').value = '';
+    });
+
+    function closeInputQTYForm() {
+        document.getElementById("input-popup").style.display = "none";
+    }
 
 
-            /* When the user clicks on the button,
-            toggle between hiding and showing the dropdown content */
-            function myFunction() {
-                document.getElementById("myDropdown").classList.toggle("show");
-            }
+    let addpopuppur = document.getElementById("add-popup-pur");
+    function addOpenPopupPur() {
+        addpopuppur.classList.add("add-popup-pur-show")
+        document.getElementById("formType").value = "add";
+    }
 
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function (e) {
-                if (!e.target.matches('.drop-btn')) {
-                    var myDropdown = document.getElementById("myDropdown");
-                    if (myDropdown.classList.contains('show')) {
-                        myDropdown.classList.remove('show');
-                    }
-                }
-            }
+    function addClosePopupPur() {
+        addpopuppur.classList.remove("add-popup-pur-show")
+    }
 
-            function userSortFunction() {
-                document.getElementById("invSortDropdown").classList.toggle("inventory-sort-show");
-            }
+    let infopopup = document.getElementById("info-popup");
+    function infoOpenPopup() {
+        infopopup.classList.add("info-popup-show")
+    }
 
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function (e) {
-                if (!e.target.matches('.inventory-sort-btn')) {
-                    var myDropdown = document.getElementById("invSortDropdown");
-                    if (myDropdown.classList.contains('inventory-sort-show')) {
-                        myDropdown.classList.remove('inventory-sort-show');
-                    }
-                }
-            }
+    function infoClosePopup() {
+        infopopup.classList.remove("info-popup-show")
+    }
 
-                
+    let popup = document.getElementById("popup");
 
-           let addpopupinv = document.getElementById("add-popup-inv");
-            function addOpenPopupInv() {
-                addpopupinv.classList.add("add-popup-inv-show")
-            }
+    function openPopup(message) {
+        var p = document.querySelector('#popup p');
+        p.innerHTML = message;
+        popup.classList.add("save-pop-show")
+    }
 
-            function addClosePopupInv() {
-                addpopupinv.classList.remove("add-popup-inv-show")
-            }
+    function closePopup() {
+        popup.classList.remove("save-pop-show")
+    }
 
-            let createrequest = document.getElementById("create-request-popup-pur");
-            function createrequestOpenPopupPur() {
-                createrequest.classList.add("create-request-popup-pur-show")
-            }
+    let canpopup = document.getElementById("can-popup");
 
-            function createrequestClosePopupPur() {
-                createrequest.classList.remove("create-request-popup-pur-show")
-            }
+    function canOpenPopup() {
+        canpopup.classList.add("can-popup-show")
+    }
 
-            let itemlist = document.getElementById("itemlist-popup-pur");
-            function itemlistOpenPopupPur() {
-                itemlist.classList.add("itemlist-popup-pur-show")
-            }
+    function canClosePopup() {
+        canpopup.classList.remove("can-popup-show")
+    }
 
-            function itemlistClosePopupPur() {
-                itemlist.classList.remove("itemlist-popup-pur-show")
-            }
+    let rempopup = document.getElementById("rem-popup");
 
-            let archpopup = document.getElementById("arch-popup");
-            function OpenArchPopup() {
-                archpopup.classList.add("arch-popup-show")
-            }
+    function remOpenPopup() {
+        rempopup.classList.add("rem-popup-show")
+    }
 
-            function CloseArchPopup() {
-                archpopup.classList.remove("arch-popup-show")
-            }
+    function remClosePopup() {
+        rempopup.classList.remove("rem-popup-show")
+    }
 
-            let canpopup = document.getElementById("can-popup");
-            function canOpenPopup() {
-                canpopup.classList.add("can-popup-show")
-            }
+    let printpopup = document.getElementById("print-popup");
 
-            function canClosePopup() {
-                canpopup.classList.remove("can-popup-show")
-            }
+    function printOpenPopup() {
+        printpopup.classList.add("print-popup-show")
+    }
 
-            let infopopup = document.getElementById("info-popup");
-            function infoOpenPopup() {
-                infopopup.classList.add("info-popup-show")
-            }
+    function printClosePopup() {
+        printpopup.classList.remove("print-popup-show")
+    }
 
-            function infoClosePopup() {
-                infopopup.classList.remove("info-popup-show")
-            }
+    let expopopup = document.getElementById("expo-popup");
 
-            let popup = document.getElementById("popup");
-            function openPopup() {
-                popup.classList.add("open-popup-show")
-            }
+    function expoOpenPopup() {
+        expopopup.classList.add("expo-popup-show")
+    }
 
-            function closePopup() {
-                popup.classList.remove("open-popup-show")
-            }
-
-            let rempopup = document.getElementById("rem-popup");
-            function remOpenPopup() {
-                rempopup.classList.add("rem-popup-show")
-            }
-
-            function remClosePopup() {
-                rempopup.classList.remove("rem-popup-show")
-            }
-
-            let printpopup = document.getElementById("print-popup");
-            function printOpenPopup() {
-                printpopup.classList.add("print-popup-show")
-            }
-
-            function printClosePopup() {
-                printpopup.classList.remove("print-popup-show")
-            }
-
-            let expopopup = document.getElementById("expo-popup");
-            function expoOpenPopup() {
-                expopopup.classList.add("expo-popup-show")
-            }
-
-            function expoClosePopup() {
-                expopopup.classList.remove("expo-popup-show")
-            }
-
-        </script>
-
+    function expoClosePopup() {
+        expopopup.classList.remove("expo-popup-show")
+    }
+</script>
 

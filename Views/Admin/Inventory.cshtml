@@ -474,28 +474,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
     /*ADD NEW ITEM CHECKFORM VALIDATION*/
-    function checkForm() {
-        var bool = $('#addForm').valid();
-        if (bool) {
-            infoOpenPopup();
-        }
-    }
+    //function checkForm() {
+    //    var bool = $('#addForm').valid();
+    //    if (bool) {
+    //        infoOpenPopup();
+    //    }
+    //}
 
     /*ADD QUANTITY ITEM CHECKFORM VALIDATION*/
-    function checkForm_Add_Quan() {
-        var bool = $('#qtyForm').valid();
-        if (bool) {
-            infoOpenPopup();
-        }
-    }
+    //function checkForm_Add_Quan() {
+    //    var bool = $('#qtyForm').valid();
+    //    if (bool) {
+    //        infoOpenPopup();
+    //    }
+    //}
 
     /*EDIT ITEM CHECKFORM VALIDATION*/
-    function checkForm_Edit_Itm() {
-        var bool = $('#editForm').valid();
-        if (bool) {
-            infoOpenPopup();
-        }
-    }
+    //function checkForm_Edit_Itm() {
+    //    var bool = $('#editForm').valid();
+    //    if (bool) {
+    //        infoOpenPopup();
+    //    }
+    //}
 
 
     let codeToDelete = "";
@@ -609,6 +609,10 @@
     let canpopup = document.getElementById("can-popup");
     function canOpenPopup() {
         canpopup.classList.add("can-popup-show");
+        $('#addForm').validate().resetForm();
+        $('#qtyForm').validate().resetForm();
+        $('#editForm').validate().resetForm();
+       
     }
 
     function canClosePopup() {

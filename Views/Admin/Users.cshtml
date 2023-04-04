@@ -342,6 +342,7 @@
 
         function canOpenPopup() {
             canpopup.classList.add("can-popup-show")
+            $('#formId').validate().resetForm();
         }
 
         function canClosePopup() {

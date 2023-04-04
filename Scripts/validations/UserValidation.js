@@ -81,6 +81,7 @@ $(document).ready(function () {
 			}
 		}
 	});
+
 	$('#Credential\\.username').rules('add', {
 		required: true,
 		minlength: 3,

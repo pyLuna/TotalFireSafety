@@ -567,15 +567,13 @@
 
             <div class="input-popup" id="input-popup">
                 <h3>INPUT QUANTITY</h3>
-                <form id="input_quan_form">
                     <input type="number" id="quantVal" name="quantVal" required>
                     <input type="text" id="hiddenCode" style="display:none;">
-
+                    <p class="emErr"></p>
                     <br>
                     <br>
-                    <button type="submit" id="conf">confirm</button>
-                    <button type="button" onclick="closeInputQTYForm()">cancel</button>
-                </form>
+                    <button id="conf" onclick="Validate()">confirm</button>
+                    <button onclick="closeInputQTYForm()">cancel</button>
             </div>
 
             <div class="input-popup1" id="input-popup1">
@@ -689,6 +687,16 @@
     //    var bool = $('#input_quan_form').valid();
     //    if (bool) {
     //        alert("nag validate!");
+    //    }
+    //}
+    //function Validate() {
+    //    var QuantVal = $("#quantVal").val();
+
+    //    if (QuantVal == "") {
+    //        $(".emErr").html("Quantity is required.");
+    //    }
+    //    else {
+    //        closeInputQTYForm1()
     //    }
     //}
 

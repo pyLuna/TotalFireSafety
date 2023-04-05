@@ -14,7 +14,7 @@
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            User
+            Employee List
         </h2>
     </header>
     <main>
@@ -30,7 +30,7 @@
 
             <div class="user-grid">
                 <div class="user-header">
-                    <h3>USER LIST</h3>
+                    <h3>EMPLOYEE LIST</h3>
                     <!--<div class="user-buttons-style">-->
                     @*onclick="addOpenPopup()"*@
                     <!--<button class="add-btn" title="ADD NEW ITEM" id="addBtn"><a><label>Add User</label></a></button>
@@ -63,7 +63,7 @@
     </div>-->
 
                     <div class="user-buttons-style">
-                        <button class="add-btn" title="ADD NEW USER" id="addBtn" onclick="addOpenPopup()">ADD NEW USER</button>
+                        <button class="add-btn" title="NEW EMPLOYEE" id="addBtn" onclick="addOpenPopup()">NEW EMPLOYEE</button>
                         <select onchange="FilterFunc(this.options[this.selectedIndex].value.toLowerCase())">
                             <option disabled selected>FILTER</option>
                             <option value="Active">Active</option>
@@ -86,13 +86,16 @@
                                 <table width="100%" id="myTable">
                                     <thead>
                                         <tr>
-                                            <td>ID</td>
-                                            <td>Name</td>
-                                            <td>Date Hired</td>
-                                            <td>Contact Number</td>
-                                            <td>Position</td>
-                                            <td>Status</td>
-                                            <td>Action</td>
+                                            <td> <a> Employee ID <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a> Surname <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a> First Name <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a> Middle Name <i class="las la-sort-down"></i></a> </td>
+                                            <td> Date Hired </td>
+                                            <td> Contact Number </td>
+                                            <td> Position  </td>
+                                            <td> <a> Status <i class="las la-sort-down"></i></a> </td>
+                                            <td> Roles </td>
+                                            <td> Action </td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -110,7 +113,7 @@
             <div class="add-container">
                 <div class="form-container">
                     <form action="@Url.Action("Users", "Admin","add")" method="post" id="formId" class="validate-form">
-                        <div class="details personal">
+                        <div class="details-personal">
                             <div class="form-header">
                                 ACCOUNT INFORMATION
                             </div>

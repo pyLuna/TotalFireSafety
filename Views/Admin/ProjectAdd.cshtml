@@ -108,15 +108,15 @@
 
         <div class="proj-main-content">
             <div class="proj-back-container">
-                <a href="../projects/sa-projects-ongoing.html"><span class="las la-long-arrow-alt-left"></span> VIEW PROJECT</a>
+                <a href="~/Admin/Projects.html"><span class="las la-long-arrow-alt-left"></span> VIEW PROJECT</a>
             </div>
 
             <div class="proj-main-container">
                 <div class="proj-task-list">
                     <div class="task-header">
-                        <h2>Task List</h2>
+                        <h2>Accomplistments</h2>
                         <div class="right-container">
-                            <a href="#">
+                            <a onclick="openReportForm()">
                                 <span class="lar la-plus-square"></span>Add Report
                             </a>
                         </div>
@@ -131,36 +131,36 @@
                                         <table width="100%">
                                             <thead>
                                                 <tr>
-                                                    <td>Task</td>
-                                                    <td>Status</td>
+                                                    <td>Date Submitted</td>
+                                                    <td>Report No.</td>
                                                     <td>Description</td>
-                                                    <td>Start Date</td>
-                                                    <td>Est. Completion Date</td>
+                                                    <td>Remarks</td>
+                                                    <td>-</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr onclick="openDailyReportForm()">
-                                                    <td>UI Design</td>
-                                                    <td><label class="on-going">On-going</label></td>
-                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
-                                                    <td>Mar. 11, 2023</td>
-                                                    <td>Mar. 11, 2023</td>
+                                                <tr>
+                                                    <td>Mar 11, 2023</td>
+                                                    <td>Report No.1</td>
+                                                    <td>The task were succe...</td>
+                                                    <td>Achieved</td>
+                                                    <td></td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td>UI Design</td>
-                                                    <td><label class="in-line">On-going</label></td>
-                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
-                                                    <td>Mar. 11, 2023</td>
-                                                    <td>Mar. 11, 2023</td>
+                                                    <td>April 12, 2023</td>
+                                                    <td>Report No.2</td>
+                                                    <td>The task were succe...</td>
+                                                    <td>Unfinished</td>
+                                                    <td></td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td>UI Design</td>
-                                                    <td><label class="delayed">On-going</label></td>
-                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
-                                                    <td>Mar. 11, 2023</td>
-                                                    <td>Mar. 11, 2023</td>
+                                                    <td>Feb 14, 2023</td>
+                                                    <td>Report No.3</td>
+                                                    <td>The task were succe...</td>
+                                                    <td>Achieved</td>
+                                                    <td></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -175,12 +175,25 @@
                     <div class="proj-incharge-container">
                         <div class="incharge">
                             <div class="incharge-header">
-                                <select required>
-                                    <option disabled selected>Select In-charge</option>
-                                    <option>Vincent M. Cordero</option>
-                                </select>
+                                <br>
+                                <h2>DESCRIPTION</h2>
+                                <hr>
+                            </div>
 
-                                <label>Person-in-charge</label>
+                            <div class="date">
+                                <label>Project Name: 6 Story Bldg</label>
+                            </div>
+
+                            <div class="date">
+                                <label>Subject: Supply & Install AFSS and FOAS</label>
+                            </div>
+
+                            <div class="date">
+                                <label>Client: Lanao Milling Corp</label>
+                            </div>
+
+                            <div class="date">
+                                <label>Project Lead: Vincent M. Cordero</label>
                             </div>
 
                             <div class="date">
@@ -206,48 +219,39 @@
                             </div>
                         </div>
                     </div>
-                    <div class="proj-des-container">
-                        <div class="descri-main">
-                            <div class="descri-title">
-                                <h3>Project Title</h3>
-                            </div>
-                            <div class="descri-content">
-                                <textarea placeholder="Place your project description here."></textarea>
 
-                            </div>
-                        </div>
 
-                    </div>
                     <div class="proj-mems-container">
                         <div class="mems-main">
                             <div class="mems-title">
-                                <h3>
-                                    Team Members
-                                    <a onclick="openInputMemForm()">
-                                        <span class="lar la-plus-square"></span>
-                                    </a>
-                                </h3>
-
+                                <br>
+                                <h3>MANPOWER</h3>
+                                <hr>
                             </div>
                             <div class="mems-list">
                                 <div class="mems-grid">
-
                                     <div class="mems-projects">
                                         <div class="mems">
                                             <div class="mems-body">
                                                 <div class="table-responsive" style="overflow-x: auto;">
                                                     <table width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>Name</td>
-                                                                <td>Position</td>
-                                                            </tr>
-                                                        </thead>
                                                         <tbody>
+
                                                             <tr>
                                                                 <td><b>Vincent M. Cordero</b></td>
-                                                                <td>Person-in-charge</label></td>
+                                                                <td>Person-in-charge</td>
                                                             </tr>
+
+                                                            <tr>
+                                                                <td><b>Vincent M. Cordero</b></td>
+                                                                <td>Person-in-charge</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td><b>Vincent M. Cordero</b></td>
+                                                                <td>Person-in-charge</td>
+                                                            </tr>
+
 
                                                         </tbody>
                                                     </table>

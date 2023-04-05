@@ -8,25 +8,25 @@
 //    });
 //})
 
-$(document).ready(function () {
-    $('#input_quan_form').validate({
-        rules: {
-            quantVal: {
-                required: true
+//$(document).ready(function () {
+//    $('#input_quan_form').validate({
+//        rules: {
+//            quantVal: {
+//                required: true
 
-            }
-        },
-        messages: {
-            quantVal: {
-                required: "Quantity must be required!"
-            }
-        }
-    });
-});
+//            }
+//        },
+//        messages: {
+//            quantVal: {
+//                required: "Quantity must be required!"
+//            }
+//        }
+//    });
+//});
 
-$("button[type='submit']").on("click", function () {
-    $("#input_quan_form").valid();
-});
+//$("button[type='submit']").on("click", function () {
+//    $("#input_quan_form").valid();
+//});
 
 
 

@@ -11,7 +11,7 @@
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            Employee
+            Project Lists
         </h2>
 
         <right>
@@ -127,6 +127,22 @@
     </div>-->
         <!-- NEW UPDATE -->
 
+        <div class="upper-section">
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="text" placeholder="Search here">
+            </div>
+            &nbsp;
+            <div class="drp-wrapper">
+                <select required>
+                    <option disabled selected>Request Type</option>
+                    <option>Purchasing</option>
+                    <option>Supply</option>
+                    <option>Deployment</option>
+                </select>
+            </div>
+        </div>
+
         <div class="proj-grid">
             <div class="proj-header">
                 <h3>PROJECT LISTS</h3>
@@ -134,9 +150,20 @@
 
                     <!--NEW UPDATE -->
 
-                    <a href="@Url.Action("ProjectAdd","Admin")">
+                    <a @*href="@Url.Action("ProjectAdd","Admin")"*@ onclick="openAddNewContainer()">
                         <button class="add-btn" title="ADD NEW ITEM">ADD PROJECT</button>
                     </a>
+
+                    <select required>
+                        <option disabled selected>Project Status</option>
+                        <option>Delayed</option>
+                    </select>
+
+                    <select required>
+                        <option disabled selected>Project Lead</option>
+                        <option>Vincent Cordero</option>
+                    </select>
+
                 </div>
 
             </div>
@@ -203,6 +230,167 @@
             </div>
         </div>
 
+        <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
+
+        <div class="add-new-container" id="add-new-container">
+            <div class="add-new-header">
+                <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                <center>
+                    <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
+                </center>
+
+            </div>
+
+            <div class="add-new-main">
+                <div class="add-new-left">
+                    <div class="input-fields">
+                        <Label>Project Name</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Subject</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Client</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Location Site</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here..">
+                    </div>
+                    <div class="grp">
+                        <div class="input-fields left">
+                            <Label>Project Lead</Label>
+                            <br>
+                            <select required>
+                                <option disabled selected>Select Lead</option>
+                                <option>Vincent Cordero</option>
+                            </select>
+                        </div>
+                        <div class="input-fields right">
+                            <Label>Status</Label>
+                            <br>
+                            <select required>
+                                <option>Select Status</option>
+                                <option>On-going</option>
+                                <option>In-going</option>
+                                <option>delay</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grp">
+                        <div class="input-fields left">
+                            <Label>Start Date</Label>
+                            <br>
+                            <input type="date">
+                        </div>
+                        <div class="input-fields right">
+                            <Label>Baseline Finish</Label>
+                            <br>
+                            <input type="date">
+                        </div>
+                    </div>
+
+                    <button>CREATE PROJECT</button>
+
+                </div>
+
+                <div class="add-new-right">
+                    <div class="add-new-header">
+                        <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
+                    </div>
+
+                    <div class="add-new-power">
+                        <div class="mems-list">
+                            <div class="mems-grid">
+                                <div class="mems-projects">
+                                    <div class="mems">
+                                        <div class="mems-body">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%">
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
+                                                        </tr>
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="input-mem-container" id="input-mem-container">
+            <div class="input-mems-main">
+                <div class="input-mems-title">
+                    <h3>MANPOWER</h3>
+
+                </div>
+                <div class="input-mems-list">
+                    <div class="input-mems-grid">
+                        <div class="input-mems-projects">
+                            <div class="input-mems">
+                                <div class="input-mems-body">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Position</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td contenteditable="true"><b>Vincent M. Cordero</b></td>
+                                                    <td contenteditable="true">Person-in-charge</label></td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <center>
+                    <button onclick="closeInputMemForm()">Save</button>
+                    <button onclick="closeInputMemForm()">Cancel</button>
+                </center>
+            </div>
+        </div>
+
+        <!-- END -->
+
         <div class="can-pop-container" id="can-popup">
             <img src="~/images/warning.png">
             <h2>System Warning!</h2>
@@ -267,6 +455,22 @@
 
     function remClosePopup() {
         rempopup.classList.remove("rem-popup-show")
+    }
+
+    function openAddNewContainer() {
+        document.getElementById("add-new-container").style.display = "block";
+    }
+
+    function closeAddNewContainer() {
+        document.getElementById("add-new-container").style.display = "none";
+    }
+
+    function openInputMemForm() {
+        document.getElementById("input-mem-container").style.display = "block";
+    }
+
+    function closeInputMemForm() {
+        document.getElementById("input-mem-container").style.display = "none";
     }
 
 </script>

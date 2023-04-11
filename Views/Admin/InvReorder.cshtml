@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "InvReorder";
     Layout = "~/Views/AdminLayout.cshtml";
-    ViewBag.Report = "active";
+    ViewBag.Req = "active";
 }
 
 <div class="main-content">
@@ -11,32 +11,167 @@
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            Re-Order
+            Requisition
         </h2>
+
+        <right>
+            <button class="create-req-btn" title="CREATE ORDER">
+                <a onclick="openForm()">
+                    Notification
+                    <span class="las la-bell"></span>
+                    <label class="notif-badge">5</label>
+                </a>
+            </button>
+        </right>
     </header>
 
-    <main>
+    <div class="purchase-buttons-style">
 
-        <div class="inventory-repo-grid">
-            <div class="inventory-repo-header">
-                <h3>CRITICAL QUANTITY LEVEL</h3>
-                <div class="inventory-repo-buttons-style">
+        <!-- NOTIFICATION CONTAINER -->
 
-                    <button class="create-btn" title="CREATE ORDER">
-                        <a onclick="createrequestOpenPopupPur()">
-                            CREATE ORDER
-                            <span class="las la-file-alt"></span>
-                        </a>
-                    </button>
+        <div class="notif-popup" id="notifForm">
+
+            <div class="notif-header">
+                <button type="button" class="close-btn" onclick="closeForm()"><i class="las la-times-circle"></i></button>
+                <h3>Notification</h3>
+            </div>
+
+            <div class="notif-container">
+
+
+                <div class="notif-list-container-active">
+                    <label>
+                        There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                    </label>
+                    <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                </div>
+
+                <div class="notif-list-container">
+                    <label>
+                        There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                    </label>
+                    <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                </div>
+
+                <div class="notif-list-container">
+                    <label>
+                        There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                    </label>
+                    <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                </div>
+
+                <div class="notif-list-container">
+                    <label>
+                        There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                    </label>
+                    <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                </div>
+                <div class="notif-list-container">
+                    <label>
+                        There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                    </label>
+                    <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                </div>
+                <div class="notif-list-container">
+                    <label>
+                        There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                    </label>
+                    <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
+
+                </div>
+                <div class="notif-list-container">
+                    <label>
+                        There’s a new submitted Deployment Request with RequestID: DEPREQ12.
+                    </label>
+                    <a onclick="viewOpenForm() + closeForm()">View Details <span class="las la-long-arrow-alt-right"></span> </a>
 
                 </div>
 
             </div>
-            <div class="inventory-repo-projects">
-                <div class="inventory-repo">
-                    <div class="inventory-repo-body">
+        </div>
+
+        <!-- END -->
+        <!-- VEW NOTIFICATION CONTAINER -->
+
+        <div class="view-popup" id="viewForm">
+            <div class="view-container">
+
+                <a onclick="openForm() + viewCloseForm()"><span class="las la-long-arrow-alt-left"></span> Back </a>
+
+                <div class="view-list-container">
+                    <center>
+                        <label>
+                            <h3>RequestID: DEPREQ12</h3>
+                        </label>
+                    </center>
+
+                </div>
+
+                <div class="acc-container">
+
+                </div>
+            </div>
+            <center>
+                <button type="button" class="appr-btn" onclick="">
+                    <a>
+                        Approve
+                        <span class="las la-check-circle"></span>
+                    </a>
+                </button>
+
+                <button type="button" class="appr-btn" onclick="">
+                    <a>
+                        Decline
+                        <span class="las la-times-circle"></span>
+                    </a>
+                </button>
+
+            </center>
+        </div>
+
+        <!-- END -->
+
+    </div>
+
+    <main>
+        <br>
+
+        
+        </br>
+        </br>
+        <div class="purchase-grid">
+            <div class="purchase-header">
+                <h3>REQUEST LISTS</h3>
+                <div class="purchase-buttons-style">
+                    <!--NEW UPDATE -->
+                    <button class="create-req-btn" title="CREATE ORDER" onclick="createrequestOpenPopupPur() + SetLabels() + HideApprovedItems()">
+                        <a onclick="createrequestOpenPopupPur() + SetLabels()">
+                            CREATE REQUEST
+                            <span class="las la-file-alt"></span>
+                        </a>
+                    </button>
+
+                    @*<select id="filter" onchange="SortByCategory(this,this.value)">
+                            <option disabled selected>FILTER</option>
+                            <option>All</option>
+                            <option>Local</option>
+                            <option>Import</option>
+                        </select>*@
+
+                </div>
+
+            </div>
+
+            <div class="purchase-projects">
+                <div class="purchase">
+                    <div class="purchase-body">
                         <div class="table-responsive" style="overflow-x: auto;">
-                            <table width="100%" id="myTable" class="myTable">
+                            <table width="100%" id="myTable">
                                 <thead>
                                     <tr>
                                         <td>Date Added</td>
@@ -51,402 +186,415 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @*<tr onclick="viewrequestOpenPopupPur()">
+                                            <td class="view"> <a onclick="viewrequestOpenPopupPur()"> PREQ67490 </a></td>
+                                            <td>Clarisse C. Vasques</td>
+                                            <td>008273126</td>
+                                            <td>Jan. 11, 2023</td>
+                                            <td>Supply Request</td>
+                                            <td><label class="stat-dec">Declined</label></td>
+                                            <td>
+                                                <div class="purchase-action-style">
+                                                    <button class="acc-btn" title="ACCEPT REQUEST" onclick="infoOpenPopup()"> <a href="#"><span class="las la-check-circle"></span></a></button>
+                                                    <button class="dec-btn" title="DECLINE REQUEST" onclick="openRemarksForm()"> <a href="#"><span class="las la-times-circle"></span></a></button>
+                                                    <button class="pri-btn" title="PRINT" onclick=""> <a href="#"><span class="las la-print"></span></a></button>
+                                                    <button class="del-btn" title="DELETE" onclick=""> <a href="#"><span class="las la-trash-alt"></span></a></button>
+                                                </div>
+                                            </td>
+                                        </tr>*@
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        @* CREATE REQUEST FOR ITEM POPUP *@
+            <div class="view-request-popup-pur" id="view-request-popup-pur">
+                <div class="view-request-container">
+                    <div class="view-request-form-container">
+                        <form action="">
 
-        <div class="view-request-popup-pur" id="view-request-popup-pur">
-            <div class="view-request-container">
-                <div class="view-request-form-container">
-                    <form action="">
-
-                        <div class="view-request-details">
-                            <div class="view-request-form-header">
-                                REQUEST DETAILS
-                            </div>
-                            <div class="view-request-form-contents">
-                                <div class="fields">
-                                    <div class="input-field">
-                                        <label><a>Request ID: </a>SREQ234567 </label>
-                                    </div>
-
-                                    <div class="input-field">
-                                        <label><a>Name: </a>Juan Karlos </label>
-                                    </div>
-                                    <div class="input-field">
-                                        <label><a>Request Type: </a>Purchase Request </label>
-                                    </div>
-                                    <div class="input-field">
-                                        <label><a>Date Requested: </a>January 11, 2023 </label>
-                                    </div>
+                            <div class="view-request-details">
+                                <div class="view-request-form-header">
+                                    REQUEST DETAILS
                                 </div>
-                            </div>
-                        </div>
+                                <div class="view-request-form-contents">
+                                    <div class="fields">
+                                        <div class="input-field">
+                                            <label><a>Request ID: </a>SREQ234567 </label>
+                                        </div>
 
-                        <div class="view-request-details">
-                            <div class="view-request-form-header">
-                                ITEM DETAILS
-                            </div>
-                            <div class="view-request-form-contents">
-                                <div class="view-request-form-table">
-                                    <div class="view-request-form-table-style">
-                                        <div class="table-responsive" style="overflow-x: auto;">
-                                            <table width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td>Name</td>
-                                                        <td>Category</td>
-                                                        <td>Type</td>
-                                                        <td>Size</td>
-                                                        <td>Quantity</td>
-                                                        <td>Remarks</td>
-                                                        <td></td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td><input type="checkbox"></td>
-                                                        <td><label>Ball Wave</label></td>
-                                                        <td><label>Others</label></td>
-                                                        <td><label>HFC</label></td>
-                                                        <td><label>N/A</label></td>
-                                                        <td><label>N/A</label></td>
-                                                        <td><label class="stat-crit">Critical</label></td>
-                                                        <td>
-                                                        </td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
+                                        <div class="input-field">
+                                            <label><a>Name: </a>Juan Karlos </label>
+                                        </div>
+                                        <div class="input-field">
+                                            <label><a>Request Type: </a>Purchase Request </label>
+                                        </div>
+                                        <div class="input-field">
+                                            <label><a>Date Requested: </a>January 11, 2023 </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <br>
-                        <br>
-
-                        <div class="view-request-details">
-                            <div class="view-request-form-header">
-                                APPROVED DETAILS
-                            </div>
-                            <div class="view-request-form-contents">
-                                <div class="view-request-form-table">
-                                    <div class="view-request-form-table-style">
-                                        <div class="table-responsive" style="overflow-x: auto;">
-                                            <table width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td>Name</td>
-                                                        <td>Category</td>
-                                                        <td>Type</td>
-                                                        <td>Size</td>
-                                                        <td>Quantity</td>
-                                                        <td>Request Quantity</td>
-                                                        <td>Remarks</td>
-                                                        <td>Action</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><label>Gate Valve Flange Type</label></td>
-                                                        <td><label>Gate Valve</label></td>
-                                                        <td><label></label></td>
-                                                        <td><label></label></td>
-                                                        <td><label>Null</label></td>
-                                                        <td><input type="number"></td>
-                                                        <td><label class="stat-crit">Critical</label></td>
-                                                        <td>
-                                                            <div class="view-action-style">
-                                                                <a>delete</a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                            <div class="view-request-details">
+                                <div class="view-request-form-header">
+                                    ITEM DETAILS
                                 </div>
-                            </div>
-                        </div>
-
-
-                    </form>
-                    <center>
-                        <div class="form-add-btns">
-                            <button class="save" onclick="infoOpenPopup()">
-                                <span class="btnText">Confirm</span>
-                                <i class="las la-check-square"></i>
-                            </button>
-
-                            <button class="cancel">
-                                <span class="btnText" onclick="canOpenPopup()">Cancel</span>
-                                <i class="las la-window-close"></i>
-                            </button>
-                        </div>
-                    </center>
-                </div>
-            </div>
-        </div>
-
-        <!-- END -->
-        <!-- CREATE REQUEST -->
-
-        <div class="create-request-popup-pur" id="create-request-popup-pur">
-            <div class="create-request-container">
-                <div class="create-request-form-container">
-                    <form action="" id="create-form">
-
-                        <div class="create-request-details">
-                            <div class="create-request-form-header">
-                                REQUEST DETAILS
-                            </div>
-                            <div class="create-request-form-contents">
-                                <div class="fields" id="create-fields">
-                                    <div class="input-field">
-                                        <label><a>Request ID: </a></label>
-                                        <label id="reqId"></label>
-                                    </div>
-
-                                    <div class="input-field">
-                                        <label><a>Name: </a></label>
-                                        <label id="reqName"></label>
-                                    </div>
-                                    <div class="input-field">
-                                        <label><a>Request Type: </a></label>
-                                        <label id="reqType"></label>
-                                    </div>
-                                    <div class="input-field">
-                                        <label><a>Date Requested: </a></label>
-                                        <label id="reqDate"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </br>
-                        </br>
-                        <div class="create-request-details">
-                            <div class="create-request-form-header">
-                                ITEM DETAILS
-                                <div class="add-item">
-                                    <button class="create-req-btn" title="CREATE ORDER">
-                                        <a onclick="itemlistOpenPopupPur()" id="add-item">
-                                            ADD ITEM
-                                            <span class="las la-file-alt"></span>
-                                        </a>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="create-request-form-contents">
-                                <div class="create-request-form-table">
-                                    <div class="create-request-form-table-style">
-                                        <div class="table-responsive" style="overflow-x: auto;">
-                                            <table width="100%" id="create-table">
-                                                <thead>
-                                                    <tr>
-                                                        <td>Name</td>
-                                                        <td>Category</td>
-                                                        <td>Type</td>
-                                                        <td>Size</td>
-                                                        <td>Remarks</td>
-                                                        <td>Request Quantity</td>
-                                                        <td>Action</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @*<tr>
+                                <div class="view-request-form-contents">
+                                    <div class="view-request-form-table">
+                                        <div class="view-request-form-table-style">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>Name</td>
+                                                            <td>Category</td>
+                                                            <td>Type</td>
+                                                            <td>Size</td>
+                                                            <td>Quantity</td>
+                                                            <td>Remarks</td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
                                                             <td><input type="checkbox"></td>
-                                                            <td><label>HXX-ASJ-0000</label></td>
+                                                            <td><label>Ball Wave</label></td>
+                                                            <td><label>Others</label></td>
+                                                            <td><label>HFC</label></td>
+                                                            <td><label>N/A</label></td>
+                                                            <td><label>N/A</label></td>
+                                                            <td><label class="stat-crit">Critical</label></td>
+                                                            <td>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br>
+                            <br>
+
+                            <div class="view-request-details">
+                                <div class="view-request-form-header">
+                                    APPROVED DETAILS
+                                </div>
+                                <div class="view-request-form-contents">
+                                    <div class="view-request-form-table">
+                                        <div class="view-request-form-table-style">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>Name</td>
+                                                            <td>Category</td>
+                                                            <td>Type</td>
+                                                            <td>Size</td>
+                                                            <td>Quantity</td>
+                                                            <td>Request Quantity</td>
+                                                            <td>Remarks</td>
+                                                            <td>Action</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td></td>
                                                             <td><label>Gate Valve Flange Type</label></td>
                                                             <td><label>Gate Valve</label></td>
                                                             <td><label></label></td>
                                                             <td><label></label></td>
                                                             <td><label>Null</label></td>
-                                                            <td><label>Imported</label></td>
+                                                            <td><input type="number"></td>
                                                             <td><label class="stat-crit">Critical</label></td>
                                                             <td>
-                                                                <div class="create-action-style">
+                                                                <div class="view-action-style">
                                                                     <a>delete</a>
                                                                 </div>
                                                             </td>
-                                                        </tr>*@
+                                                        </tr>
 
-                                                </tbody>
-                                            </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </form>
-                    </br>
-                    </br>
-                    </br>
-                    <center>
-                        <div class="form-add-btns">
-                            <button class="save" onclick="infoOpenPopup()">
-                                <span class="btnText" id="cnfBtn">Confirm</span>
-                                <i class="las la-check-square"></i>
-                            </button>
 
-                            <button class="cancel">
-                                <span class="btnText" onclick="canOpenPopup()">Cancel</span>
-                                <i class="las la-window-close"></i>
-                            </button>
-                        </div>
-                    </center>
+                        </form>
+                        <center>
+                            <div class="form-add-btns">
+                                <button class="save" onclick="infoOpenPopup()">
+                                    <span class="btnText">Confirm</span>
+                                    <i class="las la-check-square"></i>
+                                </button>
+
+                                <button class="cancel">
+                                    <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                    <i class="las la-window-close"></i>
+                                </button>
+                            </div>
+                        </center>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- END -->
-        <!-- ADD INVENTORY LIST -->
+            <!-- END -->
+            <!-- CREATE REQUEST -->
 
-        <div class="itemlist-popup-pur" id="itemlist-popup-pur">
-            <div class="itemlist-container">
-                <div class="itemlist-form-container">
-                    <form action="">
-                        <div class="itemlist-details">
-                            <div class="itemlist-form-header">
-                                ITEM LISTS
-                                <right>
-                                    <div class="item-section">
-                                        <div class="item-wrapper">
-                                            <span class="las la-search"></span>
-                                            <input type="text" placeholder="Search here" onkeyup="SearchItem1(this.value)">
+            <div class="create-request-popup-pur" id="create-request-popup-pur">
+                <div class="create-request-container">
+                    <div class="create-request-form-container">
+                        <form action="" id="create-form">
+
+                            <div class="create-request-details">
+                                <div class="create-request-form-header">
+                                    REQUEST DETAILS
+                                </div>
+                                <div class="create-request-form-contents">
+                                    <div class="fields" id="create-fields">
+                                        <div class="input-field">
+                                            <label><a>Request ID: </a></label>
+                                            <label id="reqId"></label>
                                         </div>
-                                    </div>
-                                </right>
-                            </div>
-                            <div class="itemlist-form-contents">
-                                <div class="itemlist-form-table">
-                                    <div class="itemlist-form-table-style">
-                                        <div class="table-responsive" style="overflow-x: auto;">
-                                            <table width="100%" id="InvTable">
-                                                <thead>
-                                                    <tr>
-                                                        <td><a>Name<i class="las la-sort-down"></i></a></td>
-                                                        <td>Category</td>
-                                                        <td>Type</td>
-                                                        <td>Size</td>
-                                                        <td>Remarks</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @*<tr onclick="openInputQTYForm()">
 
-                                                            <td><label>Clarisse C. Vaquez</label></td>
-                                                            <td><label>Supervisor</label></td>
-                                                            <td><label>0923758923</label></td>
-                                                            <td><label>12341241</label></td>
-                                                            <td><label class="stat-standard">Standard</label></td>
-                                                        </tr>*@
-
-                                                </tbody>
-                                            </table>
+                                        <div class="input-field">
+                                            <label><a>Name: </a></label>
+                                            <label id="reqName"></label>
+                                        </div>
+                                        <div class="input-field">
+                                            <label><a>Request Type: </a></label>
+                                            <label id="reqType"></label>
+                                        </div>
+                                        <div class="input-field">
+                                            <label><a>Date Requested: </a></label>
+                                            <label id="reqDate"></label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            </br>
+                            </br>
+                            <div class="create-request-details">
+                                <div class="create-request-form-header">
+                                    ITEM DETAILS
+                                    <div class="add-item">
+                                        <button class="create-req-btn" title="CREATE ORDER">
+                                            <a onclick="itemlistOpenPopupPur()" id="add-item">
+                                                ADD ITEM
+                                                <span class="las la-file-alt"></span>
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div>
 
-                        <br>
-                        <br>
+                                <div class="create-request-form-contents">
+                                    <div class="create-request-form-table">
+                                        <div class="create-request-form-table-style">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%" id="create-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>Name</td>
+                                                            <td>Category</td>
+                                                            <td>Type</td>
+                                                            <td>Size</td>
+                                                            <td>Remarks</td>
+                                                            <td>Request Quantity</td>
+                                                            <td>Action</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @*<tr>
+                                                                <td><input type="checkbox"></td>
+                                                                <td><label>HXX-ASJ-0000</label></td>
+                                                                <td><label>Gate Valve Flange Type</label></td>
+                                                                <td><label>Gate Valve</label></td>
+                                                                <td><label></label></td>
+                                                                <td><label></label></td>
+                                                                <td><label>Null</label></td>
+                                                                <td><label>Imported</label></td>
+                                                                <td><label class="stat-crit">Critical</label></td>
+                                                                <td>
+                                                                    <div class="create-action-style">
+                                                                        <a>delete</a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>*@
 
-                    </form>
-                    <center>
-                        <div class="form-add-btns">
-                            <button class="cancel">
-                                <span class="btnText" onclick="itemlistClosePopupPur()">Back</span>
-                                <i class="las la-window-close"></i>
-                            </button>
-                        </div>
-                    </center>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                        </br>
+                        </br>
+                        </br>
+                        <center>
+                            <div class="form-add-btns">
+                                <button class="save" onclick="infoOpenPopup()">
+                                    <span class="btnText" id="cnfBtn">Confirm</span>
+                                    <i class="las la-check-square"></i>
+                                </button>
+
+                                <button class="cancel">
+                                    <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                    <i class="las la-window-close"></i>
+                                </button>
+                            </div>
+                        </center>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- END -->
-        <!-- INPUT POPUP -->
+            <!-- END -->
+            <!-- ADD INVENTORY LIST -->
 
-        <div class="input-popup" id="input-popup">
-            <h3>INPUT QUANTITY</h3>
-            <input type="number" id="quantVal">
-            <input type="text" id="hiddenCode" style="display:none;">
+            <div class="itemlist-popup-pur" id="itemlist-popup-pur">
+                <div class="itemlist-container">
+                    <div class="itemlist-form-container">
+                        <form action="">
+                            <div class="itemlist-details">
+                                <div class="itemlist-form-header">
+                                    ITEM LISTS
+                                    <right>
+                                        <div class="item-section">
+                                            <div class="item-wrapper">
+                                                <span class="las la-search"></span>
+                                                <input type="text" placeholder="Search here" onkeyup="SearchItem1(this.value)">
+                                            </div>
+                                        </div>
+                                    </right>
+                                </div>
+                                <div class="itemlist-form-contents">
+                                    <div class="itemlist-form-table">
+                                        <div class="itemlist-form-table-style">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%" id="InvTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <td><a>Name<i class="las la-sort-down"></i></a></td>
+                                                            <td>Category</td>
+                                                            <td>Type</td>
+                                                            <td>Size</td>
+                                                            <td>Remarks</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @*<tr onclick="openInputQTYForm()">
 
-            <br>
-            <br>
-            <button id="conf">confirm</button>
-            <button onclick="closeInputQTYForm()">cancel</button>
-        </div>
+                                                                <td><label>Clarisse C. Vaquez</label></td>
+                                                                <td><label>Supervisor</label></td>
+                                                                <td><label>0923758923</label></td>
+                                                                <td><label>12341241</label></td>
+                                                                <td><label class="stat-standard">Standard</label></td>
+                                                            </tr>*@
 
-        <!-- END -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="can-pop-container" id="can-popup1">
-            <img src="@Url.Content("~/images/warning.png")">
-            <h2>System Warning!</h2>
-            <p>Do you want to go back?</p>
-            <button type="button" onclick="">Yes</button>
-            <button type="button" onclick="canClosePopup()">Cancel</button>
-        </div>
+                            <br>
+                            <br>
 
-        <input type="text" id="formType" style="display:none">
-        <div class="info-pop-container" id="info-popup">
-            <img src="@Url.Content("~/images/information.png")">
-            <h2>System Warning!</h2>
-            <p>Do you want to save employee's request?</p>
-            <button type="button" onclick="saveRequest()">Yes</button>
-            <button type="button" onclick="infoClosePopup()">Cancel</button>
-        </div>
+                        </form>
+                        <center>
+                            <div class="form-add-btns">
+                                <button class="cancel">
+                                    <span class="btnText" onclick="itemlistClosePopupPur()">Back</span>
+                                    <i class="las la-window-close"></i>
+                                </button>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
 
-        <div class="save-pop-container" id="popup">
-            <img src="@Url.Content("~/images/tick.png")">
-            <h2>Accepted!</h2>
-            <p>@ViewBag.Message</p>
-            <button type="button" onclick="closePopup()">OK</button>
-        </div>
+            <!-- END -->
+            <!-- INPUT POPUP -->
 
-        <div class="can-pop-container" id="can-popup">
-            <img src="@Url.Content("~/images/warning.png")">
-            <h2>System Warning!</h2>
-            <p>Do you want to cancel any changes?</p>
-            <button type="button" onclick="remOpenPopup() + viewrequestClosePopupPur() + itemlistClosePopupPur() + createrequestClosePopupPur() + canClosePopup() + addClosePopupPur() + resetForm()">Yes</button>
-            <button type="button" onclick="canClosePopup()">Cancel</button>
-        </div>
+            <div class="input-popup" id="input-popup">
+                <h3>INPUT QUANTITY</h3>
+                <input type="number" id="quantVal">
+                <input type="text" id="hiddenCode" style="display:none;">
 
-        <div class="rem-pop-container" id="rem-popup">
-            <img src="@Url.Content("~/images/remove.png")">
-            <h2>Deleted!</h2>
-            <p>Request Discarded!</p>
-            <button type="button" onclick="remClosePopup()">OK</button>
-        </div>
+                <br>
+                <br>
+                <button id="conf">confirm</button>
+                <button onclick="closeInputQTYForm()">cancel</button>
+            </div>
 
-        <div class="print-pop-container" id="print-popup">
-            <img src="@Url.Content("~/images/printer.png")">
-            <h2>Print!</h2>
-            <p>Print successfully!</p>
-            <button type="button" onclick="printClosePopup()">OK</button>
-        </div>
+            <!-- END -->
 
-        <div class="expo-pop-container" id="expo-popup">
-            <img src="@Url.Content("~/images/export.png")">
-            <h2>Export!</h2>
-            <p>Exported Successfully!</p>
-            <button type="button" onclick="expoClosePopup()">OK</button>
-        </div>
+            <div class="can-pop-container" id="can-popup1">
+                <img src="@Url.Content("~/images/warning.png")">
+                <h2>System Warning!</h2>
+                <p>Do you want to go back?</p>
+                <button type="button" onclick="">Yes</button>
+                <button type="button" onclick="canClosePopup()">Cancel</button>
+            </div>
+
+            <input type="text" id="formType" style="display:none">
+            <div class="info-pop-container" id="info-popup">
+                <img src="@Url.Content("~/images/information.png")">
+                <h2>System Warning!</h2>
+                <p>Do you want to save employee's request?</p>
+                <button type="button" onclick="saveRequest()">Yes</button>
+                <button type="button" onclick="infoClosePopup()">Cancel</button>
+            </div>
+
+            <div class="save-pop-container" id="popup">
+                <img src="@Url.Content("~/images/tick.png")">
+                <h2>Accepted!</h2>
+                <p>@ViewBag.Message</p>
+                <button type="button" onclick="closePopup()">OK</button>
+            </div>
+
+            <div class="can-pop-container" id="can-popup">
+                <img src="@Url.Content("~/images/warning.png")">
+                <h2>System Warning!</h2>
+                <p>Do you want to cancel any changes?</p>
+                <button type="button" onclick="remOpenPopup() + viewrequestClosePopupPur() + itemlistClosePopupPur() + createrequestClosePopupPur() + canClosePopup() + addClosePopupPur() + resetForm()">Yes</button>
+                <button type="button" onclick="canClosePopup()">Cancel</button>
+            </div>
+
+            <div class="rem-pop-container" id="rem-popup">
+                <img src="@Url.Content("~/images/remove.png")">
+                <h2>Deleted!</h2>
+                <p>Request Discarded!</p>
+                <button type="button" onclick="remClosePopup()">OK</button>
+            </div>
+
+            <div class="print-pop-container" id="print-popup">
+                <img src="@Url.Content("~/images/printer.png")">
+                <h2>Print!</h2>
+                <p>Print successfully!</p>
+                <button type="button" onclick="printClosePopup()">OK</button>
+            </div>
+
+            <div class="expo-pop-container" id="expo-popup">
+                <img src="@Url.Content("~/images/export.png")">
+                <h2>Export!</h2>
+                <p>Exported Successfully!</p>
+                <button type="button" onclick="expoClosePopup()">OK</button>
+            </div>
 
     </main>
 </div>
@@ -454,7 +602,49 @@
 <script src="@Url.Content("~/Scripts/Reorder.js")"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
+<script>
 
+    function checkForm() {
+        var bool = $('#formId').valid();
+        if (bool) {
+            infoOpenPopup();
+        }
+    }
+
+    function exportToPdf() {
+        const actionButtons = document.querySelectorAll('.purchase-action-style');
+        actionButtons.forEach(button => button.style.display = 'none');
+
+
+        const element = document.querySelector('#myTable');
+        const options = {
+            margin: [0, 0, 0, 0],
+            filename: 'invoice.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
+            // Add header option
+            header: {
+                height: '1cm',
+                contents: '<div id="header"><img id="logo" src="~/images/LogoNameFull.png"></div>',
+                onBeforeParse: (pdf, doc, pages, callback) => {
+                    const header = document.getElementById('header');
+                    const logo = document.getElementById('logo');
+                    callback(header);
+                }
+            }
+        };
+        html2pdf()
+            .set(options)
+            .from(element)
+            .save()
+            .then(() => {
+                // Show action buttons again after exporting
+                actionButtons.forEach(button => button.style.display = 'block');
+            });
+    }
+
+</script>
 <script>
 
     //window.onload = function () {

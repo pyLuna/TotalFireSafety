@@ -120,7 +120,8 @@ function GetAll() {
 			fixArray(jsonArray, 1);
 			DeleteCertainPart();
 			if (table !== null) {
-				setTable(fixedArray);
+				var result = MergeSameId(fixedArray);
+				setTable(result);
 			}
 		})
 		.catch(error => {
@@ -172,7 +173,6 @@ function InvsetTable(array) {
 		}
 	}
 }
-
 function extractNum(value) {
 	let num = 0;
 	let measurement = '';
@@ -427,7 +427,7 @@ function sendRequest(jsonData, formType) {
 		});
 }
 
-function setTemplate(Id,typeOf) {
+function setTemplate(Id, typeOf) {
 	//var fields = document.querySelectorAll(domId);
 	const rows = Array.from(crtable.getElementsByTagName('tr'));
 	let emp_no = localStorage.getItem('emp_no');
@@ -467,9 +467,7 @@ function setTemplate(Id,typeOf) {
 	return arr;
 }
 
-//#region Sort By Column
-// sort function start
-// General sort function
+//#region sort only
 function SortDescending(array, itemToSort) {
 	return array.sort((a, b) => {
 		if (a[itemToSort] < b[itemToSort]) return 1;
@@ -494,7 +492,7 @@ function Sort(item, value) {
 		arrayToSend = filtered;
 	}
 	else {
-		arrayToSend = fixedArray;
+		arrayToSend = viewData;
 	}
 
 	if (iElement.classList.contains('la-sort-down')) {
@@ -508,19 +506,20 @@ function Sort(item, value) {
 	}
 	setTable(catcher);
 }
-//sort by category
+
 function SortByCategory(element, value) {
 	let focuselement = "";
 	if (value != '') {
-		FilterItem(value.toLowerCase(), fixedArray);
+		filterArray(value.toLowerCase(), fixedArray);
 	}
 	else {
-		FilterItem("", fixedArray);
+		filterArray("", fixedArray);
 		element.selectedIndex = 0;
 	}
 	setTable(filtered);
 }
 //#endregion
+
 //#region request details
 function MaxRequestId() {
 	const requestTypeIds = viewData.map(request => request.request_type_id);

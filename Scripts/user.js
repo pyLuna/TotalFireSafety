@@ -81,7 +81,8 @@ function setTable(array) {
             row += `<td id="emp_no"><label>${array[i].emp_no}</label></td><td name="emp_name"><label>${array[i].emp_name}</label></td><td name="emp_hiredDate"><label>${array[i].FormattedDate}</label></td><td name="emp_contact"><label>${array[i].emp_contact}</label></td><td name="emp_position"><label>${array[i].emp_position}</label><td name="IsActive"><label">${stats}</label>`;
             row += `</form>`;
             row += `<td id="hideActionBtn"><div class="user-action-style">`;
-            row += ` <button class="edit-btn" title="EDIT SELECTED ITEM" onclick="openEditForm('${array[i].emp_no}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+            row += ` <button class="edit-btn" id="edit-btn-users1" title="EDIT SELECTED ITEM" onclick="LoadUserContents() + openEditForm('${array[i].emp_no}')">
+            <a href="#"><span class="lar la-edit"></span></a></button>`;
             //row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
             row += `</td></div>`;
             row += `</tr>`;

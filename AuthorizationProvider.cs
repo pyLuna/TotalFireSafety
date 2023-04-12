@@ -1,16 +1,20 @@
 ﻿using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TotalFireSafety.Models;
+using System.Text;
 
 namespace TotalFireSafety
 {
     public class AuthorizationProvider : OAuthAuthorizationServerProvider
     {
+        private readonly TFSEntity _context = new TFSEntity();
+
         //User Validation
-        #region
+        #region Roles and Status
         private bool IsLocked(int value)
         {
             switch (value)
@@ -49,6 +53,37 @@ namespace TotalFireSafety
             return "";
         }
         #endregion
+
+        private Credential Hash(string uname, string pword)
+        {
+            using (var context = new TFSEntity())
+            {
+                var md5 = MD5.Create();
+                var users = context.Credentials.Select(x => x).ToList();
+                var userResult = new Credential();
+
+                byte[] inputBytes = Encoding.UTF8.GetBytes(pword);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                foreach (var user in users)
+                {
+                    byte[] userBytes = Encoding.UTF8.GetBytes(user.password);
+                    byte[] resultByte = md5.ComputeHash(userBytes);
+
+                    if (hashBytes.SequenceEqual(resultByte))
+                    {
+                        userResult = new Credential()
+                        {
+                            username = user.username,
+                            password = user.password,
+                            emp_no = user.emp_no
+                        };
+                    }
+                }
+                return userResult;
+            }
+        }
+
         //validate Authentication
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
@@ -59,22 +94,19 @@ namespace TotalFireSafety
         {
             //set token as "bearer"
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            using (var _context = new TFSEntity()) //init database connection
+            using (var db = new TFSEntity()) //init database connection
             {
                 try
                 {
-                var _user = _context.Credentials.Where(x => x.username == context.UserName && x.password == context.Password).AsEnumerable().First(x => x.username == context.UserName && x.password == context.Password);
                     //find user
-                    //var _user = _context.Credentials.Where(x => string.Equals(x.username,context.UserName, System.StringComparison.CurrentCulture) && string.Equals(x.password, context.Password, System.StringComparison.CurrentCulture)).FirstOrDefault();
+                    var _user = Hash(context.UserName, context.Password);
                     //verify role
-                    if (_user != null)
+                    if (_user.username == context.UserName)
                     {
                         //find roles
-                        //var _role = _context.Roles.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
-                        var _role = _context.Roles.Where(x => x.emp_no.Equals(_user.emp_no)).SingleOrDefault();
+                        var _role = db.Roles.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
                         //find status
-                        var _status = _context.Status.Where(x => x.emp_no.Equals(_user.emp_no)).SingleOrDefault();
-                        //var _status = _context.Status.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
+                        var _status = db.Status.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
                         string authorization = VerifyRole(_role.role1);
                         if (IsActive(_status.IsActive))
                         {
@@ -95,9 +127,9 @@ namespace TotalFireSafety
                     context.SetError("invalid_grant", "Username or Password is incorrect");
                     return;
                 }
-                catch(InvalidOperationException)
+                catch (Exception ex)
                 {
-                    context.SetError("invalid_grant", "Username or Password is incorrect");
+                    context.SetError("invalid_grant", ex.ToString());
                     return;
                 }
             }

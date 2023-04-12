@@ -114,9 +114,9 @@
             <div class="proj-main-container">
                 <div class="proj-task-list">
                     <div class="task-header">
-                        <h2>Task List</h2>
+                        <h2>Accomplistments</h2>
                         <div class="right-container">
-                            <a href="#">
+                            <a onclick="openReportForm()">
                                 <span class="lar la-plus-square"></span>Add Report
                             </a>
                         </div>
@@ -131,36 +131,36 @@
                                         <table width="100%">
                                             <thead>
                                                 <tr>
-                                                    <td>Task</td>
-                                                    <td>Status</td>
+                                                    <td>Date Submitted</td>
+                                                    <td>Report No.</td>
                                                     <td>Description</td>
-                                                    <td>Start Date</td>
-                                                    <td>Est. Completion Date</td>
+                                                    <td>Remarks</td>
+                                                    <td></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr onclick="openDailyReportForm()">
-                                                    <td>UI Design</td>
-                                                    <td><label class="on-going">On-going</label></td>
-                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
-                                                    <td>Mar. 11, 2023</td>
-                                                    <td>Mar. 11, 2023</td>
+                                                <tr>
+                                                    <td>Mar 11, 2023</td>
+                                                    <td>Report No.1</td>
+                                                    <td>The task were succe...&nbsp;<i class="las la-expand-arrows-alt"></i></td>
+                                                    <td>Achieved</td>
+                                                    <td><a>export</a></td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td>UI Design</td>
-                                                    <td><label class="in-line">On-going</label></td>
-                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
-                                                    <td>Mar. 11, 2023</td>
-                                                    <td>Mar. 11, 2023</td>
+                                                    <td>April 12, 2023</td>
+                                                    <td>Report No.2</td>
+                                                    <td>The task were succe...&nbsp;<i class="las la-expand-arrows-alt"></i></td>
+                                                    <td>Unfinished</td>
+                                                    <td><a>export</a></td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td>UI Design</td>
-                                                    <td><label class="delayed">On-going</label></td>
-                                                    <td><label class="descr">Installation of pipes</label><a class="desc" onclick=""><span class="las la-expand-arrows-alt"></span></a></td>
-                                                    <td>Mar. 11, 2023</td>
-                                                    <td>Mar. 11, 2023</td>
+                                                    <td>Feb 14, 2023</td>
+                                                    <td>Report No.3</td>
+                                                    <td>The task were succe...&nbsp;<i class="las la-expand-arrows-alt"></i></td>
+                                                    <td>Achieved</td>
+                                                    <td><a>export</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -175,22 +175,25 @@
                     <div class="proj-incharge-container">
                         <div class="incharge">
                             <div class="incharge-header">
-                                <select required>
-                                    <option disabled selected>Select In-charge</option>
-                                    <option>Vincent M. Cordero</option>
-                                </select>
-
-                                <label>Person-in-charge</label>
+                                <br>
+                                <h2>DESCRIPTION</h2>
+                                <hr>
                             </div>
 
                             <div class="date">
-                                <label class="title">Start Date: </label>
-                                <label><input type="date"></label>
+                                <label>Project Name: 6 Story Bldg</label>
                             </div>
 
                             <div class="date">
-                                <label class="title">Finish Date: </label>
-                                <label><input type="date"></label>
+                                <label>Subject: Supply & Install AFSS and FOAS</label>
+                            </div>
+
+                            <div class="date">
+                                <label>Client: Lanao Milling Corp</label>
+                            </div>
+
+                            <div class="date">
+                                <label>Project Lead: Vincent M. Cordero</label>
                             </div>
 
                             <div class="status">
@@ -198,56 +201,59 @@
                                 <label class="on-going">
                                     <select required>
                                         <option>Select Status</option>
-                                        <option>On-going</option>
-                                        <option>In-going</option>
-                                        <option>delay</option>
+                                        <option class="on-going">On-going</option>
+                                        <option class="upcoming">Upcoming</option>
+                                        <option class="cancelled">Cancelled</option>
                                     </select>
                                 </label>
                             </div>
+
+                            <div class="date">
+                                <label class="title">Start Date: </label>
+                                <label><input class="start" type="date"></label>
+                            </div>
+
+                            <div class="date">
+                                <label class="title">Finish Date: </label>
+                                <label><input type="date"></label>
+                            </div>
+
+
                         </div>
                     </div>
-                    <div class="proj-des-container">
-                        <div class="descri-main">
-                            <div class="descri-title">
-                                <h3>Project Title</h3>
-                            </div>
-                            <div class="descri-content">
-                                <textarea placeholder="Place your project description here."></textarea>
 
-                            </div>
-                        </div>
 
-                    </div>
                     <div class="proj-mems-container">
                         <div class="mems-main">
                             <div class="mems-title">
-                                <h3>
-                                    Team Members
-                                    <a onclick="openInputMemForm()">
-                                        <span class="lar la-plus-square"></span>
-                                    </a>
-                                </h3>
-
+                                <br>
+                                <h3>MANPOWER</h3>
+                                <hr>
                             </div>
                             <div class="mems-list">
                                 <div class="mems-grid">
-
                                     <div class="mems-projects">
                                         <div class="mems">
                                             <div class="mems-body">
                                                 <div class="table-responsive" style="overflow-x: auto;">
                                                     <table width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>Name</td>
-                                                                <td>Position</td>
-                                                            </tr>
-                                                        </thead>
                                                         <tbody>
+
                                                             <tr>
                                                                 <td><b>Vincent M. Cordero</b></td>
                                                                 <td>Person-in-charge</label></td>
                                                             </tr>
+
+                                                            <tr>
+                                                                <td><b>Vincent M. Cordero</b></td>
+                                                                <td>Person-in-charge</label></td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td><b>Vincent M. Cordero</b></td>
+                                                                <td>Person-in-charge</label></td>
+                                                            </tr>
+
 
                                                         </tbody>
                                                     </table>
@@ -263,10 +269,238 @@
             </div>
         </div>
 
+        <div class="report-container" id="report-container">
+            <h3>DAILY REPORT</h3>
+            <div class="report-grp">
+                <div class="left-grp">
+                    <div class="descript-container">
+                        <textarea placeholder="<DESCRIPTION>"></textarea>
+                    </div>
+                    <div class="img-container">
+                        <h3>
+                            Daily Report Image List
+                            <a onclick="openInputMemForm()">
+                                <span class="lar la-plus-square"></span>
+                            </a>
+                        </h3>
+                        <div class="img-list">
+                            <img src="../../images/01.jpg" alt="" class="report-img">
+                            <img src="../../images/02.jpg" alt="" class="report-img">
+                            <img src="../../images/03.jpg" alt="" class="report-img">
+                            <img src="../../images/04.jpg" alt="" class="report-img">
+                            <img src="../../images/05.jpg" alt="" class="report-img">
+                            <img src="../../images/01.jpg" alt="" class="report-img">
+                            <img src="../../images/02.jpg" alt="" class="report-img">
+                            <img src="../../images/03.jpg" alt="" class="report-img">
+                            <img src="../../images/04.jpg" alt="" class="report-img">
+                            <img src="../../images/05.jpg" alt="" class="report-img">
+                            <img src="../../images/01.jpg" alt="" class="report-img">
+                            <img src="../../images/02.jpg" alt="" class="report-img">
+                            <img src="../../images/03.jpg" alt="" class="report-img">
+                            <img src="../../images/04.jpg" alt="" class="report-img">
+                            <img src="../../images/05.jpg" alt="" class="report-img">
+                        </div>
+                        <div class="img-footer"></div>
+                    </div>
+
+                </div>
+                <div class="right-grp">
+                    <div class="right-upper">
+                        <div class="right-date">
+                            <h3>Date: </h3><input type="date">
+                        </div>
+                        <div class="right-select-stat">
+                            <select required>
+                                <option>Select Status</option>
+                                <option>On-going</option>
+                                <option>In-going</option>
+                                <option>delay</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="right-mid">
+                        <div class="mid-container">
+                            <h3><span class="las la-clipboard-list"></span>:</h3>
+                            <input type="text" placeholder="Input cleared task">
+                            <i class="las la-location-arrow"></i>
+                        </div>
+
+                    </div>
+                    <div class="right-lower">
+                        <div class="lower-list">
+                            <div class="lower-grid">
+                                <div class="lower-projects">
+                                    <div class="lower">
+                                        <div class="lower-body">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>Task</td>
+                                                            <td>Status</td>
+                                                            <td>Date</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><b>Installation</b></td>
+                                                            <td><label class="stat-on-going">Ongoing</label></label></td>
+                                                            <td>April 03, 2023</label></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><b>Installation</b></td>
+                                                            <td><label class="stat-in-going">Ingoing</label></label></td>
+                                                            <td>April 03, 2023</label></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><b>Installation</b></td>
+                                                            <td><label class="stat-delayed">Delayed</label></label></td>
+                                                            <td>April 03, 2023</label></td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <center>
+                <button onclick="closeReportForm()">Save</button>
+                <button onclick="closeReportForm()">Cancel</button>
+            </center>
+
+        </div>
+
+        <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
+
+        <div class="add-new-container" id="add-new-container">
+            <div class="add-new-header">
+                <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                <center>
+                    <h3>EDIT PROJECT <i class="las la-rocket"></i></h3>
+                </center>
+
+            </div>
+
+            <div class="add-new-main">
+                <div class="add-new-left">
+                    <div class="input-fields">
+                        <Label>Project Name</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Subject</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Client</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Location Site</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here..">
+                    </div>
+                    <div class="grp">
+                        <div class="input-fields left">
+                            <Label>Project Lead</Label>
+                            <br>
+                            <select required>
+                                <option disabled selected>Select Lead</option>
+                                <option>Vincent Cordero</option>
+                            </select>
+                        </div>
+                        <div class="input-fields right">
+                            <Label>Status</Label>
+                            <br>
+                            <select required>
+                                <option>Select Status</option>
+                                <option>On-going</option>
+                                <option>In-going</option>
+                                <option>delay</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grp">
+                        <div class="input-fields left">
+                            <Label>Start Date</Label>
+                            <br>
+                            <input type="date">
+                        </div>
+                        <div class="input-fields right">
+                            <Label>Baseline Finish</Label>
+                            <br>
+                            <input type="date">
+                        </div>
+                    </div>
+
+                    <button>CREATE PROJECT</button>
+
+                </div>
+
+                <div class="add-new-right">
+                    <div class="add-new-header">
+                        <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
+                    </div>
+
+                    <div class="add-new-power">
+                        <div class="mems-list">
+                            <div class="mems-grid">
+                                <div class="mems-projects">
+                                    <div class="mems">
+                                        <div class="mems-body">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%">
+                                                    <tbody>
+
+                                                        <tr>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
+                                                        </tr>
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
         <div class="input-mem-container" id="input-mem-container">
             <div class="input-mems-main">
                 <div class="input-mems-title">
-                    <h3>Team Members</h3>
+                    <h3>MANPOWER</h3>
 
                 </div>
                 <div class="input-mems-list">
@@ -304,34 +538,6 @@
             </div>
         </div>
 
-        <div class="report-container" id="report-container">
-            <h3>DAILY REPORT</h3>
-            <div class="report-grp">
-                <div class="left-grp">
-                    <div class="descript-container">
-                        <textarea placeholder="<DESCRIPTION>"></textarea>
-                    </div>
-                    <div class="img-container">
-                        <h3><i>IMAGE PREVIEW GRID</i></h3>
-                    </div>
-
-                </div>
-                <div class="right-grp">
-                    <div class="right-upper">
-
-                    </div>
-                    <div class="right-lower">
-
-                    </div>
-                </div>
-            </div>
-
-            <center>
-                <button onclick="closeInputMemForm()">Save</button>
-                <button onclick="closeInputMemForm()">Cancel</button>
-            </center>
-
-        </div>
 
         <div class="can-pop-container" id="can-popup">
             <img src="../../images/warning.png">

@@ -1,6 +1,4 @@
-﻿//const { type } = require("jquery");
-
-let viewData = [];
+﻿let viewData = [];
 let tableData = [];
 let jsonArray = [];
 let filtered = [];
@@ -23,8 +21,8 @@ let reqId = document.getElementById('edit-reqId');
 let reqDate = document.getElementById('edit-reqDate');
 let reqName = document.getElementById('edit-reqName');
 let reqType = document.getElementById('edit-reqType');
-	let emp_no = localStorage.getItem('emp_no');
-	let guids = [];
+let emp_no = localStorage.getItem('emp_no');
+let guids = [];
 let message = "";
 
 const template = {
@@ -36,7 +34,7 @@ const template = {
 	"request_employee_id": "",
 	"request_status": "",
 	"request_type_id": 0,
-	"request_type_status" : ""
+	"request_type_status": ""
 };
 
 const template2 = {
@@ -44,7 +42,7 @@ const template2 = {
 	"request_date": "",
 	"request_employee_id": "",
 	"request_type_id": 0,
-	"request_type_status" : ""
+	"request_type_status": ""
 };
 
 document.getElementById('saveBtn').addEventListener('click', function () {
@@ -152,8 +150,8 @@ function GetAll() {
 			fixArray(jsonArray, 1);
 			DeleteCertainPart();
 			//if (table !== null) {
-				let result = MergeSameId(viewData);
-				setTable(result);
+			let result = MergeSameId(viewData);
+			setTable(result);
 			//}
 		})
 		.catch(error => {
@@ -273,12 +271,22 @@ function setTable(array) {
 	table.innerHTML = '';
 	let emp_role = localStorage.getItem("emp_role");
 	let className = "";
-	let button;
+	let editBtn;
+	let apprBtn;
 	if (array.length != 0) {
 		for (let i = 0; i < array.length; i++) {
-			let listener = ""
+			let changeListener = "";
+			let editListener = "";
+
 			if (emp_no == array[i].Employee.emp_no) {
-				listener = `viewrequestOpenPopupPur('${array[i].request_type_id}', 'change')`;
+				changeListener = `viewrequestOpenPopupPur('${array[i].request_type_id}', 'change')`;
+				editListener = "";
+			}
+			else {
+				editListener = `viewrequestOpenPopupPur('${array[i].request_type_id}', 'edit')`;
+			}
+			if (array[i].request_status.trim().toLowerCase() === "approved") {
+				editListener = "";
 			}
 			if (array[i].request_status === "On Process") {
 				className = "stat-pen";
@@ -299,9 +307,9 @@ function setTable(array) {
 			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label class="${className}" style="font-weight:bold;">${array[i].request_status}</label></td>`;
 			row += `<td id="hideActionBtn">`;
 			row += `<div class="purchase-action-style">`;
-			row += `<button class="acc-btn" id="appr${i}" title="ACCEPT REQUEST" onclick="viewrequestOpenPopupPur('${array[i].request_type_id}','edit')"> <a href="#"><span class="las la-check-circle"></span></a></button>`;
+			row += `<button class="acc-btn" id="appr${i}" title="ACCEPT REQUEST" onclick="${editListener}"> <a href="#"><span class="las la-check-circle"></span></a></button>`;
 			//row += `<button class="dec-btn" id="dec${i}" title="DECLINE REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','pending')"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
-				row += `<button class="edit-btn" title="EDIT SELECTED ITEM" id="edit${i}" onclick="${listener}"><span class="lar la-edit"></span></button>`;
+			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" id="edit${i}" onclick="${changeListener}"><span class="lar la-edit"></span></button>`;
 			row += `<button class="expo-btn"  onclick="window.location.href='/Admin/ExportRequest?id=${array[i].request_type_id}'" title="EXPORT REPORT"><span class="las la-file-download"></span></button>`;
 			row += `</div></td>`;
 			row += `</tr>`;
@@ -319,11 +327,27 @@ function setTable(array) {
 			//	button.style.cursor = "not-allowed";
 			//	button.style.opacity = 0.5;
 			//}
+			if (array[i].request_status.trim().toLowerCase() === "approved") {
+				apprBtn = document.getElementById(`appr${i}`);
+				apprBtn.disable = true;
+				apprBtn.style.cursor = "not-allowed";
+				apprBtn.style.opacity = 0.5;
+				editBtn = document.getElementById(`edit${i}`);
+				editBtn.disable = true;
+				editBtn.style.cursor = "not-allowed";
+				editBtn.style.opacity = 0.5;
+			}
 			if (emp_no != array[i].Employee.emp_no) {
-				button = document.getElementById(`edit${i}`);
-				button.disable = true;
-				button.style.cursor = "not-allowed";
-				button.style.opacity = 0.5;
+				editBtn = document.getElementById(`edit${i}`);
+				editBtn.disable = true;
+				editBtn.style.cursor = "not-allowed";
+				editBtn.style.opacity = 0.5;
+			}
+			else {
+				apprBtn = document.getElementById(`appr${i}`);
+				apprBtn.disable = true;
+				apprBtn.style.cursor = "not-allowed";
+				apprBtn.style.opacity = 0.5;
 			}
 		}
 		filtered.length = 0;
@@ -334,7 +358,7 @@ function setTable(array) {
 		const errorMessageRow = document.createElement('tr');
 		errorMessageRow.style.textAlign = "center";
 		errorMessageRow.style.fontStyle = "italic";
-		errorMessageRow.innerHTML = "<td colspan='6'>Item Not found<td>";
+		errorMessageRow.innerHTML = "<td colspan='8'>Item Not found<td>";
 		//console.log(res.statusText);
 		table.appendChild(errorMessageRow);
 	}
@@ -356,7 +380,7 @@ function fixArray(array, boolean) {
 					}
 				}
 				else {
-						tmp.push(allRequests[i]);
+					tmp.push(allRequests[i]);
 				}
 			}
 			allRequests.length = 0;
@@ -477,7 +501,7 @@ function saveRequest() {
 	localStorage.setItem('typeData', '');
 }
 
-function setTemplate(Id,typeOf) {
+function setTemplate(Id, typeOf) {
 	//let fields = document.querySelectorAll(domId);
 	//let emp_no = localStorage.getItem('emp_no');
 
@@ -487,7 +511,7 @@ function setTemplate(Id,typeOf) {
 	let stats = "";
 	let cell = 0;
 	if (typeOf == "add") {
-	const rows = Array.from(crtable.getElementsByTagName('tr'));
+		const rows = Array.from(crtable.getElementsByTagName('tr'));
 		cell = 5;
 		stats = "on process";
 		fields.forEach((label) => {
@@ -816,7 +840,7 @@ function DisplayDataOnRow(idToFind, typeOf) {
 	}
 	rows1.forEach((row) => {
 		let checkbox = row.querySelector('input[type="checkbox"]');
-			checkbox.checked = true;
+		checkbox.checked = true;
 	});
 }
 

@@ -30,7 +30,7 @@ namespace TotalFireSafety.Controllers
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
             await hubContext.Clients.All.SendAsync(message);
         }
-        private async Task GroupNotif(string group,string message)
+        private async Task GroupNotif(string group, string message)
         {
             //var act = Session["system_role"].ToString();
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
@@ -61,10 +61,10 @@ namespace TotalFireSafety.Controllers
         #region Others
         protected string GetPath(int emp_no)
         {
-            using(var _context = new TFSEntity())
+            using (var _context = new TFSEntity())
             {
                 var user = _context.Employees.Where(x => x.emp_no == emp_no).SingleOrDefault();
-                if(user.ProfilePath != null)
+                if (user.ProfilePath != null)
                 {
                     return user.ProfilePath;
                 }
@@ -73,11 +73,17 @@ namespace TotalFireSafety.Controllers
         }
         public async Task<ActionResult> InvReportPrint()
         {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
         public async Task<ActionResult> InvReportExport(int? id)
         {
-            
+
             TFSEntity db = new TFSEntity();
             if (Session["emp_no"] == null)
             {
@@ -94,6 +100,12 @@ namespace TotalFireSafety.Controllers
         }
         public async Task<ActionResult> InvReorder()
         {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
         [HttpPost]
@@ -291,7 +303,7 @@ namespace TotalFireSafety.Controllers
             int deployment = db.Requests.Count(x => x.request_type == "Deployment");
             ViewBag.Deployment = deployment;
 
-    
+
             //chart
             var products = db.Inv_Update.ToList();
             var update = db.Basecounts.ToList();
@@ -581,9 +593,9 @@ namespace TotalFireSafety.Controllers
             }
             var serializedModel = JsonConvert.SerializeObject(item);
             var userToken = Session["access_token"].ToString();
-            string uri,message;
+            string uri, message;
 
-            if( item.formType == "add")
+            if (item.formType == "add")
             {
                 uri = "Warehouse/Inventory/Add";
                 message = "Item has added successfully";
@@ -658,7 +670,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Inventory(Inventory items,string type)
+        public async Task<ActionResult> Inventory(Inventory items, string type)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -667,7 +679,7 @@ namespace TotalFireSafety.Controllers
             }
             var serializedModel = JsonConvert.SerializeObject(items);
             var userToken = Session["access_token"].ToString();
-            string uri,message;
+            string uri, message;
             if (type == "add")
             {
                 uri = "Warehouse/Inventory/Add";
@@ -750,7 +762,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> Users(Employee employee)
         {
             var empId = Session["emp_no"]?.ToString();
-            if(empId == null)
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -783,7 +795,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.Success = json.ToString();
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             Session["editUser"] = 0;
-                await SendNotif("notification");
+            await SendNotif("notification");
             return View();
         }
 
@@ -850,7 +862,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> Requisition([System.Web.Http.FromBody] Request[] jsonData,[System.Web.Http.FromUri] string formType)
+        public async Task<ActionResult> Requisition([System.Web.Http.FromBody] Request[] jsonData, [System.Web.Http.FromUri] string formType)
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -861,15 +873,15 @@ namespace TotalFireSafety.Controllers
             var userToken = Session["access_token"].ToString();
             var newData = JsonConvert.SerializeObject(jsonData);
             //var serializedModel = JsonConvert.DeserializeObject<List<Request>>(newData);
-            string uri = "",message="";
-            if(formType == "add")
+            string uri = "", message = "";
+            if (formType == "add")
             {
                 message = "Request has been accepted";
                 uri = "Requests/Add";
             }
             else
             {
-                if(formType == "approved")
+                if (formType == "approved")
                 {
                     message = "Request Approved";
                 }

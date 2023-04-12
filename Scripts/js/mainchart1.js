@@ -47,6 +47,7 @@ const barchart = new Chart(ctx, {
         }]
     },
     options: {
+      
         plugins: {
             legend: {
                 display: false
@@ -71,19 +72,40 @@ const barchart = new Chart(ctx, {
 
 const classSelect = document.getElementById('class');
 const itemCategorySelect = document.getElementById('itemCategory');
-const itemNameInput = document.getElementById('itemName');
+const itemNameSelect = document.getElementById('itemName');
 
 classSelect.addEventListener('change', updateChartData);
 itemCategorySelect.addEventListener('change', function () {
-    itemNameInput.value = ''; // clear itemNameInput value
+    populateItemNames(); // populate item names based on selected category
     updateChartData();
 });
-itemNameInput.addEventListener('change', updateChartData);
+
+itemNameSelect.addEventListener('change', updateChartData);
+
+function populateItemNames() {
+    const selectedCategory = itemCategorySelect.value;
+
+    // Get all item names that belong to the selected category
+    const itemNames = data.filter(d => d.Category === selectedCategory)
+        .map(d => d.Name);
+
+    // Remove existing options from the select element
+    while (itemNameSelect.options.length > 0) {
+        itemNameSelect.remove(0);
+    }
+
+    // Add new options to the select element
+    for (let i = 0; i < itemNames.length; i++) {
+        const option = document.createElement('option');
+        option.text = itemNames[i];
+        itemNameSelect.add(option);
+    }
+}
 
 function updateChartData() {
     const selectedClass = classSelect.value;
     const selectedCategory = itemCategorySelect.value;
-    const selectedName = itemNameInput.value;
+    const selectedName = itemNameSelect.value;
 
     let filteredData = data; // initialize filteredData to the original data array
 
@@ -103,7 +125,7 @@ function updateChartData() {
     }
 
     // Update the chart data and labels
-    barchart.data.labels = filteredData.map(d => d.Name);
+    barchart.data.labels = filteredData.map(d => `${d.Name} (${d.Size ? d.Size : ""})`);
     barchart.data.datasets[0].data = filteredData.map(d => d.Quantity);
 
     // Update the chart colors based on the new data
@@ -123,10 +145,13 @@ function updateChartData() {
     barchart.update();
 }
 
+// Populate item names based on selected category
+populateItemNames();
+
 startDateInput.addEventListener('change', function () {
     startDate = new Date(startDateInput.value);
     filteredData = filterDataByDateRange(data, startDate, endDate);
-    barchart.data.labels = filteredData.map(d => d.Name);
+    barchart.data.labels = filteredData.map(d => `${d.Name} (${d.Size ? d.Size : ""})`);
     barchart.data.datasets[0].data = filteredData.map(d => d.Quantity);
     barchart.update();
 });
@@ -134,7 +159,7 @@ startDateInput.addEventListener('change', function () {
 endDateInput.addEventListener('change', function () {
     endDate = new Date(endDateInput.value);
     filteredData = filterDataByDateRange(data, startDate, endDate);
-    barchart.data.labels = filteredData.map(d => d.Name);
+    barchart.data.labels = filteredData.map(d => `${d.Name} (${d.Size ? d.Size : ""})`);
     barchart.data.datasets[0].data = filteredData.map(d => d.Quantity);
     barchart.update();
 });

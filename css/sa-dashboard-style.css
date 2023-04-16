@@ -780,7 +780,7 @@ input::-webkit-inner-spin-button {
     .logo-float img {
         width: 200px;
         height: 50ox;
-    }   
+    } 
 
 .sidebar-logout {
     position: absolute;
@@ -1319,24 +1319,23 @@ input[type="month"] {
 
         .inventory-sum .inv-sum-header h3 {
             margin-left: 2%;
+
+        }
         .notif-show-popup h3 i {
             color: #FF0000;
             font-size: 1.4rem;
         }
 
 
-    .inventory-sum .inv-sum-date {
-        margin-top: 5px;
-        margin-bottom: 4%;
+.inventory-sum .inv-sum-date {
+    margin-top: 5px;
+    margin-bottom: 4%;
+}
+
 @keyframes hide {
     from {
         opacity: 1;
     }
-
-        .inventory-sum .inv-sum-date label {
-            font-weight: 800;
-            font-size: .9rem;
-        }
     to {
         opacity: 0;
     }
@@ -1370,6 +1369,7 @@ input[type="month"] {
 }
 
 .recent-grid .inventory-sum .card .card-header .cat-grp select {
+}
     .inventory-sum .inv-sum-header {
         display: flex;
     }
@@ -1379,7 +1379,7 @@ input[type="month"] {
         }
 
 
-.recent-grid .inventory-sum .card .card-header select {
+.recent-grid .inventory-sum .card .card-header .cat-grp select {
     max-width: 100%;
     width: 180px;
     height: 30px;
@@ -1533,7 +1533,7 @@ input[type="month"] {
     }
 
 .card .card-header .fst-grp {
-    margin-left: 90px;
+    margin-left: 120px;
 }
 
     .card .card-header .fst-grp select {
@@ -1673,13 +1673,13 @@ input[type="month"] {
     .dsh-proj-headers h3 {
         color: #16215B;
         font-size: 1rem;
-    }
     justify-content: space-between;
     border-bottom: 1px solid #f0f0f0;
 }
 
 .dsh-proj-header {
     padding: 5px
+}
 .proj-header .proj-buttons-style select {
     width: 160px;
     height: 35px;
@@ -1722,6 +1722,7 @@ input[type="month"] {
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
+}
 
 .dsh-proj-header {
     display: flex;
@@ -1729,12 +1730,13 @@ input[type="month"] {
     align-items: center;
 }
 
-    .dsh-proj .dsh-proj-header .date h3 {
-        border-right: 1px solid #000;
-        padding-right: 40px;
-        padding-top: 5px;
-        padding-left: 2px;
-        color: #000;
+.dsh-proj .dsh-proj-header .date h3 {
+    border-right: 1px solid #000;
+    padding-right: 40px;
+    padding-top: 5px;
+    padding-left: 2px;
+    color: #000;
+}
     .dsh-proj-header h3 {
         color: #16215B;
         font-size: 1rem;
@@ -1826,6 +1828,8 @@ input[type="month"] {
 .proj-insight-container .proj-column-right {
     display: flex;
     border-bottom: 1px solid #B2B2B2;
+}
+
 .proj-insight-container .proj-column-left {
     display: flex;
     border-right: 1px solid #B2B2B2;
@@ -1858,6 +1862,7 @@ input[type="month"] {
 
 .proj-insight-container .proj-row .mid-left h3 {
     color: #09AF10;
+}
 
 .proj-insight-container .proj-column-right {
     display: flex;
@@ -7886,7 +7891,7 @@ acc-form-table .view-request-form-table-style table thead td {
     }
 
         .task-body table td label a {
-            font-weight: 1.2rem;
+            font-weight: 800;
         }
 
 .task-body table tbody tr td a:hover {

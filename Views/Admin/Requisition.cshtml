@@ -567,13 +567,13 @@
 
             <div class="input-popup" id="input-popup">
                 <h3>INPUT QUANTITY</h3>
-                <input type="number" id="quantVal">
-                <input type="text" id="hiddenCode" style="display:none;">
-
-                <br>
-                <br>
-                <button id="conf">confirm</button>
-                <button onclick="closeInputQTYForm()">cancel</button>
+                    <input type="number" id="quantVal" name="quantVal" required>
+                    <input type="text" id="hiddenCode" style="display:none;">
+                    <p class="emErr"></p>
+                    <br>
+                    <br>
+                    <button id="conf" onclick="Validate()">confirm</button>
+                    <button onclick="closeInputQTYForm()">cancel</button>
             </div>
 
             <div class="input-popup1" id="input-popup1">
@@ -679,13 +679,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 <script>
+    //function submitForm() {
+    //    form.submit();
+    //}
 
-    function checkForm() {
-        var bool = $('#formId').valid();
-        if (bool) {
-            infoOpenPopup();
-        }
-    }
+    //function checkForm() {
+    //    var bool = $('#input_quan_form').valid();
+    //    if (bool) {
+    //        alert("nag validate!");
+    //    }
+    //}
+    //function Validate() {
+    //    var QuantVal = $("#quantVal").val();
+
+    //    if (QuantVal == "") {
+    //        $(".emErr").html("Quantity is required.");
+    //    }
+    //    else {
+    //        closeInputQTYForm1()
+    //    }
+    //}
 
     function exportToPdf() {
         const actionButtons = document.querySelectorAll('.purchase-action-style');

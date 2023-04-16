@@ -1,25 +1,60 @@
-﻿$(document).ready(function () {
-    $('#formId').validate({
-        rules: {
-            request_emp: {
-                required: true,
-                minlength: 4
-            },
-            select_type: {
-                required: true,
-            }
-        },
-        messages: {
-            request_emp: {
-                required: "Please enter name.",
-                minlength: "name must be at least 4 characters long."
-            },
-            select_type: {
-                required: "Request type must be required."
-            }
-        }
-    });
-});
+﻿//$(document).ready(function () {
+//    $('#create-form').validate({
+//        rul
+//        },
+//        messages: {
+           
+//        }
+//    });
+//})
+
+//$(document).ready(function () {
+//    $('#input_quan_form').validate({
+//        rules: {
+//            quantVal: {
+//                required: true
+
+//            }
+//        },
+//        messages: {
+//            quantVal: {
+//                required: "Quantity must be required!"
+//            }
+//        }
+//    });
+//});
+
+//$("button[type='submit']").on("click", function () {
+//    $("#input_quan_form").valid();
+//});
+
+
+
+
+
+
+//$(document).ready(function () {
+//    $('#formId').validate({
+//        rules: {
+//            request_emp: {
+//                required: true,
+//                minlength: 4
+//            },
+//            select_type: {
+//                required: true,
+//            }
+//        },
+//        messages: {
+//            request_emp: {
+//                required: "Please enter name.",
+//                minlength: "name must be at least 4 characters long."
+//            },
+//            select_type: {
+//                required: "Request type must be required."
+//            }
+//        }
+//    });
+//});
 
 //(function ($) {
 //	"use strict";
@@ -119,3 +154,4 @@
 //		$(thisalert).removeclass('alert-validate');
 //	}
 //})(jquery);
+

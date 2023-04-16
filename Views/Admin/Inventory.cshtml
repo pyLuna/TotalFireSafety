@@ -405,28 +405,28 @@
 <script>
 
     /*ADD NEW ITEM CHECKFORM VALIDATION*/
-    function checkForm() {
-        var bool = $('#addForm').valid();
-        if (bool) {
-            infoOpenPopup('addForm');
-        }
-    }
+    //function checkForm() {
+    //    var bool = $('#addForm').valid();
+    //    if (bool) {
+    //        infoOpenPopup('addForm');
+    //    }
+    //}
 
     /*ADD QUANTITY ITEM CHECKFORM VALIDATION*/
-    function checkForm_Add_Quan() {
-        var bool = $('#qtyForm').valid();
-        if (bool) {
-            infoOpenPopup('qtyForm');
-        }
-    }
+    //function checkForm_Add_Quan() {
+    //    var bool = $('#qtyForm').valid();
+    //    if (bool) {
+    //        infoOpenPopup('qtyForm');
+    //    }
+    //}
 
     /*EDIT ITEM CHECKFORM VALIDATION*/
-    function checkForm_Edit_Itm() {
-        var bool = $('#editForm').valid();
-        if (bool) {
-            infoOpenPopup('editForm');
-        }
-    }
+    //function checkForm_Edit_Itm() {
+    //    var bool = $('#editForm').valid();
+    //    if (bool) {
+    //        infoOpenPopup('editForm');
+    //    }
+    //}
 
 
     let codeToDelete = "";
@@ -540,6 +540,10 @@
     let canpopup = document.getElementById("can-popup");
     function canOpenPopup() {
         canpopup.classList.add("can-popup-show");
+        $('#addForm').validate().resetForm();
+        $('#qtyForm').validate().resetForm();
+        $('#editForm').validate().resetForm();
+       
     }
 
     function canClosePopup() {

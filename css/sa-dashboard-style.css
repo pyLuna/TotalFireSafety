@@ -1056,8 +1056,6 @@ input[type="month"] {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 2rem;
-    margin-top: 1rem;
-    margin-bottom: 50px;
 }
 
     .cards .card-title:hover {
@@ -1310,7 +1308,68 @@ input[type="month"] {
     overflow: hidden;
     box-shadow: 4px 3px 3px #B2B2B2;
 }
+    .notif-show-popup:hover {
+        cursor: pointer;
+    }
 
+    .notif-show-popup h3 {
+        color: #16215B;
+        margin-top: 12px;
+    }
+
+        .inventory-sum .inv-sum-header h3 {
+            margin-left: 2%;
+        .notif-show-popup h3 i {
+            color: #FF0000;
+            font-size: 1.4rem;
+        }
+
+
+    .inventory-sum .inv-sum-date {
+        margin-top: 5px;
+        margin-bottom: 4%;
+@keyframes hide {
+    from {
+        opacity: 1;
+    }
+
+        .inventory-sum .inv-sum-date label {
+            font-weight: 800;
+            font-size: .9rem;
+        }
+    to {
+        opacity: 0;
+    }
+}
+
+        .inventory-sum .inv-sum-date input {
+            height: 30px;
+            width: 150px;
+        }
+/* END */
+
+.recent-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 2rem;
+    margin-top: 1rem;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 100%;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.inventory-sum {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+}
+
+.recent-grid .inventory-sum .card .card-header .cat-grp select {
     .inventory-sum .inv-sum-header {
         display: flex;
     }
@@ -1320,23 +1379,7 @@ input[type="month"] {
         }
 
 
-    .inventory-sum .inv-sum-date {
-        margin-top: 5px;
-        margin-bottom: 4%;
-    }
-
-        .inventory-sum .inv-sum-date label {
-            font-weight: 800;
-            font-size: .9rem;
-        }
-
-        .inventory-sum .inv-sum-date input {
-            height: 30px;
-            width: 150px;
-        }
-
-
-.recent-grid .inventory-sum .card .card-header .cat-grp select {
+.recent-grid .inventory-sum .card .card-header select {
     max-width: 100%;
     width: 180px;
     height: 30px;
@@ -1631,9 +1674,24 @@ input[type="month"] {
         color: #16215B;
         font-size: 1rem;
     }
+    justify-content: space-between;
+    border-bottom: 1px solid #f0f0f0;
+}
 
 .dsh-proj-header {
     padding: 5px
+.proj-header .proj-buttons-style select {
+    width: 160px;
+    height: 35px;
+    margin-left: 10px;
+    margin-top: -1px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
 }
 
 .dsh-proj-header {
@@ -1641,11 +1699,18 @@ input[type="month"] {
     justify-content: space-between;
     align-items: center;
 }
+    .dsh-proj-headers h3 {
+        color: #16215B;
+        font-size: 1rem;
+    }
 
     .dsh-proj-header h3 {
         color: #16215B;
         font-size: 1rem;
     }
+.dsh-proj-header {
+    padding: 5px
+}
 
 .dsh-proj .dsh-proj-header .date {
     width: 200px;
@@ -1657,6 +1722,11 @@ input[type="month"] {
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
+
+.dsh-proj-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
     .dsh-proj .dsh-proj-header .date h3 {
@@ -1665,6 +1735,9 @@ input[type="month"] {
         padding-top: 5px;
         padding-left: 2px;
         color: #000;
+    .dsh-proj-header h3 {
+        color: #16215B;
+        font-size: 1rem;
     }
 
     .dsh-proj .dsh-proj-header .date select {
@@ -1681,15 +1754,42 @@ input[type="month"] {
     width: 100%;
     min-height: 400px;
 }
+.dsh-proj .dsh-proj-header .date {
+    width: 200px;
+    height: 30px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin-right: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
 
 .dsh-proj .proj-insight-container {
     margin-top: 50px;
     margin-left: 5px;
 }
+    .dsh-proj .dsh-proj-header .date h3 {
+        border-right: 1px solid #000;
+        padding-right: 40px;
+        padding-top: 5px;
+        padding-left: 2px;
+        color: #000;
+    }
 
 .proj-insight-container .proj-row {
     display: flex;
 }
+    .dsh-proj .dsh-proj-header .date select {
+        height: 28px;
+        width: 150px;
+        margin-top: 0px;
+        color: #000;
+        font-weight: 600;
+        border: none;
+        background: none;
+    }
 
 .proj-insight-container .proj-column-left {
     display: flex;
@@ -1699,21 +1799,36 @@ input[type="month"] {
     justify-content: space-evenly;
     padding: 20px;
 }
+.dsh-proj .chart {
+    width: 100%;
+    min-height: 400px;
+}
 
     .proj-insight-container .proj-column-left h3 {
         font-size: 3rem;
         color: #FF0000;
     }
+.dsh-proj .proj-insight-container {
+    margin-top: 50px;
+    margin-left: 5px;
+}
 
     .proj-insight-container .proj-column-left label {
         margin-top: 15px;
         color: #FF0000;
         font-size: 1rem;
     }
+.proj-insight-container .proj-row {
+    display: flex;
+}
 
 
 .proj-insight-container .proj-column-right {
     display: flex;
+    border-bottom: 1px solid #B2B2B2;
+.proj-insight-container .proj-column-left {
+    display: flex;
+    border-right: 1px solid #B2B2B2;
     border-bottom: 1px solid #B2B2B2;
     width: 50%;
     justify-content: space-evenly;
@@ -1725,7 +1840,46 @@ input[type="month"] {
         font-size: 3rem;
         color: #09AF10;
     }
+    .proj-insight-container .proj-column-left h3 {
+        font-size: 3rem;
+        color: #FF0000;
+    }
 
+    .proj-insight-container .proj-column-right label {
+        margin-top: 15px;
+        color: #09AF10;
+        font-size: 1rem;
+    }
+    .proj-insight-container .proj-column-left label {
+        margin-top: 15px;
+        color: #FF0000;
+        font-size: 1rem;
+    }
+
+.proj-insight-container .proj-row .mid-left h3 {
+    color: #09AF10;
+
+.proj-insight-container .proj-column-right {
+    display: flex;
+    border-bottom: 1px solid #B2B2B2;
+    width: 50%;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
+.proj-insight-container .proj-row .mid-left label {
+    color: #09AF10;
+}
+    .proj-insight-container .proj-column-right h3 {
+        margin-left: 10px;
+        font-size: 3rem;
+        color: #09AF10;
+    }
+
+.proj-insight-container .proj-row .mid-right h3 {
+    color: #FF0000;
+    margin-left: -30px;
+}
     .proj-insight-container .proj-column-right label {
         margin-top: 15px;
         color: #09AF10;
@@ -1740,6 +1894,10 @@ input[type="month"] {
     color: #09AF10;
 }
 
+.proj-insight-container .proj-row .mid-right label {
+    color: #FF0000;
+    margin-left: -50px;
+}
 .proj-insight-container .proj-row .mid-right h3 {
     color: #FF0000;
     margin-left: -30px;
@@ -7152,7 +7310,6 @@ acc-form-table .view-request-form-table-style table thead td {
     border-radius: 6px;
     padding: 30px;
     background-color: #fff;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
 }
 
 .form-container .form-header::before {
@@ -7169,12 +7326,11 @@ acc-form-table .view-request-form-table-style table thead td {
 .form-container form {
     position: relative;
     margin-top: 16px;
-    min-height: 490px;
+    width: 1000px;
+    min-height: 390px;
     background-color: #fff;
     overflow: hidden;
 }
-
-
 
     .form-container form .form-contents {
         margin-top: 1rem;
@@ -7189,7 +7345,7 @@ acc-form-table .view-request-form-table-style table thead td {
 
         .form-container form .fields .input-field {
             display: flex;
-            width: calc(100% / 2 - 15px);
+            width: calc(100% / 3 - 15px);
             flex-direction: column;
             margin: 4px 0;
         }
@@ -7632,15 +7788,12 @@ acc-form-table .view-request-form-table-style table thead td {
         /* background-color: #fff; */
         border-radius: 5px;
         /* box-shadow: 5px 5px 3px #B2B2B2;  */
-        height: 600px;
+        height: 750px;
         overflow: auto;
         margin-top: 10px;
         display: grid;
         grid-template-columns: 2fr 1fr;
     }
-
-
-
 
         .proj-main-content .proj-main-container .proj-task-list {
             background-color: #fff;
@@ -7687,6 +7840,8 @@ acc-form-table .view-request-form-table-style table thead td {
 .task {
     margin-top: 10px;
     max-height: 400px;
+    width: auto;
+    margin: 10px;
     overflow: auto;
 }
 
@@ -7710,52 +7865,48 @@ acc-form-table .view-request-form-table-style table thead td {
         margin-bottom: -20px;
     }
 
-.task-body table {
-    margin: 0;
+.task-body table thead {
+    background-color: #DDDDDD;
 }
 
-    .task-body table thead {
-        background-color: #DDDDDD;
-    }
-
-        .task-body table thead td {
-            font-size: .8rem;
-            font-weight: 600;
-        }
-
-    .task-body table td {
-        font-weight: 400;
+    .task-body table thead td {
         font-size: .8rem;
+        font-weight: 600;
     }
 
-        .task-body table td label {
-            color: #000;
-            font-size: .8rem;
-            font-weight: 400;
+.task-body table td {
+    font-weight: 400;
+    font-size: .8rem;
+}
+
+    .task-body table td label {
+        color: #000;
+        font-size: .8rem;
+        font-weight: 400;
+    }
+
+        .task-body table td label a {
+            font-weight: 1.2rem;
         }
 
-            .task-body table td label a {
-                font-weight: 1.2rem;
-            }
+.task-body table tbody tr td a:hover {
+    cursor: pointer;
+    color: blue;
+}
 
-    .task-body table tbody tr td a:hover {
-        cursor: pointer;
-        color: blue;
-    }
+.task-body table tbody tr:hover {
+    background-color: #707070;
+    color: #fff;
+    cursor: pointer;
+}
 
-    .task-body table tbody tr:hover {
-        background-color: #707070;
-        color: #fff;
-        cursor: pointer;
-    }
+.task-body table td .on-going {
+    color: #09AF10;
+}
 
-    .task-body table td .on-going {
-        color: #09AF10;
-    }
-
-    .task-body table td .in-line {
-        color: #FF932F;
-    }
+.task-body table td .in-line {
+    color: #FF932F;
+}
 
     .task-body table td .delayed {
         color: #FF0000;
@@ -7816,6 +7967,9 @@ acc-form-table .view-request-form-table-style table thead td {
         display: grid;
         grid-template-columns: 2fr 1fr;
     }
+.task-body table td .delayed {
+    color: #FF0000;
+}
 
         .proj-main-content .proj-main-container .proj-task-list {
             background-color: #fff;
@@ -7945,6 +8099,17 @@ acc-form-table .view-request-form-table-style table thead td {
 hr {
     border: 1px solid black;
     width: 90%;
+hr {
+    border: 1px solid black;
+    width: 90%;
+}
+
+
+.incharge .incharge-header select {
+    border: none;
+    border-bottom: 1px solid #000;
+    border-radius: 0;
+    font-size: 1rem;
 }
 
 .incharge .incharge-header label {
@@ -8027,6 +8192,19 @@ hr {
     height: 100px;
 }
 
+    .proj-des-container .descri-main .descri-title input {
+        border: none;
+        border-bottom: 1px solid #000;
+        border-radius: 0;
+        font-size: .9rem;
+        width: 200px;
+    }
+    height: 100px;
+}
+
+        .proj-des-container .descri-main .descri-title input::-webkit-input-placeholder {
+            font-style: italic;
+        }
     .proj-des-container .descri-main .descri-title input {
         border: none;
         border-bottom: 1px solid #000;
@@ -8424,6 +8602,161 @@ hr {
 }
 
 .right-grp .right-mid .mid-container {
+    margin-top: 10px;
+    margin-left: -20px;
+
+                width: auto;
+                height: 80px;
+                background-color: #fff;
+                border: 2px solid #000;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                display: flex;
+            }
+
+    .right-grp .right-mid .mid-container h3 {
+        margin-top: -25px;
+        margin-left: 0px;
+        font-size: .9rem;
+    }
+
+        .right-grp .right-mid .mid-container h3 span {
+            font-size: 1.5rem;
+        }
+
+    .right-grp .right-mid .mid-container input {
+        font-size: 1rem;
+        width: 500px;
+        height: 40px;
+        border: none;
+        border-bottom: 2px solid #000;
+        margin-left: -30px;
+        margin-top: 10px;
+        background-color: none;
+    }
+
+    .right-grp .right-mid .mid-container i {
+        font-size: 1.5rem;
+        margin-left: -45px;
+        margin-top: -5px;
+        -webkit-transform: rotate(90deg);
+    }
+
+        .right-grp .right-mid .mid-container i:hover {
+            color: blue;
+            cursor: pointer;
+        }
+
+    .right-grp .right-mid .mid-container input:focus {
+        box-shadow: 4px 3px 3px #B2B2B2;
+    }
+
+    .right-grp .right-mid .mid-container input::-webkit-input-placeholder {
+        font-style: italic;
+    }
+
+.report-container .report-grp .right-grp .right-lower {
+    width: auto;
+    height: 290px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* TABLE OF TASK LIST */
+
+
+.lower {
+    height: 285px;
+    overflow: auto;
+    margin-bottom: -20px;
+}
+
+.lower-projects {
+    margin: 0;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: 100% auto;
+    border-spacing: 1px;
+}
+
+.lower-body table {
+    margin: 0;
+}
+
+    .lower-body table thead {
+        background-color: #DDDDDD;
+    }
+
+        .lower-body table thead td {
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+    .lower-body table td {
+        font-weight: 400;
+        font-size: .8rem;
+    }
+
+        .lower-body table td .stat-on-going {
+            color: #09AF10;
+        }
+
+        .lower-body table td .stat-in-going {
+            color: #FF932F;
+        }
+
+        .lower-body table td .stat-delayed {
+            color: #FF0000;
+        }
+/* END */
+.right-grp .right-upper .right-date {
+    margin-top: 15px;
+    display: flex;
+}
+
+    .right-grp .right-upper .right-date h3 {
+        margin-top: -25px;
+        margin-left: -20px;
+    }
+
+    .right-grp .right-upper .right-date input {
+        font-size: 1rem;
+        width: 200px;
+        height: 30px;
+        border: none;
+        border-bottom: 2px solid #000;
+        margin-left: -30px;
+        margin-top: 10px;
+    }
+
+.right-grp .right-upper .right-select-stat {
+    margin-top: 15px;
+    display: flex;
+}
+
+    .right-grp .right-upper .right-select-stat select {
+        margin-left: 40px;
+        font-size: 1rem;
+        width: 230px;
+        height: 30px;
+        border: none;
+        border-radius: 0px;
+        border-bottom: 2px solid #000;
+        margin-top: 10px;
+    }
+
+.report-container .report-grp .right-grp .right-mid {
+    width: auto;
+    height: 80px;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.right-grp .right-mid .mid-container {
     display: flex;
     margin-top: 10px;
     margin-left: -20px;
@@ -8547,6 +8880,231 @@ hr {
         box-shadow: none;
     }
 
+
+
+/* END */
+
+/* ADD NEW PROJECT - NEW LAYOUT - 04/05 */
+
+.add-new-container {
+    display: none;
+    width: 70%;
+    height: 700px;
+    position: fixed;
+    top: 10%;
+    left: 20%;
+    background-color: #f1f5f9;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border-radius: 10px;
+    z-index: 100;
+    position: fixed;
+    overflow: hidden;
+}
+
+    .add-new-container .add-new-header h3 {
+        font-size: 1.2rem;
+        margin-top: -28px;
+    }
+
+        .add-new-container .add-new-header h3 i {
+            font-size: 1.8rem;
+        }
+
+    .add-new-container .add-new-header span {
+        margin-top: 20px;
+        margin-left: 20px;
+        font-size: 2rem;
+        color: #000;
+    }
+
+        .add-new-container .add-new-header span:hover {
+            cursor: pointer;
+            color: blue;
+        }
+
+    .add-new-container .add-new-main {
+        background-color: #fff;
+        margin-top: 20px;
+        width: 100%;
+        height: 627px;
+        display: flex;
+    }
+
+        .add-new-container .add-new-main .add-new-left {
+            width: 50%;
+            padding: 30px;
+        }
+
+.add-new-main .add-new-left .input-fields label {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #000;
+    padding-top: 20px;
+}
+
+.add-new-main .add-new-left .input-fields input {
+    font-size: 14px;
+    font-weight: 400;
+    color: #000;
+    border-radius: 5px;
+    box-shadow: 4px 4px 3px #B2B2B2;
+    border: 1px solid #B2B2B2;
+    padding: 0 15px;
+    height: 42px;
+    width: 100%;
+}
+
+.add-new-main .add-new-left button {
+    position: fixed;
+    width: 1350px;
+    height: 40px;
+    margin-top: 30px;
+    margin-left: 13px;
+    background: #16215B;
+    border-radius: 5px;
+    color: #fff;
+    font-size: .8rem;
+    padding: .5rem;
+    font-weight: 600;
+    box-shadow: 4px 4px 3px #B2B2B2;
+}
+
+    .add-new-main .add-new-left button:hover {
+        background: #fff;
+        border: 1px solid #B2B2B2;
+        cursor: pointer;
+        color: #000;
+        font-weight: 600;
+    }
+
+.add-new-main .add-new-left .grp {
+    display: flex;
+}
+
+.add-new-main .add-new-left .left {
+    padding-right: 5px;
+    width: 50%;
+}
+
+.add-new-main .add-new-left .right {
+    padding-left: 5px;
+    width: 50%;
+}
+
+.add-new-main .add-new-left .grp .input-fields select {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    box-shadow: 4px 4px 3px #B2B2B2;
+    border: 1px solid #B2B2B2;
+    padding: 0 15px;
+    height: 42px;
+    width: 100%;
+}
+
+.add-new-container .add-new-main .add-new-right {
+    width: 50%;
+    padding: 30px;
+}
+
+.add-new-main .add-new-right .add-new-header {
+    padding-top: 40px;
+}
+
+    .add-new-main .add-new-right .add-new-header i {
+        font-size: 1.3rem;
+    }
+
+        .add-new-main .add-new-right .add-new-header i:hover {
+            color: blue;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+.add-new-main .add-new-right .add-new-power {
+    border: 1px solid #B2B2B2;
+    border-radius: 5px;
+    box-shadow: 4px 4px 3px #B2B2B2;
+    width: 100%;
+    height: 470px;
+}
+
+.input-mem-container {
+    display: none;
+    width: 700px;
+    height: 400px;
+    background-color: #fff;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
+    z-index: 100;
+    position: fixed;
+    top: 20%;
+    right: 30%;
+    border-radius: 5px;
+}
+
+    .input-mem-container .input-mems-main {
+        padding: 50px;
+    }
+
+        .input-mem-container .input-mems-main .input-mems-title h3 {
+            font-size: 1rem;
+        }
+
+.input-mems {
+    margin-top: 10px;
+    height: 240px;
+    overflow: auto;
+    margin-bottom: -20px;
+    box-shadow: 3px 5px 5px 3px #B2B2B2;
+}
+
+.input-mems-projects {
+    margin: 0;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: 100% auto;
+    border-spacing: 1px;
+}
+
+.input-mems-body table {
+    margin: 0;
+}
+
+    .input-mems-body table thead {
+        background-color: #DDDDDD;
+    }
+
+        .input-mems-body table thead td {
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+    .input-mems-body table td {
+        font-weight: 400;
+        font-size: .8rem;
+    }
+
+.input-mems-main button {
+    width: 90px;
+    height: 35px;
+    margin-top: 40px;
+    margin-left: 10px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
+}
+
+    .input-mems-main button:hover {
+        color: #fff;
+        border: 1px solid #fff;
+        background-color: #16215B;
+        box-shadow: none;
+    }
 
 /* END */
 

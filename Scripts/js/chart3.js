@@ -1,13 +1,13 @@
 //Global Options
 
-const ctx4 = document.getElementById('barcharthorii').getContext('2d');
-const barcharthorii = new Chart(ctx4, {
-    type: 'bar',
+const ctx3 = document.getElementById('barcharthori').getContext('2d');
+const barcharthori = new Chart(ctx3, {
+    type: 'line',
     data: {
-        labels: ['Starcross', 'Three SL', 'Uber SM Aura', 'KBC Tower 1', 'Kolora Inc', 'Molito Narathai - Alabang', 'Triump', 'Malvar Enerzon'],
+        labels: ['Pipe', 'Fire Extinguisher', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets: [{
             label: 'Item Quantity',
-            data: [40, 80, 10, 70, 50, 30, 50, 60, 90, 100,],
+            data: [881, 700, 500, 420, 350, 100],
             backgroundColor: [
                 '#09AF10'
                 

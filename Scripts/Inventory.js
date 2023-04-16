@@ -12,7 +12,7 @@ let selcat = document.getElementById('selcat');
 let filter = document.getElementById('filter');
 //#region add form elements
 let category = document.getElementById('in_category');
-let class1 = document.getElementById('classInp');
+let class1 = document.getElementById('class');
 let class2 = document.getElementById('in_class');
 let name = document.getElementById('in_name');
 let type = document.getElementById('in_type');

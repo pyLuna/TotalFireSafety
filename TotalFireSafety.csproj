@@ -222,6 +222,7 @@
     <Compile Include="Models\Credential.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\Dictionary.cs" />
     <Compile Include="Models\Employee.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -380,6 +381,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\Dashboard.js" />
     <Content Include="Scripts\DashboardAPI.js" />
     <Content Include="Scripts\InventoryExport.js" />
     <Content Include="Scripts\inv_bak.js" />
@@ -389,6 +391,9 @@
     <Content Include="Scripts\jquery.signalR-2.4.3.js" />
     <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
     <Content Include="Scripts\js\barchart.js" />
+    <Content Include="Scripts\js\chart1.js" />
+    <Content Include="Scripts\js\chart2_bak.js" />
+    <Content Include="Scripts\js\chart3.js" />
     <Content Include="Scripts\js\mainchart1.js" />
     <Content Include="Scripts\Reorder.js" />
     <Content Include="Scripts\reportinventory.js" />

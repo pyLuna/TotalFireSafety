@@ -12,184 +12,47 @@
                 <span class="las la-bars"></span>
             </label>
             Overview
-
         </h2>
-    <right>      
-                <button class="create-req-btn" title="CREATE ORDER">
-                    <a onclick="openForm()">
-                        Notification
-                        <span class="las la-bell"></span>
-                        <label class="notif-badge" id="badge">0</label>
-                    </a>
-                </button>
+        <right>
+            <button class="create-req-btn" title="CREATE ORDER">
+                <a onclick="openForm()">
+                    Notification
+                    <span class="las la-bell"></span>
+                    <label class="notif-badge" id="badge">0</label>
+                </a>
+            </button>
         </right>
     </header>
 
     <main>
 
-        <!-- REMOVE CIRCLES -->
-        @*<div class="summary">
-            <center>
-                <div class="summary-title">
-                    <b>
-                        Total Fire Safety Technologies Inc. Performance
-                    </b>
-                </div>
-
-                <div class="sum-chart-card">
-                    <div class="sum-cards">
-                        <div class="sum-card-title">
-                            <div class="sum-card-single">
-                                <div class="sum-card-container">
-                                    <div class="sum-card-details">
-                                        <div class="cicle">
-                                            <div class="circle-container">
-                                                <div class="inv-circle-wrap">
-                                                    <div class="inv-circle">
-                                                        <div class="inv-mask inv-half">
-                                                            <div class="inv">
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="inv-mask inv-full">
-                                                            <div class="inv">
-
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="inv-inside-circle">
-                                                        <label id="Inventory"></label>
-                                                        <script>
-                                                            var inventoryCount = @ViewBag.Inventory;
-                                                            document.getElementById("Inventory").textContent = inventoryCount;
-                                                        </script>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h3>INVENTORY</h3>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="sum-card-title">
-                            <div class="sum-card-single">
-                                <div class="sum-card-container">
-                                    <div class="sum-card-details">
-                                        <div class="cicle">
-                                            <div class="circle-container">
-                                                <div class="inv-circle-wrap">
-                                                    <div class="inv-circle">
-                                                        <div class="inv-mask inv-half">
-                                                            <div class="inv">
-
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="inv-mask inv-full">
-                                                            <div class="inv">
-
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="inv-inside-circle"> 170 </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h3>NUMBER OF PROJECTS</h3>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-                    </div>
-                </div>
-            </center>
-        </div>*@
 
         <div class="cards">
-            @if (Int32.Parse(Session["system_role"].ToString()) == 1 || Int32.Parse(Session["system_role"].ToString()) == 2)
-            {
-                <div class="card-title">
-                    <a href="@Url.Action("Inventory", "Admin")">
-                        <h3>Inventory</h3>
-
-                        <div class="card-single">
-                            <div class="card-container">
-                                <h3>Items</h3>
-                                <div class="card-details">
-                                    <label id="totalitem"></label><span>Total Items</span>
-                                    <script>
-                             var inventory = @ViewBag.Inventory;
-                                        document.getElementById("totalitem").textContent = inventory;
-                                    </script>
-                                    <p></p>
-                                    <label id="archiveitem" class="card-active"></label><span class="card-active">Active Items</span>
-                                    <script>
-                             var archive = @ViewBag.archive;
-                                        document.getElementById("archiveitem").textContent = archive;
-                                    </script>
-                                </div>
+            <div class="card-title">
+                <a href="@Url.Action("Users","Admin")">
+                    <h3>Users</h3>
+                    <div class="card-single">
+                        <div class="card-container">
+                            <h3>Users</h3>
+                            <div class="card-details">
+                                <label  id="userLabel"></label><span>Total Users</span>
+                                <p></p>
+                                <label class="card-active" id="actLabel"></label><span class="card-active">Active Users</span>
                             </div>
                         </div>
-                    </a>
-                </div>
-            }
-            @if (Int32.Parse(Session["system_role"].ToString()) != 2)
-            {
-                <div class="card-title">
-                    <a href="@Url.Action("Users", "Admin")">
-                        <h3>Users</h3>
-                        <div class="card-single">
-                            <div class="card-container">
-                                <h3>Users</h3>
-                                <div class="card-details">
-                                    <label id="totaluser"></label><span>Total Users</span>
-                                    <script>
-                             var dataCount = @ViewBag.DataCount;
-                                        document.getElementById("totaluser").textContent = dataCount;
-                                    </script>
-                                    <p></p>
-                                    <label id="activeuser" class="card-active"></label><span class="card-active">Active Users</span>
-                                    <script>
-                             var Active = @ViewBag.active;
-                                        document.getElementById("activeuser").textContent = Active;
-                                    </script>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            }
+                    </div>
+                </a>
+            </div>
             <div class="card-title">
                 <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Requisition</h3>
+                    <h3>Purchase</h3>
                     <div class="card-single">
                         <div class="card-container">
                             <h3>Purchase Request</h3>
                             <div class="card-details">
-                                <label id="purchase"></label><span>Total Entries</span>
-                                <script>
-                                    var purchase = @ViewBag.Purchase;
-                                    document.getElementById("purchase").textContent = purchase;
-                                </script>
+                                <label  id="purLabel"></label><span>Total Entries</span>
                                 <p></p>
-                                <label class="card-active" id="entries"></label><span class="card-active">Pending Entries</span>
-                                <script>
-                                    var entries = @ViewBag.Entries;
-                                    document.getElementById("entries").textContent = entries;
-                                </script>
+                                <label class="card-active" id="actpurLabel"></label><span class="card-active">New Entries</span>
                             </div>
                         </div>
                     </div>
@@ -202,24 +65,15 @@
                         <div class="card-container">
                             <h3>Deployment Request</h3>
                             <div class="card-details">
-                                <label id="deployment"></label><span>Total Entries</span>
-                                <script>
-                                    var deployment = @ViewBag.Deployment;
-                                    document.getElementById("deployment").textContent = deployment;
-                                </script>
+                                <label id="depLabel"></label><span>Total Entries</span>
                                 <p></p>
-                                <label class="card-active" id="entrieses"></label><span class="card-active">Pending Entries</span>
-                                <script>
-                                    var entrieses = @ViewBag.Entrieses;
-                                    document.getElementById("entrieses").textContent = entrieses;
-                                </script>
+                                <label class="card-active" id="actdepLabel"></label><span class="card-active">New Entries</span>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
 
-            <!-- NEW ADD CARD -->
             <div class="card-title">
                 <a href="@Url.Action("Requisition","Admin")">
                     <h3>Supply</h3>
@@ -227,22 +81,30 @@
                         <div class="card-container">
                             <h3>Supply Request</h3>
                             <div class="card-details">
-                                <label id="supply"></label><span>Total Entries</span>
-                                <script>
-                                    var supply = @ViewBag.Supply;
-                                    document.getElementById("supply").textContent = supply;
-                                </script>
+                                <label  id="supLabel"></label><span>Total Entries</span>
                                 <p></p>
-                                <label class="card-active" id="Sup"></label><span class="card-active">Pending Entries</span>
-                                <script>
-                                    var Sup = @ViewBag.Sup;
-                                    document.getElementById("Sup").textContent = Sup;
-                                </script>
+                                <label class="card-active" id="actsupLabel"></label><span class="card-active">New Entries</span>
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
+
+            @*<div class="card-title">
+                <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
+                    <h3>Supply</h3>
+                    <div class="card-sPurchingle">
+                        <div class="card-container">
+                            <h3>Supply Request</h3>
+                            <div class="card-details">
+                                <label>30</label><span>Total Entries</span>
+                                <p></p>
+                                <label class="card-active">5</label><span class="card-active">New Entries</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>*@
 
         </div>
 
@@ -277,78 +139,42 @@
         </div>
 
         <!-- END -->
-        <!-- NOTIFACTION POPUP BOX SHOW AND HIDE-->
-
-        <div class="notif-show-popup" action="">
-            <h3>NEW MESSEGE &nbsp; <i class="las la-comment-dots"></i></h3>
-        </div>
-
-        <!-- END -->
+ 
 
         <div class="recent-grid">
-
             <div class="inventory-sum">
-                @*<div class="inv-sum-header">
-                    <h3>Inventories</h3>
-
-                    <div class="inv-sum-date">
-                        <div class="sum-date-con">
-                            <label></label>
-                            <input type="date" id="startDate">
-                            <label>-</label>
-                            <input type="date" id="endDate">
-                        </div>
-                    </div>
-                </div>*@
-
                 <div class="card">
                     <div class="card-header">
-
-
-                        <h3>Item Categories Summary</h3>
+                        <h3>Item Summary</h3>
 
                         <div class="cat-grp">
-
-                            <!-- NEW UPDATE-->
-
-                            <input list="mylist" id="itemName" placeholder="Choose Item">
-                            <datalist id="mylist">
-                            </datalist>
-
-                            <!-- END -->
-
-                            <select id="itemCategory" required>
-                                <option value="Clear" disabled selected>Item Category</option>
-                                <option value="Fire Extinguisher">Fire Extinguisher</option>
-                                <option value="Power Tools">Power Tools</option>
-                                <option value="Fittings">Fittings</option>
-                                <option value="Scaffolding">Scaffolding</option>
-                                <option value="Others">Others</option>
-                                <option value="Clear">Clear</option>
+                            <select id="selclass" title="Select Class">
+                                <option disabled selected>Class</option>
+                                <option>All</option>
                             </select>
 
-                            <select id="class" required>
-                                <option value="All" disabled selected>Item Class</option>
-                                <option value="All">All</option>
-                                <option value="Local">Local</option>
-                                <option value="Import">Import</option>
+                            <select id="seltype" title="Select Type">
+                                <option disabled selected>Type</option>
+                                <option>All</option>
                             </select>
 
+                            <select id="selcat" title="Select Category">
+                                <option disabled selected>Category</option>
+                                <option>All</option>
+                            </select>
                         </div>
 
                     </div>
                     <div class="chart-border">
                         <div class="chart">
-                            <canvas id="barchart" width="250" height="300"></canvas>
-                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                            <script> var data = @Html.Raw(Json.Encode(ViewBag.Data));</script>
-                            <script src="@Url.Content("~/Scripts/js/mainchart1.js")"></script>
+                            <canvas id="barchart" width="300" height="300"></canvas>
 
                         </div>
                     </div>
 
                     <div class="card-headers">
-                        <a href="@Url.Action("Inventory","Admin")"><button> See more <span class="las la-arrow-right"></span></button></a>
+                        <a href="../super-admin/operations/sa-inventory/sa-inventory.html"><button> See more <span class="las la-arrow-right"></span></button></a>
+
                         <div class="legend-grp">
                             <div class="legend-content">
                                 <h3>Legend: </h3>
@@ -375,58 +201,53 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
             <div class="inventory-sum">
-
                 <div class="card">
                     <div class="card-header">
-                        <h3>Moving Items</h3>
+                        <h3>Item Supplies</h3>
 
                         <div class="fst-grp">
-                            <select id="moving" required>
+                            <select required>
                                 <option disabled selected>Choose</option>
-                                <option id="all">all</option>
-                                <option id="fast">Fast Moving Item</option>
-                                <option id="slow">Slow Moving Item</option>
+                                <option>...</option>
+                                <option>..</option>
+                            </select>
+                            <select required>
+                                <option disabled selected>Choose</option>
+                                <option>...</option>
+                                <option>..</option>
                             </select>
                         </div>
-                        <div class="project-sum-btns"></div>
+
+                        <div class="project-sum-btns">
+
+                        </div>
+
                     </div>
 
                     <div class="chart-borders">
                         <div class="chart">
                             <div class="scatter">
-                                <canvas id="charta" width="auto" height="auto"></canvas>
-                                <script> var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));</script>
-                                <script src="@Url.Content("~/Scripts/js/barchart.js")"></script>
-
-
+                                <canvas id="barcharthori" width="auto" height="auto"></canvas>
                             </div>
-
                         </div>
                     </div>
-
                     <div class="card-headers">
                         <div class="fst-legend-content">
                             <div class="fst-content-1">
 
                             </div>
-                            <label> Fast Moving Item </label>
-                            <div class="slw-content-1">
-
-                            </div>
-                            <label> Slow Moving Item </label>
+                            <label> Quantity </label>
                         </div>
 
-                        <label class="fst-date"></label>
+                        <label class="fst-date">03/08/2023 - 03/08/2023</label>
                     </div>
-
                 </div>
             </div>
-
-
         </div>
 
         <!-- Project Summary -->
@@ -522,67 +343,21 @@
                 </div>
             </div>
         </div>
-
-        @* END *@
-
-
+        <!-- END -->
     </main>
 </div>
-
-@*<script src="../js/chart1.js"></script>
-    <script src="../js/chart3.js"></script>*@
-@Scripts.Render("~/script/admin")
-
+<script src="~/Scripts/js/chart1.js"></script>
+<script src="~/Scripts/js/chart2.js"></script>
+<script src="~/Scripts/js/chart3.js"></script>
+<script src="~/Scripts/Dashboard.js"></script>
 <script>
-    // get data from ViewBag
 
-    // define function to filter data based on category
-    function filterData(category) {
-        return data.filter(function(item) {
-            return item.Category == category;
-        });
+    function OnLoad() {
+        GetAll();
+        GetItems();
     }
 
-    // define function to populate datalist with filtered names
-    function populateDatalist(names) {
-        var options = '';
-        names.forEach(function(name) {
-            options += '<option value="' + name + '">';
-        });
-        $('#mylist').html(options);
-    }
-
-    // listen for change in select element
-    $('#itemCategory').on('change', function() {
-        var category = $(this).val();
-        var filteredData = filterData(category);
-        var names = filteredData.map(function(item) {
-            return item.Name;
-        });
-        populateDatalist(names);
-    });
-</script>
-
-
-<script>
     `use strict`;
-    var connection = $.hubConnection();
-    var hubProxy = connection.createHubProxy('MyHub');
-
-    window.onload = function () {
-        connection.start().done(function () {
-            // The connection has been established successfully
-            console.log('Connection started');
-
-            // Now you can send data through the connection
-            var c = hubProxy.invoke("AddToGroup", '@Session["emp_no"]')
-            console.log(c);
-        }).fail(function () {
-            // An error occurred while starting the connection
-            console.log('Connection failed');
-        });
-
-    }
     //function refreshTime() {
     //    const timeDisplay = document.getElementById("dt");
     //    const dateString = new Date().toLocaleString();
@@ -609,6 +384,69 @@
 
     /* When the user clicks on the button,
        toggle between hiding and showing the dropdown content */
+    function yrFunction() {
+        document.getElementById("yrDropdown").classList.toggle("yr-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.yr-drop-btn')) {
+            var myDropdown = document.getElementById("yrDropdown");
+            if (myDropdown.classList.contains('yr-show')) {
+                myDropdown.classList.remove('yr-show');
+            }
+        }
+    }
+
+    /* When the user clicks on the button,
+        toggle between hiding and showing the dropdown content */
+    function mFunction() {
+        document.getElementById("mDropdown").classList.toggle("m-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.m-drop-btn')) {
+            var myDropdown = document.getElementById("mDropdown");
+            if (myDropdown.classList.contains('m-show')) {
+                myDropdown.classList.remove('m-show');
+            }
+        }
+    }
+
+    /* When the user clicks on the button,
+       toggle between hiding and showing the dropdown content */
+    function dFunction() {
+        document.getElementById("dDropdown").classList.toggle("d-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.d-drop-btn')) {
+            var myDropdown = document.getElementById("dDropdown");
+            if (myDropdown.classList.contains('d-show')) {
+                myDropdown.classList.remove('d-show');
+            }
+        }
+    }
+
+    // NEW UPDATE 03/04/23 - DATE CONTAINER IN DASHBOARD
+
+    function openInputQTYForm() {
+        document.getElementById("input-date-popup").style.display = "block";
+    }
+
+    function closeInputQTYForm() {
+        document.getElementById("input-date-popup").style.display = "none";
+    }
 
 
+    //window.addEventListener("load", function () {
+    //    setTimeout(
+    //        function open(event) {
+    //            document.querySelector('input-date-popup').style.display = "block";
+    //        },
+    //        1000
+    //    )
+    //});
 </script>

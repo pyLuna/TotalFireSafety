@@ -262,6 +262,40 @@ namespace TotalFireSafety.Controllers
         //    }, null, dueTime, TimeSpan.FromDays(1));
         //}
         [HttpGet]
+        public async Task<ActionResult> BaseResult(DateTime time)
+        {
+            using(var _context = new TFSEntity())
+            {
+                var allBase = _context.Basecounts.Select(x => x).ToList();
+                var allItems = _context.Inventories.Select(x => x).ToList();
+
+                var newBase = new List<Basecount>();
+
+                foreach (var item in allBase)
+                {
+                    var newInv = allItems.Where(x => item.bc_itemCode == x.in_code).SingleOrDefault();
+                    Basecount count = new Basecount()
+                    {
+                        bc_id = item.bc_id,
+                        bc_count = item.bc_count,
+                        bc_date = item.bc_date,
+                        Inventory = newInv?.in_code == item.bc_itemCode ? new Inventory
+                        {
+                            in_name = newInv.in_name,
+                            in_category = newInv.in_category,
+                            in_class = newInv.in_class,
+                            in_quantity = newInv.in_quantity,
+                            in_size = newInv.in_size,
+                            in_type = newInv.in_type
+                        } : null
+                    };
+                    newBase.Add(count);
+                }
+            var groupedItems = newBase.GroupBy(item => item.Inventory.in_category);
+            return Json("");
+            }
+        }
+        [HttpGet]
         public async Task<ActionResult> DBResult()
         {
 
@@ -293,6 +327,7 @@ namespace TotalFireSafety.Controllers
             }
 
         }
+        // today's summary
         [HttpGet]
         public async Task<ActionResult> ItemSummary()
         {

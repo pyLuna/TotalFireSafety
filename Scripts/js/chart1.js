@@ -16,7 +16,7 @@ function extractNum(value) {
     }
     return { num, units };
 }
-
+// today's all item in inventory
 function GetItems() {
     fetch("/Admin/ItemSummary")
         .then(res => {

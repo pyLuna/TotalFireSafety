@@ -1368,6 +1368,8 @@ input[type="month"] {
     overflow: hidden;
 }
 
+
+
 .recent-grid .inventory-sum .card .card-header .cat-grp select {
 }
     .inventory-sum .inv-sum-header {
@@ -1377,7 +1379,22 @@ input[type="month"] {
         .inventory-sum .inv-sum-header h3 {
             margin-left: 2%;
         }
-
+.daterangepicker .drp-calendar {
+    max-width: 400px !important;
+}
+    .recent-grid .inventory-sum .card .card-header .cat-grp .date-drp {
+    max-width: 100%;
+    width: 300px;
+    height: 30px;
+    outline: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #000;
+    display: inline-block;
+    margin-right: 10px;
+}
 
 .recent-grid .inventory-sum .card .card-header .cat-grp select {
     max-width: 100%;
@@ -1449,15 +1466,14 @@ input[type="month"] {
         }
 
 .legend-grp {
-    margin-left: 45%;
+    margin-left: 55%;
     margin-right: 2%;
     height: 30px;
     width: 450px;
     background-color: #fff;
     background-color: #fff;
     border-radius: 2px;
-    border: 1px solid #B2B2B2;
-    box-shadow: 4px 3px 3px #B2B2B2;
+    border: none;
     display: inline-flex;
 }
 

@@ -156,8 +156,7 @@ function FilterType2(cat, type, cls) {
 }
 
 function FilterItems() {
-	if (category.selectedIndex != 0 || cat != "All" && seltype.selectedIndex != 0 || type != "All" &&
-		cls.selectedIndex != 0 || cls != "All") {
+	if (category.selectedIndex != 0 || cat != "All") {
 			SendToChart(1);
 	}
 	//else if()

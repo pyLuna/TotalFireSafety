@@ -1,9 +1,7 @@
 ﻿var category = document.getElementById("selcat");
 var selclass = document.getElementById("selclass");
 var seltype = document.getElementById("seltype");
-var cat = category.options[category.selectedIndex]?.value;
-var type = seltype.options[seltype.selectedIndex]?.value;
-var cls = selclass.options[selclass.selectedIndex]?.value;
+
 var newLabels = [];
 var newQuantity = [];
 
@@ -44,6 +42,8 @@ function SetCard(array) {
 	var actdeploy = document.getElementById('actdepLabel');
 	var purchase = document.getElementById('purLabel');
 	var actpurchase = document.getElementById('actpurLabel');
+	var allItems = document.getElementById('itemLabel');
+	var crits = document.getElementById('critLabel');
 
 	users.innerHTML= array.users;
 	active.innerHTML= array.active_users;
@@ -52,7 +52,9 @@ function SetCard(array) {
 	deploy.innerHTML= array.deployment;
 	actdeploy.innerHTML= array.rec_deployment;
 	purchase.innerHTML= array.purchase;
-	actpurchase.innerHTML= array.rec_purchase;
+	actpurchase.innerHTML = array.rec_purchase;
+	allItems.innerHTML = array.items;
+	crits.innerHTML = array.crit_items
 
 }
 
@@ -86,90 +88,84 @@ function PopulateDropdown(array) {
 //#endregion
 
 //#region flters
-//function FilterClass(value) {
-//	let arr = [];
-//	if (value == "all") {
-//		return allItems;
-//	}
-//	for (let i = 0; i < allItems[0].length; i++) {
-//		for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
-//			if (JSON.stringify(allItems[0][i].Items[ii].Class).toLowerCase().includes(value)) {
-//				arr.push(allItems[0][i].Items[ii]);
-//			}
-//		}
-//	}
-//	return arr;
-//}
-//function FilterCategory(value) {
-//	let arr = [];
-//	if (value == "all") {
-//		return allItems;
-//	}
-//	for (let i = 0; i < allItems[0].length; i++) {
-//			if (JSON.stringify(allItems[0][i].Category).toLowerCase().includes(value)) {
-//				for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
-//				arr.push(allItems[0][i].Items[ii]);
-//			}
-//		}
-//	}
-//	return arr;
-//}
-function FilterType(cat,type,cls) {
+function FilterClass(value) {
 	let arr = [];
-	for (let i = 0; i < allItems[0].length; i++) {
-			if (JSON.stringify(allItems[0][i].Category).toLowerCase().includes(cat)) {
-		for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
-				if (JSON.stringify(allItems[0][i].Items[ii].Class).toLowerCase().includes(cls) && JSON.stringify(allItems[0][i].Items[ii].Type).toLowerCase().includes(type)) {
-					arr.push(allItems[0][i].Items[ii]);
-				}
-			}
-		}
+	if (value == "all") {
+		return allItems;
 	}
-	return arr;
-}
-//for 2 dropdowns -- cat and type
-function FilterType1(cat, type, cls) {
-	let arr = [];
-	for (let i = 0; i < allItems[0].length; i++) {
-		if (JSON.stringify(allItems[0][i].Category).toLowerCase().includes(cat)) {
-			for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
-				if (JSON.stringify(allItems[0][i].Items[ii].Type).toLowerCase().includes(type)) {
-					arr.push(allItems[0][i].Items[ii]);
-				}
-			}
-		}
-	}
-	return arr;
-}
-//for 2 dropdowns -- cls and type
-function FilterType2(cat, type, cls) {
-	let arr = [];
 	for (let i = 0; i < allItems[0].length; i++) {
 		for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
-			if (JSON.stringify(allItems[0][i].Items[ii].Class).toLowerCase().includes(cls) &&
-				JSON.stringify(allItems[0][i].Items[ii].Type).toLowerCase().includes(type)) {
+			if (JSON.stringify(allItems[0][i].Items[ii].Class).toLowerCase().includes(value)) {
 				arr.push(allItems[0][i].Items[ii]);
 			}
 		}
 	}
 	return arr;
 }
+function FilterCategory(value) {
+	let arr = [];
+	if (value == "all") {
+		return allItems;
+	}
+	for (let i = 0; i < allItems[0].length; i++) {
+		if (JSON.stringify(allItems[0][i].Category).toLowerCase().includes(value)) {
+				for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
+					arr.push(allItems[0][i].Items[ii]);
+				}
+			}
+		}
+	return arr;
+}
+
+function FilterType(type) {
+	let arr = [];
+	for (let i = 0; i < allItems[0].length; i++) {
+		for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
+				if (JSON.stringify(allItems[0][i].Items[ii].Type).toLowerCase().includes(type)) {
+					arr.push(allItems[0][i].Items[ii]);
+				}
+		}
+	}
+	return arr;
+}
 
 function FilterItems() {
-	if (category.selectedIndex != 0 || cat != "All") {
-			SendToChart(1);
+	var cat = category.options[category.selectedIndex]?.value;
+	var type = seltype.options[seltype.selectedIndex]?.value;
+	var cls = selclass.options[selclass.selectedIndex]?.value;
+
+	if (category.selectedIndex != 0 && cat != "All" && seltype.selectedIndex == 0 && type == "All" && selclass.selectedIndex == 0 && cls == "All") {
+		SendToChart(1);
 	}
-	//else if()
+	else if (category.selectedIndex == 0 && cat == "All" && seltype.selectedIndex != 0 && type != "All" && selclass.selectedIndex == 0 && cls == "All") {
+		SendToChart(2);
+	}
+	else {
+		SendToChart(3);
+	}
+
 }
 // set chart 
 function SendToChart(requestType) {
+	var cat = category.options[category.selectedIndex]?.value;
+	var type = seltype.options[seltype.selectedIndex]?.value;
+	var cls = selclass.options[selclass.selectedIndex]?.value;
 	var results = [];
 
 	if (requestType == 1) {
-		results = FilterType(cat, type, cls);
+		results = FilterCategory(cat.toLowerCase());
 		var response = PopulateLabels(results, "item");
 		SetChart(response.label, response.quant);
 	}
-
+	else if (requestType == 2) {
+		results = FilterType(type.toLowerCase());
+		var response = PopulateLabels(results, "item");
+		SetChart(response.label, response.quant);
+	}
+	else {
+		results = FilterClass(cls.toLowerCase());
+		var response = PopulateLabels(results, "item");
+		SetChart(response.label, response.quant);
+	}
 }
 //#endregion

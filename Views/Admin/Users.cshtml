@@ -34,19 +34,33 @@
                     <!--<div class="user-buttons-style">-->
                     @*onclick="addOpenPopup()"*@
                     <!--<button class="add-btn" title="ADD NEW ITEM" id="addBtn"><a><label>Add User</label></a></button>
-        &nbsp;
-        <button class="user-filter-btn" onclick="userFiltFunction()">
-            <a>
-                <span>Filter</span>
-                <span class="las la-chevron-down"></span>
-            </a>
-        </button>
-        <div class="user-filter-content" id="userFiltDropdown">
-            <a id="selcat"> Select Category </a>
-            <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
-            <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
-            <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
-            <a href="#" onclick="SortByCategory('')">Clear</a>-->
+                        &nbsp;
+                        <button class="user-filter-btn" onclick="userFiltFunction()">
+                            <a>
+                                <span>Filter</span>
+                                <span class="las la-chevron-down"></span>
+                            </a>
+                        </button>
+                        <div class="user-filter-content" id="userFiltDropdown">
+                            <a id="selcat"> Select Category </a>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
+                            <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
+                            <a href="#" onclick="SortByCategory('')">Clear</a>
+
+                        </div>
+                        &nbsp;
+                        <button class="user-sort-btn" onclick="userSortFunction()">
+                            <a>
+                                <span>Sort</span>
+                                <span class="las la-chevron-down"></span>
+                            </a>
+                        </button>
+                        <div class="user-sort-content" id="userSortDropdown">
+                            <a href="#" onclick="Ascend()">Ascending</a>
+                            <a href="#" onclick="Descend()">Descending</a>
+                        </div>
+                    </div>-->
 
                     <div class="user-buttons-style">
                         <button class="add-btn" title="NEW EMPLOYEE" id="addBtn" onclick="addOpenPopup()">NEW EMPLOYEE</button>
@@ -56,6 +70,12 @@
                             <option value="Inactive">Inactive</option>
                             <option value="Locked">Locked</option>
                         </select>
+                        @*<select required>
+                                <option disabled selected>SORT</option>
+                                <option>All</option>
+                                <option>Local</option>
+                                <option>Import</option>
+                            </select>*@
                     </div>
 
                 </div>
@@ -98,71 +118,7 @@
                                 ACCOUNT INFORMATION
                             </div>
                             <div class="form-contents">
-                                
-                            </div>
-                        </div>
-                        <center>
-                            <div class="form-add-btns">
-                                @*onclick="checkForm()"*@
-                                <button class="save" id="saveBtn" onclick="checkForm()">
-                                    <span class="btnText">Save</span>
-                                    <i class="las la-check-square"></i>
-                                </button>
-                                <button class="save" id="saveBtn11" style="display:none;"></button>
-
-                                <button class="cancel">
-                                    @*+ closeAddForm()*@
-                                    <span class="btnText" onclick="canOpenPopup() " id="canBtn">Cancel</span>
-                                    <i class="las la-window-close"></i>
-                                </button>
-                            </div>
-                        </center>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="info-pop-container" id="info-popup">
-            <img src="~/images/information.png">
-            <h2>System Warning!</h2>
-            <p>Do you want to save the user on the list?</p>
-            @*onclick="openPopup() + infoClosePopup()"*@
-            <button type="button" onclick="submitForm()">Yes</button>
-            <button type="button" onclick="infoClosePopup()">Cancel</button>
-        </div>
-
-        <div class="can-pop-container" id="can-popup">
-            <img src="~/images/warning.png">
-            <h2>System Warning!</h2>
-            <p>Are you sure you don't want to save user on the list?</p>
-            <button type="button" onclick="canClosePopup() + addClosePopup() + ResetForm()">Yes</button>
-            <button type="button" onclick="canClosePopup()">Cancel</button>
-        </div>
-
-        @if (ViewBag.Success != null)
-        {
-            <div class="save-pop-container open-popup-show" id="popup">
-                <img src="~/images/tick.png">
-                <h2>@ViewBag.Message</h2>
-                <p>User details has been added successfully!</p>
-                <button type="button" onclick="closePopup()">OK</button>
-            </div>
-        }
-
-        <div class="rem-pop-container" id="rem-popup">
-            <img src="~/images/remove.png">
-            <h2>Cancel!</h2>
-            <p>User details has not added in the list!</p>
-            <button type="button" onclick="remClosePopup() + addClosePopup()">OK</button>
-        </div>
-
-    </main>
-    <script src="~/Scripts/user.js"></script>
-    <script src='@Url.Content("~/Scripts/validations/Uservalidation.js")'></script>
-    <script>
-
-        /*ACCOUNT INFORMATION CONTENTS CONVERT INTO STRING*/
-        const add_user_pop_up_form = `<div class="fields">
+                                <div class="fields">
                                     <div class="input-field wrap-input100 validate-input">
                                         <label>Name</label>
                                         <input class="input100" type="text" placeholder="Enter your name" id="emp_name" name="emp_name" required>
@@ -224,17 +180,68 @@
                                     <input type="number" id="statsid" name="Status.emp_no" style="display:none;" readonly>
                                     <input type="number" id="stats" name="Status.isLocked" style="display:none;" readonly>
                                     <input type="number" id="stats1" name="Status.isActive" style="display:none;" readonly>
-                                </div>`
-        /*======================= END ==============================*/
-        function LoadUserContents() {
-            $("#add-popup").addClass("add-popup-show");
-            $("#add-popup")
-                .find(".form-contents")
-                .html(add_user_pop_up_form)
-                .closest("form")
-                .validate();
+                                </div>
+                            </div>
+                        </div>
+                        <center>
+                            <div class="form-add-btns">
+                                @*onclick="checkForm()"*@
+                                <button class="save" id="saveBtn" onclick="checkForm()">
+                                    <span class="btnText">Save</span>
+                                    <i class="las la-check-square"></i>
+                                </button>
+                                <button class="save" id="saveBtn11" style="display:none;"></button>
+
+                                <button class="cancel">
+                                    @*+ closeAddForm()*@
+                                    <span class="btnText" onclick="canOpenPopup() " id="canBtn">Cancel</span>
+                                    <i class="las la-window-close"></i>
+                                </button>
+                            </div>
+                        </center>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-pop-container" id="info-popup">
+            <img src="~/images/information.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to save the user on the list?</p>
+            @*onclick="openPopup() + infoClosePopup()"*@
+            <button type="button" onclick="submitForm()">Yes</button>
+            <button type="button" onclick="infoClosePopup()">Cancel</button>
+        </div>
+
+        <div class="can-pop-container" id="can-popup">
+            <img src="~/images/warning.png">
+            <h2>System Warning!</h2>
+            <p>Are you sure you don't want to save user on the list?</p>
+            <button type="button" onclick="canClosePopup() + addClosePopup() + ResetForm()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
+
+        @if (ViewBag.Success != null)
+        {
+            <div class="save-pop-container open-popup-show" id="popup">
+                <img src="~/images/tick.png">
+                <h2>@ViewBag.Message</h2>
+                <p>User details has been added successfully!</p>
+                <button type="button" onclick="closePopup()">OK</button>
+            </div>
         }
 
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="~/images/remove.png">
+            <h2>Cancel!</h2>
+            <p>User details has not added in the list!</p>
+            <button type="button" onclick="remClosePopup() + addClosePopup()">OK</button>
+        </div>
+
+    </main>
+    <script src="~/Scripts/user.js"></script>
+    <script src='@Url.Content("~/Scripts/validations/Uservalidation.js")'></script>
+    <script>
         //$('#formId').validate();
         //document.getElementById("sel-stats").addEventListener("change", function () {
         //    //var optionValue = this.options[this.selectedIndex].value;

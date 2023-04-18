@@ -1,5 +1,6 @@
 //Global Options
 var allItems = [];
+var basecounts = [];
 var ItemLabels = [];
 var itemQuantity = [];
 var itemSize = [];
@@ -15,6 +16,25 @@ function extractNum(value) {
         }
     }
     return { num, units };
+}
+//all base count items
+function GetCounts() {
+    fetch("/Admin/BaseResult")
+        .then(res => {
+            if (res.ok) {
+                // API request was successful
+                return res.json();
+            } else {
+                console.log(res.statusText);
+            }
+        })
+        .then(data => {
+            basecounts.push(JSON.parse(data));
+        })
+        .catch(error => {
+            //window.location.replace('/Error/InternalServerError');
+            console.error(error);
+        });
 }
 // today's all item in inventory
 function GetItems() {
@@ -128,15 +148,15 @@ function SetChart(labels,quantities) {
                 y: {
                     beginAtZero: true
                 },
-                x: {
-                    ticks: {
-                        autoSkip: false, // Prevent auto-skipping of labels
-                        //maxRotation: 90, // Rotate labels by 90 degrees
-                        //minRotation: 90, // Rotate labels by 90 degrees
-                        fontSize: 12, // Reduce font size of labels
-                        padding: 10 // Add padding to labels
-                    }
-                }
+                //x: {
+                //    ticks: {
+                //        autoSkip: true, // Prevent auto-skipping of labels
+                //        //maxRotation: 90, // Rotate labels by 90 degrees
+                //        //minRotation: 90, // Rotate labels by 90 degrees
+                //        fontSize: 12, // Reduce font size of labels
+                //        padding: 10 // Add padding to labels
+                //    }
+                //}
             },
         }
     });

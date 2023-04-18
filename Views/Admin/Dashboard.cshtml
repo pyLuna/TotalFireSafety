@@ -35,7 +35,7 @@
                         <div class="card-container">
                             <h3>Users</h3>
                             <div class="card-details">
-                                <label  id="userLabel"></label><span>Total Users</span>
+                                <label id="userLabel"></label><span>Total Users</span>
                                 <p></p>
                                 <label class="card-active" id="actLabel"></label><span class="card-active">Active Users</span>
                             </div>
@@ -50,7 +50,7 @@
                         <div class="card-container">
                             <h3>Purchase Request</h3>
                             <div class="card-details">
-                                <label  id="purLabel"></label><span>Total Entries</span>
+                                <label id="purLabel"></label><span>Total Entries</span>
                                 <p></p>
                                 <label class="card-active" id="actpurLabel"></label><span class="card-active">New Entries</span>
                             </div>
@@ -81,7 +81,7 @@
                         <div class="card-container">
                             <h3>Supply Request</h3>
                             <div class="card-details">
-                                <label  id="supLabel"></label><span>Total Entries</span>
+                                <label id="supLabel"></label><span>Total Entries</span>
                                 <p></p>
                                 <label class="card-active" id="actsupLabel"></label><span class="card-active">New Entries</span>
                             </div>
@@ -90,21 +90,38 @@
                 </a>
             </div>
 
-            @*<div class="card-title">
-                <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
-                    <h3>Supply</h3>
-                    <div class="card-sPurchingle">
+            <div class="card-title">
+                <a href="@Url.Action("Requisition","Admin")">
+                    <h3>Inventory</h3>
+                    <div class="card-single">
                         <div class="card-container">
-                            <h3>Supply Request</h3>
+                            <h3>Inventory</h3>
                             <div class="card-details">
-                                <label>30</label><span>Total Entries</span>
+                                <label id="itemLabel"></label><span>Critical Items</span>
                                 <p></p>
-                                <label class="card-active">5</label><span class="card-active">New Entries</span>
+                                <label class="card-active" id="critLabel"></label><span class="card-active">New Entries</span>
                             </div>
                         </div>
                     </div>
                 </a>
-            </div>*@
+            </div>
+
+
+            @*<div class="card-title">
+            <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
+                <h3>Supply</h3>
+                <div class="card-sPurchingle">
+                    <div class="card-container">
+                        <h3>Supply Request</h3>
+                        <div class="card-details">
+                            <label>30</label><span>Total Entries</span>
+                            <p></p>
+                            <label class="card-active">5</label><span class="card-active">New Entries</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>*@
 
         </div>
 
@@ -334,6 +351,7 @@
     function OnLoad() {
         GetAll();
         GetItems();
+        GetCounts();
     }
 
     `use strict`;
@@ -442,8 +460,8 @@
 
 <script type="text/javascript">
     $(function () {
-
-        var start = moment().subtract(29, 'days');
+        //.subtract(29, 'days')
+        var start = moment();
         var end = moment();
 
         function cb(start, end) {
@@ -459,7 +477,8 @@
                 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'This Year': [moment().startOf('year'), moment().endOf('month')]
             }
         }, cb);
 

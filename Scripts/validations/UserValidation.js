@@ -1,11 +1,12 @@
+$(document).ready(function () {
+	$("#emp_contact").keypress(function (e) {
+		var length = this.value.length;
+		if (length >= 11) {
+			e.preventDefault();
+			/*alert("not allow more than 11 character");*/
+		}
+	});
 
-
-$(document).on('keypress', '#emp_contact', function (event) {
-	var length = this.value.length;
-	if (length >= 11) {
-		event.preventDefault();
-		return false;
-	}
 });
 
 $(document).on('keypress', '#emp_name', function (event) {
@@ -72,7 +73,7 @@ $(document).ready(function () {
 				required: "Please enter position",
 				minlength: "Position must be at least 5 numbers."
 			},
-			sel_roles: {	
+			sel_roles: {
 				required: "Please enter roles"
 			},
 			sel_stats: {
@@ -103,13 +104,4 @@ $(document).ready(function () {
 	$('#Credential\\.password').on('keyup', function () {
 		$(this).valid();
 	});
-
-	$("#addBtn").on('click', function (e) {
-		$("#add-popup").addClass("add-popup-show");
-		$("#add-popup")
-			.find(".form-contents")
-			.html(add_user_pop_up_form)
-			.closest("form")
-			.validate();
-	})
 });

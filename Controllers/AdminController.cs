@@ -262,7 +262,7 @@ namespace TotalFireSafety.Controllers
         //    }, null, dueTime, TimeSpan.FromDays(1));
         //}
         [HttpGet]
-        public async Task<ActionResult> BaseResult(DateTime time)
+        public async Task<ActionResult> BaseResult()
         {
             using(var _context = new TFSEntity())
             {
@@ -291,8 +291,27 @@ namespace TotalFireSafety.Controllers
                     };
                     newBase.Add(count);
                 }
-            var groupedItems = newBase.GroupBy(item => item.Inventory.in_category);
-            return Json("");
+                var groupedItems = newBase.GroupBy(item => item.Inventory.in_category);
+
+                var jsonItems = groupedItems.Select(group =>
+                                new
+                                {
+                                    Category = group.Key,
+                                    Items = group.Select(item => new
+                                    {
+                                        Name = item.Inventory.in_name,
+                                        Quantity = item.bc_count,
+                                        Size = item.Inventory.in_size,
+                                        Class = item.Inventory.in_class,
+                                        Type = item.Inventory.in_type,
+                                        FormattedDate = item.FormattedDate,
+                                        Date = item.bc_date
+                                    })
+                                });
+
+                var serialize = JsonConvert.SerializeObject(jsonItems);
+                //var deserialize = JsonConvert.DeserializeObject<Object>(serialize);
+                return Json(serialize, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]
@@ -305,11 +324,13 @@ namespace TotalFireSafety.Controllers
                 var users = _context.Employees.Count();
                 var actives = _context.Status.Where(x => x.IsActive == 1).Count(); 
                 var deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" || x.request_type.Trim().ToLower() == "deploy").Count();
-                var rec_deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" || x.request_type.Trim().ToLower() == "deploy" && x.request_date.Month == DateTime.Now.Month).Count();
+                var rec_deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" || x.request_type.Trim().ToLower() == "deploy" && x.request_date.Day == DateTime.Now.Day).Count();
                 var supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply").Count();
-                var rec_supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply" && x.request_date.Month == DateTime.Now.Month).Count();
+                var rec_supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply" && x.request_date.Day == DateTime.Now.Day).Count();
                 var purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase").Count();
-                var rec_purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase" && x.request_date.Month == DateTime.Now.Month).Count();
+                var rec_purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase" && x.request_date.Day == DateTime.Now.Day).Count();
+                var allItems = _context.Inventories.Count();
+                var crit_items = _context.Inventories.Where(x => x.in_remarks.Trim().ToLower() == "critical").Count();
                 var model = new DashboardModel()
                 {
                     users = users,
@@ -319,7 +340,9 @@ namespace TotalFireSafety.Controllers
                     supply = supply,
                     rec_supply = rec_supply,
                     rec_purchase = rec_purchase,
-                    purchase = purchase
+                    purchase = purchase,
+                    items = allItems,
+                    crit_items = crit_items
                 };
                 var serialize = JsonConvert.SerializeObject(model);
                 var deserialize = JsonConvert.DeserializeObject<DashboardModel>(serialize);
@@ -331,7 +354,7 @@ namespace TotalFireSafety.Controllers
         [HttpGet]
         public async Task<ActionResult> ItemSummary()
         {
-            using(var _context = new TFSEntity())
+            using (var _context = new TFSEntity())
             {
                 var allItems = _context.Inventories.Select(x => x).ToList();
                 var groupedItems = allItems.GroupBy(item => item.in_category);

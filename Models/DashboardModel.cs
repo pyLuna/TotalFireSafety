@@ -15,5 +15,7 @@ namespace TotalFireSafety.Models
         public int rec_deployment { get; set; }
         public int supply { get; set; }
         public int rec_supply { get; set; }
+        public int items { get; set; }
+        public int crit_items { get; set; }
     }
 }

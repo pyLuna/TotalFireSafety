@@ -267,7 +267,8 @@ namespace TotalFireSafety.Controllers
             using(var _context = new TFSEntity())
             {
                 var allBase = _context.Basecounts.Select(x => x).ToList();
-                var allItems = _context.Inventories.Select(x => x).ToList();
+                //var allItems = _context.Inventories.Select(x => x).ToList();
+                var allItems = _context.Inventories.Where(x => x.in_status != "archived").ToList();
 
                 var newBase = new List<Basecount>();
 
@@ -286,12 +287,13 @@ namespace TotalFireSafety.Controllers
                             in_class = newInv.in_class,
                             in_quantity = newInv.in_quantity,
                             in_size = newInv.in_size,
-                            in_type = newInv.in_type
+                            in_type = newInv.in_type,
                         } : null
                     };
                     newBase.Add(count);
                 }
-                var groupedItems = newBase.GroupBy(item => item.Inventory.in_category);
+                var groupedItems = newBase.GroupBy(item => item.Inventory?.in_category ?? null)
+                    .Where(group => group.Key != null);
 
                 var jsonItems = groupedItems.Select(group =>
                                 new
@@ -299,11 +301,11 @@ namespace TotalFireSafety.Controllers
                                     Category = group.Key,
                                     Items = group.Select(item => new
                                     {
-                                        Name = item.Inventory.in_name,
+                                        Name = item.Inventory?.in_name,
                                         Quantity = item.bc_count,
-                                        Size = item.Inventory.in_size,
-                                        Class = item.Inventory.in_class,
-                                        Type = item.Inventory.in_type,
+                                        Size = item.Inventory?.in_size,
+                                        Class = item.Inventory?.in_class,
+                                        Type = item.Inventory?.in_type,
                                         FormattedDate = item.FormattedDate,
                                         Date = item.bc_date
                                     })
@@ -330,7 +332,7 @@ namespace TotalFireSafety.Controllers
                 var purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase").Count();
                 var rec_purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase" && x.request_date.Day == DateTime.Now.Day).Count();
                 var allItems = _context.Inventories.Count();
-                var crit_items = _context.Inventories.Where(x => x.in_remarks.Trim().ToLower() == "critical").Count();
+                var crit_items = _context.Inventories.Where(x => x.in_remarks.Trim().ToLower() == "critical" && x.in_status.Trim().ToLower() != "archived").Count();
                 var model = new DashboardModel()
                 {
                     users = users,
@@ -356,7 +358,7 @@ namespace TotalFireSafety.Controllers
         {
             using (var _context = new TFSEntity())
             {
-                var allItems = _context.Inventories.Select(x => x).ToList();
+                var allItems = _context.Inventories.Where(x => x.in_status.Trim().ToLower() != "archived").ToList();
                 var groupedItems = allItems.GroupBy(item => item.in_category);
 
                 var jsonItems = groupedItems.Select(group =>

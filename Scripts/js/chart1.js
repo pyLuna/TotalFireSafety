@@ -148,15 +148,15 @@ function SetChart(labels,quantities) {
                 y: {
                     beginAtZero: true
                 },
-                //x: {
-                //    ticks: {
-                //        autoSkip: true, // Prevent auto-skipping of labels
-                //        //maxRotation: 90, // Rotate labels by 90 degrees
-                //        //minRotation: 90, // Rotate labels by 90 degrees
-                //        fontSize: 12, // Reduce font size of labels
-                //        padding: 10 // Add padding to labels
-                //    }
-                //}
+                x: {
+                    ticks: {
+                        autoSkip: true, // Prevent auto-skipping of labels
+                        //maxRotation: 90, // Rotate labels by 90 degrees
+                        //minRotation: 90, // Rotate labels by 90 degrees
+                        fontSize: 12, // Reduce font size of labels
+                        padding: 10 // Add padding to labels
+                    }
+                }
             },
         }
     });

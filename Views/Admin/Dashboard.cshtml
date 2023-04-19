@@ -91,7 +91,7 @@
             </div>
 
             <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
+                <a href="@Url.Action("Inventory","Admin")">
                     <h3>Inventory</h3>
                     <div class="card-single">
                         <div class="card-container">
@@ -108,25 +108,25 @@
 
 
             @*<div class="card-title">
-            <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
-                <h3>Supply</h3>
-                <div class="card-sPurchingle">
-                    <div class="card-container">
-                        <h3>Supply Request</h3>
-                        <div class="card-details">
-                            <label>30</label><span>Total Entries</span>
-                            <p></p>
-                            <label class="card-active">5</label><span class="card-active">New Entries</span>
+                    <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
+                        <h3>Supply</h3>
+                        <div class="card-sPurchingle">
+                            <div class="card-container">
+                                <h3>Supply Request</h3>
+                                <div class="card-details">
+                                    <label>30</label><span>Total Entries</span>
+                                    <p></p>
+                                    <label class="card-active">5</label><span class="card-active">New Entries</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </a>
-        </div>*@
+                    </a>
+                </div>*@
 
         </div>
 
-       
- 
+
+
 
         <div class="recent-grid">
             <div class="inventory-sum">
@@ -174,7 +174,7 @@
 
                         <div class="legend-grp">
                             <div class="legend-content">
-                                
+
                                 <div class="legend-content-1">
                                     <div class="legend-color">
 
@@ -208,15 +208,28 @@
                         <h3>Item Supplies</h3>
 
                         <div class="fst-grp">
+
+                            <div class="radio-container">
+                                <div class="radio-list">
+                                    <input type="radio" name="list"/>
+                                    <label for=""><h3>All</h3></label>
+                                </div>
+
+                                <div class="radio-list">
+                                    <input type="radio" name="list"/>
+                                    <label for=""><h3>Fast Paced Items</h3></label>
+                                </div>
+
+                                <div class="radio-list">
+                                    <input type="radio" name="list"/>
+                                    <label for=""><h3>Slow Paced Items</h3></label>
+                                </div>
+                            </div>
+
                             <select required>
-                                <option disabled selected>Choose</option>
-                                <option>...</option>
-                                <option>..</option>
-                            </select>
-                            <select required>
-                                <option disabled selected>Choose</option>
-                                <option>...</option>
-                                <option>..</option>
+                                <option disabled selected>Item Class</option>
+                                <option>Imported</option>
+                                <option>Local</option>
                             </select>
                         </div>
 
@@ -229,7 +242,7 @@
                     <div class="chart-borders">
                         <div class="chart">
                             <div class="scatter">
-                                <canvas id="barcharthori" width="auto" height="auto"></canvas>
+                                <canvas id="barcharthori" name="barcharthori" width="auto" height="auto"></canvas>
                             </div>
                         </div>
                     </div>

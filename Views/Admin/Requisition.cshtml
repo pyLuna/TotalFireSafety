@@ -569,10 +569,11 @@
                 <h3>INPUT QUANTITY</h3>
                     <input type="number" id="quantVal" name="quantVal" required>
                     <input type="text" id="hiddenCode" style="display:none;">
-                    <p class="emErr"></p>
+                    <br />
+                    <p class="emErr" style="margin-top: 5px; color: red;"></p>
                     <br>
                     <br>
-                    <button id="conf" onclick="Validate()">confirm</button>
+                    <button id="conf">confirm</button>
                     <button onclick="closeInputQTYForm()">cancel</button>
             </div>
 
@@ -838,12 +839,18 @@
     document.getElementById('conf').addEventListener("click", function () {
         var quant = document.getElementById('quantVal').value;
         var code = document.getElementById('hiddenCode').value;
+        if (quant === '' || quant === null || isNaN(quant)) {
+            $(".emErr").html("Please input quantity.");
+        } else {
             DataToAdd(quant, code);
             closeInputQTYForm();
             document.getElementById('quantVal').value = '';
+        }
+            
     });
     function closeInputQTYForm() {
         document.getElementById("input-popup").style.display = "none";
+        $(".emErr").html("");
     }
     let row = "";
     function openInputQTYForm1(rows) {

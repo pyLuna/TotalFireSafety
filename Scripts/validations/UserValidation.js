@@ -9,7 +9,25 @@ $(document).ready(function () {
 
 });
 
-$(document).on('keypress', '#emp_name', function (event) {
+$(document).on('keypress', '#emp_Sname', function (event) {
+	var regex = new RegExp("^[a-zA-Z ]+$");
+	var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+		event.preventDefault();
+		return false;
+	}
+});
+
+$(document).on('keypress', '#emp_Fname', function (event) {
+	var regex = new RegExp("^[a-zA-Z ]+$");
+	var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+		event.preventDefault();
+		return false;
+	}
+});
+
+$(document).on('keypress', '#emp_Mname', function (event) {
 	var regex = new RegExp("^[a-zA-Z ]+$");
 	var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 	if (!regex.test(key)) {
@@ -23,7 +41,17 @@ $(document).ready(function () {
 	/*$("#sel-roles").attr('name', 'sel_roles');*/
 	$('#formId').validate({
 		rules: {
-			emp_name: {
+			emp_Sname: {
+				required: true,
+				minlength: 4,
+				maxlength: 30
+			},
+			emp_Fname: {
+				required: true,
+				minlength: 4,
+				maxlength: 30
+			},
+			emp_Mname: {
 				required: true,
 				minlength: 4,
 				maxlength: 30
@@ -52,9 +80,19 @@ $(document).ready(function () {
 			}
 		},
 		messages: {
-			emp_name: {
-				required: "Please enter name.",
-				minlength: "Name must be at least 4 characters long.",
+			emp_Sname: {
+				required: "Surname must be required.",
+				minlength: "Surname must be at least 4 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
+			},
+			emp_Fname: {
+				required: "First name must be required.",
+				minlength: "First name must be at least 4 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
+			},
+			emp_Mname: {
+				required: "Middle name must be required.",
+				minlength: "Middle name must be at least 4 characters long.",
 				maxlength: "Maximum length of name is 30 characters only."
 			},
 			emp_contact: {
@@ -67,7 +105,7 @@ $(document).ready(function () {
 				minlength: "Employee ID must be at least 8 numbers."
 			},
 			emp_hiredDate: {
-				required: "This field is required.",
+				required: "Please input Hired date.",
 			},
 			emp_position: {
 				required: "Please enter position",

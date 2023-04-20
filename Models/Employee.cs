@@ -22,11 +22,13 @@ namespace TotalFireSafety.Models
         }
     
         public int emp_no { get; set; }
-        public string emp_name { get; set; }
         public Nullable<System.DateTime> emp_hiredDate { get; set; }
         public long emp_contact { get; set; }
         public string emp_position { get; set; }
         public string ProfilePath { get; set; }
+        public string emp_fname { get; set; }
+        public string emp_lname { get; set; }
+        public string emp_name { get; set; }
     
         public virtual Credential Credential { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

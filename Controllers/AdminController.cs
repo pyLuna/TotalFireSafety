@@ -207,7 +207,7 @@ namespace TotalFireSafety.Controllers
             var empId = Session["emp_no"].ToString();
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             var data = db.Employees.Where(d => d.emp_no == id).ToList();
-            ViewBag.Name = data.FirstOrDefault()?.emp_name;
+            ViewBag.Name = data.FirstOrDefault()?.emp_fname + " " + data.FirstOrDefault()?.emp_lname;
             ViewBag.Position = data.FirstOrDefault()?.emp_position;
             ViewBag.Id = data.FirstOrDefault()?.emp_no;
 

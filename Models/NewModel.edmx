@@ -1,0 +1,675 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="tfsti_TotalFireSafetyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Basecounts">
+          <Key>
+            <PropertyRef Name="bc_id" />
+          </Key>
+          <Property Name="bc_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="bc_itemCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="bc_date" Type="datetime" Nullable="false" />
+          <Property Name="bc_count" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Credentials">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="int" Nullable="false" />
+          <Property Name="emp_hiredDate" Type="datetime" />
+          <Property Name="emp_contact" Type="bigint" Nullable="false" />
+          <Property Name="emp_position" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProfilePath" Type="varchar(max)" />
+          <Property Name="emp_fname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="emp_lname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="emp_name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Inv_Update">
+          <Key>
+            <PropertyRef Name="update_id" />
+          </Key>
+          <Property Name="update_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="update_item_id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="update_quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="update_date" Type="datetime" />
+          <Property Name="update_type" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Inventories">
+          <Key>
+            <PropertyRef Name="in_code" />
+          </Key>
+          <Property Name="in_guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="in_code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="in_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="in_category" Type="nvarchar" MaxLength="100" />
+          <Property Name="in_type" Type="nvarchar" MaxLength="100" />
+          <Property Name="in_size" Type="nvarchar" MaxLength="100" />
+          <Property Name="in_quantity" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="in_status" Type="nvarchar" MaxLength="50" />
+          <Property Name="in_class" Type="nvarchar" MaxLength="50" />
+          <Property Name="in_dateAdded" Type="nvarchar" MaxLength="50" />
+          <Property Name="in_arch_date" Type="datetime" />
+          <Property Name="in_remarks" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="emp_no" Type="int" Nullable="false" />
+          <Property Name="in_code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ntf_title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ntf_content" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ntf_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Requests">
+          <Key>
+            <PropertyRef Name="request_id" />
+          </Key>
+          <Property Name="request_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="request_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="request_item" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="request_item_quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="request_date" Type="datetime" Nullable="false" />
+          <Property Name="request_employee_id" Type="int" />
+          <Property Name="request_status" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="request_type_id" Type="int" Nullable="false" />
+          <Property Name="request_type_status" Type="char" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="int" Nullable="false" />
+          <Property Name="role1" Type="int" Nullable="false" />
+          <Property Name="status" Type="nvarchar" MaxLength="50" />
+          <Property Name="date" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="int" Nullable="false" />
+          <Property Name="IsLocked" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Basecount_Inventory1">
+          <End Role="Inventories" Type="Self.Inventories" Multiplicity="1" />
+          <End Role="Basecounts" Type="Self.Basecounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Basecounts">
+              <PropertyRef Name="bc_itemCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Credentials_Employee">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Credentials" Type="Self.Credentials" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Credentials">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inv_Update_Inventory1">
+          <End Role="Inventories" Type="Self.Inventories" Multiplicity="1" />
+          <End Role="Inv_Update" Type="Self.Inv_Update" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Inv_Update">
+              <PropertyRef Name="update_item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Employee1">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Inventory1">
+          <End Role="Inventories" Type="Self.Inventories" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="in_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Employee">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="request_employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Inventory1">
+          <End Role="Inventories" Type="Self.Inventories" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="request_item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roles_Employee">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Roles">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Status_Employee">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Status">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tfsti_TotalFireSafetyModelStoreContainer">
+          <EntitySet Name="Basecounts" EntityType="Self.Basecounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Credentials" EntityType="Self.Credentials" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inv_Update" EntityType="Self.Inv_Update" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inventories" EntityType="Self.Inventories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Basecount_Inventory1" Association="Self.FK_Basecount_Inventory1">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Basecounts" EntitySet="Basecounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Credentials_Employee" Association="Self.FK_Credentials_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Credentials" EntitySet="Credentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inv_Update_Inventory1" Association="Self.FK_Inv_Update_Inventory1">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Inv_Update" EntitySet="Inv_Update" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Employee1" Association="Self.FK_Notifications_Employee1">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Inventory1" Association="Self.FK_Notifications_Inventory1">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Employee" Association="Self.FK_Requests_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Inventory1" Association="Self.FK_Requests_Inventory1">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roles_Employee" Association="Self.FK_Roles_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Roles" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Status_Employee" Association="Self.FK_Status_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Status" EntitySet="Status" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="tfsti_TotalFireSafetyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Basecount">
+          <Key>
+            <PropertyRef Name="bc_id" />
+          </Key>
+          <Property Name="bc_id" Type="Guid" Nullable="false" />
+          <Property Name="bc_itemCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="bc_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="bc_count" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK_Basecount_Inventory1" FromRole="Basecounts" ToRole="Inventories" />
+        </EntityType>
+        <EntityType Name="Credential">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="tfsti_TotalFireSafetyModel.FK_Credentials_Employee" FromRole="Credential" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Inv_Update">
+          <Key>
+            <PropertyRef Name="update_id" />
+          </Key>
+          <Property Name="update_id" Type="Guid" Nullable="false" />
+          <Property Name="update_item_id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="update_quantity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="update_date" Type="DateTime" Precision="3" />
+          <Property Name="update_type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK_Inv_Update_Inventory1" FromRole="Inv_Update" ToRole="Inventories" />
+        </EntityType>
+        <EntityType Name="Inventory">
+          <Key>
+            <PropertyRef Name="in_code" />
+          </Key>
+          <Property Name="in_guid" Type="Guid" Nullable="false" />
+          <Property Name="in_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="in_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="in_category" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="in_type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="in_size" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="in_quantity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="in_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="in_class" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="in_dateAdded" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="in_arch_date" Type="DateTime" Precision="3" />
+          <Property Name="in_remarks" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Basecounts" Relationship="Self.FK_Basecount_Inventory1" FromRole="Inventories" ToRole="Basecounts" />
+          <NavigationProperty Name="Inv_Update" Relationship="Self.FK_Inv_Update_Inventory1" FromRole="Inventories" ToRole="Inv_Update" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notifications_Inventory1" FromRole="Inventories" ToRole="Notifications" />
+          <NavigationProperty Name="Requests" Relationship="Self.FK_Requests_Inventory1" FromRole="Inventories" ToRole="Requests" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="guid" Type="Guid" Nullable="false" />
+          <Property Name="emp_no" Type="Int32" Nullable="false" />
+          <Property Name="in_code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ntf_title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ntf_content" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ntf_date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK_Notifications_Inventory1" FromRole="Notifications" ToRole="Inventories" />
+          <NavigationProperty Name="Employee" Relationship="tfsti_TotalFireSafetyModel.FK_Notifications_Employee1" FromRole="Notification" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="request_id" />
+          </Key>
+          <Property Name="request_id" Type="Guid" Nullable="false" />
+          <Property Name="request_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="request_item" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="request_item_quantity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="request_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="request_employee_id" Type="Int32" />
+          <Property Name="request_status" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="request_type_id" Type="Int32" Nullable="false" />
+          <Property Name="request_type_status" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Inventory" Relationship="Self.FK_Requests_Inventory1" FromRole="Requests" ToRole="Inventories" />
+          <NavigationProperty Name="Employee" Relationship="tfsti_TotalFireSafetyModel.FK_Requests_Employee" FromRole="Request" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="Int32" Nullable="false" />
+          <Property Name="role1" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="tfsti_TotalFireSafetyModel.FK_Roles_Employee" FromRole="Role" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <Property Name="IsLocked" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="tfsti_TotalFireSafetyModel.FK_Status_Employee" FromRole="Status" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK_Basecount_Inventory1">
+          <End Role="Inventories" Type="Self.Inventory" Multiplicity="1" />
+          <End Role="Basecounts" Type="Self.Basecount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Basecounts">
+              <PropertyRef Name="bc_itemCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inv_Update_Inventory1">
+          <End Role="Inventories" Type="Self.Inventory" Multiplicity="1" />
+          <End Role="Inv_Update" Type="Self.Inv_Update" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Inv_Update">
+              <PropertyRef Name="update_item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Inventory1">
+          <End Role="Inventories" Type="Self.Inventory" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="in_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Inventory1">
+          <End Role="Inventories" Type="Self.Inventory" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="request_item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tfsti_TotalFireSafetyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Basecounts" EntityType="Self.Basecount" />
+          <EntitySet Name="Credentials" EntityType="Self.Credential" />
+          <EntitySet Name="Inv_Update" EntityType="Self.Inv_Update" />
+          <EntitySet Name="Inventories" EntityType="Self.Inventory" />
+          <EntitySet Name="Notifications" EntityType="Self.Notification" />
+          <EntitySet Name="Requests" EntityType="Self.Request" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <AssociationSet Name="FK_Basecount_Inventory1" Association="Self.FK_Basecount_Inventory1">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Basecounts" EntitySet="Basecounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inv_Update_Inventory1" Association="Self.FK_Inv_Update_Inventory1">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Inv_Update" EntitySet="Inv_Update" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Inventory1" Association="Self.FK_Notifications_Inventory1">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Inventory1" Association="Self.FK_Requests_Inventory1">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <EntitySet Name="Employees" EntityType="tfsti_TotalFireSafetyModel.Employee" />
+          <AssociationSet Name="FK_Credentials_Employee" Association="tfsti_TotalFireSafetyModel.FK_Credentials_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Credential" EntitySet="Credentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_Employee1" Association="tfsti_TotalFireSafetyModel.FK_Notifications_Employee1">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Employee" Association="tfsti_TotalFireSafetyModel.FK_Requests_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Roles_Employee" Association="tfsti_TotalFireSafetyModel.FK_Roles_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Role" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Status_Employee" Association="tfsti_TotalFireSafetyModel.FK_Status_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Status" EntitySet="Status" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="Int32" Nullable="false" />
+          <Property Name="emp_hiredDate" Type="DateTime" Precision="3" />
+          <Property Name="emp_contact" Type="Int64" Nullable="false" />
+          <Property Name="emp_position" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProfilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="emp_fname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emp_lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="emp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Credential" Relationship="tfsti_TotalFireSafetyModel.FK_Credentials_Employee" FromRole="Employee" ToRole="Credential" />
+          <NavigationProperty Name="Notifications" Relationship="tfsti_TotalFireSafetyModel.FK_Notifications_Employee1" FromRole="Employee" ToRole="Notification" />
+          <NavigationProperty Name="Requests" Relationship="tfsti_TotalFireSafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
+          <NavigationProperty Name="Role" Relationship="tfsti_TotalFireSafetyModel.FK_Roles_Employee" FromRole="Employee" ToRole="Role" />
+          <NavigationProperty Name="Status" Relationship="tfsti_TotalFireSafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
+        </EntityType>
+        <Association Name="FK_Credentials_Employee">
+          <End Type="tfsti_TotalFireSafetyModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="tfsti_TotalFireSafetyModel.Credential" Role="Credential" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Credential">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_Employee1">
+          <End Type="tfsti_TotalFireSafetyModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="tfsti_TotalFireSafetyModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Employee">
+          <End Type="tfsti_TotalFireSafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="tfsti_TotalFireSafetyModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="request_employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Roles_Employee">
+          <End Type="tfsti_TotalFireSafetyModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="tfsti_TotalFireSafetyModel.Role" Role="Role" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Status_Employee">
+          <End Type="tfsti_TotalFireSafetyModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="tfsti_TotalFireSafetyModel.Status" Role="Status" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Status">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="tfsti_TotalFireSafetyModelStoreContainer" CdmEntityContainer="tfsti_TotalFireSafetyEntities">
+          <EntitySetMapping Name="Basecounts">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Basecount">
+              <MappingFragment StoreEntitySet="Basecounts">
+                <ScalarProperty Name="bc_id" ColumnName="bc_id" />
+                <ScalarProperty Name="bc_itemCode" ColumnName="bc_itemCode" />
+                <ScalarProperty Name="bc_date" ColumnName="bc_date" />
+                <ScalarProperty Name="bc_count" ColumnName="bc_count" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Credentials">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Credential">
+              <MappingFragment StoreEntitySet="Credentials">
+                <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inv_Update">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Inv_Update">
+              <MappingFragment StoreEntitySet="Inv_Update">
+                <ScalarProperty Name="update_id" ColumnName="update_id" />
+                <ScalarProperty Name="update_item_id" ColumnName="update_item_id" />
+                <ScalarProperty Name="update_quantity" ColumnName="update_quantity" />
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="update_type" ColumnName="update_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inventories">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Inventory">
+              <MappingFragment StoreEntitySet="Inventories">
+                <ScalarProperty Name="in_guid" ColumnName="in_guid" />
+                <ScalarProperty Name="in_code" ColumnName="in_code" />
+                <ScalarProperty Name="in_name" ColumnName="in_name" />
+                <ScalarProperty Name="in_category" ColumnName="in_category" />
+                <ScalarProperty Name="in_type" ColumnName="in_type" />
+                <ScalarProperty Name="in_size" ColumnName="in_size" />
+                <ScalarProperty Name="in_quantity" ColumnName="in_quantity" />
+                <ScalarProperty Name="in_status" ColumnName="in_status" />
+                <ScalarProperty Name="in_class" ColumnName="in_class" />
+                <ScalarProperty Name="in_dateAdded" ColumnName="in_dateAdded" />
+                <ScalarProperty Name="in_arch_date" ColumnName="in_arch_date" />
+                <ScalarProperty Name="in_remarks" ColumnName="in_remarks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="guid" ColumnName="guid" />
+                <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+                <ScalarProperty Name="in_code" ColumnName="in_code" />
+                <ScalarProperty Name="ntf_title" ColumnName="ntf_title" />
+                <ScalarProperty Name="ntf_content" ColumnName="ntf_content" />
+                <ScalarProperty Name="ntf_date" ColumnName="ntf_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requests">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Request">
+              <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+                <ScalarProperty Name="request_type" ColumnName="request_type" />
+                <ScalarProperty Name="request_item" ColumnName="request_item" />
+                <ScalarProperty Name="request_item_quantity" ColumnName="request_item_quantity" />
+                <ScalarProperty Name="request_date" ColumnName="request_date" />
+                <ScalarProperty Name="request_employee_id" ColumnName="request_employee_id" />
+                <ScalarProperty Name="request_status" ColumnName="request_status" />
+                <ScalarProperty Name="request_type_id" ColumnName="request_type_id" />
+                <ScalarProperty Name="request_type_status" ColumnName="request_type_status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+                <ScalarProperty Name="role1" ColumnName="role1" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="tfsti_TotalFireSafetyModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="emp_name" ColumnName="emp_name" />
+                <ScalarProperty Name="emp_lname" ColumnName="emp_lname" />
+                <ScalarProperty Name="emp_fname" ColumnName="emp_fname" />
+                <ScalarProperty Name="ProfilePath" ColumnName="ProfilePath" />
+                <ScalarProperty Name="emp_position" ColumnName="emp_position" />
+                <ScalarProperty Name="emp_contact" ColumnName="emp_contact" />
+                <ScalarProperty Name="emp_hiredDate" ColumnName="emp_hiredDate" />
+                <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

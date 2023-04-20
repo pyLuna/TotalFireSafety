@@ -105,7 +105,9 @@ namespace TotalFireSafety.Controllers
                                 emp_no = newEmps.emp_no,
                                 emp_contact = newEmps.emp_contact,
                                 emp_hiredDate = newEmps.emp_hiredDate,
-                                emp_name = newEmps.emp_name,
+                                emp_fname = newEmps.emp_fname,
+                                emp_lname = newEmps.emp_lname,
+                                emp_mname = newEmps.emp_mname,
                                 emp_position = newEmps.emp_position,
                             } : null,
                         };
@@ -588,7 +590,9 @@ namespace TotalFireSafety.Controllers
                             emp_no = item.emp_no,
                             emp_contact = item.emp_contact,
                             emp_hiredDate = item.emp_hiredDate,
-                            emp_name = item.emp_name,
+                            emp_fname = item.emp_fname,
+                            emp_lname = item.emp_lname,
+                            emp_mname = item.emp_mname,
                             emp_position = item.emp_position,
 
                             Credential = newCreds?.emp_no == item.emp_no? new Credential { 
@@ -643,7 +647,7 @@ namespace TotalFireSafety.Controllers
                         _id = int.Parse(val);
                     }
 
-                    var user = _context.Employees.Where(x => x.emp_name == val || x.emp_no == _id || x.emp_hiredDate.ToString().Contains(val)).SingleOrDefault();
+                    var user = _context.Employees.Where(x => x.emp_fname == val || x.emp_no == _id || x.emp_hiredDate.ToString().Contains(val)).SingleOrDefault();
 
                     if (user != null)
                     {
@@ -682,7 +686,9 @@ namespace TotalFireSafety.Controllers
                                 emp_no = _emp.emp_no,
                                 emp_contact = _emp.emp_contact,
                                 emp_hiredDate = _emp.emp_hiredDate,
-                                emp_name = _emp.emp_name,
+                                emp_fname = _emp.emp_fname,
+                                emp_lname = _emp.emp_lname,
+                                emp_mname = _emp.emp_mname,
                                 emp_position = _emp.emp_position
                             };
 
@@ -719,7 +725,9 @@ namespace TotalFireSafety.Controllers
                         if (emp != null)
                         {
                             emp.emp_no = _emp.emp_no;
-                            emp.emp_name = _emp.emp_name;
+                            emp.emp_fname = _emp.emp_fname;
+                            emp.emp_mname = _emp.emp_mname;
+                            emp.emp_lname = _emp.emp_lname;
                             emp.emp_contact = _emp.emp_contact;
                             emp.emp_hiredDate = _emp.emp_hiredDate;
                             emp.emp_position = _emp.emp_position;
@@ -1168,7 +1176,9 @@ namespace TotalFireSafety.Controllers
                                 emp_no = newEmployee.emp_no,
                                 emp_contact = newEmployee.emp_contact,
                                 emp_hiredDate = newEmployee.emp_hiredDate,
-                                emp_name = newEmployee.emp_name,
+                                emp_fname = newEmployee.emp_fname,
+                                emp_lname = newEmployee.emp_lname,
+                                emp_mname = newEmployee.emp_mname,
                                 emp_position = newEmployee.emp_position,
                             } : null,
                             Inventory = newInv?.in_code == item.request_item ? new Inventory

@@ -21,7 +21,7 @@ namespace TotalFireSafety.Models
         public string ntf_content { get; set; }
         public System.DateTime ntf_date { get; set; }
     
-        public virtual Employee Employee { get; set; }
         public virtual Inventory Inventory { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

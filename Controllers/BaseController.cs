@@ -66,7 +66,7 @@ namespace TotalFireSafety.Controllers
                             Session["access_token"] = token.access_token;
                             Session["emp_no"] = _user.emp_no;
                             Session["system_role"] = _roles.role1;
-                            Session["name"] = _actuser.emp_name;
+                            Session["name"] = _actuser.emp_fname;
                             Session["position"] = _actuser.emp_position;
                         }
                         //var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();

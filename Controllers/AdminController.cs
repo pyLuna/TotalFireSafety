@@ -65,7 +65,7 @@ namespace TotalFireSafety.Controllers
         #region Others
         protected string GetPath(int emp_no)
         {
-            using (var _context = new TFSEntity())
+            using (var _context = new tfsti_TotalFireSafetyEntities())
             {
                 var user = _context.Employees.Where(x => x.emp_no == emp_no).SingleOrDefault();
                 if (user.ProfilePath != null)
@@ -90,7 +90,7 @@ namespace TotalFireSafety.Controllers
                 if (file != null && file.ContentLength > 0)
                 {
                     // Store the file path in the database as a string using Entity Framework
-                    using (var _context = new TFSEntity())
+                    using (var _context = new tfsti_TotalFireSafetyEntities())
                     {
                         // Get the filename and extension of the uploaded file
                         string filename = Path.GetFileName(file.FileName);
@@ -199,7 +199,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> InvReportExport(int? id)
         {
 
-            TFSEntity db = new TFSEntity();
+            tfsti_TotalFireSafetyEntities db = new tfsti_TotalFireSafetyEntities();
             if (Session["emp_no"] == null)
             {
                 return RedirectToAction("Login", "Base");
@@ -264,7 +264,7 @@ namespace TotalFireSafety.Controllers
         [HttpGet]
         public async Task<ActionResult> BaseResult()
         {
-            using(var _context = new TFSEntity())
+            using(var _context = new tfsti_TotalFireSafetyEntities())
             {
                 var allBase = _context.Basecounts.Select(x => x).ToList();
                 //var allItems = _context.Inventories.Select(x => x).ToList();
@@ -320,7 +320,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> DBResult()
         {
 
-            using (var _context = new TFSEntity())
+            using (var _context = new tfsti_TotalFireSafetyEntities())
             {
 
                 var users = _context.Employees.Count();
@@ -356,7 +356,7 @@ namespace TotalFireSafety.Controllers
         [HttpGet]
         public async Task<ActionResult> ItemSummary()
         {
-            using (var _context = new TFSEntity())
+            using (var _context = new tfsti_TotalFireSafetyEntities())
             {
                 var allItems = _context.Inventories.Where(x => x.in_status.Trim().ToLower() != "archived").ToList();
                 var groupedItems = allItems.GroupBy(item => item.in_category);
@@ -779,7 +779,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> ExportRequest(int? id)
         {
             var empId = Session["emp_no"].ToString();
-            TFSEntity db = new TFSEntity();
+            tfsti_TotalFireSafetyEntities db = new tfsti_TotalFireSafetyEntities();
             if (Session["emp_no"] == null)
             {
                 return RedirectToAction("Login", "Base");

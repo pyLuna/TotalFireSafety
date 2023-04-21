@@ -34,7 +34,7 @@ namespace TotalFireSafety.Controllers
          */
         private Tuple<Guid, Boolean> Validate(string typeOf)
         {
-            using (var _context = new TFSEntity())
+            using (var _context = new tfsti_TotalFireSafetyEntities())
             {
                 var newGuid = Guid.NewGuid();
                 switch (typeOf.ToLower())
@@ -86,7 +86,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var statuses = _context.Status.Select(x => x).ToList();
                     var employees = _context.Employees.Select(x => x).ToList();
@@ -107,7 +107,7 @@ namespace TotalFireSafety.Controllers
                                 emp_hiredDate = newEmps.emp_hiredDate,
                                 emp_fname = newEmps.emp_fname,
                                 emp_lname = newEmps.emp_lname,
-                                emp_mname = newEmps.emp_mname,
+                                emp_name = newEmps.emp_name,
                                 emp_position = newEmps.emp_position,
                             } : null,
                         };
@@ -136,7 +136,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var role = _context.Credentials.Where(x => x.emp_no == id).SingleOrDefault();
 
@@ -165,7 +165,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("Please verify your data");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var roleExist = _context.Status.Where(x => x.emp_no == items.emp_no).SingleOrDefault();
 
@@ -196,7 +196,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("Please verify your data.");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var role = _context.Status.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
 
@@ -233,7 +233,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("No ID found");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var role = _context.Status.Where(x => x.emp_no == id).SingleOrDefault();
 
@@ -264,7 +264,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var roles = _context.Roles.Select(x => x).ToList();
 
@@ -290,7 +290,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var role = _context.Credentials.Where(x => x.emp_no == id).SingleOrDefault();
 
@@ -319,7 +319,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("Please verify your data");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var roleExist = _context.Credentials.Where(x => x.emp_no == items.emp_no).SingleOrDefault();
 
@@ -350,7 +350,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("Please verify your data.");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var role = _context.Credentials.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
 
@@ -387,7 +387,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("No ID found");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var role = _context.Credentials.Where(x => x.emp_no == id).SingleOrDefault();
 
@@ -418,7 +418,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var roles = _context.Roles.Select(x => x).ToList();
 
@@ -444,7 +444,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var role = _context.Roles.Where(x => x.emp_no == id).SingleOrDefault();
 
@@ -473,7 +473,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("Please verify your data");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                     {
                         var roleExist = _context.Roles.Where(x => x.emp_no == items.emp_no).SingleOrDefault();
 
@@ -503,7 +503,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("Please verify your data.");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                     {
                         var role = _context.Roles.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
 
@@ -539,7 +539,7 @@ namespace TotalFireSafety.Controllers
                 {
                     return BadRequest("No ID found");
                 }
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var role = _context.Roles.Where(x => x.emp_no == id).SingleOrDefault();
 
@@ -571,7 +571,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var users = _context.Employees.Select(x => x).ToList();
                     var status = _context.Status.Select(x => x).ToList();
@@ -592,7 +592,7 @@ namespace TotalFireSafety.Controllers
                             emp_hiredDate = item.emp_hiredDate,
                             emp_fname = item.emp_fname,
                             emp_lname = item.emp_lname,
-                            emp_mname = item.emp_mname,
+                            emp_name = item.emp_name,
                             emp_position = item.emp_position,
 
                             Credential = newCreds?.emp_no == item.emp_no? new Credential { 
@@ -638,7 +638,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     int _id = 0;
                     var isNumeric = int.TryParse(val, out _);
@@ -676,7 +676,7 @@ namespace TotalFireSafety.Controllers
             {
                 if (_emp != null)
                 {
-                    using (var _context = new TFSEntity())
+                    using (var _context = new tfsti_TotalFireSafetyEntities())
                     {
                         var employee = _context.Employees.Where(x => x.emp_no == _emp.emp_no).SingleOrDefault();
                         if (employee == null)
@@ -688,7 +688,7 @@ namespace TotalFireSafety.Controllers
                                 emp_hiredDate = _emp.emp_hiredDate,
                                 emp_fname = _emp.emp_fname,
                                 emp_lname = _emp.emp_lname,
-                                emp_mname = _emp.emp_mname,
+                                emp_name = _emp.emp_name,
                                 emp_position = _emp.emp_position
                             };
 
@@ -716,7 +716,7 @@ namespace TotalFireSafety.Controllers
             {
                 if (_emp != null)
                 {
-                    using (var _context = new TFSEntity())
+                    using (var _context = new tfsti_TotalFireSafetyEntities())
                     {
                         var emp = _context.Employees.Where(x => x.emp_no == _emp.emp_no).SingleOrDefault();
                         var roles = _context.Roles.Where(x => x.emp_no == _emp.emp_no).SingleOrDefault();
@@ -726,7 +726,7 @@ namespace TotalFireSafety.Controllers
                         {
                             emp.emp_no = _emp.emp_no;
                             emp.emp_fname = _emp.emp_fname;
-                            emp.emp_mname = _emp.emp_mname;
+                            emp.emp_name = _emp.emp_name;
                             emp.emp_lname = _emp.emp_lname;
                             emp.emp_contact = _emp.emp_contact;
                             emp.emp_hiredDate = _emp.emp_hiredDate;
@@ -762,7 +762,7 @@ namespace TotalFireSafety.Controllers
 
         private async Task<IHttpActionResult> UpdateNewItem(Inventory item)
         {
-            using (var _context = new TFSEntity())
+            using (var _context = new tfsti_TotalFireSafetyEntities())
             {
                 try
                 {
@@ -795,7 +795,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var invItems = _context.Inventories.Select(x => x).ToList();
                     var reports = _context.Inv_Update.Select(x => x).ToList();
@@ -848,7 +848,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var item = _context.Inventories.Where(x => x.in_code == val.in_code).FirstOrDefault();
                     if(item == null)
@@ -874,7 +874,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var items = _context.Inventories.Where(x => x.in_status == "archived");
 
@@ -900,7 +900,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var items = _context.Inventories.Where(x => x.in_status != "archived");
                     List<Inventory> newList = new List<Inventory>();
@@ -948,7 +948,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     //  Check if the value of val is an integer
                     int id = 0;
@@ -983,7 +983,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var newGuid = GetNewGuid("newitem");
                     if (_item != null)
@@ -1011,7 +1011,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     /*  Check if _item is null
                      *  I use this than ModelState.IsValid because it throws Exception when there is a null
@@ -1069,7 +1069,7 @@ namespace TotalFireSafety.Controllers
             try
             {
                 var item = codeToFind.in_code;
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var _item = _context.Inventories.Where(x => x.in_code == item).SingleOrDefault();
                     if (_item != null)
@@ -1150,7 +1150,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     var requests = _context.Requests.Select(x => x).ToList();
                     var employee = _context.Employees.Select(x => x).ToList();
@@ -1178,7 +1178,7 @@ namespace TotalFireSafety.Controllers
                                 emp_hiredDate = newEmployee.emp_hiredDate,
                                 emp_fname = newEmployee.emp_fname,
                                 emp_lname = newEmployee.emp_lname,
-                                emp_mname = newEmployee.emp_mname,
+                                emp_name = newEmployee.emp_name,
                                 emp_position = newEmployee.emp_position,
                             } : null,
                             Inventory = newInv?.in_code == item.request_item ? new Inventory
@@ -1229,7 +1229,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     if(req == null)
                     {
@@ -1269,7 +1269,7 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
-                using (var _context = new TFSEntity())
+                using (var _context = new tfsti_TotalFireSafetyEntities())
                 {
                     foreach (var item in req) { 
                         var request = _context.Requests.Where(x => x.request_id == item.request_id).SingleOrDefault();
@@ -1298,7 +1298,7 @@ namespace TotalFireSafety.Controllers
         //{
         //    try
         //    {
-        //        using (var _context = new TFSEntity())
+        //        using (var _context = new tfsti_TotalFireSafetyEntities())
         //        {
         //            var request = _context.Requests.Where(x => x.request_id == req).SingleOrDefault();
         //            if (request == null)

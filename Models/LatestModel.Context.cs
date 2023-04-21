@@ -13,10 +13,10 @@ namespace TotalFireSafety.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class tfsti_TotalFireSafetyEntities : DbContext
+    public partial class nwTFSEntity : DbContext
     {
-        public tfsti_TotalFireSafetyEntities()
-            : base("name=tfsti_TotalFireSafetyEntities")
+        public nwTFSEntity()
+            : base("name=nwTFSEntity")
         {
         }
     
@@ -27,12 +27,12 @@ namespace TotalFireSafety.Models
     
         public virtual DbSet<Basecount> Basecounts { get; set; }
         public virtual DbSet<Credential> Credentials { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Inv_Update> Inv_Update { get; set; }
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Status> Status { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
     }
 }

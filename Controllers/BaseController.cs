@@ -52,7 +52,7 @@ namespace TotalFireSafety.Controllers
 
                 //  GET result from API
                 var result = postTask.Result;
-                using (var _context = new tfsti_TotalFireSafetyEntities())
+                using (var _context = new nwTFSEntity())
                 {
                     if (result.IsSuccessStatusCode)
                     {

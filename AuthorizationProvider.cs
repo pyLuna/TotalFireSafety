@@ -11,7 +11,7 @@ namespace TotalFireSafety
 {
     public class AuthorizationProvider : OAuthAuthorizationServerProvider
     {
-        private readonly tfsti_TotalFireSafetyEntities _context = new tfsti_TotalFireSafetyEntities();
+        private readonly nwTFSEntity _context = new nwTFSEntity();
 
         //User Validation
         #region Roles and Status
@@ -56,7 +56,7 @@ namespace TotalFireSafety
 
         private Credential Hash(string uname, string pword)
         {
-            using (var context = new tfsti_TotalFireSafetyEntities())
+            using (var context = new nwTFSEntity())
             {
                 var md5 = MD5.Create();
                 var users = context.Credentials.Select(x => x).ToList();
@@ -94,7 +94,7 @@ namespace TotalFireSafety
         {
             //set token as "bearer"
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            using (var db = new tfsti_TotalFireSafetyEntities()) //init database connection
+            using (var db = new nwTFSEntity()) //init database connection
             {
                 try
                 {

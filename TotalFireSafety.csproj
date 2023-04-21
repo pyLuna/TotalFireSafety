@@ -217,51 +217,51 @@
     </Compile>
     <Compile Include="Models\APIRequestHandler.cs" />
     <Compile Include="Models\Basecount.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Credential.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\Dictionary.cs" />
     <Compile Include="Models\Employee.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ErrorHandler.cs" />
     <Compile Include="Models\Inventory.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Inv_Update.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LatestModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LatestModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LatestModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LatestModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LatestModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginCredential.cs" />
     <Compile Include="Models\NewEmployeeModel.cs" />
-    <Compile Include="Models\NewModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NewModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NewModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NewModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\Notification.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Request.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Status.cs">
-      <DependentUpon>NewModel.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TokenCatcher.cs" />
     <Compile Include="MyHub.cs" />
@@ -371,26 +371,26 @@
     <Content Include="fonts\poppins\Poppins-SemiBoldItalic.ttf" />
     <Content Include="fonts\poppins\Poppins-Thin.ttf" />
     <Content Include="fonts\poppins\Poppins-ThinItalic.ttf" />
-    <Content Include="Models\NewModel.Context.tt">
+    <Content Include="Models\LatestModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NewModel.edmx</DependentUpon>
-      <LastGenOutput>NewModel.Context.cs</LastGenOutput>
+      <DependentUpon>LatestModel.edmx</DependentUpon>
+      <LastGenOutput>LatestModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\NewModel.tt">
+    <Content Include="Models\LatestModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NewModel.edmx</DependentUpon>
-      <LastGenOutput>NewModel.cs</LastGenOutput>
+      <DependentUpon>LatestModel.edmx</DependentUpon>
+      <LastGenOutput>LatestModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\Dashboard.js" />
     <Content Include="Scripts\DashboardAPI.js" />
     <Content Include="Scripts\InventoryExport.js" />
     <Content Include="Scripts\inv_bak.js" />
-    <EntityDeploy Include="Models\NewModel.edmx">
+    <EntityDeploy Include="Models\LatestModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>NewModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>LatestModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\NewModel.edmx.diagram">
-      <DependentUpon>NewModel.edmx</DependentUpon>
+    <Content Include="Models\LatestModel.edmx.diagram">
+      <DependentUpon>LatestModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />

@@ -24,8 +24,8 @@ namespace TotalFireSafety.Models
         public int request_type_id { get; set; }
         public string request_type_status { get; set; }
     
-        public virtual Inventory Inventory { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual Inventory Inventory { get; set; }
         public string formType { get; set; }
 
         public string FormattedDate

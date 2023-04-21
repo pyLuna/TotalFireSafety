@@ -233,6 +233,17 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+        public async Task<ActionResult> PinnedProjects()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
+
         public async Task<ActionResult> ProjectAdd()
         {
             var empId = Session["emp_no"]?.ToString();

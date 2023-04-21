@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Projects";
+    ViewBag.Title = "PinnedProjects";
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Proj = "active";
 }
@@ -11,121 +11,10 @@
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            Project Lists
+            Projects
         </h2>
-
-        <right>
-            <button class="create-req-btn" title="CREATE ORDER">
-                <a onclick="openForm()">
-                    Notification
-                    <span class="las la-bell"></span>
-                    <label class="notif-badge">5</label>
-                </a>
-            </button>
-        </right>
     </header>
     <main>
-
-
-
-        <!--<div class="proj-sum">
-            <h3>Project Summary</h3>
-        </div>
-        <div class="proj-sum-btns">
-            <div class="drp-wrapper">
-                <a href="@Url.Action("ProjectAdd","Admin")">
-                    <button class="proj-sum-add">ADD</button>
-                </a>
-                <select required>
-                    <option disabled selected>Status</option>
-                    <option>On-going</option>
-                    <option>In-line</option>
-                    <option>Delayed</option>
-                </select>
-                <select required>
-                    <option disabled selected>Proj. Lead</option>
-                    <option>Clarisse Vasquez</option>
-                </select>
-            </div>
-
-        </div>-->
-        <!-- Project Summary -->
-        <!--<div class="dash-proj">
-                    <div class="dash">
-                        <div class="dash-body">
-                            <div class="table-responsive" style="overflow-x: auto;">
-                                <table width="100%">
-                                    <thead>
-                                        <tr>
-                                            <td>Project Name</td>
-                                            <td>Project Lead</td>
-                                            <td>Start Date</td>
-                                            <td>Status</td>
-                                            <td>Tracker</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><a href="@Url.Action("ProjectView","Admin")">Makati Global</a></td>
-                                            <td>Jewell Mayrena</td>
-                                            <td>Feb 27, 2023</td>
-                                            <td><label class="stat-pen">In-Line</label></td>
-                                            <td>
-                                                <div class="progress-bar">
-                                                    <div class="progress-complete">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><a href="@Url.Action("ProjectView","Admin")">Mang Inasal QCU</a></td>
-                                            <td>Fernan Yuki</td>
-                                            <td>Feb 12, 2023</td>
-                                            <td><label class="stat-appr">On-Going</label></td>
-                                            <td>
-                                                <div class="progress-bar">
-                                                    <div class="progress-half">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><a href="@Url.Action("ProjectView","Admin")">Golden Disk</a></td>
-                                            <td>Carlo Millonte</td>
-                                            <td>Jan 27, 2023</td>
-                                            <td><label class="stat-appr">On-Going</label></td>
-                                            <td>
-                                                <div class="progress-bar">
-                                                    <div class="progress-halfhalf">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td><a href="@Url.Action("ProjectView","Admin")">Jollibee South Branch</a></td>
-                                            <td>Clark Steven Arcilla</td>
-                                            <td>Feb 23, 2023</td>
-                                            <td><label class="stat-dec">Declined</label></td>
-                                            <td>
-                                                <div class="progress-bar">
-                                                    <div class="progress-nothalf">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>-->
-        <!-- NEW UPDATE -->
 
         <div class="upper-section">
             <div class="search-wrapper">
@@ -133,37 +22,12 @@
                 <input type="text" placeholder="Search here">
             </div>
             &nbsp;
-            <div class="drp-wrapper">
-                <select required>
-                    <option disabled selected>Request Type</option>
-                    <option>Purchasing</option>
-                    <option>Supply</option>
-                    <option>Deployment</option>
-                </select>
-            </div>
         </div>
 
         <div class="proj-grid">
             <div class="proj-header">
-                <h3>PROJECT LISTS</h3>
-                <div class="proj-buttons-style">
-
-                    <!--NEW UPDATE -->
-
-                    <a onclick="openAddNewContainer()">
-                        <button class="add-btn" title="ADD NEW ITEM">NEW PROJECT</button>
-                    </a>
-
-                    <select required>
-                        <option disabled selected>Project Status</option>
-                        <option>Delayed</option>
-                    </select>
-
-                    <select required>
-                        <option disabled selected>Project Lead</option>
-                        <option>Vincent Cordero</option>
-                    </select>
-                </div>
+                <h3>PINNED PROJECTS</h3>
+                <br>
 
             </div>
             <div class="proj-projects">
@@ -173,32 +37,38 @@
                             <table width="100%">
                                 <thead>
                                     <tr>
+                                        <td> </td>
                                         <td>Project Name</td>
                                         <td>Project Lead</td>
                                         <td>Start Date</td>
+                                        <td>Baseline Finish</td>
                                         <td>Status</td>
-                                        <td>Tracker</td>
+                                        <td>Progress</td>
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                     <tr>
-                                        <td><a href="@Url.Action("ProjectView","Admin")">Makati Global</a></td>
+                                        <td><i class="las la-thumbtack"></i></td>
+                                        <td><a href="../projects/sa-add-proj.html">Makati Global</a></td>
                                         <td>Jewell Mayrena</td>
                                         <td>Feb 27, 2023</td>
-                                        <td><label class="stat-pen">In-Line</label></td>
+                                        <td>April 17, 2023</td>
+                                        <td><label class="stat-pen">Upcoming</label>
                                         <td>
                                             <div class="progress-bar">
-                                                <div class="progress-complete">
+                                                <div class="progress-upcoming">
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td><a href="@Url.Action("ProjectView","Admin")">Golden Disk</a></td>
+                                        <td><i class="las la-thumbtack"></i></td>
+                                        <td><a href="../projects/sa-add-proj.html">Golden Disk</a></td>
                                         <td>Carlo Millonte</td>
                                         <td>Jan 27, 2023</td>
+                                        <td>April 17, 2023</td>
                                         <td><label class="stat-appr">On-Going</label></td>
                                         <td>
                                             <div class="progress-bar">
@@ -209,13 +79,15 @@
                                     </tr>
 
                                     <tr>
-                                        <td><a href="@Url.Action("ProjectView","Admin")">Jollibee South Branch</a></td>
+                                        <td><i class="las la-thumbtack"></i></td>
+                                        <td><a href="../projects/sa-add-proj.html">Jollibee South Branch</a></td>
                                         <td>Clark Steven Arcilla</td>
                                         <td>Feb 23, 2023</td>
-                                        <td><label class="stat-dec">Declined</label></td>
+                                        <td>April 17, 2023</td>
+                                        <td><label class="stat-dec">Cancelled</label></td>
                                         <td>
                                             <div class="progress-bar">
-                                                <div class="progress-nothalf">
+                                                <div class="progress-full">
                                                 </div>
                                             </div>
                                         </td>
@@ -296,7 +168,7 @@
                         </div>
                     </div>
 
-                    <a href="@Url.Action("ProjectAdd","Admin")"><button>CREATE PROJECT</button></a>
+                    <a href="../projects/sa-add-proj.html"><button>CREATE PROJECT</button></a>
 
                 </div>
 
@@ -312,15 +184,23 @@
                                     <div class="mems">
                                         <div class="mems-body">
                                             <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%" id="outputTable">
+                                                <table width="100%">
                                                     <tbody>
 
                                                         <tr>
-                                                            <td><b></b></td>
-                                                            <td></label></td>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
                                                         </tr>
 
+                                                        <tr>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
+                                                        </tr>
 
+                                                        <tr>
+                                                            <td><b>Vincent M. Cordero</b></td>
+                                                            <td>Person-in-charge</label></td>
+                                                        </tr>
 
 
                                                     </tbody>
@@ -351,7 +231,7 @@
                             <div class="input-mems">
                                 <div class="input-mems-body">
                                     <div class="table-responsive" style="overflow-x: auto;">
-                                        <table id="myTable" width="100%">
+                                        <table width="100%">
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
@@ -360,8 +240,8 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td contenteditable="true"></label></td>
+                                                    <td contenteditable="true"><b>Vincent M. Cordero</b></td>
+                                                    <td contenteditable="true">Person-in-charge</label></td>
                                                 </tr>
 
 
@@ -374,7 +254,7 @@
                     </div>
                 </div>
                 <center>
-                    <button onclick="closeInputMemForm() + saveData()">Save</button>
+                    <button onclick="closeInputMemForm()">Save</button>
                     <button onclick="closeInputMemForm()">Cancel</button>
                 </center>
             </div>
@@ -383,7 +263,7 @@
         <!-- END -->
 
         <div class="can-pop-container" id="can-popup">
-            <img src="~/images/warning.png">
+            <img src="../../images/warning.png">
             <h2>System Warning!</h2>
             <p>Do you want to remove the user on the list?</p>
             <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
@@ -391,61 +271,39 @@
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="~/images/remove.png">
+            <img src="../../images/remove.png">
             <h2>Deleted!</h2>
             <p>User removed in the list successfully!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
+        <div class="list-pop-container" id="list-popup">
+            <img src="../../../images/warning_yellow.png">
+            <h2>System Warning!</h2>
+            <p>Select list range first!</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()"><b>OK</b></button>
+        </div>
+
+        <div class="date-pop-container" id="date-popup">
+            <img src="../../../images/warning_yellow.png">
+            <h2>System Warning!</h2>
+            <p>Select date range first!</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()"><b>OK</b></button>
+        </div>
+
     </main>
 
-    <script>
-        const table = document.getElementById("myTable");
-
-        table.addEventListener("keydown", (event) => {
-            const target = event.target;
-
-            // Check if the target cell is editable and the user pressed "Enter"
-            if (target.contentEditable === "true" && event.key === "Enter") {
-                const row = target.parentNode;
-                const newRow = document.createElement("tr");
-
-                newRow.innerHTML = `
-          <td contenteditable="true"></td>
-          <td contenteditable="true"></td>
-        `;
-
-                table.tBodies[0].insertBefore(newRow, row.nextSibling);
-                newRow.children[0].focus();
-
-                event.preventDefault();
-            }
-        });
-
-        function saveData() {
-            const inputTable = document.getElementById("myTable");
-            const outputTable = document.getElementById("outputTable");
-
-            // Loop through rows of the input table
-            for (let i = 1; i < inputTable.rows.length; i++) {
-                const inputRow = inputTable.rows[i];
-                const outputRow = outputTable.insertRow();
-
-                // Loop through cells of the input row
-                for (let j = 0; j < inputRow.cells.length; j++) {
-                    const inputCell = inputRow.cells[j];
-                    const outputCell = outputRow.insertCell();
-                    outputCell.innerHTML = inputCell.innerHTML;
-                }
-            }
-        }
-    </script>
+    <div class="footer">
+        <center>
+            <div class="footer-con">
+                <img src="../../images/codepheuse.png" alt="">
+                <h4>CodePheus | 2022</h4>
+            </div>
+        </center>
+    </div>
 
     <script>
 
-        function OnLoad() {
-
-        }
 
         function userFiltFunction() {
             document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
@@ -494,6 +352,30 @@
         function remClosePopup() {
             rempopup.classList.remove("rem-popup-show")
         }
+
+        //NEW ADD
+
+        let listpopup = document.getElementById("list-popup");
+
+        function listOpenPopup() {
+            listpopup.classList.add("list-popup-show")
+        }
+
+        function listClosePopup() {
+            listpopup.classList.remove("list-popup-show")
+        }
+
+        let datepopup = document.getElementById("date-popup");
+
+        function dateOpenPopup() {
+            datepopup.classList.add("date-popup-show")
+        }
+
+        function dateClosePopup() {
+            datepopup.classList.remove("date-popup-show")
+        }
+
+        //END
 
         function openAddNewContainer() {
             document.getElementById("add-new-container").style.display = "block";

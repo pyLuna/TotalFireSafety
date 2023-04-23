@@ -43,17 +43,17 @@ $(document).ready(function () {
 		rules: {
 			emp_Sname: {
 				required: true,
-				minlength: 4,
+				minlength: 3,
 				maxlength: 30
 			},
 			emp_Fname: {
 				required: true,
-				minlength: 4,
+				minlength: 3,
 				maxlength: 30
 			},
 			emp_Mname: {
 				required: true,
-				minlength: 4,
+				minlength: 3,
 				maxlength: 30
 			},
 			emp_contact: {
@@ -82,17 +82,17 @@ $(document).ready(function () {
 		messages: {
 			emp_Sname: {
 				required: "Surname must be required.",
-				minlength: "Surname must be at least 4 characters long.",
+				minlength: "Surname must be at least 3 characters long.",
 				maxlength: "Maximum length of name is 30 characters only."
 			},
 			emp_Fname: {
 				required: "First name must be required.",
-				minlength: "First name must be at least 4 characters long.",
+				minlength: "First name must be at least 3 characters long.",
 				maxlength: "Maximum length of name is 30 characters only."
 			},
 			emp_Mname: {
 				required: "Middle name must be required.",
-				minlength: "Middle name must be at least 4 characters long.",
+				minlength: "Middle name must be at least 3 characters long.",
 				maxlength: "Maximum length of name is 30 characters only."
 			},
 			emp_contact: {

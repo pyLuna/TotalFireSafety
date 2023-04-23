@@ -54,10 +54,11 @@
                         <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
                     @if (Int32.Parse(Session["system_role"].ToString()) == 2)
                     {
-                        @*<button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + AppendOption(addFormSel) + setDatalist();">ADD NEW ITEM</button>*@
-                        <button class="add-btn" id="add_new_itm" title="ADD NEW ITEM">ADD NEW ITEM</button>
-                        @*<button class="qty-add-btn" title="ADD QUANTIY" onclick="qtyOpenPopupInv() + AppendOption(qtyFormSel)">ADD QUANTITY</button>*@
-                        <button class="qty-add-btn" id="add_quan11" onclick="AppendOption(qtyFormSel)" title="ADD QUANTIY">ADD QUANTITY</button>
+                        <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + AppendOption(addFormSel) + setDatalist();">ADD NEW ITEM</button>
+                        @*<button class="add-btn" id="add_new_itm" title="ADD NEW ITEM">ADD NEW ITEM</button>*@
+                        <button class="qty-add-btn" title="ADD QUANTIY" onclick="qtyOpenPopupInv() + AppendOption(qtyFormSel)">ADD QUANTITY</button>
+
+                        @*<button class="qty-add-btn" id="add_quan11" onclick="AppendOption(qtyFormSel)" title="ADD QUANTIY">ADD QUANTITY</button>*@
                     }
 
                     <button class="notif-btn" title="ADD NEW ITEM" onclick="">
@@ -67,11 +68,10 @@
                         </a>
                     </button>
 
-                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup()">
-                        <a>
+                    <button class="expo-btn" id="expBtn" title="EXPORT REPORT">
+                        @*+ expoOpenPopup()*@
                             EXPORT
                             <span class="las la-file-download"></span>
-                        </a>
                     </button>
 
                     <select id="filter" onchange="SortByCategory(this,this.value)">
@@ -96,7 +96,7 @@
                                         ADD NEW ITEM
                                     </div>
                                     <div class="inventory-form-contents">
-                                        @*<div class="fields">
+                                        <div class="fields">
                                                     <div class="input-field">
                                                         <label>item id</label>
                                                         <input type="text" id="in_code" name="in_code" placeholder="abc-def-ghi-000" readonly>
@@ -156,7 +156,7 @@
 
                                                     </div>
                                                 </div>
-                                            </div>*@
+                                            </div>
                                     </div>
                                 </div>
 
@@ -190,7 +190,69 @@
                                         ADD QUANTITY
                                     </div>
                                     <div class="inventory-form-contents">
+                                        <div class="fields">
+                                            <div class="input-field">
+                                                <label>Item ID</label>
+                                                <input type="text" id="in_code1" name="in_code" placeholder="ABCD-EFG-HIJ" required>
+                                            </div>
+                                            <div class="input-field">
+                                                <label>Item Name</label>
+                                                <input type="text" id="in_name1" name="in_name" placeholder="Enter item name" readonly>
+                                            </div>
+                                            <div class="input-field">
+                                                <label>Category</label>
+                                                <select id="selcat1" disabled>
+                                                    <option disabled selected>Select Category</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-field">
+                                                <label>Class</label>
+                                                <select id="selclass" disabled>
+                                                    <option disabled selected>Select Class</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-field">
+                                                <label>Type</label>
+                                                <select id="seltype" disabled>
+                                                    <option disabled selected>Select Type</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-field">
+                                                <label>Size</label>
+                                                <div class="input-field-size">
+                                                    <input type="number" id="inpSize1" name="inpSize1" placeholder="00000" readonly>
+                                                    <select id="inpSize" disabled>
+                                                        <option disabled selected>Unit</option>
+                                                    </select>
+                                                </div>
 
+                                            </div>
+                                            <div class="input-field">
+                                                <label>Quantity</label>
+                                                <div class="input-field-quantity">
+                                                    <input type="number" id="inpQuant1" name="inpQuant1" placeholder="00000" required>
+                                                    <select id="inpQuant" name="inpQuant">
+                                                        <option value="" disabled selected>Unit</option>
+                                                    </select>
+                                                </div>
+                                                <label id="inpQuant1-error" class="error manual-error" for="inpQuant1"></label>
+                                            </div>
+                                            <input type="text" id="in_category1" name="in_category" style="display:none;">
+                                            <input type="text" id="in_class1" name="in_class" style="display:none;">
+                                            <input type="text" id="in_type1" name="in_type" style="display:none;">
+                                            <input type="text" id="in_size1" name="in_size" style="display:none;">
+                                            <input type="text" id="in_quantity1" name="in_quantity" style="display:none;">
+                                            <input type="text" id="in_remarks1" name="in_remarks" style="display:none;">
+                                            <div class="input-field">
+                                                <label>Date Added</label>
+                                                <input type="text" id="inpDate" name="in_dateAdded" placeholder="00/00/00" readonly>
+                                            </div>
+                                            <div class="input-field">
+                                                <div class="img-bar-grp" id="image-container">
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -403,30 +465,36 @@
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>
+    document.getElementById('expBtn').addEventListener("click", function () {
+        localStorage.setItem("allItems", JSON.stringify(fixedArray));
+        window.location.href = "/Admin/InventorylistExport";
+    });
 
     /*ADD NEW ITEM CHECKFORM VALIDATION*/
-    //function checkForm() {
-    //    var bool = $('#addForm').valid();
-    //    if (bool) {
-    //        infoOpenPopup('addForm');
-    //    }
-    //}
+    function checkForm() {
+        var bool = $('#addForm').valid();
+        if (bool) {
+            infoOpenPopup('addForm');
+        }
+    }
+
+    
 
     /*ADD QUANTITY ITEM CHECKFORM VALIDATION*/
-    //function checkForm_Add_Quan() {
-    //    var bool = $('#qtyForm').valid();
-    //    if (bool) {
-    //        infoOpenPopup('qtyForm');
-    //    }
-    //}
+    function checkForm_Add_Quan() {
+        var bool = $('#qtyForm').valid();
+        if (bool) {
+            infoOpenPopup('qtyForm');
+        }
+    }
 
     /*EDIT ITEM CHECKFORM VALIDATION*/
-    //function checkForm_Edit_Itm() {
-    //    var bool = $('#editForm').valid();
-    //    if (bool) {
-    //        infoOpenPopup('editForm');
-    //    }
-    //}
+    function checkForm_Edit_Itm() {
+        var bool = $('#editForm').valid();
+        if (bool) {
+            infoOpenPopup('editForm');
+        }
+    }
 
 
     let codeToDelete = "";

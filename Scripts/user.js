@@ -14,11 +14,35 @@ let rolesid = document.getElementById("rolesid");
 let statsid = document.getElementById("statsid");
 let stats = document.getElementById("stats");
 let stats1 = document.getElementById("stats1");
-let selroles = document.getElementById("sel-roles");
-let selstats = document.getElementById("sel-stats");
+let selroles = document.getElementById("sel_roles");
+let selstats = document.getElementById("sel_stats");
 let table = document.querySelector('#myTable tbody');
 let form = document.getElementById("formId");
 let credsid = document.getElementById("credsid");
+
+selroles.addEventListener("change", function () {
+    let hidRole = document.getElementById('emp_role');
+
+    hidRole.value = selroles.selectedIndex;
+});
+selstats.addEventListener("change", function () {
+    let hidAct = document.getElementById('emp_act');
+    let hidLock = document.getElementById('emp_lock');
+
+    if (selstats.selectedIndex == 1) {
+        hidAct.value = 1;
+        hidLock.value = 0;
+    }
+    else if (selstats.selectedIndex == 2) {
+        hidAct.value = 0;
+        hidLock.value = 0;
+    }
+    else {
+        hidAct.value = 0;
+        hidLock.value = 1;
+    }
+
+});
 
 function GetAllEmployeeInfo() {
 
@@ -49,7 +73,7 @@ function GetAllEmployeeInfo() {
             }
         })
         .catch(error => {
-            window.location.replace('/Error/InternalServerError');
+            //window.location.replace('/Error/InternalServerError');
             console.error(error);
         });
 }
@@ -65,25 +89,68 @@ function setTable(array) {
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
 
+            //let stats = "";
+            //if (array[i].Status?.IsActive === 1) {
+            //    stats = "Active";
+            //    if (array[i].Status?.IsLocked === 1) {
+            //        stats = "Locked";
+            //    }
+            //}
+            //else {
+            //    stats = "Inactive";
+            //}
+
             let stats = "";
-            if (array[i].Status?.IsActive === 1) {
+            if (array[i].Status.IsActive === 1) {
                 stats = "Active";
-                if (array[i].Status?.IsLocked === 1) {
-                    stats = "Locked";
-                }
             }
             else {
-                stats = "Inactive";
+                stats = "Inactive"
+            }
+            if (array[i].Status?.IsLocked === 1) {
+                stats = "Locked"
+            }
+
+            let role = "";
+
+            if (array[i].Role?.role1 === 1) {
+                role = "Admin";
+            }
+            else if (array[i].Role?.role1 === 2) {
+                role = "Warehouse Admin";
+            }
+            else if (array[i].Role?.role1 === 3) {
+                role = "Office Admin";
+            }
+
+            let mname = "";
+            if (array[i].emp_name == null) {
+                mname = "";
+            }
+            else {
+                mname = array[i].emp_name;
+            }
+
+            let style = "";
+            if (stats.toLowerCase() == "active") {
+                style = "stat-appr";
+            } else if (stats.toLowerCase() == "inactive") {
+                style = "stat-dec";
+            }
+            else if (stats.toLowerCase() == "locked") {
+                style = "stat-in";
             }
 
             var row = `<tr>`;
-            row += `<form action="/Admin/Users?item=${array[i].emp_no}" method="post" id="tableList">`;
             row += `<td id="emp_no"><label>${array[i].emp_no}</label></td>`;
-            row += `<td name="emp_name"><label>${array[i].emp_name}</label></td>`;
-            row += `<td name="emp_hiredDate"><label>${array[i].FormattedDate}</label></td>`;
-            row += `<td name="emp_contact"><label>${array[i].emp_contact}</label></td>`;
-            row += `<td name="emp_position"><label>${array[i].emp_position}</label><td name="IsActive"><label">${stats}</label>`;
-            row += `</form>`;
+            row += `<td><label>${array[i].emp_lname}</label></td>`;
+            row += `<td><label>${array[i].emp_fname}</label></td>`;
+            row += `<td><label>${mname}</label></td>`;
+            row += `<td><label>${array[i].FormattedDate}</label></td>`;
+            row += `<td><label>${array[i].emp_contact}</label></td>`;
+            row += `<td><label>${array[i].emp_position}</label>`;
+            row += `<td ><label class="${style}">${stats}</label>`;
+            row += `<td><label>${role}</label></td>`;
             row += `<td id="hideActionBtn"><div class="user-action-style">`;
             row += ` <button class="edit-btn" id="edit-btn-users1" title="EDIT SELECTED ITEM" onclick="LoadUserContents() + openEditForm('${array[i].emp_no}')">
             <a href="#"><span class="lar la-edit"></span></a></button>`;
@@ -239,32 +306,43 @@ function setField(value) {
 //    link.click();
 //}
 
-//Descending
-function SortDescending() {
-    return fixedArray.sort((a, b) => {
-        if (a['emp_name'] < b['emp_name']) return 1;
-        if (a['emp_name'] > b['emp_name']) return -1;
+// General sort function
+function SortDescending(array, itemToSort) {
+    return array.sort((a, b) => {
+        if (a[itemToSort] < b[itemToSort]) return 1;
+        if (a[itemToSort] > b[itemToSort]) return -1;
         return 0;
     });
 }
-
-function Descend() {
-    const result = SortDescending();
-    setTable(result);
-}
-
-//Ascend
-function SortAscending() {
-    return fixedArray.sort((a, b) => {
-        if (a['emp_name'] < b['emp_name']) return -1;
-        if (a['emp_name'] > b['emp_name']) return 1;
+function SortAscending(array, itemToSort) {
+    return array.sort((a, b) => {
+        if (a[itemToSort] < b[itemToSort]) return -1;
+        if (a[itemToSort] > b[itemToSort]) return 1;
         return 0;
     });
 }
+function Sort(item, value) {
+    let iElement = item.querySelector('i');
+    let arrayToSend = [];
+    let catcher = [];
 
-function Ascend() {
-    const result = SortAscending();
-    setTable(result);
+    if (filtered.length != 0) {
+        arrayToSend = filtered;
+    }
+    else {
+        arrayToSend = fixedArray;
+    }
+
+    if (iElement.classList.contains('la-sort-down')) {
+        iElement.classList.remove('la-sort-down');
+        iElement.classList.add('la-sort-up');
+        catcher = SortAscending(arrayToSend, value);
+    } else {
+        iElement.classList.remove('la-sort-up');
+        iElement.classList.add('la-sort-down');
+        catcher = SortDescending(arrayToSend, value);
+    }
+    setTable(catcher);
 }
 
 function ResetForm() {
@@ -276,26 +354,9 @@ function ResetForm() {
     selstats.selectedIndex = 0;
 }
 
-function setHiddenStats(index) {
-
-    if (index === 1) {
-        stats1.value = 1;
-        stats.value = 0;
-    }
-    if (index === 2) {
-        stats1.value = 0;
-    }
-    if (index === 3) {
-        stats.value = 1
-        stats1.value = 1;
-    }
-}
-
 function submitForm() {
-    roles.value = selroles.selectedIndex;
-    rolesid.value = empID.value;
-    stats.value = empID.value;
-    credsid.value = empID.value;
-    setHiddenStats(selstats.selectedIndex);
-    form.submit();
+    var bool = checkForm();
+    if (bool) {
+        form.submit();
+    }
 }

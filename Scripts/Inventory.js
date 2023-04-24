@@ -1,4 +1,4 @@
-﻿	let jsonArray = [];
+﻿let jsonArray = [];
 let filtered = [];
 let itemCategories = [];
 let newArray = [];

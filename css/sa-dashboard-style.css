@@ -1509,7 +1509,7 @@ input[type="month"] {
     display: flex;
     height: 20px;
     width: 20px;
-    background-color: #FF932F;
+    background-color: #8F00FF;
     margin-left: 100px;
 }
 
@@ -7272,12 +7272,19 @@ acc-form-table .view-request-form-table-style table thead td {
     font-weight: 500;
 }
 
-.user-body table td .stat-act {
+.user-body table tbody td .stat-appr {
+    font-weight:bold;
     color: #A8E890;
 }
 
-.user-body table td .stat-in {
+.user-body table tbody td .stat-dec {
+    font-weight: bold;
     color: #EC7272;
+}
+
+.user-body table tbody td .stat-in {
+    font-weight: bold;
+    color: #39B5E0;
 }
 
 .user-body .user-action-style {

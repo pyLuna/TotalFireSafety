@@ -689,8 +689,13 @@ namespace TotalFireSafety.Controllers
                                 emp_fname = _emp.emp_fname,
                                 emp_lname = _emp.emp_lname,
                                 emp_name = _emp.emp_name,
-                                emp_position = _emp.emp_position
+                                emp_position = _emp.emp_position,
                             };
+
+                            //Role rl = new Role()
+                            //{
+                            //    emp_no = _emp.emp_no
+                            //};
 
                             _context.Employees.Add(_emp);
                             _context.SaveChanges();

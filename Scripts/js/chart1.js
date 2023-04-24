@@ -5,6 +5,14 @@ var ItemLabels = [];
 var itemQuantity = [];
 var itemSize = [];
 
+//get the date from the label
+function GetDate() {
+    var start = localStorage.getItem("start");
+    var end = localStorage.getItem("end");
+    var diff = localStorage.getItem("diff");
+    console.log(`start = ${start},,, end = ${end},,, diff = ${diff} `)
+}
+
 function extractNum(value) {
     let num = 0;
     let units = '';
@@ -29,7 +37,7 @@ function GetCounts() {
             }
         })
         .then(data => {
-            basecounts.push(JSON.parse(data));
+            console.log(data);
         })
         .catch(error => {
             //window.location.replace('/Error/InternalServerError');
@@ -116,11 +124,11 @@ function SetChart(labels,quantities) {
                 backgroundColor: function (context) {
                     var value = context.dataset.data[context.dataIndex];
 
-                    if (value > 100) {
+                    if (value > 50) {
                         return '#09AF10';
                     }
-                    else if (value > 70) {
-                        return '#FF6700';
+                    else if (value > 20) {
+                        return '#8F00FF';
                     }
 
                     else {

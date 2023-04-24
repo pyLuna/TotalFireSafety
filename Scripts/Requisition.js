@@ -301,7 +301,7 @@ function setTable(array) {
 			let row = `<tr id="${array[i].request_type_id}">`;
 			row += `<td class="view" onclick="viewrequestOpenPopupPur()" id="${array[i].request_id}"> ${array[i].Id}</td>`;
 			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].request_type}</label></td>`;
-			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].Employee.emp_name}</label></td>`;
+			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].Employee.emp_fname + " " + array[i].Employee.emp_lname}</label></td>`;
 			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].Employee.emp_no}</label></td>`;
 			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label>${array[i].FormattedDate}</label></td>`;
 			row += `<td onclick="viewrequestOpenPopupPur(${array[i].request_type_id},'view')"><label class="${className}" style="font-weight:bold;">${array[i].request_status}</label></td>`;

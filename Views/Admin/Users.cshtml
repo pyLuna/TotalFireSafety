@@ -86,14 +86,14 @@
                                 <table width="100%" id="myTable">
                                     <thead>
                                         <tr>
-                                            <td> <a> Employee ID <i class="las la-sort-down"></i></a> </td>
-                                            <td> <a> Surname <i class="las la-sort-down"></i></a> </td>
-                                            <td> <a> First Name <i class="las la-sort-down"></i></a> </td>
-                                            <td> <a> Middle Name <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a onclick="Sort(this,'emp_no')"> Employee ID <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a onclick="Sort(this,'emp_lname')"> Surname <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a onclick="Sort(this,'emp_fname')"> First Name <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a onclick="Sort(this,'emp_name')"> Middle Name <i class="las la-sort-down"></i></a> </td>
                                             <td> Date Hired </td>
                                             <td> Contact Number </td>
                                             <td> Position  </td>
-                                            <td> <a> Status <i class="las la-sort-down"></i></a> </td>
+                                            <td> Status </td>
                                             <td> Roles </td>
                                             <td> Action </td>
                                         </tr>
@@ -115,27 +115,28 @@
         <div class="add-popup" id="add-popup">
             <div class="add-container">
                 <div class="form-container">
-                    <form action="" id="formId">
+                    <form action="@Url.Action("Users","Admin")" method="post" id="formId">
                         <div class="details-personal">
                             <div class="form-header">
                                 EMPLOYEE INFORMATION
                             </div>
+                            <input type="text" style="display:none;" id="formType">
 
                             <div class="form-contents">
                                 <div class="fields">
                                     <div class="input-field">
                                         <label>Surname</label>
-                                        <input type="text" placeholder="Enter your Surname" id="emp_Sname" name="emp_Sname" required>
+                                        <input type="text" placeholder="Enter your Surname" id="emp_Sname" name="emp_lname" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>First Name</label>
-                                        <input type="text" placeholder="Enter your First Name" id="emp_Fname" name="emp_Fname" required>
+                                        <input type="text" placeholder="Enter your First Name" id="emp_Fname" name="emp_fname" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Middle Name</label>
-                                        <input type="text" placeholder="Enter your Middle Name" id="emp_Mname" name="emp_Mname" required>
+                                        <input type="text" placeholder="Enter your Middle Name" id="emp_Mname" name="emp_name" required>
                                     </div>
 
                                     <div class="input-field">
@@ -145,7 +146,7 @@
 
                                     <div class="input-field">
                                         <label>Hired Date</label>
-                                        <input type="date"name="emp_hiredDate" required>
+                                        <input type="date" name="emp_hiredDate" required>
                                     </div>
 
                                     <div class="input-field">
@@ -171,23 +172,25 @@
 
                                     <div class="input-field">
                                         <label>Roles</label>
-                                        <select name="sel_roles" required>
+                                        <select name="sel_roles" id="sel_roles" required>
                                             <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
                                             <option>Office Manager</option>
                                             <option>Warehouse Manager</option>
-                                            <option>Employee / Local Account</option>
                                         </select>
+                                        <input type="text" style="display:none;" id="emp_role" name="Role.role1">
                                     </div>
 
                                     <div class="input-field">
                                         <label>Status</label>
-                                        <select name="sel_stats" required>
+                                        <select name="sel_stats" id="sel_stats" required>
                                             <option disabled selected>Select Position</option>
                                             <option>Active</option>
-                                            <option>InActive</option>
+                                            <option>Inactive</option>
                                             <option>Locked</option>
                                         </select>
+                                    <input type="text" style="display:none;" id="emp_act"  name="Status.IsActive">
+                                    <input type="text" style="display:none;" id="emp_lock" name="Status.IsLocked">
                                     </div>
 
                                     <div class="input-field">
@@ -199,13 +202,13 @@
                         </div>
                         <center>
                             <div class="form-add-btns">
-                                <button class="save" onclick="checkForm()">
+                                <button class="save" id="saveBtn" onclick="submitForm()">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>
 
                                 <button class="cancel">
-                                    <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                    <span class="btnText" id="canBtn" onclick="canOpenPopup()">Cancel</span>
                                     <i class="las la-window-close"></i>
                                 </button>
                             </div>
@@ -218,7 +221,7 @@
         </div>
 
         <div class="info-pop-container" id="info-popup">
-            <img src="../../images/information.png">
+            <img src="~/images/information.png">
             <h2>System Warning!</h2>
             <p>Do you want to save the user on the list?</p>
             <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
@@ -226,22 +229,22 @@
         </div>
 
         <div class="can-pop-container" id="can-popup">
-            <img src="../../images/warning.png">
+            <img src="~/images/warning.png">
             <h2>System Warning!</h2>
             <p>Are you sure you don't want to save user on the list?</p>
-            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+            <button type="button" onclick="remOpenPopup() + canClosePopup() + addClosePopup() + ResetForm()">Yes</button>
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
         <div class="save-pop-container" id="popup">
-            <img src="../../images/tick.png">
+            <img src="~/images/tick.png">
             <h2>Added!</h2>
             <p>User details has been added successfully!</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
-            <img src="../../images/remove.png">
+            <img src="~/images/remove.png">
             <h2>Cancel!</h2>
             <p>User details has not added in the list!</p>
             <button type="button" onclick="remClosePopup()">OK</button>
@@ -262,6 +265,7 @@
             if (bool) {
                 infoOpenPopup();
             }
+            return bool;
         }
 
         let addpopup = document.getElementById("add-popup");

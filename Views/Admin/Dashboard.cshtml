@@ -479,6 +479,9 @@
 
         function cb(start, end) {
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            localStorage.setItem("start", start.format('MMMM D, YYYY'));
+            localStorage.setItem("end", end.format('MMMM D, YYYY'));
+            localStorage.setItem("diff", end.diff(start, 'days'));
         }
 
         $('#reportrange').daterangepicker({

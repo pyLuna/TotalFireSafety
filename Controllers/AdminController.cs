@@ -266,54 +266,59 @@ namespace TotalFireSafety.Controllers
         {
             using(var _context = new nwTFSEntity())
             {
-                var allBase = _context.Basecounts.Select(x => x).ToList();
-                //var allItems = _context.Inventories.Select(x => x).ToList();
-                var allItems = _context.Inventories.Where(x => x.in_status != "archived").ToList();
+                var allBase = _context.Basecounts.OrderByDescending(item => item.bc_date).ToList();
+                //List<Basecount> allBase = _context.Basecounts.OrderByDescending(item => item.bc_date).ToList();
+                var serialize = JsonConvert.SerializeObject(allBase);
+                var deserialize = JsonConvert.DeserializeObject<Basecount>(serialize);
+                return Json(deserialize, JsonRequestBehavior.AllowGet);
+                //var allBase = _context.Basecounts.Select(x => x).ToList();
+                ////var allItems = _context.Inventories.Select(x => x).ToList();
+                //var allItems = _context.Inventories.Where(x => x.in_status != "archived").ToList();
 
-                var newBase = new List<Basecount>();
+                //var newBase = new List<Basecount>();
 
-                foreach (var item in allBase)
-                {
-                    var newInv = allItems.Where(x => item.bc_itemCode == x.in_code).SingleOrDefault();
-                    Basecount count = new Basecount()
-                    {
-                        bc_id = item.bc_id,
-                        bc_count = item.bc_count,
-                        bc_date = item.bc_date,
-                        Inventory = newInv?.in_code == item.bc_itemCode ? new Inventory
-                        {
-                            in_name = newInv.in_name,
-                            in_category = newInv.in_category,
-                            in_class = newInv.in_class,
-                            in_quantity = newInv.in_quantity,
-                            in_size = newInv.in_size,
-                            in_type = newInv.in_type,
-                        } : null
-                    };
-                    newBase.Add(count);
-                }
-                var groupedItems = newBase.GroupBy(item => item.Inventory?.in_category ?? null)
-                    .Where(group => group.Key != null);
+                //foreach (var item in allBase)
+                //{
+                //    var newInv = allItems.Where(x => item.bc_itemCode == x.in_code).SingleOrDefault();
+                //    Basecount count = new Basecount()
+                //    {
+                //        bc_id = item.bc_id,
+                //        bc_count = item.bc_count,
+                //        bc_date = item.bc_date,
+                //        Inventory = newInv?.in_code == item.bc_itemCode ? new Inventory
+                //        {
+                //            in_name = newInv.in_name,
+                //            in_category = newInv.in_category,
+                //            in_class = newInv.in_class,
+                //            in_quantity = newInv.in_quantity,
+                //            in_size = newInv.in_size,
+                //            in_type = newInv.in_type,
+                //        } : null
+                //    };
+                //    newBase.Add(count);
+                //}
+                //var groupedItems = newBase.GroupBy(item => item.Inventory?.in_category ?? null)
+                //    .Where(group => group.Key != null);
 
-                var jsonItems = groupedItems.Select(group =>
-                                new
-                                {
-                                    Category = group.Key,
-                                    Items = group.Select(item => new
-                                    {
-                                        Name = item.Inventory?.in_name,
-                                        Quantity = item.bc_count,
-                                        Size = item.Inventory?.in_size,
-                                        Class = item.Inventory?.in_class,
-                                        Type = item.Inventory?.in_type,
-                                        FormattedDate = item.FormattedDate,
-                                        Date = item.bc_date
-                                    })
-                                });
+                //var jsonItems = groupedItems.Select(group =>
+                //                new
+                //                {
+                //                    Category = group.Key,
+                //                    Items = group.Select(item => new
+                //                    {
+                //                        Name = item.Inventory?.in_name,
+                //                        Quantity = item.bc_count,
+                //                        Size = item.Inventory?.in_size,
+                //                        Class = item.Inventory?.in_class,
+                //                        Type = item.Inventory?.in_type,
+                //                        FormattedDate = item.FormattedDate,
+                //                        Date = item.bc_date
+                //                    })
+                //                });
 
-                var serialize = JsonConvert.SerializeObject(jsonItems);
-                //var deserialize = JsonConvert.DeserializeObject<Object>(serialize);
-                return Json(serialize, JsonRequestBehavior.AllowGet);
+                //var serialize = JsonConvert.SerializeObject(jsonItems);
+                ////var deserialize = JsonConvert.DeserializeObject<Object>(serialize);
+                //return Json(serialize, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]

@@ -101,18 +101,21 @@ function setTable(array) {
             //}
 
             let stats = "";
-            if (array[i].Status.IsActive === 1) {
-                stats = "Active";
-            }
-            else {
-                stats = "Inactive"
-            }
-            if (array[i].Status?.IsLocked === 1) {
-                stats = "Locked"
-            }
-
             let role = "";
 
+            if (array[i].Status.IsActive === 1 && array[i].Status.IsUser === 1) {
+                stats = "Active";
+            }
+            if (array[i].Status.IsActive === 0 && array[i].Status.IsUser === 1){
+                stats = "Inactive"
+            }
+            if (array[i].Status?.IsLocked === 1 && array[i].Status.IsUser === 1) {
+                stats = "Locked"
+            }
+            if (array[i].Status.IsUser === 0) {
+                role = "null";
+                stats = "Nonuser";
+            }
             if (array[i].Role?.role1 === 1) {
                 role = "Admin";
             }
@@ -122,6 +125,7 @@ function setTable(array) {
             else if (array[i].Role?.role1 === 3) {
                 role = "Office Admin";
             }
+
 
             let mname = "";
             if (array[i].emp_name == null) {
@@ -139,6 +143,9 @@ function setTable(array) {
             }
             else if (stats.toLowerCase() == "locked") {
                 style = "stat-in";
+            }
+            else {
+                style = "stat-dec";
             }
 
             var row = `<tr>`;

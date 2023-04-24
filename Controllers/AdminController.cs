@@ -329,13 +329,13 @@ namespace TotalFireSafety.Controllers
             {
 
                 var users = _context.Employees.Count();
-                var actives = _context.Status.Where(x => x.IsActive == 1).Count(); 
-                var deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" || x.request_type.Trim().ToLower() == "deploy").Count();
-                var rec_deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" || x.request_type.Trim().ToLower() == "deploy" && x.request_date.Day == DateTime.Now.Day).Count();
+                var actives = _context.Status.Where(x => x.IsActive == 1 && x.IsUser == 1).Count(); 
+                var deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment").Count();
+                var rec_deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
                 var supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply").Count();
-                var rec_supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply" && x.request_date.Day == DateTime.Now.Day).Count();
+                var rec_supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
                 var purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase").Count();
-                var rec_purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase" && x.request_date.Day == DateTime.Now.Day).Count();
+                var rec_purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
                 var allItems = _context.Inventories.Count();
                 var crit_items = _context.Inventories.Where(x => x.in_remarks.Trim().ToLower() == "critical" && x.in_status.Trim().ToLower() != "archived").Count();
                 var model = new DashboardModel()

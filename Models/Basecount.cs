@@ -20,6 +20,8 @@ namespace TotalFireSafety.Models
         public string bc_count { get; set; }
     
         public virtual Inventory Inventory { get; set; }
+        public virtual Basecount Basecount1 { get; set; }
+        public virtual Basecount Basecount2 { get; set; }
         public string FormattedDate
         {
             get { return bc_date.ToString("MMMM dd, yyyy"); }

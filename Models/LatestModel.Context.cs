@@ -30,10 +30,10 @@ namespace TotalFireSafety.Models
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Inv_Update> Inv_Update { get; set; }
         public virtual DbSet<Inventory> Inventories { get; set; }
-        public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Manpower> Manpowers { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Status> Status { get; set; }
     }

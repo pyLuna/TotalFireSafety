@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="db_a97f85_totalfiresafetyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Basecounts">
+        <EntityType Name="Basecount">
           <Key>
             <PropertyRef Name="bc_id" />
           </Key>
@@ -119,7 +119,6 @@
           </Key>
           <Property Name="emp_no" Type="int" Nullable="false" />
           <Property Name="role1" Type="int" Nullable="false" />
-          <Property Name="IsUser" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -128,27 +127,28 @@
           <Property Name="emp_no" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
           <Property Name="IsLocked" Type="int" Nullable="false" />
+          <Property Name="IsUser" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Basecount_Inventory1">
           <End Role="Inventories" Type="Self.Inventories" Multiplicity="1" />
-          <End Role="Basecounts" Type="Self.Basecounts" Multiplicity="*" />
+          <End Role="Basecount" Type="Self.Basecount" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Inventories">
               <PropertyRef Name="in_code" />
             </Principal>
-            <Dependent Role="Basecounts">
+            <Dependent Role="Basecount">
               <PropertyRef Name="bc_itemCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Basecounts_Basecounts">
-          <End Role="Basecounts" Type="Self.Basecounts" Multiplicity="1" />
-          <End Role="Basecounts1" Type="Self.Basecounts" Multiplicity="0..1" />
+          <End Role="Basecount" Type="Self.Basecount" Multiplicity="1" />
+          <End Role="Basecount1" Type="Self.Basecount" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="Basecounts">
+            <Principal Role="Basecount">
               <PropertyRef Name="bc_id" />
             </Principal>
-            <Dependent Role="Basecounts1">
+            <Dependent Role="Basecount1">
               <PropertyRef Name="bc_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -274,7 +274,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="db_a97f85_totalfiresafetyModelStoreContainer">
-          <EntitySet Name="Basecounts" EntityType="Self.Basecounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Basecount" EntityType="Self.Basecount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Credentials" EntityType="Self.Credentials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inv_Update" EntityType="Self.Inv_Update" Schema="dbo" store:Type="Tables" />
@@ -287,11 +287,11 @@
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Basecount_Inventory1" Association="Self.FK_Basecount_Inventory1">
             <End Role="Inventories" EntitySet="Inventories" />
-            <End Role="Basecounts" EntitySet="Basecounts" />
+            <End Role="Basecount" EntitySet="Basecount" />
           </AssociationSet>
           <AssociationSet Name="FK_Basecounts_Basecounts" Association="Self.FK_Basecounts_Basecounts">
-            <End Role="Basecounts" EntitySet="Basecounts" />
-            <End Role="Basecounts1" EntitySet="Basecounts" />
+            <End Role="Basecount" EntitySet="Basecount" />
+            <End Role="Basecount1" EntitySet="Basecount" />
           </AssociationSet>
           <AssociationSet Name="FK_Credentials_Employee" Association="Self.FK_Credentials_Employee">
             <End Role="Employees" EntitySet="Employees" />
@@ -344,7 +344,12 @@
           <EntitySet Name="Employees" EntityType="db_a97f85_totalfiresafetyModel.Employee" />
           <EntitySet Name="Inv_Update" EntityType="db_a97f85_totalfiresafetyModel.Inv_Update" />
           <EntitySet Name="Inventories" EntityType="db_a97f85_totalfiresafetyModel.Inventory" />
+          <EntitySet Name="Manpowers" EntityType="db_a97f85_totalfiresafetyModel.Manpower" />
+          <EntitySet Name="Notifications" EntityType="db_a97f85_totalfiresafetyModel.Notification" />
+          <EntitySet Name="Projects" EntityType="db_a97f85_totalfiresafetyModel.Project" />
           <EntitySet Name="Requests" EntityType="db_a97f85_totalfiresafetyModel.Request" />
+          <EntitySet Name="Roles" EntityType="db_a97f85_totalfiresafetyModel.Role" />
+          <EntitySet Name="Status" EntityType="db_a97f85_totalfiresafetyModel.Status" />
           <AssociationSet Name="FK_Basecount_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1">
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Basecount" EntitySet="Basecounts" />
@@ -357,23 +362,6 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Credential" EntitySet="Credentials" />
           </AssociationSet>
-          <AssociationSet Name="FK_Requests_Employee" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Employee">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Request" EntitySet="Requests" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Inv_Update_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1">
-            <End Role="Inventory" EntitySet="Inventories" />
-            <End Role="Inv_Update" EntitySet="Inv_Update" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Requests_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1">
-            <End Role="Inventory" EntitySet="Inventories" />
-            <End Role="Request" EntitySet="Requests" />
-          </AssociationSet>
-          <EntitySet Name="Manpowers" EntityType="db_a97f85_totalfiresafetyModel.Manpower" />
-          <EntitySet Name="Notifications" EntityType="db_a97f85_totalfiresafetyModel.Notification" />
-          <EntitySet Name="Projects" EntityType="db_a97f85_totalfiresafetyModel.Project" />
-          <EntitySet Name="Roles" EntityType="db_a97f85_totalfiresafetyModel.Role" />
-          <EntitySet Name="Status" EntityType="db_a97f85_totalfiresafetyModel.Status" />
           <AssociationSet Name="FK_Manpower_Employees" Association="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Manpower" EntitySet="Manpowers" />
@@ -386,6 +374,10 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
+          <AssociationSet Name="FK_Requests_Employee" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
           <AssociationSet Name="FK_Roles_Employee" Association="db_a97f85_totalfiresafetyModel.FK_Roles_Employee">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Role" EntitySet="Roles" />
@@ -394,9 +386,17 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Status" EntitySet="Status" />
           </AssociationSet>
+          <AssociationSet Name="FK_Inv_Update_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1">
+            <End Role="Inventory" EntitySet="Inventories" />
+            <End Role="Inv_Update" EntitySet="Inv_Update" />
+          </AssociationSet>
           <AssociationSet Name="FK_Notifications_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1">
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1">
+            <End Role="Inventory" EntitySet="Inventories" />
+            <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Basecount">
@@ -408,6 +408,8 @@
           <Property Name="bc_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="bc_count" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1" FromRole="Basecount" ToRole="Inventory" />
+          <NavigationProperty Name="Basecount1" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecounts_Basecounts" FromRole="Basecount" ToRole="Basecount1" />
+          <NavigationProperty Name="Basecount2" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecounts_Basecounts" FromRole="Basecount1" ToRole="Basecount" />
         </EntityType>
         <EntityType Name="Credential">
           <Key>
@@ -431,10 +433,10 @@
           <Property Name="emp_lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="emp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Credential" Relationship="db_a97f85_totalfiresafetyModel.FK_Credentials_Employee" FromRole="Employee" ToRole="Credential" />
-          <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
           <NavigationProperty Name="Manpowers" Relationship="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees" FromRole="Employee" ToRole="Manpower" />
           <NavigationProperty Name="Notifications" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" FromRole="Employee" ToRole="Notification" />
           <NavigationProperty Name="Project" Relationship="db_a97f85_totalfiresafetyModel.FK_Project_Employees" FromRole="Employee" ToRole="Project" />
+          <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
           <NavigationProperty Name="Role" Relationship="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="Status" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
         </EntityType>
@@ -467,97 +469,9 @@
           <Property Name="in_remarks" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Basecounts" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1" FromRole="Inventory" ToRole="Basecount" />
           <NavigationProperty Name="Inv_Update" Relationship="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1" FromRole="Inventory" ToRole="Inv_Update" />
-          <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Inventory" ToRole="Request" />
           <NavigationProperty Name="Notifications" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1" FromRole="Inventory" ToRole="Notification" />
+          <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Inventory" ToRole="Request" />
         </EntityType>
-        <EntityType Name="Request">
-          <Key>
-            <PropertyRef Name="request_id" />
-          </Key>
-          <Property Name="request_id" Type="Guid" Nullable="false" />
-          <Property Name="request_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="request_item" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="request_item_quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="request_date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="request_employee_id" Type="Int32" />
-          <Property Name="request_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="request_type_id" Type="Int32" Nullable="false" />
-          <Property Name="request_type_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Request" ToRole="Employee" />
-          <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Request" ToRole="Inventory" />
-        </EntityType>
-        <Association Name="FK_Basecount_Inventory1">
-          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Basecount" Role="Basecount" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Inventory">
-              <PropertyRef Name="in_code" />
-            </Principal>
-            <Dependent Role="Basecount">
-              <PropertyRef Name="bc_itemCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Basecounts_Basecounts">
-          <End Type="db_a97f85_totalfiresafetyModel.Basecount" Role="Basecount" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Basecount" Role="Basecount1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Basecount">
-              <PropertyRef Name="bc_id" />
-            </Principal>
-            <Dependent Role="Basecount1">
-              <PropertyRef Name="bc_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Credentials_Employee">
-          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Credential" Role="Credential" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="emp_no" />
-            </Principal>
-            <Dependent Role="Credential">
-              <PropertyRef Name="emp_no" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requests_Employee">
-          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Request" Role="Request" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="emp_no" />
-            </Principal>
-            <Dependent Role="Request">
-              <PropertyRef Name="request_employee_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Inv_Update_Inventory1">
-          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Inv_Update" Role="Inv_Update" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Inventory">
-              <PropertyRef Name="in_code" />
-            </Principal>
-            <Dependent Role="Inv_Update">
-              <PropertyRef Name="update_item_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requests_Inventory1">
-          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Request" Role="Request" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Inventory">
-              <PropertyRef Name="in_code" />
-            </Principal>
-            <Dependent Role="Request">
-              <PropertyRef Name="request_item" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Manpower">
           <Key>
             <PropertyRef Name="man_id" />
@@ -599,13 +513,28 @@
           <Property Name="proj_endDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Project_Employees" FromRole="Project" ToRole="Employee" />
         </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="request_id" />
+          </Key>
+          <Property Name="request_id" Type="Guid" Nullable="false" />
+          <Property Name="request_type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_item" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_item_quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="request_employee_id" Type="Int32" />
+          <Property Name="request_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="request_type_id" Type="Int32" Nullable="false" />
+          <Property Name="request_type_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Request" ToRole="Employee" />
+          <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Request" ToRole="Inventory" />
+        </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="emp_no" />
           </Key>
           <Property Name="emp_no" Type="Int32" Nullable="false" />
           <Property Name="role1" Type="Int32" Nullable="false" />
-          <Property Name="IsUser" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" FromRole="Role" ToRole="Employee" />
         </EntityType>
         <EntityType Name="Status">
@@ -615,8 +544,45 @@
           <Property Name="emp_no" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="IsLocked" Type="Int32" Nullable="false" />
+          <Property Name="IsUser" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Status" ToRole="Employee" />
         </EntityType>
+        <Association Name="FK_Basecount_Inventory1">
+          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Basecount" Role="Basecount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Basecount">
+              <PropertyRef Name="bc_itemCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Basecounts_Basecounts">
+          <End Type="db_a97f85_totalfiresafetyModel.Basecount" Role="Basecount" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Basecount" Role="Basecount1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Basecount">
+              <PropertyRef Name="bc_id" />
+            </Principal>
+            <Dependent Role="Basecount1">
+              <PropertyRef Name="bc_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Credentials_Employee">
+          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Credential" Role="Credential" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Credential">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Manpower_Employees">
           <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
           <End Type="db_a97f85_totalfiresafetyModel.Manpower" Role="Manpower" Multiplicity="*" />
@@ -653,6 +619,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Requests_Employee">
+          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="request_employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Roles_Employee">
           <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
           <End Type="db_a97f85_totalfiresafetyModel.Role" Role="Role" Multiplicity="0..1" />
@@ -677,6 +655,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Inv_Update_Inventory1">
+          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Inv_Update" Role="Inv_Update" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Inv_Update">
+              <PropertyRef Name="update_item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Notifications_Inventory1">
           <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
           <End Type="db_a97f85_totalfiresafetyModel.Notification" Role="Notification" Multiplicity="*" />
@@ -689,7 +679,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="FK_Requests_Inventory1">
+          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="request_item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -697,7 +699,7 @@
         <EntityContainerMapping StorageEntityContainer="db_a97f85_totalfiresafetyModelStoreContainer" CdmEntityContainer="nwTFSEntity">
           <EntitySetMapping Name="Basecounts">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Basecount">
-              <MappingFragment StoreEntitySet="Basecounts">
+              <MappingFragment StoreEntitySet="Basecount">
                 <ScalarProperty Name="bc_count" ColumnName="bc_count" />
                 <ScalarProperty Name="bc_date" ColumnName="bc_date" />
                 <ScalarProperty Name="bc_itemCode" ColumnName="bc_itemCode" />
@@ -757,21 +759,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Requests">
-            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Request">
-              <MappingFragment StoreEntitySet="Requests">
-                <ScalarProperty Name="request_type_status" ColumnName="request_type_status" />
-                <ScalarProperty Name="request_type_id" ColumnName="request_type_id" />
-                <ScalarProperty Name="request_status" ColumnName="request_status" />
-                <ScalarProperty Name="request_employee_id" ColumnName="request_employee_id" />
-                <ScalarProperty Name="request_date" ColumnName="request_date" />
-                <ScalarProperty Name="request_item_quantity" ColumnName="request_item_quantity" />
-                <ScalarProperty Name="request_item" ColumnName="request_item" />
-                <ScalarProperty Name="request_type" ColumnName="request_type" />
-                <ScalarProperty Name="request_id" ColumnName="request_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Manpowers">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Manpower">
               <MappingFragment StoreEntitySet="Manpower">
@@ -812,10 +799,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Requests">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Request">
+              <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="request_type_status" ColumnName="request_type_status" />
+                <ScalarProperty Name="request_type_id" ColumnName="request_type_id" />
+                <ScalarProperty Name="request_status" ColumnName="request_status" />
+                <ScalarProperty Name="request_employee_id" ColumnName="request_employee_id" />
+                <ScalarProperty Name="request_date" ColumnName="request_date" />
+                <ScalarProperty Name="request_item_quantity" ColumnName="request_item_quantity" />
+                <ScalarProperty Name="request_item" ColumnName="request_item" />
+                <ScalarProperty Name="request_type" ColumnName="request_type" />
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Role">
               <MappingFragment StoreEntitySet="Roles">
-                <ScalarProperty Name="IsUser" ColumnName="IsUser" />
                 <ScalarProperty Name="role1" ColumnName="role1" />
                 <ScalarProperty Name="emp_no" ColumnName="emp_no" />
               </MappingFragment>
@@ -824,6 +825,7 @@
           <EntitySetMapping Name="Status">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Status">
               <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="IsUser" ColumnName="IsUser" />
                 <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="emp_no" ColumnName="emp_no" />

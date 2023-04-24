@@ -603,14 +603,15 @@ namespace TotalFireSafety.Controllers
                             Role = newRoles?.emp_no == item.emp_no ? new Role
                             {
                                 emp_no = newRoles.emp_no,
-                                IsUser = newRoles.IsUser,
+                                //IsUser = newRoles.IsUser,
                                 role1 = newRoles.role1
                             } : null,
                             Status = newStatus?.emp_no == item.emp_no ? new Status
                             {
                                 emp_no = newStatus.emp_no,
                                 IsActive = newStatus.IsActive,
-                                IsLocked = newStatus.IsLocked
+                                IsLocked = newStatus.IsLocked,
+                                IsUser = newStatus.IsUser
                             } : null
                         };
                         newList.Add(user);

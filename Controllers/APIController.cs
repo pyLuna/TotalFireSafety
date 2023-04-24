@@ -528,37 +528,37 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
-        [Route("Admin/Roles/Delete")]  //  Update Employee Route
-        [HttpPost]
-        public async Task<IHttpActionResult> DeleteRole(int? id)
-        {
-            try
-            {
-                if (id == null)
-                {
-                    return BadRequest("No ID found");
-                }
-                using (var _context = new nwTFSEntity())
-                {
-                    var role = _context.Roles.Where(x => x.emp_no == id).SingleOrDefault();
+        //[Authorize(Roles = "admin")]
+        //[Route("Admin/Roles/Delete")]  //  Update Employee Route
+        //[HttpPost]
+        //public async Task<IHttpActionResult> DeleteRole(int? id)
+        //{
+        //    try
+        //    {
+        //        if (id == null)
+        //        {
+        //            return BadRequest("No ID found");
+        //        }
+        //        using (var _context = new nwTFSEntity())
+        //        {
+        //            var role = _context.Roles.Where(x => x.emp_no == id).SingleOrDefault();
 
-                    if(role == null)
-                    {
-                        return BadRequest("Employee Not Found");
-                    }
+        //            if(role == null)
+        //            {
+        //                return BadRequest("Employee Not Found");
+        //            }
 
-                    role.status = "archived";
-                    _context.Entry(role);
-                    _context.SaveChanges();
-                    return Ok("Role Deleted");
-                }
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
+        //            role.status = "archived";
+        //            _context.Entry(role);
+        //            _context.SaveChanges();
+        //            return Ok("Role Deleted");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return InternalServerError(ex);
+        //    }
+        //}
 
         #endregion
         
@@ -603,9 +603,8 @@ namespace TotalFireSafety.Controllers
                             Role = newRoles?.emp_no == item.emp_no ? new Role
                             {
                                 emp_no = newRoles.emp_no,
-                                status = newRoles.status,
-                                role1 = newRoles.role1,
-                                date = newRoles.date
+                                IsUser = newRoles.IsUser,
+                                role1 = newRoles.role1
                             } : null,
                             Status = newStatus?.emp_no == item.emp_no ? new Status
                             {

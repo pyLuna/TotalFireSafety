@@ -10,20 +10,24 @@
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Employee" Width="1.5" PointX="0.75" PointY="6.875" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inv_Update" Width="1.5" PointX="6" PointY="4.125" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inventory" Width="1.5" PointX="3.75" PointY="1.625" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Notification" Width="1.5" PointX="6" PointY="7.375" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Request" Width="1.5" PointX="3" PointY="7.125" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Role" Width="1.5" PointX="3" PointY="12.375" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Status" Width="1.5" PointX="3" PointY="17.625" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Basecounts_Basecounts" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Credentials_Employee" />
-        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" />
+        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1" />
+        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Manpower" Width="1.5" PointX="3" PointY="24.875" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Notification" Width="1.5" PointX="6" PointY="7.875" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Project" Width="1.5" PointX="3" PointY="18.25" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Role" Width="1.5" PointX="3" PointY="22.375" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Status" Width="1.5" PointX="3" PointY="11.75" />
+        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees" />
+        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" />
+        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Project_Employees" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Status_Employee" />
-        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1" />
-        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

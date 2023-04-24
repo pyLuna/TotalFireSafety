@@ -250,8 +250,14 @@
       <DependentUpon>LatestModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginCredential.cs" />
+    <Compile Include="Models\Manpower.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\NewEmployeeModel.cs" />
     <Compile Include="Models\Notification.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Project.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Request.cs">

@@ -62,6 +62,15 @@
           <Property Name="in_arch_date" Type="datetime" />
           <Property Name="in_remarks" Type="nchar" MaxLength="10" />
         </EntityType>
+        <EntityType Name="Manpower">
+          <Key>
+            <PropertyRef Name="man_id" />
+          </Key>
+          <Property Name="man_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="man_emp_no" Type="int" Nullable="false" />
+          <Property Name="man_name" Type="varchar" MaxLength="100" />
+          <Property Name="man_postition" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="Notifications">
           <Key>
             <PropertyRef Name="guid" />
@@ -70,8 +79,25 @@
           <Property Name="emp_no" Type="int" Nullable="false" />
           <Property Name="in_code" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ntf_title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="ntf_content" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ntf_content" Type="nvarchar(max)" Nullable="false" />
           <Property Name="ntf_date" Type="datetime" Nullable="false" />
+          <Property Name="ntf_type" Type="nchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="proj_emp_no" />
+          </Key>
+          <Property Name="proj_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="proj_emp_no" Type="int" Nullable="false" />
+          <Property Name="proj_type_id" Type="int" />
+          <Property Name="proj_name" Type="varchar" MaxLength="250" />
+          <Property Name="proj_subject" Type="varchar" MaxLength="100" />
+          <Property Name="proj_client" Type="varchar" MaxLength="100" />
+          <Property Name="proj_location" Type="varchar" MaxLength="250" />
+          <Property Name="proj_lead" Type="varchar" MaxLength="150" />
+          <Property Name="proj_status" Type="varchar" MaxLength="10" />
+          <Property Name="proj_strDate" Type="datetime" />
+          <Property Name="proj_endDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Requests">
           <Key>
@@ -93,8 +119,7 @@
           </Key>
           <Property Name="emp_no" Type="int" Nullable="false" />
           <Property Name="role1" Type="int" Nullable="false" />
-          <Property Name="status" Type="nvarchar" MaxLength="50" />
-          <Property Name="date" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsUser" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -152,6 +177,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Manpower_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Manpower" Type="Self.Manpower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Manpower">
+              <PropertyRef Name="man_emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Notifications_Employee1">
           <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
           <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
@@ -173,6 +210,18 @@
             </Principal>
             <Dependent Role="Notifications">
               <PropertyRef Name="in_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="proj_emp_no" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -230,7 +279,9 @@
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inv_Update" EntityType="Self.Inv_Update" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inventories" EntityType="Self.Inventories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Manpower" EntityType="Self.Manpower" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
@@ -250,6 +301,10 @@
             <End Role="Inventories" EntitySet="Inventories" />
             <End Role="Inv_Update" EntitySet="Inv_Update" />
           </AssociationSet>
+          <AssociationSet Name="FK_Manpower_Employees" Association="Self.FK_Manpower_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Manpower" EntitySet="Manpower" />
+          </AssociationSet>
           <AssociationSet Name="FK_Notifications_Employee1" Association="Self.FK_Notifications_Employee1">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Notifications" EntitySet="Notifications" />
@@ -257,6 +312,10 @@
           <AssociationSet Name="FK_Notifications_Inventory1" Association="Self.FK_Notifications_Inventory1">
             <End Role="Inventories" EntitySet="Inventories" />
             <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_Employees" Association="Self.FK_Project_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Project" EntitySet="Project" />
           </AssociationSet>
           <AssociationSet Name="FK_Requests_Employee" Association="Self.FK_Requests_Employee">
             <End Role="Employees" EntitySet="Employees" />
@@ -285,10 +344,7 @@
           <EntitySet Name="Employees" EntityType="db_a97f85_totalfiresafetyModel.Employee" />
           <EntitySet Name="Inv_Update" EntityType="db_a97f85_totalfiresafetyModel.Inv_Update" />
           <EntitySet Name="Inventories" EntityType="db_a97f85_totalfiresafetyModel.Inventory" />
-          <EntitySet Name="Notifications" EntityType="db_a97f85_totalfiresafetyModel.Notification" />
           <EntitySet Name="Requests" EntityType="db_a97f85_totalfiresafetyModel.Request" />
-          <EntitySet Name="Roles" EntityType="db_a97f85_totalfiresafetyModel.Role" />
-          <EntitySet Name="Status" EntityType="db_a97f85_totalfiresafetyModel.Status" />
           <AssociationSet Name="FK_Basecount_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1">
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Basecount" EntitySet="Basecounts" />
@@ -301,13 +357,34 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Credential" EntitySet="Credentials" />
           </AssociationSet>
+          <AssociationSet Name="FK_Requests_Employee" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inv_Update_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1">
+            <End Role="Inventory" EntitySet="Inventories" />
+            <End Role="Inv_Update" EntitySet="Inv_Update" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1">
+            <End Role="Inventory" EntitySet="Inventories" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <EntitySet Name="Manpowers" EntityType="db_a97f85_totalfiresafetyModel.Manpower" />
+          <EntitySet Name="Notifications" EntityType="db_a97f85_totalfiresafetyModel.Notification" />
+          <EntitySet Name="Projects" EntityType="db_a97f85_totalfiresafetyModel.Project" />
+          <EntitySet Name="Roles" EntityType="db_a97f85_totalfiresafetyModel.Role" />
+          <EntitySet Name="Status" EntityType="db_a97f85_totalfiresafetyModel.Status" />
+          <AssociationSet Name="FK_Manpower_Employees" Association="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Manpower" EntitySet="Manpowers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Notifications_Employee1" Association="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
-          <AssociationSet Name="FK_Requests_Employee" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Employee">
+          <AssociationSet Name="FK_Project_Employees" Association="db_a97f85_totalfiresafetyModel.FK_Project_Employees">
             <End Role="Employee" EntitySet="Employees" />
-            <End Role="Request" EntitySet="Requests" />
+            <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_Roles_Employee" Association="db_a97f85_totalfiresafetyModel.FK_Roles_Employee">
             <End Role="Employee" EntitySet="Employees" />
@@ -317,17 +394,9 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Status" EntitySet="Status" />
           </AssociationSet>
-          <AssociationSet Name="FK_Inv_Update_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1">
-            <End Role="Inventory" EntitySet="Inventories" />
-            <End Role="Inv_Update" EntitySet="Inv_Update" />
-          </AssociationSet>
           <AssociationSet Name="FK_Notifications_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1">
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Notification" EntitySet="Notifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Requests_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1">
-            <End Role="Inventory" EntitySet="Inventories" />
-            <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Basecount">
@@ -362,8 +431,10 @@
           <Property Name="emp_lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="emp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Credential" Relationship="db_a97f85_totalfiresafetyModel.FK_Credentials_Employee" FromRole="Employee" ToRole="Credential" />
-          <NavigationProperty Name="Notifications" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" FromRole="Employee" ToRole="Notification" />
           <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
+          <NavigationProperty Name="Manpowers" Relationship="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees" FromRole="Employee" ToRole="Manpower" />
+          <NavigationProperty Name="Notifications" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" FromRole="Employee" ToRole="Notification" />
+          <NavigationProperty Name="Project" Relationship="db_a97f85_totalfiresafetyModel.FK_Project_Employees" FromRole="Employee" ToRole="Project" />
           <NavigationProperty Name="Role" Relationship="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="Status" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
         </EntityType>
@@ -396,21 +467,8 @@
           <Property Name="in_remarks" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Basecounts" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1" FromRole="Inventory" ToRole="Basecount" />
           <NavigationProperty Name="Inv_Update" Relationship="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1" FromRole="Inventory" ToRole="Inv_Update" />
-          <NavigationProperty Name="Notifications" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1" FromRole="Inventory" ToRole="Notification" />
           <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Inventory" ToRole="Request" />
-        </EntityType>
-        <EntityType Name="Notification">
-          <Key>
-            <PropertyRef Name="guid" />
-          </Key>
-          <Property Name="guid" Type="Guid" Nullable="false" />
-          <Property Name="emp_no" Type="Int32" Nullable="false" />
-          <Property Name="in_code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ntf_title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ntf_content" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ntf_date" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" FromRole="Notification" ToRole="Employee" />
-          <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1" FromRole="Notification" ToRole="Inventory" />
+          <NavigationProperty Name="Notifications" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1" FromRole="Inventory" ToRole="Notification" />
         </EntityType>
         <EntityType Name="Request">
           <Key>
@@ -427,25 +485,6 @@
           <Property Name="request_type_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Request" ToRole="Employee" />
           <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Request" ToRole="Inventory" />
-        </EntityType>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="emp_no" />
-          </Key>
-          <Property Name="emp_no" Type="Int32" Nullable="false" />
-          <Property Name="role1" Type="Int32" Nullable="false" />
-          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" FromRole="Role" ToRole="Employee" />
-        </EntityType>
-        <EntityType Name="Status">
-          <Key>
-            <PropertyRef Name="emp_no" />
-          </Key>
-          <Property Name="emp_no" Type="Int32" Nullable="false" />
-          <Property Name="IsActive" Type="Int32" Nullable="false" />
-          <Property Name="IsLocked" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Status" ToRole="Employee" />
         </EntityType>
         <Association Name="FK_Basecount_Inventory1">
           <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
@@ -483,6 +522,113 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Requests_Employee">
+          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="request_employee_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inv_Update_Inventory1">
+          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Inv_Update" Role="Inv_Update" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Inv_Update">
+              <PropertyRef Name="update_item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Inventory1">
+          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="request_item" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Manpower">
+          <Key>
+            <PropertyRef Name="man_id" />
+          </Key>
+          <Property Name="man_id" Type="Guid" Nullable="false" />
+          <Property Name="man_emp_no" Type="Int32" Nullable="false" />
+          <Property Name="man_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="man_postition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees" FromRole="Manpower" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="guid" Type="Guid" Nullable="false" />
+          <Property Name="emp_no" Type="Int32" Nullable="false" />
+          <Property Name="in_code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ntf_title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ntf_content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ntf_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ntf_type" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" FromRole="Notification" ToRole="Employee" />
+          <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1" FromRole="Notification" ToRole="Inventory" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="proj_emp_no" />
+          </Key>
+          <Property Name="proj_id" Type="Guid" Nullable="false" />
+          <Property Name="proj_emp_no" Type="Int32" Nullable="false" />
+          <Property Name="proj_type_id" Type="Int32" />
+          <Property Name="proj_name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="proj_subject" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="proj_client" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="proj_location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="proj_lead" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="proj_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="proj_strDate" Type="DateTime" Precision="3" />
+          <Property Name="proj_endDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Project_Employees" FromRole="Project" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="Int32" Nullable="false" />
+          <Property Name="role1" Type="Int32" Nullable="false" />
+          <Property Name="IsUser" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" FromRole="Role" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="emp_no" />
+          </Key>
+          <Property Name="emp_no" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Int32" Nullable="false" />
+          <Property Name="IsLocked" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Status" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK_Manpower_Employees">
+          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Manpower" Role="Manpower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="Manpower">
+              <PropertyRef Name="man_emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Notifications_Employee1">
           <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
           <End Type="db_a97f85_totalfiresafetyModel.Notification" Role="Notification" Multiplicity="*" />
@@ -495,15 +641,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Requests_Employee">
-          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Request" Role="Request" Multiplicity="*" />
+        <Association Name="FK_Project_Employees">
+          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Project" Role="Project" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Employee">
               <PropertyRef Name="emp_no" />
             </Principal>
-            <Dependent Role="Request">
-              <PropertyRef Name="request_employee_id" />
+            <Dependent Role="Project">
+              <PropertyRef Name="proj_emp_no" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -531,18 +677,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Inv_Update_Inventory1">
-          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Inv_Update" Role="Inv_Update" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Inventory">
-              <PropertyRef Name="in_code" />
-            </Principal>
-            <Dependent Role="Inv_Update">
-              <PropertyRef Name="update_item_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Notifications_Inventory1">
           <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
           <End Type="db_a97f85_totalfiresafetyModel.Notification" Role="Notification" Multiplicity="*" />
@@ -552,18 +686,6 @@
             </Principal>
             <Dependent Role="Notification">
               <PropertyRef Name="in_code" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requests_Inventory1">
-          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Request" Role="Request" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Inventory">
-              <PropertyRef Name="in_code" />
-            </Principal>
-            <Dependent Role="Request">
-              <PropertyRef Name="request_item" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -635,18 +757,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Notifications">
-            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Notification">
-              <MappingFragment StoreEntitySet="Notifications">
-                <ScalarProperty Name="ntf_date" ColumnName="ntf_date" />
-                <ScalarProperty Name="ntf_content" ColumnName="ntf_content" />
-                <ScalarProperty Name="ntf_title" ColumnName="ntf_title" />
-                <ScalarProperty Name="in_code" ColumnName="in_code" />
-                <ScalarProperty Name="emp_no" ColumnName="emp_no" />
-                <ScalarProperty Name="guid" ColumnName="guid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Requests">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Request">
               <MappingFragment StoreEntitySet="Requests">
@@ -662,11 +772,50 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Manpowers">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Manpower">
+              <MappingFragment StoreEntitySet="Manpower">
+                <ScalarProperty Name="man_postition" ColumnName="man_postition" />
+                <ScalarProperty Name="man_name" ColumnName="man_name" />
+                <ScalarProperty Name="man_emp_no" ColumnName="man_emp_no" />
+                <ScalarProperty Name="man_id" ColumnName="man_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="ntf_type" ColumnName="ntf_type" />
+                <ScalarProperty Name="ntf_date" ColumnName="ntf_date" />
+                <ScalarProperty Name="ntf_content" ColumnName="ntf_content" />
+                <ScalarProperty Name="ntf_title" ColumnName="ntf_title" />
+                <ScalarProperty Name="in_code" ColumnName="in_code" />
+                <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="proj_endDate" ColumnName="proj_endDate" />
+                <ScalarProperty Name="proj_strDate" ColumnName="proj_strDate" />
+                <ScalarProperty Name="proj_status" ColumnName="proj_status" />
+                <ScalarProperty Name="proj_lead" ColumnName="proj_lead" />
+                <ScalarProperty Name="proj_location" ColumnName="proj_location" />
+                <ScalarProperty Name="proj_client" ColumnName="proj_client" />
+                <ScalarProperty Name="proj_subject" ColumnName="proj_subject" />
+                <ScalarProperty Name="proj_name" ColumnName="proj_name" />
+                <ScalarProperty Name="proj_type_id" ColumnName="proj_type_id" />
+                <ScalarProperty Name="proj_emp_no" ColumnName="proj_emp_no" />
+                <ScalarProperty Name="proj_id" ColumnName="proj_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Role">
               <MappingFragment StoreEntitySet="Roles">
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="IsUser" ColumnName="IsUser" />
                 <ScalarProperty Name="role1" ColumnName="role1" />
                 <ScalarProperty Name="emp_no" ColumnName="emp_no" />
               </MappingFragment>

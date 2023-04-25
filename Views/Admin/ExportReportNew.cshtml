@@ -1,0 +1,310 @@
+﻿@model  List<TotalFireSafety.Models.Request>
+@{
+    ViewBag.Title = "ExportReportNew";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Export Report </title>
+    <link rel="shortcut icon" type="image/icon" href="~/images/tfsti-logo-noname.png" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+        }
+
+        main {
+            background: #f1f5f9;
+        }
+
+        .logo-size {
+            height: 150px;
+            width: 340px;
+        }
+
+        .container-project-export {
+            height: 100%;
+            width: 1100px;
+            box-shadow: -1px -1px 18px -4px rgba(0,0,0,0.18);
+            -webkit-box-shadow: -1px -1px 18px -4px rgba(0,0,0,0.18);
+            -moz-box-shadow: -1px -1px 18px -4px rgba(0,0,0,0.18);
+        }
+
+        .buttons1 {
+            background-color: rgb(22, 33, 91) !important;
+            width: 175px !important;
+        }
+
+        .buttons2 {
+            width: 175px !important;
+            height: 47px !important;
+            border: 1px solid rgb(22, 33, 91) !important;
+            color: rgb(22, 33, 91) !important;
+        }
+
+            .buttons2:hover {
+                background-color: rgb(22, 33, 91) !important;
+                color: white !important;
+                text-
+            }
+
+        #pe-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid black;
+            width: 100%;
+        }
+
+            #pe-table td,
+            #pe-table th {
+                border: 1.5px solid black;
+                padding: 2px;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                border-collapse: collapse;
+                padding: 3px;
+            }
+
+            #pe-table thead {
+                background-color: rgb(22, 33, 91);
+            }
+
+        .pe-th {
+            border: 1.5px solid black;
+            padding: 4px !important;
+        }
+    </style>
+    <style media="print">
+        .buttons1, .buttons2 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    @{
+        var firstRequest = Model.FirstOrDefault();
+    }
+    <div class="export-contents">
+        <div class="d-flex justify-content-center">
+            <div class="card mt-2 mb-4 mt-4 p-5 container-project-export">
+                <div class="d-flex justify-content-center">
+                    <img src="~/images/tfsti-logo-inventory.png" class="logo-size" alt="">
+                </div>
+                <div class="d-flex justify-content-center flex-column">
+                    <table id="pe-table">
+                        <thead>
+                        <th class="text-center text-light pe-th" colspan="4">
+                            <h5>ACCOUNTABILITY FORM</h5>
+                        </th>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                                <th colspan="4">PERSONAL INFORMATION</th>
+                            </tr>
+                            <tr>
+                                <th scope="row">Requester Name</th>
+                                <td>@firstRequest.Employee.emp_lname @firstRequest.Employee.emp_fname</th>
+                                <th scope="row">Request Type</th>
+                                <td>@firstRequest.request_type</th>
+                            </tr>
+
+                            <tr>
+                                <th scope="row">Position</th>
+                                <td>@firstRequest.Employee.emp_position</td>
+                                <th scope="row">Employee ID</th>
+                                <td>@firstRequest.Employee.emp_no</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Date Requested</th>
+                                <td>@firstRequest.request_date.ToShortDateString()</td>
+                                <th scope="row">Request ID</th>
+                                <td>@firstRequest.Id</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <table id="pe-table">
+                        <tbody>
+                            <tr>
+                                <th colspan="6" class="text-center">ITEM REQUESTED</th>
+                            </tr>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Item Name</th>
+                                <th>Item Category</th>
+                                <th>Item Size</th>
+                                <th>Item Quantity</th>
+                                <th>Item type</th>
+                            </tr>
+                            @for (int i = 0; i < 3 && i < Model.Count; i++)
+                            {
+                                var item = Model[i];
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Inventory.in_code)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Inventory.in_name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Inventory.in_category)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Inventory.in_size)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.request_item_quantity)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Inventory.in_type)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-column">
+                            <h5 class="mb-5">Released by:</h5>
+                            <h6>_________________________</h6>
+                            <h6>Signiture over printed name</h6>
+                            <br />
+                            <h5 class="mb-5">Date Released:</h5>
+                            <h6>__________________</h6>
+                            <h6>Date</h6>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <h5 class="mb-5">Recieved by:</h5>
+                            <h6>_________________________</h6>
+                            <h6>Signiture over printed name</h6>
+                            <br />
+                            <h5 class="mb-5">Date Recieved:</h5>
+                            <h6>__________________</h6>
+                            <h6>Date</h6>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <h5 class="mb-5">Approved by:</h5>
+                            <h6>_________________________</h6>
+                            <h6>Signiture over printed name</h6>
+                            <br />
+                            <h5 class="mb-5">Date Approved:</h5>
+                            <h6>__________________</h6>
+                            <h6>Date</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="printHide-content">
+        <div class="mt-4 d-flex justify-content-end mr-5 mb-5">
+            @*<div class="d-flex flex-column">*@
+            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2 mb-3" onclick="exportToPdf()">
+                EXPORT
+            </button>
+            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2 mb-3" onclick="hideContentOnPrint()">
+                PRINT
+            </button>
+            <button type="button" class="btn btn-outline-primary buttons2 ml-2">
+                <a href="@Url.Action("Requisition", "Admin")">
+                    CANCEL
+                </a>
+            </button>
+            @*</div>*@
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+<script>
+
+    function hideContentOnPrint() {
+        var divToHide = document.getElementsByClassName("printHide-content")[0];
+        divToHide.style.display = "none";
+        window.print();
+        divToHide.style.display = "block";
+    }
+
+    function exportToPdf() {
+        const element = document.querySelector('.export-contents');
+        const options = {
+            margin: [0, 0, 0, 0],
+            filename: 'Accountability-form.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        };
+        html2pdf().set(options).from(element).save();
+    }
+
+    let infopopup = document.getElementById("info-popup");
+
+    function infoOpenPopup() {
+        infopopup.classList.add("info-popup-show")
+    }
+
+    function infoClosePopup() {
+        infopopup.classList.remove("info-popup-show")
+    }
+
+    let popup = document.getElementById("popup");
+
+    function openPopup() {
+        popup.classList.add("open-popup-show")
+    }
+
+    function closePopup() {
+        popup.classList.remove("open-popup-show")
+         location.href = "@Url.Action("Requisition", "Admin")";
+    }
+
+    let canpopup = document.getElementById("can-popup");
+
+    function canOpenPopup() {
+        canpopup.classList.add("can-popup-show")
+    }
+
+    function canClosePopup() {
+        canpopup.classList.remove("can-popup-show")
+    }
+
+    let rempopup = document.getElementById("rem-popup");
+
+    function remOpenPopup() {
+        rempopup.classList.add("rem-popup-show")
+    }
+
+    function remClosePopup() {
+        rempopup.classList.remove("rem-popup-show")
+          location.href = "@Url.Action("Requisition", "Admin")";
+    }
+
+    let printpopup = document.getElementById("print-popup");
+
+    function printOpenPopup() {
+        printpopup.classList.add("print-popup-show")
+    }
+
+    function printClosePopup() {
+        printpopup.classList.remove("print-popup-show")
+    }
+
+    let expopopup = document.getElementById("expo-popup");
+
+    function expoOpenPopup() {
+        expopopup.classList.add("expo-popup-show")
+    }
+
+    function expoClosePopup() {
+        expopopup.classList.remove("expo-popup-show")
+    }
+</script>

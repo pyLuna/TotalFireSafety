@@ -197,6 +197,20 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+        public async Task<ActionResult> ExportReportNew(int? id)
+        {
+            var empId = Session["emp_no"].ToString();
+            nwTFSEntity db = new nwTFSEntity();
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            var data = db.Requests.Where(d => d.request_type_id == id).ToList();
+
+            return View(data);
+
+        }
         public async Task<ActionResult> InvReportExport(int? id)
         {
 

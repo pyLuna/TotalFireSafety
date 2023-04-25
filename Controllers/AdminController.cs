@@ -76,7 +76,7 @@ namespace TotalFireSafety.Controllers
                 return "~/images/profile.png";
             }
         }
-        
+
         [HttpPost]
         public async Task<ActionResult> SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {
@@ -238,14 +238,18 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-        public async Task<ActionResult> ProjectView()
-        {
+        public async Task<ActionResult> ProjectView(int? proj_type_id)
+        
+            {
+
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+
+
             return View();
         }
         public async Task<ActionResult> ProjectAdd()
@@ -279,7 +283,7 @@ namespace TotalFireSafety.Controllers
         [HttpGet]
         public async Task<ActionResult> BaseResult([System.Web.Http.FromBody]int start, [System.Web.Http.FromBody] int end, [System.Web.Http.FromBody]  int diff)
         {
-            using(var _context = new nwTFSEntity())
+            using (var _context = new nwTFSEntity())
             {
                 var allBase = _context.Basecounts.OrderByDescending(item => item.bc_date).ToList();
                 //List<Basecount> allBase = _context.Basecounts.OrderByDescending(item => item.bc_date).ToList();
@@ -344,7 +348,7 @@ namespace TotalFireSafety.Controllers
             {
 
                 var users = _context.Employees.Count();
-                var actives = _context.Status.Where(x => x.IsActive == 1 && x.IsUser == 1).Count(); 
+                var actives = _context.Status.Where(x => x.IsActive == 1 && x.IsUser == 1).Count();
                 var deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment").Count();
                 var rec_deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
                 var supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply").Count();
@@ -411,7 +415,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-
+        [HttpGet]
         public async Task<ActionResult> Projects()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -420,19 +424,124 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("Login", "Base");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            ViewBag.EmpId = empId;
+            using (var db = new nwTFSEntity())
+            {
+                var projects = db.Projects.ToList();
+                var jsonProjects = projects.Select(p => new
+                {
+                    proj_type_id = p.proj_type_id,
+                    proj_name = p.proj_name,
+                    proj_lead = p.proj_lead,
+                    proj_strDate = p.proj_strDate?.ToString("yyyy-MM-dd"),
+                    proj_endDate = p.proj_endDate?.ToString("yyyy-MM-dd "),
+                    proj_status = p.proj_status
+                });
+                var serialize = JsonConvert.SerializeObject(jsonProjects);
+                ViewBag.Projects = new HtmlString(serialize);
+            }
             return View();
         }
 
-        //public async Task<ActionResult> ProjectAdd()
-        //{
-        //    var empId = Session["emp_no"]?.ToString();
-        //    if (empId == null)
-        //    {
-        //        return RedirectToAction("Login", "Base");
-        //    }
-        //    ViewBag.ProfilePath = GetPath(int.Parse(empId));
-        //    return View();
-        //}
+
+        public async Task<JsonResult> GetEmployees(int empId)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+
+            var employees = await db.Employees
+                .Where(e => e.emp_no == empId)
+                .Select(e => new { e.emp_no, e.emp_fname, e.emp_lname })
+                .ToListAsync();
+
+            return Json(employees, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult SaveManpower(List<Manpower> manpowerList)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            try
+            {
+                foreach (Manpower manpower in manpowerList)
+                {
+                    manpower.man_id = Guid.NewGuid();
+                    manpower.man_emp_no = (int)Session["emp_no"];
+                    db.Manpowers.Add(manpower);
+                }
+                db.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SaveProject(List<Project> projectList)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            try
+            {
+                foreach (Project project in projectList)
+                {
+                    Random rand = new Random();
+                    int projTypeId = rand.Next(1000, 9999); // Generate a random 4-digit integer
+                    project.proj_id = Guid.NewGuid();
+                    project.proj_emp_no = (int)Session["emp_no"];
+                    project.proj_type_id = projTypeId;
+                    db.Projects.Add(project);
+                }
+                db.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateProject(Project project)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var dbProject = db.Projects.Find(project.proj_type_id);
+            if (dbProject != null)
+            {
+                dbProject.proj_name = project.proj_name;
+                dbProject.proj_subject = project.proj_subject;
+                dbProject.proj_client = project.proj_client;
+                dbProject.proj_location = project.proj_location;
+                dbProject.proj_lead = project.proj_lead;
+                dbProject.proj_status = project.proj_status;
+                dbProject.proj_strDate = project.proj_strDate;
+                dbProject.proj_endDate = project.proj_endDate;
+                db.SaveChanges();
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+        }
+        public async Task<ActionResult> ProjectList()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var projects = db.Projects.ToList();
+            return View(projects);
+        }
+
+
+        /*        PUBLIC ASYNC TASK<ACTIONRESULT> PROJECTADD()
+                {
+                    VAR EMPID = SESSION["EMP_NO"]?.TOSTRING();
+                    IF(EMPID == NULL)
+                    {
+                        RETURN REDIRECTTOACTION("LOGIN", "BASE");
+                    }
+                    VIEWBAG.PROFILEPATH = GETPATH(INT.PARSE(EMPID));
+                    RETURN VIEW();
+                }*/
 
         #region Inventory
         [HttpPost]

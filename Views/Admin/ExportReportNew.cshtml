@@ -42,9 +42,9 @@
         .container-project-export {
             height: 100%;
             width: 1100px;
-            box-shadow: -5px -2px 23px -5px rgba(0,0,0,0.49);
-            -webkit-box-shadow: -5px -2px 23px -5px rgba(0,0,0,0.49);
-            -moz-box-shadow: -5px -2px 23px -5px rgba(0,0,0,0.49);
+            box-shadow: -1px -1px 18px -4px rgba(0,0,0,0.18);
+            -webkit-box-shadow: -1px -1px 18px -4px rgba(0,0,0,0.18);
+            -moz-box-shadow: -1px -1px 18px -4px rgba(0,0,0,0.18);
         }
 
         .buttons1 {
@@ -197,16 +197,20 @@
         </div>
     </div>
 
-    <div class="mt-4 d-flex justify-content-end mr-5 mb-5">
-        @*<div class="d-flex flex-column">*@
-        <button type="button" class="btn btn-primary btn-lg buttons1 ml-2 mb-3" onclick="exportToPdf()">
-            EXPORT
-        </button>
-        <button type="button" class="btn btn-primary btn-lg buttons1 ml-2 mb-3">PRINT</button>
-        <button type="button" class="btn btn-outline-primary buttons2 ml-2" onclick="canOpenPopup()">
-            CANCEL
-        </button>
-        @*</div>*@
+    <div class="printHide-content">
+        <div class="mt-4 d-flex justify-content-end mr-5 mb-5">
+            @*<div class="d-flex flex-column">*@
+            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2 mb-3" onclick="exportToPdf()">
+                EXPORT
+            </button>
+            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2 mb-3" onclick="hideContentOnPrint()">
+                PRINT
+            </button>
+            <button type="button" class="btn btn-outline-primary buttons2 ml-2" onclick="canOpenPopup()">
+                CANCEL
+            </button>
+            @*</div>*@
+        </div>
     </div>
 </body>
 </html>
@@ -214,6 +218,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 <script>
+
+    function hideContentOnPrint() {
+        var divToHide = document.getElementsByClassName("printHide-content")[0];
+        divToHide.style.display = "none";
+        window.print();
+        divToHide.style.display = "block";
+    }
 
     function exportToPdf() {
         const element = document.querySelector('.export-contents');

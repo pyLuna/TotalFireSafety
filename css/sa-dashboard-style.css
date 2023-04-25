@@ -9982,10 +9982,6 @@ hr {
     }
     /* END */
 
-    .recent-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
 
     .add-grid {
         margin-left: 9rem;
@@ -10042,33 +10038,6 @@ hr {
     main {
         min-height: calc(120vh - 70px);
         min-width: calc(10vh - 70px);
-    }
-
-    .deploy-header button,
-    .deliveries-header button {
-        width: 50px;
-    }
-
-    .deploy-header .dep-buttons-style h3,
-    .deliveries-header .deli-buttons-style h3 {
-        display: none;
-    }
-
-    .expo-btns-container {
-        left: 80px;
-    }
-
-    .form-container form .fields .input-field {
-        width: calc(100% / 2 - 15px);
-    }
-
-    .form-container form button {
-        width: 150px;
-    }
-
-    .progress-bar {
-        margin-right: -250px;
-        width: 250px;
     }
 }
 
@@ -10187,65 +10156,6 @@ hr {
 
     /* END */
 
-    /* INVENTORY STYLE RESPONSIVE max-width: 768px;*/
-    .inventory-projects {
-        margin: 0;
-        padding: 0;
-        margin-top: 10px;
-    }
-
-    .inventory-header h3 {
-        font-size: 1rem;
-    }
-
-    .inventory-header .inventory-buttons-style {
-        margin-left: 175px;
-    }
-
-    .inventory-header button {
-        margin-left: 2px;
-    }
-
-    .inventory-header .inventory-sort-btn {
-        margin-left: 2px;
-    }
-
-    .inventory-body table {
-        margin: 0;
-    }
-
-    .add-popup-inv {
-        width: 100%;
-        margin: 0;
-    }
-
-    .inventory-form-container {
-        width: 500px;
-    }
-
-        .inventory-form-container .inventory-form-header {
-            font-size: 15px;
-        }
-
-        .inventory-form-container form {
-            width: 200px;
-            margin-top: 10px;
-            margin-left: 30px;
-        }
-
-            .inventory-form-container form .fields .input-field {
-                width: calc(100% / 1 - 15px);
-                margin: 2px 0;
-            }
-
-            .inventory-form-container form button, .btnText {
-                width: 150px;
-            }
-
-    .inventory-add-container .inventory-form-container .inventory-buttons-style button {
-        width: 100px;
-    }
-    /* END */
 
     /* PURCHASE REQUST STYLE RESPONSIVE max-width: 768px;*/
 
@@ -10414,41 +10324,7 @@ hr {
 
     /* PURCHASE REQUST STYLE RESPONSIVE */
 
-    .purchase-projects {
-        margin: 0;
-        padding: 0;
-        margin-top: 10px;
-    }
 
-    .purchase-header {
-        margin-left: 0;
-        display: inline-block;
-    }
-
-        .purchase-header h3 {
-            font-size: 15px;
-            margin: 0;
-        }
-
-        .purchase-header .purchase-buttons-style {
-            margin-left: 210px;
-        }
-
-        .purchase-header button {
-            margin-left: 2px;
-        }
-
-        .purchase-header .purchase-sort-btn {
-            margin-left: 2px;
-        }
-
-    .purchase-body table {
-        margin: 0;
-    }
-
-        .purchase-body table td label {
-            font-size: 14px;
-        }
 
     /* END */
 
@@ -10529,104 +10405,15 @@ hr {
 
 /* 04 - DASHBOARD RESPOSIVE STYLE ALL SIZES */
 
-@media all and (max-width: 1400px) {
+@media all and (max-width: 480px) {
 
-    /* CHARTS RESPONSIVENESS */
     .dashboard-content {
         grid-template-columns: 100%;
     }
 
-    .recent-grid {
-        grid-template-columns: 100%;
-    }
-
-        .recent-grid .inventory-sum .card .card-header {
-            display: block;
-        }
-
-            .recent-grid .inventory-sum .card .card-header .cat-grp {
-                margin-top: 10px;
-                display: block;
-            }
-
-                .recent-grid .inventory-sum .card .card-header .cat-grp input {
-                    width: 275px;
-                    margin-top: 10px;
-                }
-
-                .recent-grid .inventory-sum .card .card-header .cat-grp select {
-                    width: 130px;
-                }
-
-    .card-headers .legend-grp {
-        margin: 0;
-        width: 100%;
-    }
-
-    .card-headers button {
-        margin-top: 15px;
-    }
-
-    .card-headers {
-        display: block;
-    }
-
-    .card-header {
-        display: flex;
-    }
-
-    .card .card-header .fst-grp {
-        display: flex;
-        margin: 0;
-    }
-
-        .card .card-header .fst-grp .radio-container .radio-list {
-            margin: 0;
-            padding: 0;
-        }
-
-            .card .card-header .fst-grp .radio-container .radio-list input {
-                margin-top: 12px;
-            }
-
-            .card .card-header .fst-grp .radio-container .radio-list label {
-                margin-top: 5px;
-            }
-
-    /* END */
-
-    /* POPUP NEW MESSEGE RESPONSIVENESS */
-    .notif-show-popup {
-        width: 100%;
-        right: 0;
-        left: 0;
-    }
-
-    /* END */
-
-    /* CARDS RESPONSIVENESS */
-    .cards {
-        margin-top: 0;
-    }
-
-    .card-title {
-        height: 150px;
-        margin-top: 10px;
-    }
-
-    /* END */
-
-    /* PROJECT SUMMARY RESPONSIVENESS */
-    .dsh-proj-grid {
-        grid-template-columns: 100%;
-    }
-
     .proj-insight-container .proj-row .left {
-        padding-left: 120px;
+        padding-left: 10px;
     }
-
-
-    /* END */
 }
 
 @media all and (max-width: 768px) {
@@ -10770,98 +10557,113 @@ hr {
         }
 
     /* END */
-
 }
 
-@media all and (max-width: 480px) {
+@media all and (max-width: 1400px) {
 
+    /* CHARTS RESPONSIVENESS */
     .dashboard-content {
         grid-template-columns: 100%;
     }
 
-    .proj-insight-container .proj-row .left {
-        padding-left: 10px;
+    .recent-grid {
+        grid-template-columns: 100%;
     }
+
+        .recent-grid .inventory-sum .card .card-header {
+            display: block;
+        }
+
+            .recent-grid .inventory-sum .card .card-header .cat-grp {
+                margin-top: 10px;
+                display: block;
+            }
+
+                .recent-grid .inventory-sum .card .card-header .cat-grp input {
+                    width: 275px;
+                    margin-top: 10px;
+                }
+
+                .recent-grid .inventory-sum .card .card-header .cat-grp select {
+                    width: 130px;
+                }
+
+    .card-headers .legend-grp {
+        margin: 0;
+        width: 100%;
+    }
+
+    .card-headers button {
+        margin-top: 15px;
+    }
+
+    .card-headers {
+        display: block;
+    }
+
+    .card-header {
+        display: flex;
+    }
+
+    .card .card-header .fst-grp {
+        display: flex;
+        margin: 0;
+    }
+
+        .card .card-header .fst-grp .radio-container .radio-list {
+            margin: 0;
+            padding: 0;
+        }
+
+            .card .card-header .fst-grp .radio-container .radio-list input {
+                margin-top: 12px;
+            }
+
+            .card .card-header .fst-grp .radio-container .radio-list label {
+                margin-top: 5px;
+            }
+    /* END */
+
+    /* POPUP NEW MESSEGE RESPONSIVENESS */
+    .notif-show-popup {
+        width: 100%;
+        right: 0;
+        left: 0;
+    }
+    /* END */
+
+    /* CARDS RESPONSIVENESS */
+    .cards {
+        margin-top: 0;
+    }
+
+    .card-title {
+        height: 150px;
+        margin-top: 10px;
+    }
+    /* END */
+
+    /* PROJECT SUMMARY RESPONSIVENESS */
+    .dsh-proj-grid {
+        grid-template-columns: 100%;
+    }
+
+    .proj-insight-container .proj-row .left {
+        padding-left: 120px;
+    }
+
+
+    /* END */
 }
+
 
 /* END */
 
-/* 05 - INVENTORIES RESPOSIVE STYLE ALL SIZES */
-
-@media all and (max-width: 768px) {
-
-
-    .inventory-projects {
-        margin: 0;
-        padding: 0;
-        margin-top: 10px;
-    }
-
-    .inventory-header {
-        display: inline-block;
-        justify-content: normal;
-        margin-left: 0;
-    }
-
-        .inventory-header h3 {
-            font-size: 1rem;
-        }
-
-        .inventory-header .inventory-buttons-style {
-            display: flex;
-            margin-top: 10px;
-            margin-left: -10px;
-        }
-
-        .inventory-header button {
-            margin-left: 2px;
-        }
-
-        .inventory-header .inventory-sort-btn {
-            margin-left: 2px;
-        }
-
-    .inventory-body table {
-        margin: 0;
-    }
-
-    /* ADD POPUP FORM RESPONSIVENESS */
-
-    .add-popup-inv {
-        width: 100%;
-    }
-
-    .inventory-form-container .inventory-form-header {
-        font-size: 15px;
-    }
-
-    .inventory-form-container form {
-        width: 100%;
-        height: 1100px;
-        margin: 0;
-        padding-top: 140px;
-        margin-left: 5px;
-    }
-
-    .inventory-form-container .input-field .img-bar-grp {
-        margin-top: 10px;
-    }
-
-    .inventory-form-container form .fields .input-field {
-        width: calc(100% / 1 - 0px);
-        margin: 0;
-    }
-
-    .inventory-form-container form button {
-        width: 150px;
-        margin-top: 230px;
-        z-index: 100;
-    }
-}
+/* 05 - INVENTORIES RESPONSIVE STYLE ALL SIZES */
 
 @media all and (max-width: 480px) {
 
-
+    /* INVENTORY LISTS PAGE */
     .inventory-projects {
         margin: 0;
         padding: 0;
@@ -10927,9 +10729,298 @@ hr {
         margin-top: 230px;
         z-index: 100;
     }
+    /* END */
+
+    /* INVENTORY REPORT PAGE */
+    .inventory-repo-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .inventory-repo-header {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 100px;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+        .inventory-repo-header h3 {
+            margin-top: -20px;
+            font-size: 1rem;
+        }
+
+        .inventory-repo-header .inventory-repo-buttons-style {
+            display: flex;
+        }
+
+    .upper-section .datepick-container {
+        position: none;
+        right: 0;
+        left: 5%;
+        top: 18%;
+    }
+    /* END */
+}
+
+@media all and (max-width: 768px) {
+
+    .inventory-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .inventory-header {
+        display: inline-block;
+        justify-content: normal;
+        margin-left: 0;
+    }
+
+        .inventory-header h3 {
+            font-size: 1rem;
+        }
+
+        .inventory-header .inventory-buttons-style {
+            display: flex;
+            margin-top: 10px;
+            margin-left: -10px;
+        }
+
+        .inventory-header button {
+            margin-left: 2px;
+        }
+
+        .inventory-header .inventory-sort-btn {
+            margin-left: 2px;
+        }
+
+    .inventory-body table {
+        margin: 0;
+    }
+
+    /* ADD POPUP FORM RESPONSIVENESS */
+
+    .add-popup-inv {
+        width: 100%;
+        margin: 0;
+    }
+
+    .inventory-form-container .inventory-form-header {
+        font-size: 15px;
+        margin-bottom: 20px;
+        margin-left: 1%;
+    }
+
+    .inventory-form-container form {
+        width: 100%;
+        height: 1100px;
+        margin: 0;
+        padding-top: 120px;
+        margin-left: 5px;
+    }
+
+    .inventory-form-container .input-field .img-bar-grp {
+        margin-top: 10px;
+    }
+
+    .inventory-form-container form .fields .input-field {
+        width: 100%;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+
+    .inventory-form-container form button {
+        width: 150px;
+        margin-top: 230px;
+        z-index: 100;
+    }
+
+    .inventory-form-container form button, .btnText {
+        width: 150px;
+    }
+
+    .inventory-add-container .inventory-form-container .inventory-buttons-style button {
+        width: 100px;
+    }
+
+    /* INVENTORY REPORT PAGE */
+    .inventory-repo-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .inventory-repo-header {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 100px;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+        .inventory-repo-header h3 {
+            margin-top: -20px;
+            font-size: 1rem;
+        }
+
+        .inventory-repo-header .inventory-repo-buttons-style {
+            display: flex;
+        }
+
+    .upper-section .datepick-container {
+        position: none;
+        right: 0;
+        left: 5%;
+        top: 18%;
+    }
+    /* END */
+}
+
+@media all and (max-width: 1200px) {
+
+    .inventory-projects {
+        margin: 0;
+        padding: 0;
+    }
+
+    .add-popup-inv {
+        margin: 0;
+    }
+
+    .inventory-repo-projects {
+        margin: 0;
+        padding: 0;
+    }
+
+    .upper-section .datepick-container {
+        top: 12%;
+    }
+}
+/* END */
+
+/* 06 - PURCHASE REQUEST RESPONSIVE STYLE ALL SIZES */
+
+@media all and (max-width: 480px) {
+
+    .purchase-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .purchase-header {
+        margin-left: 0;
+        display: inline-block;
+    }
+
+        .purchase-header h3 {
+            font-size: 15px;
+            margin: 0;
+            margin-top: -10px;
+        }
+
+        .purchase-header .purchase-buttons-style {
+            margin-left: -10px;
+            margin-top: 10px;
+        }
+
+        .purchase-header button {
+            margin-left: 2px;
+        }
+
+        .purchase-header .purchase-sort-btn {
+            margin-left: 2px;
+        }
+
+    .purchase-body table {
+        margin: 0;
+    }
+
+        .purchase-body table td label {
+            font-size: 14px;
+        }
+
+    /* REMARKS POPUP STYLE */
+
+
+
+    /* END */
+
+    /* ADD REQUEST POPUP STYLE */
+    .create-request-popup-pur {
+        left: 10%;
+        width: 100%;
+        margin: 0;
+        overflow: auto;
+    }
+
+
+    /* END */
+}
+
+@media all and (max-width: 768px) {
+
+    .purchase-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .purchase-header {
+        margin-left: 0;
+        display: inline-block;
+    }
+
+        .purchase-header h3 {
+            font-size: 15px;
+            margin: 0;
+            margin-top: -10px;
+        }
+
+        .purchase-header .purchase-buttons-style {
+            margin-left: -10px;
+            margin-top: 10px;
+        }
+
+        .purchase-header button {
+            margin-left: 2px;
+        }
+
+        .purchase-header .purchase-sort-btn {
+            margin-left: 2px;
+        }
+
+    .purchase-body table {
+        margin: 0;
+    }
+
+        .purchase-body table td label {
+            font-size: 14px;
+        }
+}
+
+@media all and (max-height: 1200px) {
+    .purchase-projects {
+        margin: 0;
+        padding: 0;
+    }
 }
 
 /* END */
+
+/* 11 - PROJECT RESPONSIVE STYLES ALL SIZES */
+@media all and (max-height: 480px) {
+    .proj-projects {
+        margin: 0;
+        padding: 0;
+    }
+
+    .proj-header {
+        margin: 0;
+    }
+}
 
 @media all and (max-height: 850px) {
 

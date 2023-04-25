@@ -26,238 +26,247 @@
 
     <main>
 
+        <div class="dashboard-content">
+            <div class="left">
+                <!-- CHARTS -->
+                <div class="recent-grid">
+                    <div class="inventory-sum">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Item Summary</h3>
 
-        <div class="cards">
-            <div class="card-title">
-                <a href="@Url.Action("Users","Admin")">
-                    <h3>Users</h3>
-                    <div class="card-single">
-                        <div class="card-container">
+                                <div class="cat-grp">
+
+                                    <!-- NEW UPDATE - DATE PICKER 04-16 -->
+
+                                    <div class="date-drp" id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; width: auto;">
+                                        <i class="lar la-calendar-alt"></i>&nbsp;
+                                        <span></span> <i class="las la-sort-down"></i>
+                                    </div>
+
+                                    <!-- END -->
+
+                                    <select id="selclass" title="Select Class">
+                                        <option disabled selected>Class</option>
+                                        <option>All</option>
+                                    </select>
+
+                                    <select id="seltype" title="Select Type">
+                                        <option disabled selected>Type</option>
+                                        <option>All</option>
+                                    </select>
+
+                                    <select id="selcat" title="Select Category">
+                                        <option disabled selected>Category</option>
+                                        <option>All</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="chart-border">
+                                <div class="chart">
+                                    <canvas id="barchart" width="300" height="300"></canvas>
+
+                                </div>
+                            </div>
+
+                            <div class="card-headers">
+                                <a href="@Url.Action("Inventory","Admin")"><button> See more <span class="las la-arrow-right"></span></button></a>
+
+                                <div class="legend-grp">
+                                    <div class="legend-content">
+
+                                        <div class="legend-content-1">
+                                            <div class="legend-color">
+
+                                            </div>
+                                            <label> Standard </label>
+                                        </div>
+
+                                        <div class="legend-content-2">
+                                            <div class="legend-color">
+
+                                            </div>
+                                            <label> Average </label>
+                                        </div>
+
+                                        <div class="legend-content-3">
+                                            <div class="legend-color">
+
+                                            </div>
+                                            <label> Critical </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="inventory-sum">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Item Supplies</h3>
+
+                                <div class="fst-grp">
+
+                                    <div class="radio-container">
+                                        <div class="radio-list">
+                                            <input type="radio" name="list" />
+                                            <label for=""><h3>All</h3></label>
+                                        </div>
+
+                                        <div class="radio-list">
+                                            <input type="radio" name="list" />
+                                            <label for=""><h3>Fast Paced Items</h3></label>
+                                        </div>
+
+                                        <div class="radio-list">
+                                            <input type="radio" name="list" />
+                                            <label for=""><h3>Slow Paced Items</h3></label>
+                                        </div>
+                                    </div>
+
+                                    <select required>
+                                        <option disabled selected>Item Class</option>
+                                        <option>Imported</option>
+                                        <option>Local</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="chart-borders">
+                                <div class="chart">
+                                    <div class="scatter">
+                                        <canvas id="barcharthori" name="barcharthori" width="auto" height="auto"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-headers">
+                                <div class="fst-legend-content">
+                                    <div class="fst-content-1">
+
+                                    </div>
+                                    <label> Quantity </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <!-- CARDS -->
+                <div class="cards">
+                    <div class="card-title">
+                        <a href="@Url.Action("Users","Admin")">
                             <h3>Users</h3>
-                            <div class="card-details">
-                                <label id="userLabel"></label><span>Total Employees</span>
-                                <p></p>
-                                <label class="card-active" id="actLabel"></label><span class="card-active">Active Users</span>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Users</h3>
+                                    <div class="card-details">
+                                        <label id="userLabel"></label><span>Total Employees</span>
+                                        <p></p>
+                                        <label class="card-active" id="actLabel"></label><span class="card-active">Active Users</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Purchase</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Purchase Request</h3>
-                            <div class="card-details">
-                                <label id="purLabel"></label><span>Total Entries</span>
-                                <p></p>
-                                <label class="card-active" id="actpurLabel"></label><span class="card-active">New Entries</span>
+                    <div class="card-title">
+                        <a href="@Url.Action("Requisition","Admin")">
+                            <h3>Purchase</h3>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Purchase Request</h3>
+                                    <div class="card-details">
+                                        <label id="purLabel"></label><span>Total Entries</span>
+                                        <p></p>
+                                        <label class="card-active" id="actpurLabel"></label><span class="card-active">New Entries</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Deploy</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Deployment Request</h3>
-                            <div class="card-details">
-                                <label id="depLabel"></label><span>Total Entries</span>
-                                <p></p>
-                                <label class="card-active" id="actdepLabel"></label><span class="card-active">New Entries</span>
+                    <div class="card-title">
+                        <a href="@Url.Action("Requisition","Admin")">
+                            <h3>Deploy</h3>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Deployment Request</h3>
+                                    <div class="card-details">
+                                        <label id="depLabel"></label><span>Total Entries</span>
+                                        <p></p>
+                                        <label class="card-active" id="actdepLabel"></label><span class="card-active">New Entries</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
 
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Supply</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Supply Request</h3>
-                            <div class="card-details">
-                                <label id="supLabel"></label><span>Total Entries</span>
-                                <p></p>
-                                <label class="card-active" id="actsupLabel"></label><span class="card-active">New Entries</span>
+                    <div class="card-title">
+                        <a href="@Url.Action("Requisition","Admin")">
+                            <h3>Supply</h3>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Supply Request</h3>
+                                    <div class="card-details">
+                                        <label id="supLabel"></label><span>Total Entries</span>
+                                        <p></p>
+                                        <label class="card-active" id="actsupLabel"></label><span class="card-active">New Entries</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
 
-            <div class="card-title">
-                <a href="@Url.Action("Inventory","Admin")">
-                    <h3>Inventory</h3>
-                    <div class="card-single">
-                        <div class="card-container">
+                    <div class="card-title">
+                        <a href="@Url.Action("Inventory","Admin")">
                             <h3>Inventory</h3>
-                            <div class="card-details">
-                                <label id="itemLabel"></label><span>Total Items</span>
-                                <p></p>
-                                <label class="card-active" id="critLabel"></label><span class="card-active">Critical Items</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-
-            @*<div class="card-title">
-                    <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
-                        <h3>Supply</h3>
-                        <div class="card-sPurchingle">
-                            <div class="card-container">
-                                <h3>Supply Request</h3>
-                                <div class="card-details">
-                                    <label>30</label><span>Total Entries</span>
-                                    <p></p>
-                                    <label class="card-active">5</label><span class="card-active">New Entries</span>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Inventory</h3>
+                                    <div class="card-details">
+                                        <label id="itemLabel"></label><span>Total Items</span>
+                                        <p></p>
+                                        <label class="card-active" id="critLabel"></label><span class="card-active">Critical Items</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>*@
+                        </a>
+                    </div>
 
+
+                    @*<div class="card-title">
+                        <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
+                            <h3>Supply</h3>
+                            <div class="card-sPurchingle">
+                                <div class="card-container">
+                                    <h3>Supply Request</h3>
+                                    <div class="card-details">
+                                        <label>30</label><span>Total Entries</span>
+                                        <p></p>
+                                        <label class="card-active">5</label><span class="card-active">New Entries</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>*@
+
+                </div>
+
+            </div>
         </div>
 
 
 
 
-        <div class="recent-grid">
-            <div class="inventory-sum">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Item Summary</h3>
 
-                        <div class="cat-grp">
 
-                            <!-- NEW UPDATE - DATE PICKER 04-16 -->
 
-                            <div class="date-drp" id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; width: auto;">
-                                <i class="lar la-calendar-alt"></i>&nbsp;
-                                <span></span> <i class="las la-sort-down"></i>
-                            </div>
 
-                            <!-- END -->
-
-                            <select id="selclass" title="Select Class">
-                                <option disabled selected>Class</option>
-                                <option>All</option>
-                            </select>
-
-                            <select id="seltype" title="Select Type">
-                                <option disabled selected>Type</option>
-                                <option>All</option>
-                            </select>
-
-                            <select id="selcat" title="Select Category">
-                                <option disabled selected>Category</option>
-                                <option>All</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="chart-border">
-                        <div class="chart">
-                            <canvas id="barchart" width="300" height="300"></canvas>
-
-                        </div>
-                    </div>
-
-                    <div class="card-headers">
-                        <a href="@Url.Action("Inventory","Admin")"><button> See more <span class="las la-arrow-right"></span></button></a>
-
-                        <div class="legend-grp">
-                            <div class="legend-content">
-
-                                <div class="legend-content-1">
-                                    <div class="legend-color">
-
-                                    </div>
-                                    <label> Standard </label>
-                                </div>
-
-                                <div class="legend-content-2">
-                                    <div class="legend-color">
-
-                                    </div>
-                                    <label> Average </label>
-                                </div>
-
-                                <div class="legend-content-3">
-                                    <div class="legend-color">
-
-                                    </div>
-                                    <label> Critical </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="inventory-sum">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Item Supplies</h3>
-
-                        <div class="fst-grp">
-
-                            <div class="radio-container">
-                                <div class="radio-list">
-                                    <input type="radio" name="list"/>
-                                    <label for=""><h3>All</h3></label>
-                                </div>
-
-                                <div class="radio-list">
-                                    <input type="radio" name="list"/>
-                                    <label for=""><h3>Fast Paced Items</h3></label>
-                                </div>
-
-                                <div class="radio-list">
-                                    <input type="radio" name="list"/>
-                                    <label for=""><h3>Slow Paced Items</h3></label>
-                                </div>
-                            </div>
-
-                            <select required>
-                                <option disabled selected>Item Class</option>
-                                <option>Imported</option>
-                                <option>Local</option>
-                            </select>
-                        </div>
-
-                        <div class="project-sum-btns">
-
-                        </div>
-
-                    </div>
-
-                    <div class="chart-borders">
-                        <div class="chart">
-                            <div class="scatter">
-                                <canvas id="barcharthori" name="barcharthori" width="auto" height="auto"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-headers">
-                        <div class="fst-legend-content">
-                            <div class="fst-content-1">
-
-                            </div>
-                            <label> Quantity </label>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Project Summary -->
 
@@ -312,11 +321,12 @@
                                 <div class="proj-insight-container">
 
                                     <div class="proj-row">
-                                        <div class="proj-column-left">
-                                            <h3>10</h3>
-                                            <label>Unread <br> Reports</label>
+                                        <div class="proj-column-left left upper">
+                                            <label class="top">Project Performance</label>
+                                            <h3>90%</h3>
+                                            <label class="bottom">Tasks achieved <i class="las la-caret-up"></i></label>
                                         </div>
-                                        <div class="proj-column-right">
+                                        <div class="proj-column-right upper">
                                             <h3>5</h3>
                                             <label>Total Upcoming <br> Projects</label>
                                         </div>
@@ -337,8 +347,8 @@
                                             <label>Total <br> Projects</label>
                                         </div>
                                         <div class="proj-column-right per">
-                                            <h3 class="Up">90%</h3>
-                                            <label>Project Performance</label>
+                                            <h3 class="Up"></h3>
+                                            <label> </label>
                                         </div>
                                     </div>
 
@@ -499,6 +509,9 @@
         }, cb);
 
         cb(start, end);
-
+        $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+            // Call your function here
+            GetDate();
+        });
     });
 </script>

@@ -72,12 +72,12 @@ $(document).ready(function () {
 				required: true,
 				minlength: 5
 			},
-			sel_roles: {
-				required: true
-			},
-			sel_stats: {
-				required: true
-			}
+			//sel_roles: {
+			//	required: true
+			//},
+			//sel_stats: {
+			//	required: true
+			//}
 		},
 		messages: {
 			emp_Sname: {
@@ -111,12 +111,12 @@ $(document).ready(function () {
 				required: "Please enter position",
 				minlength: "Position must be at least 5 numbers."
 			},
-			sel_roles: {
-				required: "Please enter roles"
-			},
-			sel_stats: {
-				required: "Please enter status"
-			}
+			//sel_roles: {
+			//	required: "Please enter roles"
+			//},
+			//sel_stats: {
+			//	required: "Please enter status"
+			//}
 		}
 	});
 

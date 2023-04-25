@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -262,7 +263,7 @@ namespace TotalFireSafety.Controllers
         //    }, null, dueTime, TimeSpan.FromDays(1));
         //}
         [HttpGet]
-        public async Task<ActionResult> BaseResult()
+        public async Task<ActionResult> BaseResult([System.Web.Http.FromBody]int start, [System.Web.Http.FromBody] int end, [System.Web.Http.FromBody]  int diff)
         {
             using(var _context = new nwTFSEntity())
             {
@@ -701,7 +702,7 @@ namespace TotalFireSafety.Controllers
             {
                 return RedirectToAction("Login", "Base");
             }
-            Session["editUser"] = null;
+            //Session["editUser"] = null;
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
@@ -719,15 +720,15 @@ namespace TotalFireSafety.Controllers
             if (employee.formType == "add")
             {
                 uri = "Admin/Employee/Add";
-                message = "Added!";
+                //message = "Added!";
             }
             if (employee.formType == "edit")
             {
                 uri = "Admin/Employee/Update";
-                message = "Updated!";
+                //message = "Updated!";
             }
             var response = api_req.SetMethod(uri, userToken, serializedModel);
-            ViewBag.Message = message;
+            //ViewBag.Message = message;
             if (response == "BadRequest")
             {
                 //return Json("error", JsonRequestBehavior.AllowGet);
@@ -741,9 +742,16 @@ namespace TotalFireSafety.Controllers
             var json = JsonConvert.DeserializeObject(response);
             ViewBag.Success = json.ToString();
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            Session["editUser"] = 0;
-            await SendNotif("notification");
-            return View();
+            if(json is JObject jsonObject)
+            {
+                Session["errorresp"] = jsonObject.GetValue("Message").ToString();
+            }
+            else
+            {
+                Session["success"] = json.ToString();
+            }
+            //await SendNotif("notification");
+            return RedirectToAction("Users");
         }
 
         public async Task<ActionResult> SearchEmployee()

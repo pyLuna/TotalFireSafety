@@ -1051,11 +1051,28 @@ input[type="month"] {
     border: 1px solid #aaa;
 }
 
+.dashboard-content {
+    display: grid;
+    grid-template-columns: 2fr .5fr;
+    grid-gap: 1rem;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 100%;
+}
+
+    .dashboard-content .left {
+        display: block;
+    }
+
+    .dashboard-content .right {
+        display: block;
+    }
 
 .cards {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: block;
+    grid-template-columns: 100%;
     grid-gap: 2rem;
+    margin-top: 20px;
 }
 
     .cards .card-title:hover {
@@ -1074,6 +1091,8 @@ input[type="month"] {
     border-left: 4px solid #16215B;
     border-radius: 5px;
     box-shadow: 4px 3px 3px #B2B2B2;
+    margin-top: 18px;
+    height: 180px;
 }
 
     .card-title h3 {
@@ -1117,128 +1136,9 @@ input[type="month"] {
 
     .card-details .card-active,
     .card-details .card-active {
-        color: #FF0000;
+        color: #09AF10;
     }
 
-/* NEW UPDATE 03/04/23 - DATE CONTAINER IN DASHBOARD STYLE */
-
-.dashboard-date-container {
-    margin-top: 1rem;
-    background-color: #fff;
-    box-shadow: 4px 3px 3px #B2B2B2;
-    border-radius: 5px;
-    width: 100%;
-    height: 80px;
-}
-
-    .dashboard-date-container button {
-        margin-top: 20px;
-        margin-right: 10px;
-        width: 180px;
-        height: 40px;
-        cursor: pointer;
-        background-color: #fff;
-        border: 1px solid #B2B2B2;
-        box-shadow: 4px 3px 3px #B2B2B2;
-        font-weight: 600;
-        border-radius: 5px;
-        font-size: .9rem;
-    }
-
-        .dashboard-date-container button:hover {
-            color: #fff;
-            border: 1px solid #fff;
-            background-color: #16215B;
-            box-shadow: none;
-        }
-
-    .dashboard-date-container .active {
-        color: #fff;
-        border: 1px solid #fff;
-        background-color: #16215B;
-        box-shadow: none;
-    }
-
-        .dashboard-date-container .active:hover {
-            background-color: #fff;
-            border: 1px solid #B2B2B2;
-            box-shadow: 4px 3px 3px #B2B2B2;
-            color: #000;
-        }
-
-    .dashboard-date-container .select-date {
-        width: 300px;
-        height: 40px;
-    }
-
-        .dashboard-date-container .select-date i {
-            font-size: 1.2rem;
-        }
-
-.input-date-popup {
-    display: none;
-    position: fixed;
-    top: 30%;
-    left: 40%;
-    z-index: 100;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-    background-color: #fff;
-    border-radius: 5px;
-    width: 25%;
-    height: 25%;
-    text-align: center;
-}
-
-    .input-date-popup h3 {
-        color: #16215B;
-        margin-top: 40px;
-    }
-
-    .input-date-popup input {
-        margin-top: 10px;
-        width: 130px;
-        height: 30px;
-        text-align: center;
-        border: 1px solid #000;
-        box-shadow: 5px 5px 3px #B2B2B2;
-        border-radius: 5px;
-    }
-
-    .input-date-popup .confirm {
-        background-color: #16215B;
-        color: #fff;
-    }
-
-        .input-date-popup .confirm:hover {
-            color: #000;
-            background-color: #fff;
-            border: 1px solid #000;
-            box-shadow: 5px 5px 3px #B2B2B2;
-        }
-
-    .input-date-popup input::-webkit-calendar-picker-indicator {
-        margin-left: 10px;
-    }
-
-    .input-date-popup button {
-        width: 90px;
-        height: 35px;
-        margin-left: 10px;
-        border-radius: 5px;
-        transition: all ease-in-out 0.2s;
-        cursor: pointer;
-        background-color: #fff;
-        border: 1px solid #B2B2B2;
-        box-shadow: 4px 3px 3px #B2B2B2;
-        font-weight: 800;
-    }
-
-        .input-date-popup button:hover {
-            color: #fff;
-            border: 1px solid #fff;
-            background-color: #16215B;
-            box-shadow: none;
-        }
 
 /* NEW MESSEGE POPUP STYLE */
 
@@ -1282,8 +1182,6 @@ input[type="month"] {
 
 /* END */
 
-
-/* END */
 
 
 
@@ -1369,9 +1267,6 @@ input[type="month"] {
 }
 
 
-
-.recent-grid .inventory-sum .card .card-header .cat-grp select {
-}
     .inventory-sum .inv-sum-header {
         display: flex;
     }
@@ -1552,10 +1447,8 @@ input[type="month"] {
     }
 
 .card .card-header .fst-grp {
-    margin-left: 120px;
     display: flex;
 }
-
     /* NEW ADDITION IN DASHBAORD TENTATIVE */
 
     .card .card-header .fst-grp .radio-container {
@@ -1564,16 +1457,15 @@ input[type="month"] {
 
         .card .card-header .fst-grp .radio-container .radio-list {
             display: flex;
-            margin: 0;
+            margin-left: -60px;
         }
 
             .card .card-header .fst-grp .radio-container .radio-list input[type='radio'] {
-                margin-top: 5px;
                 accent-color: #16215B;
             }
 
             .card .card-header .fst-grp .radio-container .radio-list label h3 {
-                margin-top: 12px;
+                margin-top: 10px;
                 margin-left: -80px;
                 color: #000;
             }
@@ -1717,25 +1609,10 @@ input[type="month"] {
     .dsh-proj-headers h3 {
         color: #16215B;
         font-size: 1rem;
-    justify-content: space-between;
-    border-bottom: 1px solid #f0f0f0;
-}
+    }
 
 .dsh-proj-header {
     padding: 5px
-}
-.proj-header .proj-buttons-style select {
-    width: 160px;
-    height: 35px;
-    margin-left: 10px;
-    margin-top: -1px;
-    border-radius: 5px;
-    transition: all ease-in-out 0.2s;
-    cursor: pointer;
-    background-color: #fff;
-    border: 1px solid #B2B2B2;
-    box-shadow: 4px 3px 3px #B2B2B2;
-    font-weight: 800;
 }
 
 .dsh-proj-header {
@@ -1743,18 +1620,11 @@ input[type="month"] {
     justify-content: space-between;
     align-items: center;
 }
-    .dsh-proj-headers h3 {
-        color: #16215B;
-        font-size: 1rem;
-    }
 
     .dsh-proj-header h3 {
         color: #16215B;
         font-size: 1rem;
     }
-.dsh-proj-header {
-    padding: 5px
-}
 
 .dsh-proj .dsh-proj-header .date {
     width: 200px;
@@ -1768,54 +1638,6 @@ input[type="month"] {
     justify-content: space-between;
 }
 
-.dsh-proj-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.dsh-proj .dsh-proj-header .date h3 {
-    border-right: 1px solid #000;
-    padding-right: 40px;
-    padding-top: 5px;
-    padding-left: 2px;
-    color: #000;
-}
-    .dsh-proj-header h3 {
-        color: #16215B;
-        font-size: 1rem;
-    }
-
-    .dsh-proj .dsh-proj-header .date select {
-        height: 28px;
-        width: 150px;
-        margin-top: 0px;
-        color: #000;
-        font-weight: 600;
-        border: none;
-        background: none;
-    }
-
-.dsh-proj .chart {
-    width: 100%;
-    min-height: 400px;
-}
-.dsh-proj .dsh-proj-header .date {
-    width: 200px;
-    height: 30px;
-    border: 1px solid #000;
-    border-radius: 5px;
-    margin-right: 20px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.dsh-proj .proj-insight-container {
-    margin-top: 50px;
-    margin-left: 5px;
-}
     .dsh-proj .dsh-proj-header .date h3 {
         border-right: 1px solid #000;
         padding-right: 40px;
@@ -1824,9 +1646,6 @@ input[type="month"] {
         color: #000;
     }
 
-.proj-insight-container .proj-row {
-    display: flex;
-}
     .dsh-proj .dsh-proj-header .date select {
         height: 28px;
         width: 150px;
@@ -1837,41 +1656,18 @@ input[type="month"] {
         background: none;
     }
 
-.proj-insight-container .proj-column-left {
-    display: flex;
-    border-right: 1px solid #B2B2B2;
-    border-bottom: 1px solid #B2B2B2;
-    width: 50%;
-    justify-content: space-evenly;
-    padding: 20px;
-}
 .dsh-proj .chart {
     width: 100%;
     min-height: 400px;
 }
 
-    .proj-insight-container .proj-column-left h3 {
-        font-size: 3rem;
-        color: #FF0000;
-    }
 .dsh-proj .proj-insight-container {
     margin-top: 50px;
     margin-left: 5px;
 }
 
-    .proj-insight-container .proj-column-left label {
-        margin-top: 15px;
-        color: #FF0000;
-        font-size: 1rem;
-    }
 .proj-insight-container .proj-row {
     display: flex;
-}
-
-
-.proj-insight-container .proj-column-right {
-    display: flex;
-    border-bottom: 1px solid #B2B2B2;
 }
 
 .proj-insight-container .proj-column-left {
@@ -1883,30 +1679,46 @@ input[type="month"] {
     padding: 20px;
 }
 
-    .proj-insight-container .proj-column-right h3 {
-        margin-left: 10px;
-        font-size: 3rem;
-        color: #09AF10;
-    }
-    .proj-insight-container .proj-column-left h3 {
-        font-size: 3rem;
-        color: #FF0000;
-    }
+.proj-insight-container .upper {
+    display: block;
+}
 
-    .proj-insight-container .proj-column-right label {
-        margin-top: 15px;
-        color: #09AF10;
-        font-size: 1rem;
-    }
-    .proj-insight-container .proj-column-left label {
-        margin-top: 15px;
-        color: #FF0000;
-        font-size: 1rem;
-    }
-
-.proj-insight-container .proj-row .mid-left h3 {
+.proj-insight-container .proj-column-left h3 {
+    font-size: 3rem;
     color: #09AF10;
 }
+
+.proj-insight-container .proj-column-left label {
+    margin-top: 15px;
+    color: #09AF10;
+    font-size: 1rem;
+}
+
+.proj-insight-container .proj-row .upper .top {
+    font-size: 17px;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
+}
+
+.proj-insight-container .proj-row .upper .bottom {
+    font-size: 12px;
+    font-weight: 600;
+    color: #000;
+    margin: 0;
+}
+
+    .proj-insight-container .proj-row .upper .bottom i {
+        color: #09AF10;
+        font-size: 1.2rem;
+    }
+
+        .proj-insight-container .proj-row .upper .bottom i:hover {
+            color: blue;
+            cursor: pointer;
+        }
+
+
 
 .proj-insight-container .proj-column-right {
     display: flex;
@@ -1916,19 +1728,12 @@ input[type="month"] {
     padding: 20px;
 }
 
-.proj-insight-container .proj-row .mid-left label {
-    color: #09AF10;
-}
     .proj-insight-container .proj-column-right h3 {
         margin-left: 10px;
         font-size: 3rem;
         color: #09AF10;
     }
 
-.proj-insight-container .proj-row .mid-right h3 {
-    color: #FF0000;
-    margin-left: -30px;
-}
     .proj-insight-container .proj-column-right label {
         margin-top: 15px;
         color: #09AF10;
@@ -1943,17 +1748,13 @@ input[type="month"] {
     color: #09AF10;
 }
 
-.proj-insight-container .proj-row .mid-right label {
-    color: #FF0000;
-    margin-left: -50px;
-}
 .proj-insight-container .proj-row .mid-right h3 {
-    color: #FF0000;
+    color: #FF932F;
     margin-left: -30px;
 }
 
 .proj-insight-container .proj-row .mid-right label {
-    color: #FF0000;
+    color: #FF932F;
     margin-left: -50px;
 }
 
@@ -9992,10 +9793,6 @@ hr {
         display: none;
     }
 
-    .recent-grid {
-        grid-template-columns: 2fr 1fr;
-    }
-
     .add-popup, .edit-popup {
         height: 920px;
     }
@@ -10042,10 +9839,6 @@ hr {
 }
 
 @media all and (max-width: 1350px) {
-
-    .recent-grid {
-        grid-template-columns: 2fr 1fr;
-    }
 
     .expo-save-btns button {
         width: 50px;
@@ -10166,44 +9959,6 @@ hr {
     .dropdown {
         margin-top: 20px;
     }
-
-    /* DASHBOARD STYLE RESPONSIVE max-width: 1200px;*/
-
-    .cards {
-        grid-template-columns: repeat(4,1fr);
-    }
-
-    .recent-grid {
-        grid-template-columns: 2fr 1fr;
-    }
-
-    .inventory-grid {
-        grid-template-columns: 100%;
-    }
-
-        .inventory-grid .current-card {
-            margin-left: 250px;
-            align-items: center;
-            max-width: 200px;
-        }
-
-    .progress-bar {
-        margin-right: 0;
-    }
-
-    .project-sum-btns {
-        margin-top: -60px;
-        margin-bottom: 80px;
-    }
-
-        .project-sum-btns .drp-wrapper {
-            margin-right: 10px;
-        }
-
-
-
-    /* END */
-
 }
 
 @media all and (max-width: 1199px) {
@@ -10289,14 +10044,6 @@ hr {
         min-width: calc(10vh - 70px);
     }
 
-    .cards {
-        grid-template-columns: repeat(2,1fr);
-    }
-
-    .recent-grid {
-        grid-template-columns: 1fr;
-    }
-
     .deploy-header button,
     .deliveries-header button {
         width: 50px;
@@ -10323,83 +10070,6 @@ hr {
         margin-right: -250px;
         width: 250px;
     }
-}
-
-@media all and (max-width: 900px) {
-
-    .sum-chart-card {
-        width: 70%;
-        padding-left: 0;
-        padding-right: 0;
-        margin-bottom: 600px;
-    }
-
-    .sum-cards {
-        grid-template-columns: repeat(1, 1fr);
-    }
-
-    .customers {
-        margin-left: 0rem;
-    }
-}
-
-@media all and (max-width: 1280px) {
-    /* USERS STYLE RESPONSIVE 
-        .user-projects {
-            margin: 0;
-            padding: 0;
-            margin-top: 10px;
-        }
-    
-        .user-header {
-            display: inline-block;
-        }
-    
-        .user-header h3 {
-            margin-left: -20px;
-        }
-    
-        .user-header .user-buttons-style {
-            margin-left: 670px;
-        }
-    
-        .user-header button {
-            margin-left: 2px;
-        }
-    
-        .user-header .user-sort-btn {
-            margin-left: 2px;
-        }
-    
-        .user-body table {
-            margin: 0;
-        } 
-    
-        .add-popup {
-            width: 50%;
-            margin-top: 200px;
-        }
-
-        .add-container .form-container {
-            height: 200px;
-        }
-    
-        .form-container .form-header {
-            font-size: 15px;
-        }
-    
-        .form-container form {
-            width: 700px;
-        }
-    
-        .form-container form .fields .input-field {
-            width: calc(100% / 3 - 15px);
-        }
-    
-        .form-container form button, .btnText {
-            width: 150px;
-        }
-        /* END */
 }
 
 @media all and (max-width: 768px) {
@@ -10497,56 +10167,6 @@ hr {
     }
     /* END */
 
-
-    /* DASHBOARD STYLE RESPONSIVE max-width: 768px;*/
-    .cards {
-        grid-template-columns: repeat(1,1fr);
-    }
-
-    .recent-grid {
-        grid-template-columns: 100%;
-    }
-
-    .inventory-grid {
-        grid-template-columns: 100%;
-    }
-
-        .inventory-grid .current-card {
-            margin-left: 250px;
-            align-items: center;
-            max-width: 200px;
-        }
-
-    .sidebar {
-        left: -100% !important;
-    }
-
-        .sidebar .user-wrapper {
-            margin-top: -5px;
-        }
-
-
-
-    .progress-bar {
-        margin-right: 0;
-    }
-
-    .project-sum-btns {
-        margin-top: -60px;
-        margin-bottom: 70px;
-    }
-
-        .project-sum-btns .drp-wrapper {
-            margin-right: 20px;
-        }
-
-        .project-sum-btns select {
-            width: 80px;
-            height: 30px;
-            font-size: .9rem;
-        }
-    /* END */
-
     /* SEARCH AND DROP DOWN RESPONSIVE */
     .upper-section {
         padding-left: 0;
@@ -10574,26 +10194,21 @@ hr {
         margin-top: 10px;
     }
 
-    .inventory-header {
-        margin-left: 0;
-        display: inline-block;
+    .inventory-header h3 {
+        font-size: 1rem;
     }
 
-        .inventory-header h3 {
-            font-size: 1rem;
-        }
+    .inventory-header .inventory-buttons-style {
+        margin-left: 175px;
+    }
 
-        .inventory-header .inventory-buttons-style {
-            margin-left: 175px;
-        }
+    .inventory-header button {
+        margin-left: 2px;
+    }
 
-        .inventory-header button {
-            margin-left: 2px;
-        }
-
-        .inventory-header .inventory-sort-btn {
-            margin-left: 2px;
-        }
+    .inventory-header .inventory-sort-btn {
+        margin-left: 2px;
+    }
 
     .inventory-body table {
         margin: 0;
@@ -10617,7 +10232,6 @@ hr {
             margin-top: 10px;
             margin-left: 30px;
         }
-
 
             .inventory-form-container form .fields .input-field {
                 width: calc(100% / 1 - 15px);
@@ -10771,55 +10385,7 @@ hr {
     header h3 span {
         display: none;
     }
-    /* DASHBOARD STYLE max-width: 480px;*/
 
-    .sum-chart-card {
-        padding-left: 0;
-        padding-right: 0;
-        margin-bottom: 600px;
-    }
-
-    .sum-cards {
-        grid-template-columns: repeat(1, 1fr);
-    }
-
-
-    .cards {
-        grid-template-columns: 100%;
-        max-width: 100%;
-    }
-
-    .card-title {
-        border-bottom: 2px solid #f0f0f0;
-    }
-
-    .inventory-grid .current-card {
-        margin-left: 125px;
-        align-items: center;
-        height: 200px;
-        max-width: 50%;
-    }
-
-    .progress-bar {
-        margin-right: 0;
-    }
-
-    .project-sum-btns {
-        margin-top: -60px;
-        margin-bottom: 70px;
-    }
-
-        .project-sum-btns .drp-wrapper {
-            margin-right: 20px;
-        }
-
-        .project-sum-btns select {
-            width: 80px;
-            height: 30px;
-            font-size: .9rem;
-        }
-
-    /* END */
 
     /* SEARCH AND DROP DOWN RESPONSIVE */
     .upper-section {
@@ -10840,60 +10406,7 @@ hr {
     /* END */
 
     /* INVENTORY STYLE RESPONSIVE */
-    .inventory-projects {
-        margin: 0;
-        padding: 0;
-        margin-top: 10px;
-    }
 
-    .inventory-header {
-        margin-left: 0;
-        display: inline-block;
-    }
-
-        .inventory-header h3 {
-            font-size: 1rem;
-        }
-
-        .inventory-header .inventory-buttons-style {
-            margin-left: 150px;
-        }
-
-        .inventory-header button {
-            margin-left: 2px;
-        }
-
-        .inventory-header .inventory-sort-btn {
-            margin-left: 2px;
-        }
-
-    .inventory-body table {
-        margin: 0;
-    }
-
-    .add-popup-inv {
-        width: 100%;
-    }
-
-    .inventory-form-container .inventory-form-header {
-        font-size: 15px;
-    }
-
-    .inventory-form-container form {
-        width: 400px;
-        margin: 0;
-        margin-top: 100px;
-        margin-left: 5px;
-    }
-
-        .inventory-form-container form .fields .input-field {
-            width: calc(100% / 1 - 15px);
-            margin: 0;
-        }
-
-        .inventory-form-container form button, .btnText {
-            width: 150px;
-        }
 
 
 
@@ -11014,9 +10527,413 @@ hr {
 
 }
 
+/* 04 - DASHBOARD RESPOSIVE STYLE ALL SIZES */
+
+@media all and (max-width: 1400px) {
+
+    /* CHARTS RESPONSIVENESS */
+    .dashboard-content {
+        grid-template-columns: 100%;
+    }
+
+    .recent-grid {
+        grid-template-columns: 100%;
+    }
+
+        .recent-grid .inventory-sum .card .card-header {
+            display: block;
+        }
+
+            .recent-grid .inventory-sum .card .card-header .cat-grp {
+                margin-top: 10px;
+                display: block;
+            }
+
+                .recent-grid .inventory-sum .card .card-header .cat-grp input {
+                    width: 275px;
+                    margin-top: 10px;
+                }
+
+                .recent-grid .inventory-sum .card .card-header .cat-grp select {
+                    width: 130px;
+                }
+
+    .card-headers .legend-grp {
+        margin: 0;
+        width: 100%;
+    }
+
+    .card-headers button {
+        margin-top: 15px;
+    }
+
+    .card-headers {
+        display: block;
+    }
+
+    .card-header {
+        display: flex;
+    }
+
+    .card .card-header .fst-grp {
+        display: flex;
+        margin: 0;
+    }
+
+        .card .card-header .fst-grp .radio-container .radio-list {
+            margin: 0;
+            padding: 0;
+        }
+
+            .card .card-header .fst-grp .radio-container .radio-list input {
+                margin-top: 12px;
+            }
+
+            .card .card-header .fst-grp .radio-container .radio-list label {
+                margin-top: 5px;
+            }
+
+    /* END */
+
+    /* POPUP NEW MESSEGE RESPONSIVENESS */
+    .notif-show-popup {
+        width: 100%;
+        right: 0;
+        left: 0;
+    }
+
+    /* END */
+
+    /* CARDS RESPONSIVENESS */
+    .cards {
+        margin-top: 0;
+    }
+
+    .card-title {
+        height: 150px;
+        margin-top: 10px;
+    }
+
+    /* END */
+
+    /* PROJECT SUMMARY RESPONSIVENESS */
+    .dsh-proj-grid {
+        grid-template-columns: 100%;
+    }
+
+    .proj-insight-container .proj-row .left {
+        padding-left: 120px;
+    }
+
+
+    /* END */
+}
+
+@media all and (max-width: 768px) {
+
+    /* CHARTS RESPONSIVENESS */
+    .dashboard-content {
+        grid-template-columns: 100%;
+    }
+
+    .recent-grid {
+        grid-template-columns: 100%;
+    }
+
+        .recent-grid .inventory-sum .card .card-header {
+            display: block;
+        }
+
+            .recent-grid .inventory-sum .card .card-header .cat-grp {
+                margin-top: 10px;
+                display: block;
+            }
+
+                .recent-grid .inventory-sum .card .card-header .cat-grp input {
+                    width: 275px;
+                    margin-top: 10px;
+                }
+
+                .recent-grid .inventory-sum .card .card-header .cat-grp select {
+                    width: 130px;
+                }
+
+    .card-headers {
+        display: block;
+    }
+
+        .card-headers .legend-grp {
+            margin: 0;
+            width: 100%;
+        }
+
+        .card-headers button {
+            margin-top: 15px;
+        }
+
+    .card-header {
+        display: block;
+    }
+
+    .card .card-header .fst-grp {
+        display: block;
+        margin: 0;
+    }
+
+        .card .card-header .fst-grp .radio-container .radio-list {
+            margin: 0;
+            padding: 0;
+        }
+
+            .card .card-header .fst-grp .radio-container .radio-list input {
+                margin-top: 12px;
+            }
+
+    /* END */
+
+    /* POPUP NEW MESSEGE RESPONSIVENESS */
+    .notif-show-popup {
+        width: 100%;
+        right: 0;
+        left: 0;
+    }
+
+    /* END */
+
+    /* CARDS RESPONSIVENESS */
+    .cards {
+        margin-top: 0;
+    }
+
+    .card-title {
+        height: 150px;
+        margin-top: 10px;
+    }
+
+    /* END */
+
+    /* PROJECT SUMMARY RESPONSIVENESS */
+    .dsh-proj-grid {
+        grid-template-columns: 100%;
+    }
+
+    .proj-insight-container .proj-row .left {
+        padding-left: 70px;
+    }
+
+    .proj-insight-container .proj-column-left h3,
+    .proj-insight-container .proj-row .title h3,
+    .proj-insight-container .proj-column-right h3 {
+        font-size: 2rem;
+    }
+
+    .proj-insight-container .proj-row .upper .top {
+        font-size: 12px;
+    }
+
+    .proj-insight-container .proj-row .upper .bottom {
+        font-size: 10px;
+    }
+
+    .proj-insight-container .proj-column-left label,
+    .proj-insight-container .proj-column-right label {
+        font-size: 12px;
+    }
+
+    .proj-insight-container .proj-column-right label {
+        margin-left: 10px;
+    }
+
+    .proj-insight-container .proj-column-left h3,
+    .proj-insight-container .proj-row .mid-left h3,
+    .proj-insight-container .proj-row .title h3,
+    .proj-insight-container .proj-column-right h3 {
+        margin-top: 11px;
+    }
+
+    .proj-insight-container .proj-column-right {
+        margin-top: 45px;
+        padding: 0;
+        padding-left: 20px;
+    }
+
+    .proj-insight-container .proj-row .mid-right {
+        margin-top: 20px;
+    }
+
+        .proj-insight-container .proj-row .mid-right h3 {
+            margin-left: 0;
+        }
+
+        .proj-insight-container .proj-row .mid-right label {
+            margin-left: 5px;
+        }
+
+    /* END */
+
+}
+
+@media all and (max-width: 480px) {
+
+    .dashboard-content {
+        grid-template-columns: 100%;
+    }
+
+    .proj-insight-container .proj-row .left {
+        padding-left: 10px;
+    }
+}
+
+/* END */
+
+/* 05 - INVENTORIES RESPOSIVE STYLE ALL SIZES */
+
+@media all and (max-width: 768px) {
+
+
+    .inventory-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .inventory-header {
+        display: inline-block;
+        justify-content: normal;
+        margin-left: 0;
+    }
+
+        .inventory-header h3 {
+            font-size: 1rem;
+        }
+
+        .inventory-header .inventory-buttons-style {
+            display: flex;
+            margin-top: 10px;
+            margin-left: -10px;
+        }
+
+        .inventory-header button {
+            margin-left: 2px;
+        }
+
+        .inventory-header .inventory-sort-btn {
+            margin-left: 2px;
+        }
+
+    .inventory-body table {
+        margin: 0;
+    }
+
+    /* ADD POPUP FORM RESPONSIVENESS */
+
+    .add-popup-inv {
+        width: 100%;
+    }
+
+    .inventory-form-container .inventory-form-header {
+        font-size: 15px;
+    }
+
+    .inventory-form-container form {
+        width: 100%;
+        height: 1100px;
+        margin: 0;
+        padding-top: 140px;
+        margin-left: 5px;
+    }
+
+    .inventory-form-container .input-field .img-bar-grp {
+        margin-top: 10px;
+    }
+
+    .inventory-form-container form .fields .input-field {
+        width: calc(100% / 1 - 0px);
+        margin: 0;
+    }
+
+    .inventory-form-container form button {
+        width: 150px;
+        margin-top: 230px;
+        z-index: 100;
+    }
+}
+
+@media all and (max-width: 480px) {
+
+
+    .inventory-projects {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .inventory-header {
+        display: inline-block;
+        justify-content: normal;
+        margin-left: 0;
+    }
+
+        .inventory-header h3 {
+            font-size: 1rem;
+        }
+
+        .inventory-header .inventory-buttons-style {
+            display: flex;
+            margin-top: 10px;
+            margin-left: -10px;
+        }
+
+        .inventory-header button {
+            margin-left: 2px;
+        }
+
+        .inventory-header .inventory-sort-btn {
+            margin-left: 2px;
+        }
+
+    .inventory-body table {
+        margin: 0;
+    }
+
+    /* ADD POPUP FORM RESPONSIVENESS */
+    .add-popup-inv {
+        width: 100%;
+    }
+
+    .inventory-form-container .inventory-form-header {
+        font-size: 15px;
+    }
+
+    .inventory-form-container form {
+        width: 400px;
+        height: 1100px;
+        margin: 0;
+        padding-top: 140px;
+        margin-left: 5px;
+    }
+
+    .inventory-form-container .input-field .img-bar-grp {
+        margin-top: 10px;
+    }
+
+    .inventory-form-container form .fields .input-field {
+        width: calc(100% / 1 - 15px);
+        margin: 0;
+    }
+
+    .inventory-form-container form button {
+        width: 150px;
+        margin-top: 230px;
+        z-index: 100;
+    }
+}
+
+/* END */
+
 @media all and (max-height: 850px) {
 
-    .logo-.float {
+    .logo-float {
         display: none;
     }
 }

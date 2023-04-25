@@ -120,59 +120,58 @@
                             <div class="form-header">
                                 EMPLOYEE INFORMATION
                             </div>
-                            <input type="text" style="display:none;" id="formType">
 
                             <div class="form-contents">
                                 <div class="fields">
                                     <div class="input-field">
                                         <label>Surname</label>
-                                        <input type="text" placeholder="Enter your Surname" id="emp_Sname" name="emp_lname" required>
+                                        <input type="text" placeholder="Enter Surname" id="emp_Sname" name="emp_lname" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>First Name</label>
-                                        <input type="text" placeholder="Enter your First Name" id="emp_Fname" name="emp_fname" required>
+                                        <input type="text" placeholder="Enter First Name" id="emp_Fname" name="emp_fname" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Middle Name</label>
-                                        <input type="text" placeholder="Enter your Middle Name" id="emp_Mname" name="emp_name" required>
+                                        <input type="text" placeholder="Enter Middle Name" id="emp_Mname" name="emp_name">
                                     </div>
 
                                     <div class="input-field">
                                         <label>Employee ID</label>
-                                        <input type="number" placeholder="Enter your Employee ID" name="emp_no" required>
+                                        <input type="number" placeholder="Enter Employee ID" id="emp_id" name="emp_no" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Hired Date</label>
-                                        <input type="date" name="emp_hiredDate" required>
+                                        <input type="date" id="hiredDate" name="emp_hiredDate" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Contact Number</label>
-                                        <input type="number" placeholder="Enter your Contact Number" id="emp_contact" name="emp_contact" required>
+                                        <input type="number" placeholder="Enter Contact Number" id="emp_contact" name="emp_contact" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Username</label>
-                                        <input type="text" placeholder="Enter your Username" id="Credential.username" name="Credential.username" required>
+                                        <input type="text" placeholder="Enter Username" id="Credential.username" name="Credential.username" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Password</label>
-                                        <input type="password" placeholder="Enter your Password" id="Credential.password" name="Credential.password" required>
+                                        <input type="password" placeholder="Enter Password" id="Credential.password" name="Credential.password" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Position</label>
 
-                                        <input type="text" placeholder="Enter your Position" name="emp_position" required>
+                                        <input type="text" placeholder="Enter Position" id="posi" name="emp_position" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Roles</label>
-                                        <select name="sel_roles" id="sel_roles" required>
+                                        <select name="sel_roles" id="sel_roles">
                                             <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
                                             <option>Office Manager</option>
@@ -183,7 +182,7 @@
 
                                     <div class="input-field">
                                         <label>Status</label>
-                                        <select name="sel_stats" id="sel_stats" required>
+                                        <select name="sel_stats" id="sel_stats">
                                             <option disabled selected>Select Position</option>
                                             <option>Active</option>
                                             <option>Inactive</option>
@@ -191,6 +190,8 @@
                                         </select>
                                     <input type="text" style="display:none;" id="emp_act"  name="Status.IsActive">
                                     <input type="text" style="display:none;" id="emp_lock" name="Status.IsLocked">
+                                    <input type="text" style="display:none;" id="emp_user" name="Status.IsUser">
+                                    <input type="text" style="display:none;" id="formType" name="formType">
                                     </div>
 
                                     <div class="input-field">
@@ -202,7 +203,7 @@
                         </div>
                         <center>
                             <div class="form-add-btns">
-                                <button class="save" id="saveBtn" onclick="submitForm()">
+                                <button class="save" id="saveBtn" onclick="checkForm()">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>
@@ -224,7 +225,7 @@
             <img src="~/images/information.png">
             <h2>System Warning!</h2>
             <p>Do you want to save the user on the list?</p>
-            <button type="button" onclick="openPopup() + infoClosePopup()">Yes</button>
+            <button type="button" onclick="infoClosePopup() + submitForm()">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
@@ -239,20 +240,21 @@
         <div class="save-pop-container" id="popup">
             <img src="~/images/tick.png">
             <h2>Added!</h2>
-            <p>User details has been added successfully!</p>
+            <p id="succ"></p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
             <img src="~/images/remove.png">
-            <h2>Cancel!</h2>
-            <p>User details has not added in the list!</p>
+            <h2 id="messType">Cancel!</h2>
+            <p id="erro">Employee details has been discarded</p>
             <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
     </main>
     <script src="~/Scripts/user.js"></script>
     <script src='@Url.Content("~/Scripts/validations/Uservalidation.js")'></script>
+
     <script>
         //$('#formId').validate();
         //document.getElementById("sel-stats").addEventListener("change", function () {
@@ -271,10 +273,25 @@
         let addpopup = document.getElementById("add-popup");
         //window.onload = function () {
         function OnLoad() {
-        @*@if ( Session["editUser"] == null || int.Parse(Session["editUser"].ToString()) == 1 )
-            {
-                Session["editUser"] = 0;
-            }*@
+            let suc = '@Session["success"]';
+            let err = '@Session["errorresp"]';
+            if (suc != "") {
+                openPopup();
+                document.getElementById('succ').innerText = suc;
+            }
+            if (err != "") {
+                remOpenPopup();
+                document.getElementById('erro').innerText = err;
+                document.getElementById('messType').innerText = "Error!";
+            }
+            else {
+                document.getElementById('messType').innerText = "Cancel!";
+                document.getElementById('erro').innerText = "Employee details has been discarded";
+            }
+            @{
+                Session["success"] = null;
+                Session["errorresp"] = null;
+             }
             GetAllEmployeeInfo();
         }
         function userFiltFunction() {
@@ -327,7 +344,7 @@
         }
 
         function addOpenPopup() {
-            addpopup.classList.add("add-popup-show")
+            addpopup.classList.add("add-popup-show");
         }
 
         function addClosePopup() {
@@ -347,11 +364,11 @@
         let popup = document.getElementById("popup");
 
         function openPopup() {
-            popup.classList.add("open-popup-show")
+            popup.classList.add("save-pop-container-show")
         }
 
         function closePopup() {
-            popup.classList.remove("open-popup-show")
+            popup.classList.remove("save-pop-container-show")
         }
 
         let canpopup = document.getElementById("can-popup");

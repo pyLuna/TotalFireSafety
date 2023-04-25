@@ -1,27 +1,14 @@
 ﻿let jsonArray = [];
 let filtered = [];
 let fixedArray = [];
-let name = document.querySelector('#emp_name');
-let contact = document.querySelector('#emp_contact');
-let empID = document.querySelector('#emp_no');
-let dateDisplay = document.getElementById("emp_hiredDate");
-let dateHired = document.getElementById("dateHired");
-let username = document.getElementById("Credential.username");
-let password = document.getElementById("Credential.password");
-let position = document.getElementById("emp_position");
-let roles = document.getElementById("roles");
-let rolesid = document.getElementById("rolesid");
-let statsid = document.getElementById("statsid");
-let stats = document.getElementById("stats");
-let stats1 = document.getElementById("stats1");
 let selroles = document.getElementById("sel_roles");
 let selstats = document.getElementById("sel_stats");
 let table = document.querySelector('#myTable tbody');
 let form = document.getElementById("formId");
 let credsid = document.getElementById("credsid");
+let hidRole = document.getElementById('emp_role');
 
 selroles.addEventListener("change", function () {
-    let hidRole = document.getElementById('emp_role');
 
     hidRole.value = selroles.selectedIndex;
 });
@@ -60,7 +47,7 @@ function GetAllEmployeeInfo() {
                 let errorMessageRow = document.createElement('tr');
                 errorMessageRow.style.textAlign = "center";
                 errorMessageRow.style.fontStyle = "italic";
-                errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
+                errorMessageRow.innerHTML = '<td colspan="10">Loading Error<td>';
                 table.appendChild(errorMessageRow);
             }
         })
@@ -159,7 +146,7 @@ function setTable(array) {
             row += `<td ><label class="${style}">${stats}</label>`;
             row += `<td><label>${role}</label></td>`;
             row += `<td id="hideActionBtn"><div class="user-action-style">`;
-            row += ` <button class="edit-btn" id="edit-btn-users1" title="EDIT SELECTED ITEM" onclick="LoadUserContents() + openEditForm('${array[i].emp_no}')">
+            row += ` <button class="edit-btn" id="edit-btn-users1" title="EDIT SELECTED ITEM" onclick=" openEditForm('${array[i].emp_no}')">
             <a href="#"><span class="lar la-edit"></span></a></button>`;
             //row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick="canOpenPopup()"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
             row += `</td></div>`;
@@ -174,7 +161,7 @@ function setTable(array) {
         const errorMessageRow = document.createElement('tr');
         errorMessageRow.style.textAlign = "center";
         errorMessageRow.style.fontStyle = "italic";
-        errorMessageRow.innerHTML = "<td colspan='6'>Item Not found<td>";
+        errorMessageRow.innerHTML = "<td colspan='10'>User Not found<td>";
         table.appendChild(errorMessageRow);
     }
 }
@@ -252,6 +239,16 @@ function SortByCategory(value) {
 
 function setField(value) {
 
+    let fname = document.getElementById('emp_Fname');
+    let lname = document.getElementById('emp_Sname');
+    let mname = document.getElementById('emp_Mname');
+    let id = document.getElementById('emp_id');
+    let hiredDate = document.getElementById('hiredDate');
+    let emp_contact = document.getElementById('emp_contact');
+    let uname = document.getElementById('Credential.username');
+    let pword = document.getElementById('Credential.password');
+    let posi = document.getElementById('posi');
+
     for (var i = 0; i < fixedArray.length; i++) {
         if (fixedArray[i].emp_no == value) {
             filtered.length = 0;
@@ -270,20 +267,21 @@ function setField(value) {
         stats = "Inactive";
     }
 
-    name.value = filtered[0]?.emp_name;
-    contact.value = filtered[0]?.emp_contact;
-    empID.value = filtered[0]?.emp_no;
-    username.value = filtered[0]?.Credential?.username;
-    password.value = filtered[0]?.Credential?.password;
-    position.value = filtered[0]?.emp_position;
-    empID.value = filtered[0]?.emp_no;
-
+    fname.value = filtered[0].emp_fname;
+    lname.value = filtered[0].emp_lname;
+    mname.value = filtered[0].emp_name ? filtered[0].emp_name : "";
+    id.value = filtered[0].emp_no;
+    emp_contact.value = filtered[0].emp_contact;
+    uname.value = filtered[0].Credential.username;
+    pword.value = filtered[0].Credential.password;
+    posi.value = filtered[0].emp_position;
+    
     var dateString = new Date(filtered[0]?.FormattedDate);
     var dateUpdate = dateString.toLocaleDateString("en-US", { day: '2-digit', month: '2-digit', year: 'numeric' });
     var dateParts = dateUpdate.split("/");
     var date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
 
-    dateDisplay.value = date.toISOString().substr(0, 10);
+    hiredDate.value = date.toISOString().substr(0, 10);
 
     selroles.selectedIndex = filtered[0]?.Role?.role1;
 
@@ -362,6 +360,16 @@ function ResetForm() {
 }
 
 function submitForm() {
+    let userField = document.getElementById("emp_user");
+    let rl = selroles.selectedIndex;
+
+    if (rl != 1 && rl != 2 && rl != 3) {
+        userField.value = 0;
+    }
+    else {
+        userField.value = 1;
+    }
+
     var bool = checkForm();
     if (bool) {
         form.submit();

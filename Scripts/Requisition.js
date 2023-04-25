@@ -752,7 +752,7 @@ function DisplayDataOnRow(idToFind, typeOf) {
 	reqId.innerText = newReqs[0].Id;
 	localStorage.setItem('stats', newReqs[0].request_status);
 	reqDate.innerText = newReqs[0].FormattedDate;
-	reqName.innerText = emps[0].emp_name;
+	reqName.innerText = emps[0].emp_fname + " " + emps[0].emp_lname;
 	reqType.innerText = newReqs[0].request_type;
 
 	for (let ind = 0; ind < newReqs.length; ind++) {
@@ -890,7 +890,7 @@ function saveEditTemplate() {
 		});
 	}
 	if (apprTr.length != 0) {
-		apprTr.forEach((tr) => {
+		apprTr.forEach((tr) => {                                                                                                                                                                  
 			let newObj = Object.assign({}, template);
 			newObj.request_id = row.cells[1].getAttribute('id');
 			newObj.request_type_id = reqId.innerText;

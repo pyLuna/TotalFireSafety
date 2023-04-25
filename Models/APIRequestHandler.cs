@@ -73,11 +73,11 @@ namespace TotalFireSafety.Models
             postTask.Wait(); // wait for result
 
             var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
+            //if (result.IsSuccessStatusCode)
+            //{
+            //    return result.Content.ReadAsStringAsync().Result;
+            //}
                 return result.Content.ReadAsStringAsync().Result;
-            }
-            return result.StatusCode.ToString();
         }
 
         public string BarcodeGenerator(string token, string itemCode)

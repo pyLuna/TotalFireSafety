@@ -10,7 +10,8 @@ function GetDate() {
     var start = localStorage.getItem("start");
     var end = localStorage.getItem("end");
     var diff = localStorage.getItem("diff");
-    console.log(`start = ${start},,, end = ${end},,, diff = ${diff} `)
+    GetCounts(start,end,diff)
+    //console.log(`start = ${start},,, end = ${end},,, diff = ${diff} `)
 }
 
 function extractNum(value) {
@@ -26,7 +27,7 @@ function extractNum(value) {
     return { num, units };
 }
 //all base count items
-function GetCounts() {
+function GetCounts(start,end,diff) {
     fetch("/Admin/BaseResult")
         .then(res => {
             if (res.ok) {

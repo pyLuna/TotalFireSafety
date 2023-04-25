@@ -679,29 +679,18 @@ namespace TotalFireSafety.Controllers
                     using (var _context = new nwTFSEntity())
                     {
                         var employee = _context.Employees.Where(x => x.emp_no == _emp.emp_no).SingleOrDefault();
-                        if (employee == null)
+                        var cre = _context.Credentials.Where(x => x.username == _emp.Credential.username).FirstOrDefault();
+                        if (employee != null)
                         {
-                            Employee emp = new Employee()
-                            {
-                                emp_no = _emp.emp_no,
-                                emp_contact = _emp.emp_contact,
-                                emp_hiredDate = _emp.emp_hiredDate,
-                                emp_fname = _emp.emp_fname,
-                                emp_lname = _emp.emp_lname,
-                                emp_name = _emp.emp_name,
-                                emp_position = _emp.emp_position,
-                            };
-
-                            //Role rl = new Role()
-                            //{
-                            //    emp_no = _emp.emp_no
-                            //};
-
-                            _context.Employees.Add(_emp);
-                            _context.SaveChanges();
-                            return Ok("Employee Added");
+                            return BadRequest("ID is already in used");
                         }
-                        return BadRequest("ID is already in used.");
+                        if(cre != null)
+                        {
+                            return BadRequest("Username is already in used");
+                        }
+                        _context.Employees.Add(_emp);
+                        _context.SaveChanges();
+                        return Ok("Employee details added successfully");
                     }
                 }
                 return BadRequest();

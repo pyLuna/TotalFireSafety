@@ -42,27 +42,27 @@ $(document).ready(function () {
         },
         messages: {
             in_name: {
-                required: "Item name must be required.",
+                required: "Item name is required.",
                 minlength: "Item name must be at least 4 characters long.",
                 maxlength: "Maximun of item name are 30 characters only."
             },
             in_category: {
-                required: "Category must be required"
+                required: "Category is required"
             },
             class: {
-                required: "Class must be required"
+                required: "Class is required"
             },
             in_type: {
-                required: "Type must be required"
+                required: "Type is required"
             },
             inpsizesel: {
-                required: "Size must be required"
+                required: "Size is required"
             },
             sizesel: {
                 required: ""
             },
             inpsizequant: {
-                required: "Quantity must be required"
+                required: "Quantity is required"
             },
             sizequant: {
                 required: ""
@@ -167,10 +167,10 @@ $(document).ready(function () {
         },
         messages: {
             in_code: {
-                required: "Item ID must be required"
+                required: "Item ID is required"
             },
             inpQuant1: {
-                required: "Quantity must be required"
+                required: "Quantity is required"
             },
             inpQuant: {
                 required: ""
@@ -289,27 +289,27 @@ $(document).ready(function () {
         },
         messages: {
             in_name: {
-                required: "Item name must be required",
+                required: "Item name is required",
                 minlength: "Item name must be at least 4 characters long.",
                 maxlength: "Maximun of item name are 30 characters only."
             },
             selcat2: {
-                required: "Category must be required"
+                required: "Category is required"
             },
             selclass2: {
-                required: "Class must be required"
+                required: "Class is required"
             },
             seltype2: {
-                required: "Type must be required"
+                required: "Type is required"
             },
             inpSize2: {
-                required: "Size must be required"
+                required: "Size is required"
             },
             inpSize2A: {
                 required: ""
             },
             inpQuant2: {
-                required: "Quantity must be required"
+                required: "Quantity is required"
             },
             inpQuant2A: {
                 required: ""

@@ -41,19 +41,19 @@ $(document).ready(function () {
 	/*$("#sel-roles").attr('name', 'sel_roles');*/
 	$('#formId').validate({
 		rules: {
-			emp_Sname: {
+			emp_lname: {
 				required: true,
-				minlength: 4,
+				minlength: 3,
 				maxlength: 30
 			},
-			emp_Fname: {
+			emp_fname: {
 				required: true,
-				minlength: 4,
+				minlength: 3,
 				maxlength: 30
 			},
-			emp_Mname: {
+			emp_name: {
 				required: true,
-				minlength: 4,
+				minlength: 3,
 				maxlength: 30
 			},
 			emp_contact: {
@@ -80,42 +80,42 @@ $(document).ready(function () {
 			}
 		},
 		messages: {
-			emp_Sname: {
-				required: "Surname must be required.",
-				minlength: "Surname must be at least 4 characters long.",
+			emp_lname: {
+				required: "Surname is required.",
+				minlength: "Surname must be at least 3 characters long.",
 				maxlength: "Maximum length of name is 30 characters only."
 			},
-			emp_Fname: {
-				required: "First name must be required.",
-				minlength: "First name must be at least 4 characters long.",
+			emp_fname: {
+				required: "First name is required.",
+				minlength: "First name must be at least 3 characters long.",
 				maxlength: "Maximum length of name is 30 characters only."
 			},
-			emp_Mname: {
-				required: "Middle name must be required.",
-				minlength: "Middle name must be at least 4 characters long.",
+			emp_name: {
+				required: "Middle name is required.",
+				minlength: "Middle name must be at least 3 characters long.",
 				maxlength: "Maximum length of name is 30 characters only."
 			},
 			emp_contact: {
-				required: "Please enter contact number.",
+				required: "contact number is required.",
 				minlength: "Contact number must be at least 11 numbers long.",
 				maxlength: "Contact number is 11 numbers long only."
 			},
 			emp_no: {
-				required: "Please enter employee ID",
+				required: "Employee ID is required",
 				minlength: "Employee ID must be at least 8 numbers."
 			},
 			emp_hiredDate: {
-				required: "Please input Hired date.",
+				required: "Hired date is is required.",
 			},
 			emp_position: {
-				required: "Please enter position",
+				required: "Position is required.",
 				minlength: "Position must be at least 5 numbers."
 			},
 			sel_roles: {
-				required: "Please enter roles"
+				required: "Roles is required."
 			},
 			sel_stats: {
-				required: "Please enter status"
+				required: "Status is required."
 			}
 		}
 	});
@@ -124,7 +124,7 @@ $(document).ready(function () {
 		required: true,
 		minlength: 3,
 		messages: {
-			required: "Please enter username.",
+			required: "Username is required.",
 			minlength: "Username must be at least 3 characters."
 		}
 	});
@@ -135,7 +135,7 @@ $(document).ready(function () {
 		required: true,
 		minlength: 3,
 		messages: {
-			required: "Please enter password",
+			required: "Password is required.",
 			minlength: "Password must be at least 3 characters."
 		}
 	});

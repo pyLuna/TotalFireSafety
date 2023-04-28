@@ -22,66 +22,63 @@
 <div class="">
     <main>
         <center>
+                <div class="container">
+                    <div class="d-flex justify-content-between">
+                        <img src="~/images/tfsti-logo-inventory.png" style="width: 35%; height: 150px;">
+                        <div class="mt-3">
+                            <table cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td colspan="2">Name: @ViewBag.Name</td>
+                                    <td colspan="2">Position: @ViewBag.Position</td>
 
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Employee ID: @ViewBag.Id</td>
+                                    <td colspan="2">Date Printed: @DateTime.Now.ToString("MMMM dd, yyyy")</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        Date Request: <div class="datepick-container">
+                                            <span></span>
 
+                                            <div class="date-grp">
+                                                <input type="date" id="startDate">
+                                                <label for=""> - </label>
+                                                <input type="date" id="endDate">
+                                            </div>
 
-            <div class="container">
-                <div class="d-flex justify-content-between">
-                    <img src="~/images/tfsti-logo-inventory.png" style="width: 35%; height: 150px;">
-                    <div class="mt-3">
-                        <table cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td colspan="2">Name: @ViewBag.Name</td>
-                                <td colspan="2">Position: @ViewBag.Position</td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">Employee ID: @ViewBag.Id</td>
-                                <td colspan="2">Date Printed: @DateTime.Now.ToString("MMMM dd, yyyy")</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    Date Request: <div class="datepick-container">
-                                        <span></span>
-
-                                        <div class="date-grp">
-                                            <input type="date" id="startDate">
-                                            <label for=""> - </label>
-                                            <input type="date" id="endDate">
                                         </div>
 
-                                    </div>
+                                    </td>
 
-                                </td>
-
-                            </tr>
-                        </table>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <br><br>
-                <table id="myTable" class="myTable">
-                    <thead>
-                        <tr>
-                            <td colspan="12" class="font-weight-bold text-center">INVENTORY STOCK REPORT</td>
-                        </tr>
-                        <tr style="background-color: rgb(255, 255, 0);" class="font-weight-bold">
-                            <td class="font-weight-bold">Date Added <span></span></td>
-                            <td class="font-weight-bold">Code</td>
-                            <td class="font-weight-bold">Name</td>
-                            <td class="font-weight-bold">Category</td>
-                            <td class="font-weight-bold">Type</td>
-                            <td class="font-weight-bold">Size</td>
-                            <td class="font-weight-bold">Quantity</td>
-                            <td class="font-weight-bold">Remarks</td>
-                            <td class="font-weight-bold">Class</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <script src="@Url.Content("~/Scripts/reportinventory.js")"></script>
+                    <br><br>
+                    <table id="myTable" class="myTable">
+                        <thead>
+                            <tr>
+                                <td colspan="12" class="font-weight-bold text-center">INVENTORY STOCK REPORT</td>
+                            </tr>
+                            <tr style="background-color: rgb(255, 255, 0);" class="font-weight-bold">
+                                <td class="font-weight-bold">Date Added <span></span></td>
+                                <td class="font-weight-bold">Code</td>
+                                <td class="font-weight-bold">Name</td>
+                                <td class="font-weight-bold">Category</td>
+                                <td class="font-weight-bold">Type</td>
+                                <td class="font-weight-bold">Size</td>
+                                <td class="font-weight-bold">Quantity</td>
+                                <td class="font-weight-bold">Remarks</td>
+                                <td class="font-weight-bold">Class</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <script src="@Url.Content("~/Scripts/reportinventory.js")"></script>
 
-            </div>
+                </div>
             <script>
                 const today = new Date().toISOString().split('T')[0];
 
@@ -136,38 +133,50 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
         <script>
+            //function exportToPdf() {
+            //    const element = document.querySelector('.container');
+            //    const options = {
+            //        margin: [0, 0, 0, 0],
+            //        filename: 'Report.pdf',
+            //        pdf: {
+            //            format: 'letter',
+            //            orientation: 'portrait',
+            //        },
+            //        html2canvas: { scale: getScaleFactor(element.offsetWidth, element.offsetHeight) },
+            //        jsPDF: {
+            //            unit: 'in',
+            //            repeatTableHeader: true, // Repeat table header on every page
+            //            addPageContent: function (data) {
+            //                var rowCount = document.querySelectorAll('.myTable tbody tr').length;
+            //                if (rowCount > 10) {
+            //                    this.addPage();
+            //                    rowCount = 0;
+            //                }
+            //                if (data.pageCount > 1) {
+            //                    var header = document.querySelector('.myTable thead').cloneNode(true);
+            //                    var footer = document.querySelector('.myTable tfoot').cloneNode(true);
+            //                    document.querySelector('.myTable').deleteTHead();
+            //                    document.querySelector('.myTable').deleteTFoot();
+            //                    this.table(header, 1, 0);
+            //                    this.table(footer, -1, 0);
+            //                }
+            //            }
+            //        }
+            //    };
+            //    html2pdf().set(options).from(element).save();
+            //}
             function exportToPdf() {
-                const element = document.querySelector('.container');
-                const options = {
+                let element = document.querySelector('.container');
+                let options = {
                     margin: [0, 0, 0, 0],
-                    filename: 'Report.pdf',
-                    pdf: {
-                        format: 'letter',
-                        orientation: 'portrait',
-                    },
+                    filename: 'Inventort-report.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: getScaleFactor(element.offsetWidth, element.offsetHeight) },
-                    jsPDF: {
-                        unit: 'in',
-                        repeatTableHeader: true, // Repeat table header on every page
-                        addPageContent: function (data) {
-                            var rowCount = document.querySelectorAll('.myTable tbody tr').length;
-                            if (rowCount > 10) {
-                                this.addPage();
-                                rowCount = 0;
-                            }
-                            if (data.pageCount > 1) {
-                                var header = document.querySelector('.myTable thead').cloneNode(true);
-                                var footer = document.querySelector('.myTable tfoot').cloneNode(true);
-                                document.querySelector('.myTable').deleteTHead();
-                                document.querySelector('.myTable').deleteTFoot();
-                                this.table(header, 1, 0);
-                                this.table(footer, -1, 0);
-                            }
-                        }
-                    }
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
                 };
                 html2pdf().set(options).from(element).save();
             }
+
 
             function getScaleFactor(width, height) {
                 const maxWidth = 8.5; // Letter size width in inches

@@ -1,7 +1,8 @@
-﻿@{
+﻿@using TotalFireSafety.Models
+
+@{
     Layout = null;
 }
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,6 +33,12 @@
             display: none;
         }
     </style>
+    <style>
+        .invt-table {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -44,17 +51,19 @@
                             <div class="d-flex justify-content-between">
                                 <img src="~/images/tfsti-logo-inventory.png" style="width: 35%; height: 150px;">
                                 <div class="mt-3">
-                                    <table cellspacing="0" cellpadding="0">
+                                    <table class="invt-table" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td colspan="2">Name: Carlo Millonte</td>
-                                            <td colspan="2">Position: Office Admin</td>
+                                            <td colspan="2">Name: @ViewBag.Name</td>
+                                            <td colspan="2">Position: @ViewBag.Position</td>
+
                                         </tr>
                                         <tr>
-                                            <td colspan="2">Employee ID: 101567890</td>
-                                            <td colspan="2">Date Printed: March 13, 2023</td>
+                                            <td colspan="2">Employee ID: @ViewBag.Id</td>
+                                            <td colspan="2">Date Printed: @DateTime.Now.ToString("MMMM dd, yyyy")</td>
                                         </tr>
-                                        <td colspan="2">List: 1-20</td>
-                                        <td colspan="2"></td>
+                                        <tr>
+                                            <td colspan="2">List: 1-20</td>
+                                            <td colspan="2"></td>
                                     </table>
                                 </div>
                             </div>
@@ -163,14 +172,14 @@
                                 <button type="button" class="btn btn-primary btn-lg buttons1 ml-2" onclick="exportToPdf()">EXPORT</button>
                                 <button type="button" class="btn btn-primary btn-lg buttons1 ml-2" onclick="hideContentOnPrint()">PRINT</button>
                                 <button type="button" class="btn btn-outline-primary buttons2 ml-2">
-                                    <a href="@Url.Action("Inventory", "Admin")">
+                                    <a href="@Url.Action("Inventory", "Admin")" onclick="window.close(); return false;">
                                         CANCEL
                                     </a>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- <script>
                         let d = new Date();
                         document.getElementById("demo").innerHTML = d.toDateString();
@@ -215,7 +224,7 @@
             let element = document.querySelector('.container');
             let options = {
                 margin: [0, 0, 0, 0],
-                filename: 'Report.pdf',
+                filename: 'InventoryList-export.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: getScaleFactor(element.offsetWidth, element.offsetHeight) },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },

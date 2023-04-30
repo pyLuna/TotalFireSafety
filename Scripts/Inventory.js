@@ -73,7 +73,7 @@ qtyCode.addEventListener("keydown",Scan)
 //#endregion
 
 function GetAll() {
-
+	let start = performance.now();
 	fetch('/Admin/FindDataOf?requestType=inventory')
 		.then(res => {
 			if (res.ok) {
@@ -98,6 +98,8 @@ function GetAll() {
 			if (table !== null) {
 				setTable(fixedArray);
 			}
+			let end = performance.now();
+			console.log(`Response time : ${end - start}`);
 		})
 		.catch(error => {
 			//window.location.replace('/Error/InternalServerError');

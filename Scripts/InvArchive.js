@@ -87,7 +87,7 @@ function setTable(array) {
         const errorMessageRow = document.createElement('tr');
         errorMessageRow.style.textAlign = "center";
         errorMessageRow.style.fontStyle = "italic";
-        errorMessageRow.innerHTML = "<td colspan='9' style='text-align:center;'>Item Not found<td>";
+        errorMessageRow.innerHTML = "<td colspan='7' style='text-align:center;'>Item Not found<td>";
         //console.log(res.statusText);
         table.appendChild(errorMessageRow);
     }

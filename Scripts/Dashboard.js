@@ -1,9 +1,10 @@
-﻿var category = document.getElementById("selcat");
-var selclass = document.getElementById("selclass");
-var seltype = document.getElementById("seltype");
+﻿let category = document.getElementById("selcat");
+let selclass = document.getElementById("selclass");
+let seltype = document.getElementById("seltype");
+let filtered = [];
 
-var newLabels = [];
-var newQuantity = [];
+let newLabels = [];
+let newQuantity = [];
 
 category.addEventListener("change", function () {
 	FilterItems();
@@ -34,16 +35,16 @@ function GetAll() {
 }
 
 function SetCard(array) {
-	var users = document.getElementById('userLabel');
-	var active = document.getElementById('actLabel');
-	var supply = document.getElementById('supLabel');
-	var actsupply = document.getElementById('actsupLabel');
-	var deploy = document.getElementById('depLabel');
-	var actdeploy = document.getElementById('actdepLabel');
-	var purchase = document.getElementById('purLabel');
-	var actpurchase = document.getElementById('actpurLabel');
-	var allItems = document.getElementById('itemLabel');
-	var crits = document.getElementById('critLabel');
+	let users = document.getElementById('userLabel');
+	let active = document.getElementById('actLabel');
+	let supply = document.getElementById('supLabel');
+	let actsupply = document.getElementById('actsupLabel');
+	let deploy = document.getElementById('depLabel');
+	let actdeploy = document.getElementById('actdepLabel');
+	let purchase = document.getElementById('purLabel');
+	let actpurchase = document.getElementById('actpurLabel');
+	let allItems = document.getElementById('itemLabel');
+	let crits = document.getElementById('critLabel');
 
 	users.innerHTML= array.users;
 	active.innerHTML= array.active_users;
@@ -60,22 +61,30 @@ function SetCard(array) {
 
 //#region populate dropdown
 function PopulateDropdown(array) {
-	var type = [];
-	var class1 = [];
-	var categ = [];
-	for (var i = 0; i < array[0].length; i++) {
+	let type = [];
+	let class1 = [];
+	let categ = [];
+	selclass.innerHTML = "";
+	seltype.innerHTML = "";
+	category.innerHTML = "";
+	selclass.innerHTML += "<option selected disabled>Class</option>";
+	seltype.innerHTML += "<option selected disabled>Type</option>";
+	category.innerHTML += "<option selected disabled>Category</option>";
+	for (let i = 0; i < array[0].length; i++) {
 		categ.push(array[0][i].Category)
-		for (var ii = 0; ii < array[0][i].Items.length; ii++) {
+		for (let ii = 0; ii < array[0][i].Items.length; ii++) {
 			type.push(array[0][i].Items[ii].Type);
 			class1.push(array[0][i].Items[ii].Class);
 		}
 	}
 
-	var newType = new Set(type);
-	var newClass = new Set(class1);
+	let newType = new Set(type);
+	let newClass = new Set(class1);
 	newType.forEach((item) => {
-		if (item != null) {
-			seltype.innerHTML += `<option>${item}</option>`;
+		if (item != "") {
+			if (item != null) {
+				seltype.innerHTML += `<option>${item}</option>`;
+			}
 		}
 	});
 	newClass.forEach((item) => {
@@ -90,9 +99,6 @@ function PopulateDropdown(array) {
 //#region flters
 function FilterClass(value) {
 	let arr = [];
-	if (value == "all") {
-		return allItems;
-	}
 	for (let i = 0; i < allItems[0].length; i++) {
 		for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
 			if (JSON.stringify(allItems[0][i].Items[ii].Class).toLowerCase().includes(value)) {
@@ -104,9 +110,6 @@ function FilterClass(value) {
 }
 function FilterCategory(value) {
 	let arr = [];
-	if (value == "all") {
-		return allItems;
-	}
 	for (let i = 0; i < allItems[0].length; i++) {
 		if (JSON.stringify(allItems[0][i].Category).toLowerCase().includes(value)) {
 				for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
@@ -129,42 +132,110 @@ function FilterType(type) {
 	return arr;
 }
 
-function FilterItems() {
-	var cat = category.options[category.selectedIndex]?.value;
-	var type = seltype.options[seltype.selectedIndex]?.value;
-	var cls = selclass.options[selclass.selectedIndex]?.value;
+function FilterAll(cat,type,cls) {
+	let arr = [];
+	for (let i = 0; i < allItems[0].length; i++) {
+		if (JSON.stringify(allItems[0][i].Category).toLowerCase().includes(cat)) {
+			for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
+				if (JSON.stringify(allItems[0][i].Items[ii].Type).toLowerCase().includes(type) && JSON.stringify(allItems[0][i].Items[ii].Class).toLowerCase().includes(cls)) {
+					arr.push(allItems[0][i].Items[ii]);
+				}
+			}
+		}
+	}
+	return arr;
+}
 
-	if (category.selectedIndex != 0 && cat != "All" && seltype.selectedIndex == 0 && type == "All" && selclass.selectedIndex == 0 && cls == "All") {
+function FilterCat2D(cat,type,cls) {
+	let arr = [];
+	for (let i = 0; i < allItems[0].length; i++) {
+		if (JSON.stringify(allItems[0][i].Category).toLowerCase().includes(cat)) {
+			for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
+				if (JSON.stringify(allItems[0][i].Items[ii].Type).toLowerCase().includes(type) || JSON.stringify(allItems[0][i].Items[ii].Class).toLowerCase().includes(cls)) {
+					arr.push(allItems[0][i].Items[ii]);
+				}
+			}
+		}
+	}
+	return arr;
+}
+
+function FilterType2D(type, cls) {
+	let arr = [];
+	for (let i = 0; i < allItems[0].length; i++) {
+		for (let ii = 0; ii < allItems[0][i].Items.length; ii++) {
+			if (JSON.stringify(allItems[0][i].Items[ii].Type).toLowerCase().includes(type) && JSON.stringify(allItems[0][i].Items[ii].Class).toLowerCase().includes(cls)) {
+				arr.push(allItems[0][i].Items[ii]);
+			}
+		}
+	}
+	return arr;
+}
+
+function FilterItems() {
+	let cat = category.options[category.selectedIndex]?.value;
+	let type = seltype.options[seltype.selectedIndex]?.value;
+	let cls = selclass.options[selclass.selectedIndex]?.value;
+
+	if (cat != "Category" && type == "Type" && cls == "Class") {
 		SendToChart(1);
 	}
-	else if (category.selectedIndex == 0 && cat == "All" && seltype.selectedIndex != 0 && type != "All" && selclass.selectedIndex == 0 && cls == "All") {
+	else if (cat == "Category" && type != "Type" && cls == "Class") {
 		SendToChart(2);
 	}
-	else {
+	else if (cat == "Category" && type == "Type" && cls != "Class") {
 		SendToChart(3);
 	}
-
+	else if (cat != "Category" && type != "Type" && cls != "Class") {
+		SendToChart(4);
+	}
+	else if (cat != "Category" && type != "Type" || cls != "Class") {
+		SendToChart(5);
+	}
+	else if (cat != "Category" || type != "Type" && cls != "Class") {
+		SendToChart(6);
+	}
 }
 // set chart 
 function SendToChart(requestType) {
-	var cat = category.options[category.selectedIndex]?.value;
-	var type = seltype.options[seltype.selectedIndex]?.value;
-	var cls = selclass.options[selclass.selectedIndex]?.value;
-	var results = [];
+	let cat = category.options[category.selectedIndex]?.value;
+	let type = seltype.options[seltype.selectedIndex]?.value;
+	let cls = selclass.options[selclass.selectedIndex]?.value;
+	let results = [];
 
 	if (requestType == 1) {
 		results = FilterCategory(cat.toLowerCase());
-		var response = PopulateLabels(results, "item");
+		let response = PopulateLabels(results, "item");
 		SetChart(response.label, response.quant);
 	}
 	else if (requestType == 2) {
 		results = FilterType(type.toLowerCase());
-		var response = PopulateLabels(results, "item");
+		let response = PopulateLabels(results, "item");
 		SetChart(response.label, response.quant);
 	}
-	else {
+	else if (requestType == 3){
 		results = FilterClass(cls.toLowerCase());
-		var response = PopulateLabels(results, "item");
+		let response = PopulateLabels(results, "item");
+		SetChart(response.label, response.quant);
+	}
+	else if (requestType == 4) {
+		results = FilterAll(cat.toLowerCase(), type.toLowerCase(), cls.toLowerCase());
+		let response = PopulateLabels(results, "item");
+		SetChart(response.label, response.quant);
+	}
+	else if (requestType == 5) {
+		results = FilterCat2D(cat.toLowerCase(), type.toLowerCase(), cls.toLowerCase());
+		let response = PopulateLabels(results, "item");
+		SetChart(response.label, response.quant);
+	}
+	else if (requestType == 6) {
+		if (cat != "Category") {
+			results = FilterCat2D(cat.toLowerCase(), type.toLowerCase(), cls.toLowerCase());
+		}
+		else {
+			results = FilterType2D(cat.toLowerCase(), type.toLowerCase(), cls.toLowerCase());
+		}
+		let response = PopulateLabels(results, "item");
 		SetChart(response.label, response.quant);
 	}
 }

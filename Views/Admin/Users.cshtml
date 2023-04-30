@@ -89,12 +89,12 @@
                                             <td> <a onclick="Sort(this,'emp_no')"> Employee ID <i class="las la-sort-down"></i></a> </td>
                                             <td> <a onclick="Sort(this,'emp_lname')"> Surname <i class="las la-sort-down"></i></a> </td>
                                             <td> <a onclick="Sort(this,'emp_fname')"> First Name <i class="las la-sort-down"></i></a> </td>
-                                            <td> <a onclick="Sort(this,'emp_name')"> Middle Name <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a onclick="Sort(this,'emp_mname')"> Middle Name <i class="las la-sort-down"></i></a> </td>
                                             <td> Date Hired </td>
                                             <td> Contact Number </td>
                                             <td> Position  </td>
                                             <td> Status </td>
-                                            <td> Roles </td>
+                                            <td><a onclick="Sort(this,'emp_role')"> Roles <i class="las la-sort-down"> </td>
                                             <td> Action </td>
                                         </tr>
                                     </thead>
@@ -240,7 +240,7 @@
         <div class="save-pop-container" id="popup">
             <img src="~/images/tick.png">
             <h2>Added!</h2>
-            <p id="succ"></p>
+            <p id="succ">asdfasdfa</p>
             <button type="button" onclick="closePopup()">OK</button>
         </div>
 
@@ -283,6 +283,7 @@
                 remOpenPopup();
                 document.getElementById('erro').innerText = err;
                 document.getElementById('messType').innerText = "Error!";
+                err = "";
             }
             else {
                 document.getElementById('messType').innerText = "Cancel!";
@@ -302,11 +303,13 @@
 
             addpopup.classList.add("add-popup-show");
             document.getElementById("formType").value = "add";
+            document.getElementById("emp_id").setAttribute("readonly", false);
         });
 
         function openEditForm(value) {
             addpopup.classList.add("add-popup-show");
             document.getElementById("formType").value = "edit";
+            document.getElementById("emp_id").setAttribute("readonly", true);
             //setSession("edit");
             setField(value);
         }
@@ -364,11 +367,11 @@
         let popup = document.getElementById("popup");
 
         function openPopup() {
-            popup.classList.add("save-pop-container-show")
+            popup.classList.add("save-pop-show")
         }
 
         function closePopup() {
-            popup.classList.remove("save-pop-container-show")
+            popup.classList.remove("save-pop-show")
         }
 
         let canpopup = document.getElementById("can-popup");

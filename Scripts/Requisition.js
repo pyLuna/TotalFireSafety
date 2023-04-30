@@ -297,6 +297,7 @@ function setTable(array) {
 			if (array[i].request_status === "Approved") {
 				className = "stat-app";
 			}
+
 			//<a onclick="viewrequestOpenPopupPur()"></a>
 			let row = `<tr id="${array[i].request_type_id}">`;
 			row += `<td class="view" onclick="viewrequestOpenPopupPur()" id="${array[i].request_id}"> ${array[i].Id}</td>`;
@@ -310,6 +311,7 @@ function setTable(array) {
 			row += `<button class="acc-btn" id="appr${i}" title="ACCEPT REQUEST" onclick="${editListener}"> <a href="#"><span class="las la-check-circle"></span></a></button>`;
 			//row += `<button class="dec-btn" id="dec${i}" title="DECLINE REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','pending')"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
 			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" id="edit${i}" onclick="${changeListener}"><span class="lar la-edit"></span></button>`;
+
 			row += `<button class="expo-btn" onclick = "window.location.href='/admin/ExportReportNew?id=${array[i].request_type_id}'" title="EXPORT REPORT"><span class="las la-file-download"></span></button>`;
 			
 			row += `</div></td>`;

@@ -28,7 +28,7 @@ function extractNum(value) {
 }
 //all base count items
 function GetCounts(start,end,diff) {
-    fetch("/Admin/BaseResult")
+    fetch(`/Admin/BaseResult?end=${end}&diff=${diff}`)
         .then(res => {
             if (res.ok) {
                 // API request was successful
@@ -38,28 +38,10 @@ function GetCounts(start,end,diff) {
             }
         })
         .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            //window.location.replace('/Error/InternalServerError');
-            console.error(error);
-        });
-}
-// today's all item in inventory
-function GetItems() {
-    fetch("/Admin/ItemSummary")
-        .then(res => {
-            if (res.ok) {
-                // API request was successful
-                return res.json();
-            } else {
-                console.log(res.statusText);
-            }
-        })
-        .then(data => {
-            allItems.push(JSON.parse(data));
-            PopulateDropdown(allItems);
+            allItems.length = 0;
+            allItems.push(data);
             var results = PopulateLabels(allItems, "all");
+            PopulateDropdown(allItems);
             SetChart(results.label, results.quant);
         })
         .catch(error => {
@@ -79,8 +61,6 @@ function PopulateLabels(array,typeOf) {
                 if (size == null || size == "null") {
                     size = "";
                 }
-                //ItemLabels.push(array[0][i].Items[ii].Name + " " + size);
-                //itemQuantity.push(extractNum(array[0][i].Items[ii].Quantity).num);
                 label.push(array[0][i].Items[ii].Name + " " + size);
                 quant.push(extractNum(array[0][i].Items[ii].Quantity).num);
             }
@@ -112,7 +92,15 @@ function SetChart(labels,quantities) {
     if (instance) {
         instance.destroy();
     }
-
+    // Check if labels and quantities are null
+    if (labels.length == 0 || quantities.length == 0) {
+        ctx.clearRect(0, 0, canvas.width / 2, canvas.height); // Clear the canvas
+        ctx.font = '20px Arial'; // Set font size and type
+        ctx.fillStyle = '#000000'; // Set text color
+        ctx.textAlign = 'center'; // Set text alignment to center
+        ctx.fillText('No data', canvas.width / 2, canvas.height / 2); // Display "No data" message in the center of the canvas
+        return;
+    }
     const barchart = new Chart(ctx, {
         type: 'bar',
         data: {

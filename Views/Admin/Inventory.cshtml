@@ -19,7 +19,7 @@
                 <a onclick="openForm()">
                     Notification
                     <span class="las la-bell"></span>
-                    <label class="notif-badge" id="badge">0> </label>
+                    <label class="notif-badge" id="badge">0</label>
                 </a>
             </button>
         </right>
@@ -99,57 +99,57 @@
                                         <div class="fields">
                                             <div class="input-field">
                                                 <label>item id</label>
-                                                <input type="text" id="in_code" name="in_code" placeholder="abc-def-ghi-000" readonly>
+                                                <input type="text" id="in_code" name="in_code" placeholder="ABC-DEF-GHI-000" readonly>
                                             </div>
                                             <div class="input-field">
                                                 <label>item name</label>
-                                                <input type="text" id="in_name" name="in_name" placeholder="enter item name" required>
+                                                <input type="text" id="in_name" name="in_name" placeholder="Enter item name" required>
                                             </div>
                                             <div class="input-field">
                                                 <label>category</label>
-                                                <input type="text" id="in_category" name="in_category" list="catlist" placeholder="enter item category" required>
+                                                <input type="text" id="in_category" name="in_category" list="catlist" placeholder="Enter item Category" required>
                                                 <datalist id="catlist"></datalist>
                                             </div>
                                             <div class="input-field">
                                                 <label>class</label>
                                                 <select id="class" name="class" required>
-                                                    <option value="" selected>select class</option>
+                                                    <option value="" selected>Select Class</option>
                                                 </select>
                                             </div>
                                             <input type="text" id="in_class" name="in_class" style="display:none;">
                                             <div class="input-field">
                                                 <label>type</label>
-                                                <input type="text" id="in_type" list="typelist" name="in_type" placeholder="enter item type" required>
+                                                <input type="text" id="in_type" list="typelist" name="in_type" placeholder="Enter item type" >
                                                 <datalist id="typelist"></datalist>
                                             </div>
                                             <div class="input-field">
                                                 <label>size</label>
                                                 <div class="input-field-size">
-                                                    <input type="number" id="inpsizesel" name="inpsizesel" placeholder="00000" required>
-                                                    <select id="sizesel" name="sizesel" required>
-                                                        <option value="" selected>unit</option>
+                                                    <input type="number" id="inpSizeSel" name="inpSizeSel" placeholder="00000" >
+                                                    <select id="sizeSel" name="sizeSel" >
+                                                        <option value="" selected>Unit</option>
                                                     </select>
                                                 </div>
-                                                <label id="inpsizesel-error" class="error manual-error" for="inpsizesel"></label>
-                                                <label id="sizesel-error" class="error manual-error" for="sizesel"></label>
+                                                <label id="inpSizeSel-error" class="error manual-error" for="inpSizeSel"></label>
+                                                <label id="SizeSel-error" class="error manual-error" for="SizeSel"></label>
                                             </div>
                                             <input type="text" id="in_size" name="in_size" style="display:none;" required>
                                             <div class="input-field">
                                                 <label>quantity</label>
                                                 <div class="input-field-quantity">
-                                                    <input type="number" id="inpsizequant" name="inpsizequant" placeholder="00000" required>
-                                                    <select id="sizequant" name="sizequant" required>
-                                                        <option value="" selected>unit</option>
+                                                    <input type="number" id="inpSizeQuant" name="inpSizeQuant" placeholder="00000" required>
+                                                    <select id="sizeQuant" name="sizeQuant" required>
+                                                        <option value="" selected>Unit</option>
                                                     </select>
                                                 </div>
-                                                <label id="inpsizequant-error" class="error manual-error" for="inpsizequant"></label>
-                                                <label id="sizequant-error" class="error manual-error" for="sizequant"></label>
+                                                <label id="inpSizeQuant-error" class="error manual-error" for="inpSizeQuant"></label>
+                                                <label id="sizeQuant-error" class="error manual-error" for="sizeQuant"></label>
                                             </div>
                                             <input type="text" id="in_quantity" name="in_quantity" style="display:none!important;" required>
                                             <input type="text" id="in_remarks" name="in_remarks" style="display:none;" required>
                                             <div class="input-field">
-                                                <label>date added</label>
-                                                <input type="text" id="dateadded" name="in_dateadded" readonly required>
+                                                <label>Date Added</label>
+                                                <input type="text" id="dateAdded" name="in_dateAdded" readonly>
                                             </div>
                                             <div class="input-field">
                                                 <div class="img-bar-grp" id="image-container">
@@ -441,7 +441,7 @@
         <div class="save-pop-container" id="save-popup">
             <img src="@Url.Content("~/images/tick.png")">
             <h2>Saved!</h2>
-            <p>@Session["added"]</p>
+            <p id="updatemess"></p>
             @*<p>Item has saved successfully!</p>*@
             <button type="button" onclick="saveClosePopup()">OK</button>
         </div>
@@ -501,6 +501,11 @@
     //window.onload = function () {
     function OnLoad() {
         let removed = localStorage.getItem("removed");
+        let mssg = '@Session["added"]';
+        if (mssg != "") {
+            saveOpenPopup();
+            document.getElementById("updatemess").innerHTML = mssg;
+        }
         if (removed == "success") {
             rempopup.classList.add("rem-popup-show");
             localStorage.setItem("removed", "pending");

@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -142,8 +144,8 @@ namespace TotalFireSafety.Controllers
                 {
                     uri = "/Warehouse/Inventory";
                     response = await api_req.GetAllMethod(uri, userToken);
-                    inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
-                    result = Json(inv, JsonRequestBehavior.AllowGet);
+                    //inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
+                    //result = Json(inv, JsonRequestBehavior.AllowGet);
                 }
                 if (requestType == "report")
                 {
@@ -156,16 +158,16 @@ namespace TotalFireSafety.Controllers
                 {
                     uri = "/Warehouse/Inventory/Archive";
                     response = await api_req.GetAllMethod(uri, userToken);
-                    inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
-                    result = Json(inv, JsonRequestBehavior.AllowGet);
+                    //inv = JsonConvert.DeserializeObject<List<Inventory>>(response);
+                    //result = Json(inv, JsonRequestBehavior.AllowGet);
                 }
 
                 if (requestType == "requisition")
                 {
                     uri = "/Requests/All";
                     response = await api_req.GetAllMethod(uri, userToken);
-                    requisition = JsonConvert.DeserializeObject<List<Request>>(response);
-                    result = Json(requisition, JsonRequestBehavior.AllowGet);
+                    //requisition = JsonConvert.DeserializeObject<List<Request>>(response);
+                    //result = Json(requisition, JsonRequestBehavior.AllowGet);
                 }
                 if (response == "BadRequest")
                 {
@@ -179,7 +181,7 @@ namespace TotalFireSafety.Controllers
                 }
                 Response.ContentType = "application/json"; // Set the Content-Type header
 
-                return result;
+                return Content(response, "application/json");
             }
             catch (Exception ex)
             {
@@ -263,83 +265,204 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
+        private Timer updateTimer;
+        public AdminController()
+        {
+            // Schedule the update to run once per day
+            var updateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 0);
+            var dueTime = updateTime - DateTime.Now;
+            if (dueTime < TimeSpan.Zero)
+            {
+                dueTime = TimeSpan.Zero;
+            }
 
-        //public AdminController()
-        //{
-        //    // Schedule the update to run once per day
-        //    var updateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 0);
-        //    var dueTime = updateTime - DateTime.Now;
-        //    if (dueTime < TimeSpan.Zero)
-        //    {
-        //        dueTime = TimeSpan.Zero;
-        //    }
+            // Create and start the timer
+            this.updateTimer = new Timer(async state =>
+            {
+                await this.AddItemsToBaseCount();
+            }, null, dueTime, TimeSpan.FromDays(1));
+        }
 
-        //    // Create and start the timer
-        //    this.updateTimer = new Timer(async state =>
-        //    {
-        //        await this.Dashboard();
-        //    }, null, dueTime, TimeSpan.FromDays(1));
-        //}
-        [HttpGet]
-        public async Task<ActionResult> BaseResult([System.Web.Http.FromBody]int start, [System.Web.Http.FromBody] int end, [System.Web.Http.FromBody]  int diff)
+        private async Task AddItemsToBaseCount()
         {
             using (var _context = new nwTFSEntity())
             {
-                var allBase = _context.Basecounts.OrderByDescending(item => item.bc_date).ToList();
-                //List<Basecount> allBase = _context.Basecounts.OrderByDescending(item => item.bc_date).ToList();
-                var serialize = JsonConvert.SerializeObject(allBase);
-                var deserialize = JsonConvert.DeserializeObject<Basecount>(serialize);
-                return Json(deserialize, JsonRequestBehavior.AllowGet);
-                //var allBase = _context.Basecounts.Select(x => x).ToList();
-                ////var allItems = _context.Inventories.Select(x => x).ToList();
-                //var allItems = _context.Inventories.Where(x => x.in_status != "archived").ToList();
-
-                //var newBase = new List<Basecount>();
-
-                //foreach (var item in allBase)
-                //{
-                //    var newInv = allItems.Where(x => item.bc_itemCode == x.in_code).SingleOrDefault();
-                //    Basecount count = new Basecount()
-                //    {
-                //        bc_id = item.bc_id,
-                //        bc_count = item.bc_count,
-                //        bc_date = item.bc_date,
-                //        Inventory = newInv?.in_code == item.bc_itemCode ? new Inventory
-                //        {
-                //            in_name = newInv.in_name,
-                //            in_category = newInv.in_category,
-                //            in_class = newInv.in_class,
-                //            in_quantity = newInv.in_quantity,
-                //            in_size = newInv.in_size,
-                //            in_type = newInv.in_type,
-                //        } : null
-                //    };
-                //    newBase.Add(count);
-                //}
-                //var groupedItems = newBase.GroupBy(item => item.Inventory?.in_category ?? null)
-                //    .Where(group => group.Key != null);
-
-                //var jsonItems = groupedItems.Select(group =>
-                //                new
-                //                {
-                //                    Category = group.Key,
-                //                    Items = group.Select(item => new
-                //                    {
-                //                        Name = item.Inventory?.in_name,
-                //                        Quantity = item.bc_count,
-                //                        Size = item.Inventory?.in_size,
-                //                        Class = item.Inventory?.in_class,
-                //                        Type = item.Inventory?.in_type,
-                //                        FormattedDate = item.FormattedDate,
-                //                        Date = item.bc_date
-                //                    })
-                //                });
-
-                //var serialize = JsonConvert.SerializeObject(jsonItems);
-                ////var deserialize = JsonConvert.DeserializeObject<Object>(serialize);
-                //return Json(serialize, JsonRequestBehavior.AllowGet);
+                var allItems = _context.Inventories.ToList();
+                foreach (var item in allItems)
+                {
+                    var nbc = new Basecount()
+                    {
+                        bc_count = item.in_quantity,
+                        bc_date = DateTime.Now,
+                        bc_itemCode = item.in_code,
+                        bc_id = Guid.NewGuid()
+                    };
+                _context.Basecounts.Add(nbc);
+                   await _context.SaveChangesAsync();
+                }
             }
         }
+
+        // for chart 2 / Item Supplies
+        [HttpGet]
+        public async Task<ActionResult> ItemSupplies()
+        {
+            try
+            {
+                using (var _context = new nwTFSEntity())
+                {
+                    var allReq = _context.Requests
+                                .Where(x => x.request_type == "deployment")
+                                .OrderBy(x => x.request_date)
+                                .Include("Inventory")
+                                .ToList();
+
+                    var groupedByCode = await Task.Run(() => allReq
+                            .GroupBy(item => item.Inventory.in_code)
+                            .Select(group => new {
+                                Code = group.Key,
+                                TotalQuantity = group.Sum(item => {
+                                    string quantityStr = item.request_item_quantity;
+                                    int quantityInt = int.Parse(quantityStr.Split(' ')[0]);
+                                    return quantityInt;
+                                }).ToString() + " " + group.First().Inventory.in_quantity.Split(' ')[1],
+                                Items = group.First() // Use the first item in the group to get other properties
+                            })
+                            .OrderByDescending(x => x.TotalQuantity)
+                            .ToList()
+                            );
+                    var mostRequestedItems = groupedByCode
+                                            .GroupBy(x => x.Items.Inventory.in_category) // group by first two characters of code to get category
+                                            .Select(group => new {
+                                                Category = group.Key,
+                                                Items = group.Select((item, index) => new {
+                                                    Name = item.Items.Inventory.in_name,
+                                                    Quantity = item.TotalQuantity,
+                                                    Class = item.Items.Inventory.in_class,
+                                                    Size = item.Items.Inventory.in_size,
+                                                    MostRequested = index == 0 // flag indicating whether item is most requested
+                                                })
+                                            })
+                                            .ToList();
+                    //var groupedByCategory = await Task.Run(() => mostRequestedItems
+                    //                    .GroupBy(item => item.Items.Inventory.in_category)
+                    //                    .Select(group => new {
+                    //                        Category = group.Key,
+                    //                        Items = group.Select(item => new {
+                    //                            Name = item.Items.Inventory.in_name,
+                    //                            Quantity = item.TotalQuantity,
+                    //                            Size = item.Items.Inventory.in_size,
+                    //                            Class = item.Items.Inventory.in_class,
+                    //                            Type = item.Items.Inventory.in_type
+                    //                            abc = item.Mos
+                    //                        })
+                    //                    })
+                    //                    .ToList()
+                    //                    );
+
+                    var serializedData = Utf8Json.JsonSerializer.Serialize(mostRequestedItems);
+                    string jsonString = Encoding.UTF8.GetString(serializedData);
+
+                    return Content(jsonString,"application/json");
+                }
+            }
+            catch(Exception ex)
+            {
+                byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(ex);
+
+                // Convert the byte array to a string
+                string jsonString = Encoding.UTF8.GetString(jsonBytes);
+                return Content(jsonString, "application/json");
+            }
+        }
+        // for chart 1 / Item Summary
+        [HttpGet]
+        public async Task<ActionResult> BaseResult([System.Web.Http.FromUri] string end, [System.Web.Http.FromUri]  int diff)
+        {
+            using (var _context = new nwTFSEntity())
+            {
+                if(diff == 0)
+                {
+                    var res = ItemSum();
+                    return Content(res,"application/json");
+                }
+                // Parse the end date string to a DateTime object
+                DateTime endDate = DateTime.Parse(end);
+
+                // Calculate the start date based on the end date and the diff parameter
+                DateTime startDate = endDate.AddDays(-diff);
+
+                var allBase = _context.Basecounts
+                    .Where(item => item.bc_date >= startDate && item.bc_date <= endDate)
+                    .OrderByDescending(item => item.bc_date)
+                    .Include("Inventory")
+                    .ToList();
+                //var allItems = _context.Inventories.ToList();
+
+                var groupedByCode = await Task.Run(() => allBase
+                            .GroupBy(item => item.Inventory.in_code)
+                            .Select(group => new {
+                                Code = group.Key,
+                                TotalQuantity = group.Sum(item => {
+                                    string quantityStr = item.Inventory.in_quantity;
+                                    int quantityInt = int.Parse(quantityStr.Split(' ')[0]);
+                                    return quantityInt;
+                                }).ToString() + " " + group.First().Inventory.in_quantity.Split(' ')[1],
+                                Items = group.First() // Use the first item in the group to get other properties
+                            })
+                            .ToList()
+                            );
+
+                var groupedByCategory = await Task.Run(() => groupedByCode
+                                        .GroupBy(item => item.Items.Inventory.in_category)
+                                        .Select(group => new {
+                                            Category = group.Key,
+                                            Items = group.Select(item => new {
+                                                Name = item.Items.Inventory.in_name,
+                                                Quantity = item.TotalQuantity,
+                                                Size = item.Items.Inventory.in_size,
+                                                Class = item.Items.Inventory.in_class,
+                                                Type = item.Items.Inventory.in_type
+                                            })
+                                        })
+                                        .ToList()
+                                        );
+                // Serialize the object to a byte array
+                byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(groupedByCategory);
+
+                // Convert the byte array to a string
+                string jsonString = Encoding.UTF8.GetString(jsonBytes);
+                return Content(jsonString,"application/json");
+            }
+        }
+
+        private string ItemSum()
+        {
+            using (var _context = new nwTFSEntity())
+            {
+                var allItems = _context.Inventories.Where(x => x.in_status.Trim().ToLower() != "archived").ToList();
+                var groupedItems = allItems.GroupBy(item => item.in_category);
+
+                var jsonItems = groupedItems.Select(group =>
+                new
+                {
+                    Category = group.Key,
+                    Items = group.Select(item => new
+                    {
+                        Name = item.in_name,
+                        Quantity = item.in_quantity,
+                        Size = item.in_size,
+                        Class = item.in_class,
+                        Type = item.in_type
+                    })
+                });
+
+                var serialize = JsonConvert.SerializeObject(jsonItems);
+                //var deserialize = JsonConvert.DeserializeObject<Object>(serialize);
+                return serialize;
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult> DBResult()
         {
@@ -349,12 +472,34 @@ namespace TotalFireSafety.Controllers
 
                 var users = _context.Employees.Count();
                 var actives = _context.Status.Where(x => x.IsActive == 1 && x.IsUser == 1).Count();
-                var deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment").Count();
-                var rec_deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
-                var supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply").Count();
-                var rec_supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
-                var purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase").Count();
-                var rec_purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
+                var deployment = _context.Requests
+                    .Where(x => x.request_type.Trim().ToLower() == "deployment")
+                    .GroupBy(x => x.request_type_id)
+                    .Count();
+                //var rec_deployment = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "deployment" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
+                var rec_deployment = _context.Requests
+                    .Where(x => x.request_type.Trim().ToLower() == "deployment" && x.request_status.Trim()
+                    .ToLower() == "pending")
+                    .GroupBy(x => x.request_type_id)
+                    .Count();
+                var supply = _context.Requests.Where(x => x.request_type.Trim()
+                    .ToLower() == "supply")
+                    .GroupBy(x => x.request_type_id)
+                    .Count();
+                //var rec_supply = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "supply" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
+                var rec_supply = _context.Requests
+                    .Where(x => x.request_type.Trim().ToLower() == "supply" && x.request_status.Trim().ToLower() == "pending")
+                    .GroupBy(x => x.request_type_id)
+                    .Count();
+                var purchase = _context.Requests
+                    .Where(x => x.request_type.Trim().ToLower() == "purchase")
+                    .GroupBy(x => x.request_type_id)
+                    .Count();
+                //var rec_purchase = _context.Requests.Where(x => x.request_type.Trim().ToLower() == "purchase" && x.request_date.Day == (DateTime.Now.Day + 1)).Count();
+                var rec_purchase = _context.Requests
+                    .Where(x => x.request_type.Trim().ToLower() == "purchase" && x.request_status.Trim().ToLower() == "pending")
+                    .GroupBy(x => x.request_type_id)
+                    .Count();
                 var allItems = _context.Inventories.Count();
                 var crit_items = _context.Inventories.Where(x => x.in_remarks.Trim().ToLower() == "critical" && x.in_status.Trim().ToLower() != "archived").Count();
                 var model = new DashboardModel()
@@ -403,6 +548,7 @@ namespace TotalFireSafety.Controllers
                 //var deserialize = JsonConvert.DeserializeObject<Object>(serialize);
                 return Json(serialize, JsonRequestBehavior.AllowGet);
             }
+
         }
         public async Task<ActionResult> Dashboard()
         {
@@ -778,7 +924,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             Session["added"] = message;
             //ViewBag.Added = "Item has updated successfully";
-            return View();
+            return RedirectToAction("Inventory");
         }
 
         public async Task<ActionResult> InvArchive()
@@ -888,9 +1034,9 @@ namespace TotalFireSafety.Controllers
             {
                 var userToken = Session["access_token"].ToString();
                 var response = await api_req.GetAllMethod("/Admin/Employee", userToken);
-                var json = JsonConvert.DeserializeObject<List<Employee>>(response);
-                JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
-                Response.ContentType = "application/json"; // Set the Content-Type header
+                //var json = JsonConvert.DeserializeObject(response);
+                //JsonResult result = Json(response, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
+                //Response.ContentType = "application/json"; // Set the Content-Type header
                 ViewBag.ProfilePath = GetPath(int.Parse(empId));
                 if (response == "BadRequest")
                 {
@@ -902,7 +1048,7 @@ namespace TotalFireSafety.Controllers
                     return RedirectToAction("InternalServerError", "Error");
                     //return Json("error", JsonRequestBehavior.AllowGet);
                 }
-                return result;
+                return Content(response,"application/json");
             }
             catch (Exception ex)
             {

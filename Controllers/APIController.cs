@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Utf8Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,10 @@ using System.IO;
 using ZXing;
 using ZXing.QrCode;
 //using System.Web.Mvc;
-using System.Drawing;
-using Microsoft.AspNet.SignalR;
-using TotalFireSafety.Hubs;
 using System.Web;
 using System.Threading.Tasks;
+using System.Text;
+using System.Text.Json;
 
 namespace TotalFireSafety.Controllers
 {
@@ -91,36 +91,39 @@ namespace TotalFireSafety.Controllers
                     var statuses = _context.Status.Select(x => x).ToList();
                     var employees = _context.Employees.Select(x => x).ToList();
 
-                    var newList = new List<Status>();
-                    foreach (var item in statuses)
+                    using (var stream = new MemoryStream())
                     {
-                        var newEmps = employees.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
-                        Status newStats = new Status()
+                        var writer = new Utf8JsonWriter(stream);
+                        writer.WriteStartArray();
+
+                        foreach (var item in statuses)
                         {
-                            emp_no = item.emp_no,
-                            IsActive = item.IsActive,
-                            IsLocked = item.IsLocked,
-                            Employee = newEmps?.emp_no == item.emp_no ? new Employee
-                            {
-                                emp_no = newEmps.emp_no,
-                                emp_contact = newEmps.emp_contact,
-                                emp_hiredDate = newEmps.emp_hiredDate,
-                                emp_fname = newEmps.emp_fname,
-                                emp_lname = newEmps.emp_lname,
-                                emp_name = newEmps.emp_name,
-                                emp_position = newEmps.emp_position,
-                            } : null,
-                        };
-                        newList.Add(newStats);
+                            writer.WriteStartObject();
+                            writer.WriteNumber("emp_no", item.emp_no);
+                            writer.WriteNumber("IsActive", item.IsActive);
+                            writer.WriteNumber("IsLocked", item.IsLocked);
+                            writer.WriteNumber("IsUser", item.IsUser);
+                            writer.WriteStartObject("Employee");
+                            writer.WriteNumber("emp_no", item.Employee.emp_no);
+                            writer.WriteString("emp_hiredDate", item.Employee.emp_hiredDate?.ToString("dd-MM-yyyyTHH:mm:ss"));
+                            writer.WriteString("FormattedDate", item.Employee.emp_hiredDate?.ToString("MMMM dd, yyyy"));
+                            writer.WriteNumber("emp_contact", item.Employee.emp_contact);
+                            writer.WriteString("emp_fname", item.Employee.emp_fname);
+                            writer.WriteString("emp_lname", item.Employee.emp_lname);
+                            writer.WriteString("emp_mname", item.Employee.emp_name);
+                            writer.WriteEndObject();
+
+                            // add more properties as needed
+                            writer.WriteEndObject();
+                        }
+
+                        writer.WriteEndArray();
+                        writer.Flush();
+                        var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                        var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                        return Ok(_jsonDeserialized);
+
                     }
-
-                    var _jsonSerialized = JsonConvert.SerializeObject(newList, Formatting.None, new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
-
-                    var _Deserialized = JsonConvert.DeserializeObject<List<Status>>(_jsonSerialized);
-                    return Ok(_Deserialized);
                 }
             }
             catch (Exception ex)
@@ -266,15 +269,39 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new nwTFSEntity())
                 {
-                    var roles = _context.Roles.Select(x => x).ToList();
+                    var roles = _context.Credentials.Select(x => x).ToList();
 
-
-                    var _jsonSerialized = JsonConvert.SerializeObject(roles, Formatting.None, new JsonSerializerSettings()
+                    using (var stream = new MemoryStream())
                     {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
-                    var _Deserialized = JsonConvert.DeserializeObject<List<Credential>>(_jsonSerialized);
-                    return Ok(_Deserialized);
+                        var writer = new Utf8JsonWriter(stream);
+                        writer.WriteStartArray();
+
+                        foreach (var item in roles)
+                        {
+                            writer.WriteStartObject();
+                            writer.WriteNumber("emp_no", item.emp_no);
+                            writer.WriteString("username", item.username);
+                            writer.WriteString("password", item.password);
+                            writer.WriteStartObject("Employee");
+                            writer.WriteNumber("emp_no", item.Employee.emp_no);
+                            writer.WriteString("emp_hiredDate", item.Employee.emp_hiredDate?.ToString("dd-MM-yyyyTHH:mm:ss"));
+                            writer.WriteString("FormattedDate", item.Employee.emp_hiredDate?.ToString("MMMM dd, yyyy"));
+                            writer.WriteNumber("emp_contact", item.Employee.emp_contact);
+                            writer.WriteString("emp_fname", item.Employee.emp_fname);
+                            writer.WriteString("emp_lname", item.Employee.emp_lname);
+                            writer.WriteString("emp_mname", item.Employee.emp_name);
+                            writer.WriteEndObject();
+
+                            // add more properties as needed
+                            writer.WriteEndObject();
+                        }
+
+                        writer.WriteEndArray();
+                        writer.Flush();
+                        var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                        var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                        return Ok(_jsonDeserialized);
+                    }
                 }
             }
             catch (Exception ex)
@@ -422,13 +449,36 @@ namespace TotalFireSafety.Controllers
                 {
                     var roles = _context.Roles.Select(x => x).ToList();
 
-
-                    var _jsonSerialized = JsonConvert.SerializeObject(roles, Formatting.None, new JsonSerializerSettings()
+                    using (var stream = new MemoryStream())
                     {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
-                    var _Deserialized = JsonConvert.DeserializeObject<List<Role>>(_jsonSerialized);
-                    return Ok(_Deserialized);
+                        var writer = new Utf8JsonWriter(stream);
+                        writer.WriteStartArray();
+
+                        foreach (var item in roles)
+                        {
+                            writer.WriteStartObject();
+                            writer.WriteNumber("emp_no", item.emp_no);
+                            writer.WriteNumber("role", item.role1);
+                            writer.WriteStartObject("Employee");
+                            writer.WriteNumber("emp_no", item.Employee.emp_no);
+                            writer.WriteString("emp_hiredDate", item.Employee.emp_hiredDate?.ToString("dd-MM-yyyyTHH:mm:ss"));
+                            writer.WriteString("FormattedDate", item.Employee.emp_hiredDate?.ToString("MMMM dd, yyyy"));
+                            writer.WriteNumber("emp_contact", item.Employee.emp_contact);
+                            writer.WriteString("emp_fname", item.Employee.emp_fname);
+                            writer.WriteString("emp_lname", item.Employee.emp_lname);
+                            writer.WriteString("emp_mname", item.Employee.emp_name);
+                            writer.WriteEndObject();
+
+                            // add more properties as needed
+                            writer.WriteEndObject();
+                        }
+
+                        writer.WriteEndArray();
+                        writer.Flush();
+                        var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                        var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                        return Ok(_jsonDeserialized);
+                    }
                 }
             }
             catch (Exception ex)
@@ -573,57 +623,139 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new nwTFSEntity())
                 {
-                    var users = _context.Employees.Select(x => x).ToList();
-                    var status = _context.Status.Select(x => x).ToList();
-                    var roles = _context.Roles.Select(x => x).ToList();
-                    var creds = _context.Credentials.Select(x => x).ToList();
+                    var roles = _context.Employees.Include("Credential")
+                                .Include("Role")
+                                .Include("Status")
+                                .ToList();
 
-                    var newList = new List<Employee>();
-
-                    foreach (var item in users)
+                    using (var stream = new MemoryStream())
                     {
-                        var newCreds = creds.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
-                        var newRoles = roles.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
-                        var newStatus = status.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
-                        var user = new Employee()
+                        var writer = new Utf8JsonWriter(stream);
+                        writer.WriteStartArray();
+
+                        foreach (var item in roles)
                         {
-                            emp_no = item.emp_no,
-                            emp_contact = item.emp_contact,
-                            emp_hiredDate = item.emp_hiredDate,
-                            emp_fname = item.emp_fname,
-                            emp_lname = item.emp_lname,
-                            emp_name = item.emp_name,
-                            emp_position = item.emp_position,
+                            writer.WriteStartObject();
+                            writer.WriteNumber("emp_no", item.emp_no);
+                            writer.WriteString("emp_position", item.emp_position);
+                            writer.WriteNumber("emp_no", item.emp_no);
+                            writer.WriteString("emp_hiredDate", item.emp_hiredDate?.ToString("dd-MM-yyyyTHH:mm:ss"));
+                            writer.WriteString("FormattedDate", item.emp_hiredDate?.ToString("MMMM dd, yyyy"));
+                            writer.WriteNumber("emp_contact", item.emp_contact);
+                            writer.WriteString("emp_fname", item.emp_fname);
+                            writer.WriteString("emp_lname", item.emp_lname);
+                            writer.WriteString("emp_name", item.emp_name);
+                            if (item.Credential != null)
+                            {
+                                writer.WriteStartObject("Credential");
+                                writer.WriteNumber("emp_no", item.Credential.emp_no);
+                                writer.WriteString("username", item.Credential.username);
+                                writer.WriteString("password", item.Credential.password);
+                                writer.WriteEndObject();
+                            }
+                            else
+                            {
+                                writer.WriteStartObject("Credential");
+                                writer.WriteNull("emp_no");
+                                writer.WriteNull("username");
+                                writer.WriteNull("password");
+                                writer.WriteEndObject();
+                            }
+                            if(item.Role != null)
+                            {
+                                writer.WriteStartObject("Role");
+                                writer.WriteNumber("emp_no", item.Role.emp_no);
+                                writer.WriteNumber("role", item.Role.role1);
+                                writer.WriteEndObject();
+                            }
+                            else
+                            {
+                                writer.WriteStartObject("Role");
+                                writer.WriteNull("emp_no");
+                                writer.WriteNull("role");
+                                writer.WriteEndObject();
+                            }
+                            if (item.Status != null)
+                            {
+                                writer.WriteStartObject("Status");
+                                writer.WriteNumber("emp_no", item.Status.emp_no);
+                                writer.WriteNumber("IsActive", item.Status.IsActive);
+                                writer.WriteNumber("IsLocked", item.Status.IsLocked);
+                                writer.WriteNumber("IsUser", item.Status.IsUser);
+                                writer.WriteEndObject();
+                            }
+                            else
+                            {
+                                writer.WriteStartObject("Status");
+                                writer.WriteNull("emp_no");
+                                writer.WriteNull("IsActive");
+                                writer.WriteNull("IsLocked");
+                                writer.WriteNull("IsUser");
+                                writer.WriteEndObject();
+                            }
+                            // add more properties as needed
+                            writer.WriteEndObject();
+                        }
 
-                            Credential = newCreds?.emp_no == item.emp_no? new Credential { 
-                                emp_no = newCreds.emp_no,
-                                username = newCreds.username,
-                                password = newCreds.password
-                            } : null,
-                            Role = newRoles?.emp_no == item.emp_no ? new Role
-                            {
-                                emp_no = newRoles.emp_no,
-                                //IsUser = newRoles.IsUser,
-                                role1 = newRoles.role1
-                            } : null,
-                            Status = newStatus?.emp_no == item.emp_no ? new Status
-                            {
-                                emp_no = newStatus.emp_no,
-                                IsActive = newStatus.IsActive,
-                                IsLocked = newStatus.IsLocked,
-                                IsUser = newStatus.IsUser
-                            } : null
-                        };
-                        newList.Add(user);
+                        writer.WriteEndArray();
+                        writer.Flush();
+                        var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                        var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                        return Ok(_jsonDeserialized);
                     }
-
-                    var _jsonSerialized = JsonConvert.SerializeObject(newList, Formatting.None, new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
-                    var _Deserialized = JsonConvert.DeserializeObject<List<Employee>>(_jsonSerialized);
-                    return Ok(_Deserialized);
                 }
+                //using (var _context = new nwTFSEntity())
+                //{
+                //    var users = _context.Employees.Select(x => x).ToList();
+                //    var status = _context.Status.Select(x => x).ToList();
+                //    var roles = _context.Roles.Select(x => x).ToList();
+                //    var creds = _context.Credentials.Select(x => x).ToList();
+
+                //    var newList = new List<Employee>();
+
+                //    foreach (var item in users)
+                //    {
+                //        var newCreds = creds.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
+                //        var newRoles = roles.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
+                //        var newStatus = status.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
+                //        var user = new Employee()
+                //        {
+                //            emp_no = item.emp_no,
+                //            emp_contact = item.emp_contact,
+                //            emp_hiredDate = item.emp_hiredDate,
+                //            emp_fname = item.emp_fname,
+                //            emp_lname = item.emp_lname,
+                //            emp_name = item.emp_name,
+                //            emp_position = item.emp_position,
+
+                //            Credential = newCreds?.emp_no == item.emp_no? new Credential { 
+                //                emp_no = newCreds.emp_no,
+                //                username = newCreds.username,
+                //                password = newCreds.password
+                //            } : null,
+                //            Role = newRoles?.emp_no == item.emp_no ? new Role
+                //            {
+                //                emp_no = newRoles.emp_no,
+                //                //IsUser = newRoles.IsUser,
+                //                role1 = newRoles.role1
+                //            } : null,
+                //            Status = newStatus?.emp_no == item.emp_no ? new Status
+                //            {
+                //                emp_no = newStatus.emp_no,
+                //                IsActive = newStatus.IsActive,
+                //                IsLocked = newStatus.IsLocked,
+                //                IsUser = newStatus.IsUser
+                //            } : null
+                //        };
+                //        newList.Add(user);
+                //    }
+
+                //    var _jsonSerialized = JsonConvert.SerializeObject(newList, Formatting.None, new JsonSerializerSettings()
+                //    {
+                //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                //    });
+                //    var _Deserialized = JsonConvert.DeserializeObject<List<Employee>>(_jsonSerialized);
+                //    return Ok(_Deserialized);
             }
             catch (Exception ex)
             {
@@ -725,10 +857,12 @@ namespace TotalFireSafety.Controllers
                             emp.emp_contact = _emp.emp_contact;
                             emp.emp_hiredDate = _emp.emp_hiredDate;
                             emp.emp_position = _emp.emp_position;
-
+                            roles.emp_no = _emp.emp_no;
                             roles.role1 = _emp.Role.role1;
+                            status.emp_no = _emp.emp_no;
                             status.IsActive = _emp.Status.IsActive;
                             status.IsLocked = _emp.Status.IsLocked;
+                            creds.emp_no = _emp.emp_no;
                             creds.username = _emp.Credential.username;
                             creds.password = _emp.Credential.password;
 
@@ -739,10 +873,10 @@ namespace TotalFireSafety.Controllers
                             _context.SaveChanges();
                             return Ok("Employee Added");
                         }
-                        return BadRequest();
+                        return BadRequest("tite");
                     }
                 }
-                return BadRequest();
+                return BadRequest("tite11");
             }
             catch (Exception ex)
             {
@@ -896,38 +1030,36 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new nwTFSEntity())
                 {
-                    var items = _context.Inventories.Where(x => x.in_status != "archived");
-                    List<Inventory> newList = new List<Inventory>();
-
-                    foreach (var item in items)
+                    var items = _context.Inventories.Where(x => x.in_status.Trim() != "archived").ToList();
+                    using (var stream = new MemoryStream())
                     {
-                        var newGUID = GetNewGuid("NewItem");
-                        Inventory newItems = new Inventory()
+                        var writer = new Utf8JsonWriter(stream);
+                        writer.WriteStartArray();
+
+                        foreach (var item in items)
                         {
-                            in_guid = newGUID,
-                            in_code = item.in_code,
-                            in_category = item.in_category,
-                            in_arch_date = item.in_arch_date,
-                            in_class = item.in_class,
-                            in_dateAdded = item.in_dateAdded,
-                            in_name = item.in_name,
-                            in_quantity = item.in_quantity,
-                            in_size = item.in_size,
-                            in_status = item.in_status,
-                            in_type = item.in_type,
-                            in_remarks = item.in_remarks
-                        };
-                        newList.Add(newItems);
+                            writer.WriteStartObject();
+                            //writer.WriteString("in_guid", item.in_guid);
+                            writer.WriteString("in_code", item.in_code);
+                            writer.WriteString("in_name", item.in_name);
+                            writer.WriteString("in_dateAdded", item.in_dateAdded);
+                            writer.WriteString("in_quantity", item.in_quantity);
+                            writer.WriteString("in_category", item.in_category);
+                            writer.WriteString("in_type", item.in_type);
+                            writer.WriteString("in_size", item.in_size);
+                            writer.WriteString("in_type", item.in_status);
+                            writer.WriteString("in_remarks", item.in_remarks.Trim());
+                            writer.WriteString("in_class", item.in_class);
+                            // add more properties as needed
+                            writer.WriteEndObject();
+                        }
+
+                        writer.WriteEndArray();
+                        writer.Flush();
+                        var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                        var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                        return Ok(_jsonDeserialized);
                     }
-
-                    var _jsonSerialized = JsonConvert.SerializeObject(newList, Formatting.None, new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
-                    //  Deserialize the serialized json format to remove the escape characters like \ 
-                    var _jsonDeserialized = JsonConvert.DeserializeObject<List<Inventory>>(_jsonSerialized);
-
-                    return Ok(_jsonDeserialized);
                 }
             }
             catch (Exception ex)
@@ -951,18 +1083,47 @@ namespace TotalFireSafety.Controllers
                     {
                         id = int.Parse(val); // parse val into integer
                     }
-                    var user = _context.Inventories.Where(x => x.in_code.Contains(val) || x.in_name.Contains(val) || x.in_category.Contains(val) || x.in_type.Contains(val) && x.in_status != "archived");
+                    var items = _context.Inventories.Where(x => x.in_code.Contains(val) || x.in_name.Contains(val) || x.in_category.Contains(val) || x.in_type.Contains(val) && x.in_status != "archived").ToList();
 
-                    if (user != null)
+                    if (items != null)
                     {
-                        var _SerializedJson = JsonConvert.SerializeObject(user, Formatting.None, new JsonSerializerSettings()
+                        using (var stream = new MemoryStream())
                         {
-                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                        });
-                        var _DeserializedJson = JsonConvert.DeserializeObject(_SerializedJson);
-                        return Ok(_DeserializedJson);
+                            var writer = new Utf8JsonWriter(stream);
+                            writer.WriteStartArray();
+
+                            foreach (var item in items)
+                            {
+                                writer.WriteStartObject();
+                                //writer.WriteString("in_guid", item.in_guid);
+                                writer.WriteString("in_code", item.in_code);
+                                writer.WriteString("in_name", item.in_name);
+                                writer.WriteString("in_dateAdded", item.in_dateAdded);
+                                writer.WriteString("in_quantity", item.in_quantity);
+                                writer.WriteString("in_category", item.in_category);
+                                writer.WriteString("in_type", item.in_type);
+                                writer.WriteString("in_size", item.in_size);
+                                writer.WriteString("in_type", item.in_status);
+                                writer.WriteString("in_remarks", item.in_remarks.Trim());
+                                writer.WriteString("in_class", item.in_class);
+                                // add more properties as needed
+                                writer.WriteEndObject();
+                            }
+
+                            writer.WriteEndArray();
+                            writer.Flush();
+                            var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                            var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                            return Ok(_jsonDeserialized);
+                            //var _SerializedJson = JsonConvert.SerializeObject(user, Formatting.None, new JsonSerializerSettings()
+                            //{
+                            //    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                            //});
+                            //var _DeserializedJson = JsonConvert.DeserializeObject(_SerializedJson);
+                            //return Ok(_DeserializedJson);
+                        }
                     }
-                    return InternalServerError();
+                    return BadRequest("Item Not Found");
                 }
             }
             catch (Exception ex)
@@ -1144,58 +1305,130 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
+
                 using (var _context = new nwTFSEntity())
                 {
-                    var requests = _context.Requests.Select(x => x).ToList();
-                    var employee = _context.Employees.Select(x => x).ToList();
-                    var inventory = _context.Inventories.Select(x => x).ToList();
-                    var newRequest = new List<Request>();
-                    foreach (var item in requests)
+                    var roles = _context.Requests
+                        .Include("Employee")
+                        .Include("Inventory")
+                        .ToList();
+
+                    using (var stream = new MemoryStream())
                     {
-                        var newInv = inventory.Where(x => x.in_code == item.request_item).SingleOrDefault();
-                        var newEmployee = employee.Where(x => x.emp_no == item.request_employee_id).SingleOrDefault();
-                        var req = new Request()
+                        var writer = new Utf8JsonWriter(stream);
+                        writer.WriteStartArray();
+
+                        foreach (var item in roles)
                         {
-                            request_id = item.request_id,
-                            request_type = item.request_type,
-                            request_date = item.request_date,
-                            request_employee_id = item.request_employee_id,
-                            request_item = item.request_item,
-                            request_item_quantity = item.request_item_quantity,
-                            request_status = item.request_status.Trim(' '),
-                            request_type_id = item.request_type_id,
-                            request_type_status = item.request_type_status,
-                            Employee = newEmployee?.emp_no == item.request_employee_id ? new Employee
+                            string newID = "";
+                            if (item.request_type.ToLower() == "purchase")
                             {
-                                emp_no = newEmployee.emp_no,
-                                emp_contact = newEmployee.emp_contact,
-                                emp_hiredDate = newEmployee.emp_hiredDate,
-                                emp_fname = newEmployee.emp_fname,
-                                emp_lname = newEmployee.emp_lname,
-                                emp_name = newEmployee.emp_name,
-                                emp_position = newEmployee.emp_position,
-                            } : null,
-                            Inventory = newInv?.in_code == item.request_item ? new Inventory
+                                newID = "PUR" + item.request_type_id;
+                            }
+                            if (item.request_type.ToLower() == "deploy" || item.request_type.ToLower() == "deployment")
                             {
-                                in_code = newInv.in_code,
-                                in_category = newInv.in_category,
-                                in_class = newInv.in_class,
-                                in_name = newInv.in_name,
-                                in_quantity = newInv.in_quantity,
-                                in_size = newInv.in_size,
-                                in_type = newInv.in_type
-                            } : null
-                        };
-                        newRequest.Add(req);
+                                newID = "DEP" + (item.request_type_id);
+                            }
+                            if (item.request_type.ToLower() == "supply")
+                            {
+                                newID = "SUP" + item.request_type_id;
+                            }
+                            writer.WriteStartObject();
+                            writer.WriteString("request_id", item.request_id);
+                            writer.WriteString("request_type", item.request_type);
+                            writer.WriteString("request_date", item.request_date);
+                            writer.WriteString("Id", newID);
+                            writer.WriteString("FormattedDate", item.request_date.ToString("MMMM dd, yyyy"));
+                            writer.WriteNumber("request_employee_id", int.Parse(item.request_employee_id.ToString()));
+                            writer.WriteString("request_item", item.request_item);
+                            writer.WriteString("request_item_quantity", item.request_item_quantity);
+                            writer.WriteString("request_status", item.request_status.Trim());
+                            writer.WriteNumber("request_type_id", item.request_type_id);
+                            writer.WriteString("request_type_status", item.request_type_status);
+                            writer.WriteStartObject("Employee");
+                            writer.WriteNumber("emp_no", item.Employee.emp_no);
+                            writer.WriteString("emp_hiredDate", item.Employee.emp_hiredDate?.ToString("dd-MM-yyyyTHH:mm:ss"));
+                            writer.WriteString("FormattedDate", item.Employee.emp_hiredDate?.ToString("MMMM dd, yyyy"));
+                            writer.WriteNumber("emp_contact", item.Employee.emp_contact);
+                            writer.WriteString("emp_fname", item.Employee.emp_fname);
+                            writer.WriteString("emp_lname", item.Employee.emp_lname);
+                            writer.WriteString("emp_mname", item.Employee.emp_name);
+                            writer.WriteString("emp_position", item.Employee.emp_position);
+                            writer.WriteEndObject();
+                            writer.WriteStartObject("Inventory");
+                            writer.WriteString("in_code", item.Inventory.in_code);
+                            writer.WriteString("in_category", item.Inventory.in_category);
+                            writer.WriteString("in_class", item.Inventory.in_class);
+                            writer.WriteString("in_name", item.Inventory.in_name);
+                            writer.WriteString("in_quantity", item.Inventory.in_quantity);
+                            writer.WriteString("in_size", item.Inventory.in_size);
+                            writer.WriteString("in_type", item.Inventory.in_type);
+                            writer.WriteEndObject();
+
+                            // add more properties as needed
+                            writer.WriteEndObject();
+                        }
+
+                        writer.WriteEndArray();
+                        writer.Flush();
+                        var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                        var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                        return Ok(_jsonDeserialized);
                     }
-                    var _jsonSerialized = JsonConvert.SerializeObject(newRequest, Formatting.None, new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
-                    //  Deserialize the serialized json format to remove the escape characters like \ 
-                    var _jsonDeserialized = JsonConvert.DeserializeObject<List<Request>>(_jsonSerialized);
-                    return Ok(_jsonDeserialized);
                 }
+
+                //using (var _context = new nwTFSEntity())
+                //{
+                //    var requests = _context.Requests.Select(x => x).ToList();
+                //    var employee = _context.Employees.Select(x => x).ToList();
+                //    var inventory = _context.Inventories.Select(x => x).ToList();
+                //    var newRequest = new List<Request>();
+                //    foreach (var item in requests)
+                //    {
+                //        var newInv = inventory.Where(x => x.in_code == item.request_item).SingleOrDefault();
+                //        var newEmployee = employee.Where(x => x.emp_no == item.request_employee_id).SingleOrDefault();
+                //        var req = new Request()
+                //        {
+                //            request_id = item.request_id,
+                //            request_type = item.request_type,
+                //            request_date = item.request_date,
+                //            request_employee_id = item.request_employee_id,
+                //            request_item = item.request_item,
+                //            request_item_quantity = item.request_item_quantity,
+                //            request_status = item.request_status.Trim(' '),
+                //            request_type_id = item.request_type_id,
+                //            request_type_status = item.request_type_status,
+                //            Employee = newEmployee?.emp_no == item.request_employee_id ? new Employee
+                //            {
+                //                emp_no = newEmployee.emp_no,
+                //                emp_contact = newEmployee.emp_contact,
+                //                emp_hiredDate = newEmployee.emp_hiredDate,
+                //                emp_fname = newEmployee.emp_fname,
+                //                emp_lname = newEmployee.emp_lname,
+                //                emp_name = newEmployee.emp_name,
+                //                emp_position = newEmployee.emp_position,
+                //            } : null,
+                //            Inventory = newInv?.in_code == item.request_item ? new Inventory
+                //            {
+                //                in_code = newInv.in_code,
+                //                in_category = newInv.in_category,
+                //                in_class = newInv.in_class,
+                //                in_name = newInv.in_name,
+                //                in_quantity = newInv.in_quantity,
+                //                in_size = newInv.in_size,
+                //                in_type = newInv.in_type
+                //            } : null
+                //        };
+                //        newRequest.Add(req);
+                //    }
+                //    var _jsonSerialized = JsonConvert.SerializeObject(newRequest, Formatting.None, new JsonSerializerSettings()
+                //    {
+                //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                //    });
+                //    //  Deserialize the serialized json format to remove the escape characters like \ 
+                //    var _jsonDeserialized = JsonConvert.DeserializeObject<List<Request>>(_jsonSerialized);
+                //    return Ok(_jsonDeserialized);
+                //}
             }
             catch(Exception ex)
             {

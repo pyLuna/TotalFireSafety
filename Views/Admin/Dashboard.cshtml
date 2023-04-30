@@ -45,6 +45,10 @@
                                     </div>
 
                                     <!-- END -->
+                                    <select id="selcat" title="Select Category">
+                                        <option disabled selected>Category</option>
+                                        <option>All</option>
+                                    </select>
 
                                     <select id="selclass" title="Select Class">
                                         <option disabled selected>Class</option>
@@ -55,17 +59,12 @@
                                         <option disabled selected>Type</option>
                                         <option>All</option>
                                     </select>
-
-                                    <select id="selcat" title="Select Category">
-                                        <option disabled selected>Category</option>
-                                        <option>All</option>
-                                    </select>
                                 </div>
 
                             </div>
                             <div class="chart-border">
                                 <div class="chart">
-                                    <canvas id="barchart" width="300" height="300"></canvas>
+                                    <canvas id="barchart" width="1200" height="300"></canvas>
 
                                 </div>
                             </div>
@@ -112,26 +111,26 @@
 
                                     <div class="radio-container">
                                         <div class="radio-list">
-                                            <input type="radio" name="list" />
+                                            <input type="radio" name="list" value="all" checked/>
                                             <label for=""><h3>All</h3></label>
                                         </div>
 
                                         <div class="radio-list">
-                                            <input type="radio" name="list" />
+                                            <input type="radio" name="list" value="fast"/>
                                             <label for=""><h3>Fast Paced Items</h3></label>
                                         </div>
 
                                         <div class="radio-list">
-                                            <input type="radio" name="list" />
+                                            <input type="radio" name="list" value="slow"/>
                                             <label for=""><h3>Slow Paced Items</h3></label>
                                         </div>
                                     </div>
 
-                                    <select required>
+                                    @*<select required>
                                         <option disabled selected>Item Class</option>
                                         <option>Imported</option>
                                         <option>Local</option>
-                                    </select>
+                                    </select>*@
                                 </div>
 
                             </div>
@@ -184,7 +183,7 @@
                                     <div class="card-details">
                                         <label id="purLabel"></label><span>Total Entries</span>
                                         <p></p>
-                                        <label class="card-active" id="actpurLabel"></label><span class="card-active">New Entries</span>
+                                        <label class="card-active" id="actpurLabel" style="color: #FF0000 !important;"></label><span class="card-active" style="color: #FF0000 !important;">Pending Entries</span>
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +198,7 @@
                                     <div class="card-details">
                                         <label id="depLabel"></label><span>Total Entries</span>
                                         <p></p>
-                                        <label class="card-active" id="actdepLabel"></label><span class="card-active">New Entries</span>
+                                        <label class="card-active" id="actdepLabel" style="color: #FF0000 !important;"></label><span class="card-active" style="color: #FF0000 !important;">Pending Entries</span>
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +214,7 @@
                                     <div class="card-details">
                                         <label id="supLabel"></label><span>Total Entries</span>
                                         <p></p>
-                                        <label class="card-active" id="actsupLabel"></label><span class="card-active">New Entries</span>
+                                        <label class="card-active" id="actsupLabel" style="color: #FF0000 !important;"></label><span class="card-active" style="color: #FF0000 !important;">Pending Entries</span>
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +230,7 @@
                                     <div class="card-details">
                                         <label id="itemLabel"></label><span>Total Items</span>
                                         <p></p>
-                                        <label class="card-active" id="critLabel"></label><span class="card-active">Critical Items</span>
+                                        <label class="card-active" id="critLabel" style="color: #FF0000 !important;"></label><span class="card-active" style="color: #FF0000 !important;">Critical Items</span>
                                     </div>
                                 </div>
                             </div>
@@ -371,10 +370,11 @@
 <script src="~/Scripts/Dashboard.js"></script>
 <script>
 
-    function OnLoad() {
+    async function OnLoad() {
         GetAll();
-        GetItems();
-        GetCounts();
+        //GetItems();
+        GetDate();
+        GetSupplies();
     }
 
     `use strict`;
@@ -494,9 +494,14 @@
             localStorage.setItem("diff", end.diff(start, 'days'));
         }
 
+        function customYear(startYear) {
+            return [moment().year(startYear).startOf('year'), moment().year(startYear).endOf('year')];
+        }
+
         $('#reportrange').daterangepicker({
             startDate: start,
             endDate: end,
+            yearSelect: true, // Enable year selection
             ranges: {
                 'Today': [moment(), moment()],
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -504,8 +509,12 @@
                 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                'This Year': [moment().startOf('year'), moment().endOf('month')]
-            }
+                'This Year': [moment().startOf('year'), moment().endOf('month')],
+                'Last Year': [moment().startOf('year').subtract(1, 'years'), moment().endOf('year').subtract(1, 'years')],
+            },
+            "showDropdowns": true,
+            "opens": "center",
+            "showCustomRangeLabel": true,
         }, cb);
 
         cb(start, end);
@@ -514,4 +523,7 @@
             GetDate();
         });
     });
+    function test() {
+        return [moment(), moment()]
+    }
 </script>

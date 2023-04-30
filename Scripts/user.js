@@ -10,7 +10,12 @@ let hidRole = document.getElementById('emp_role');
 
 selroles.addEventListener("change", function () {
 
-    hidRole.value = selroles.selectedIndex;
+    if (selroles.selectedIndex != 0) {
+        hidRole.value = selroles.selectedIndex;
+    }
+    else {
+        hidRole.value = 0;
+    }
 });
 selstats.addEventListener("change", function () {
     let hidAct = document.getElementById('emp_act');
@@ -52,7 +57,7 @@ function GetAllEmployeeInfo() {
             }
         })
         .then(data => {
-
+            jsonArray.length = 0
             jsonArray.push(data);
             fixArray();
             if (table !== null) {
@@ -66,6 +71,7 @@ function GetAllEmployeeInfo() {
 }
 
 function fixArray() {
+    fixedArray.length = 0;
     for (var j = 0; j < jsonArray[0].length; j++) {
         fixedArray.push(jsonArray[0][j]);
     }
@@ -99,20 +105,20 @@ function setTable(array) {
             if (array[i].Status?.IsLocked === 1 && array[i].Status.IsUser === 1) {
                 stats = "Locked"
             }
-            if (array[i].Status.IsUser === 0) {
-                role = "null";
-                stats = "Nonuser";
-            }
-            if (array[i].Role?.role1 === 1) {
+
+            if (array[i].Role?.role === 1) {
                 role = "Admin";
             }
-            else if (array[i].Role?.role1 === 2) {
+            else if (array[i].Role?.role === 2) {
                 role = "Warehouse Admin";
             }
-            else if (array[i].Role?.role1 === 3) {
+            else if (array[i].Role?.role === 3) {
                 role = "Office Admin";
             }
-
+            if (array[i].Status.IsUser === 0) {
+                role = "";
+                stats = "Nonuser";
+            }
 
             let mname = "";
             if (array[i].emp_name == null) {
@@ -283,7 +289,7 @@ function setField(value) {
 
     hiredDate.value = date.toISOString().substr(0, 10);
 
-    selroles.selectedIndex = filtered[0]?.Role?.role1;
+    selroles.selectedIndex = filtered[0]?.Role?.role;
 
      //loop through all the options in the select element
     for (let i = 0; i < selstats.options.length; i++) {
@@ -368,6 +374,9 @@ function submitForm() {
     }
     else {
         userField.value = 1;
+    }
+    if (selroles.selectedIndex == 0) {
+        hidRole.value = 0;
     }
 
     var bool = checkForm();

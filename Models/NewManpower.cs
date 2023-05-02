@@ -12,19 +12,16 @@ namespace TotalFireSafety.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Basecount
+    public partial class NewManpower
     {
-        public System.Guid bc_id { get; set; }
-        public string bc_itemCode { get; set; }
-        public System.DateTime bc_date { get; set; }
-        public string bc_count { get; set; }
+        public System.Guid man_id { get; set; }
+        public Nullable<int> man_emp_no { get; set; }
+        public string man_name { get; set; }
+        public string man_postition { get; set; }
+        public Nullable<int> man_proj_id { get; set; }
+        public Nullable<System.DateTime> man_date { get; set; }
     
-        public virtual Inventory Inventory { get; set; }
-        public virtual Basecount Basecount1 { get; set; }
-        public virtual Basecount Basecount2 { get; set; }
-        public string FormattedDate
-        {
-            get { return bc_date.ToString("MMMM dd, yyyy"); }
-        }
+        public virtual Attendance Attendance { get; set; }
+        public virtual NewProject NewProject { get; set; }
     }
 }

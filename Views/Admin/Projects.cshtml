@@ -1,5 +1,6 @@
 ﻿@using Newtonsoft.Json
 @using TotalFireSafety.Models
+
 @{
     ViewBag.Title = "Projects";
     Layout = "~/Views/AdminLayout.cshtml";
@@ -11,7 +12,7 @@
 
 
 <div class="main-content">
-   
+
     <header>
         <h2>
             <label for="nav-toggle">
@@ -187,7 +188,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  
                                 </tbody>
                             </table>
                         </div>
@@ -436,9 +436,9 @@
                 const newRow = document.createElement("tr");
 
                 newRow.innerHTML = `
-                                                      <td contenteditable="true"></td>
-                                                      <td contenteditable="true"></td>
-                                                    `;
+                                                              <td contenteditable="true"></td>
+                                                              <td contenteditable="true"></td>
+                                                            `;
 
                 table.tBodies[0].insertBefore(newRow, row.nextSibling);
                 newRow.children[0].focus();
@@ -475,6 +475,7 @@
                 var manpower = {
                     man_id: null,
                     man_emp_no: null,
+                    man_proj_id: null,
                     man_name: $(this).find("td:eq(0)").text(),
                     man_postition: $(this).find("td:eq(1)").text()
                 };
@@ -503,6 +504,7 @@
 
 
     </script>
+ 
     <script>
         function savePro() {
             // Get the form data
@@ -569,73 +571,73 @@
     </script>
     <script>
 
-        function OnLoad() {
+                function OnLoad() {
 
-        }
-
-        function userFiltFunction() {
-            document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.user-filter-btn')) {
-                var myDropdown = document.getElementById("userFiltDropdown");
-                if (myDropdown.classList.contains('user-filter-show')) {
-                    myDropdown.classList.remove('user-filter-show');
                 }
-            }
-        }
 
-        function userSortFunction() {
-            document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.user-sort-btn')) {
-                var myDropdown = document.getElementById("userSortDropdown");
-                if (myDropdown.classList.contains('user-sort-show')) {
-                    myDropdown.classList.remove('user-sort-show');
+                function userFiltFunction() {
+                    document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
                 }
-            }
-        }
 
-        let canpopup = document.getElementById("can-popup");
+                // Close the dropdown if the user clicks outside of it
+                window.onclick = function (e) {
+                    if (!e.target.matches('.user-filter-btn')) {
+                        var myDropdown = document.getElementById("userFiltDropdown");
+                        if (myDropdown.classList.contains('user-filter-show')) {
+                            myDropdown.classList.remove('user-filter-show');
+                        }
+                    }
+                }
 
-        function canOpenPopup() {
-            canpopup.classList.add("can-popup-show")
-        }
+                function userSortFunction() {
+                    document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+                }
 
-        function canClosePopup() {
-            canpopup.classList.remove("can-popup-show")
-        }
+                // Close the dropdown if the user clicks outside of it
+                window.onclick = function (e) {
+                    if (!e.target.matches('.user-sort-btn')) {
+                        var myDropdown = document.getElementById("userSortDropdown");
+                        if (myDropdown.classList.contains('user-sort-show')) {
+                            myDropdown.classList.remove('user-sort-show');
+                        }
+                    }
+                }
 
-        let rempopup = document.getElementById("rem-popup");
+                let canpopup = document.getElementById("can-popup");
 
-        function remOpenPopup() {
-            rempopup.classList.add("rem-popup-show")
-        }
+                function canOpenPopup() {
+                    canpopup.classList.add("can-popup-show")
+                }
 
-        function remClosePopup() {
-            rempopup.classList.remove("rem-popup-show")
-        }
+                function canClosePopup() {
+                    canpopup.classList.remove("can-popup-show")
+                }
 
-        function openAddNewContainer() {
-            document.getElementById("add-new-container").style.display = "block";
-        }
+                let rempopup = document.getElementById("rem-popup");
 
-        function closeAddNewContainer() {
-            document.getElementById("add-new-container").style.display = "none";
-        }
+                function remOpenPopup() {
+                    rempopup.classList.add("rem-popup-show")
+                }
 
-        function openInputMemForm() {
-            document.getElementById("input-mem-container").style.display = "block";
-        }
+                function remClosePopup() {
+                    rempopup.classList.remove("rem-popup-show")
+                }
 
-        function closeInputMemForm() {
-            document.getElementById("input-mem-container").style.display = "none";
-        }
+                function openAddNewContainer() {
+                    document.getElementById("add-new-container").style.display = "block";
+                }
+
+                function closeAddNewContainer() {
+                    document.getElementById("add-new-container").style.display = "none";
+                }
+
+                function openInputMemForm() {
+                    document.getElementById("input-mem-container").style.display = "block";
+                }
+
+                function closeInputMemForm() {
+                    document.getElementById("input-mem-container").style.display = "none";
+                }
 
     </script>
 

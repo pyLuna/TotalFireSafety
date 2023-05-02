@@ -11,7 +11,7 @@ namespace TotalFireSafety.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Request
     {
         public System.Guid request_id { get; set; }
@@ -23,7 +23,7 @@ namespace TotalFireSafety.Models
         public string request_status { get; set; }
         public int request_type_id { get; set; }
         public string request_type_status { get; set; }
-    
+
         public virtual Employee Employee { get; set; }
         public virtual Inventory Inventory { get; set; }
         public string formType { get; set; }

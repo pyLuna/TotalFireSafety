@@ -1,4 +1,8 @@
 ﻿
+@using TotalFireSafety.Models
+@model ProjectReportViewModel
+
+
 @{
     ViewBag.Title = "ProjectView";
     Layout = "~/Views/AdminLayout.cshtml";
@@ -53,29 +57,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>Mar 11, 2023</td>
-                                                    <td>Report No.1</td>
-                                                    <td>The task were succe...&nbsp;<i class="las la-expand-arrows-alt" onclick="openReportEditForm()"></i></td>
-                                                    <td>Achieved</td>
-                                                    <td><a>export</a></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>April 12, 2023</td>
-                                                    <td>Report No.2</td>
-                                                    <td>The task were succe...&nbsp;<i class="las la-expand-arrows-alt"></i></td>
-                                                    <td>Unfinished</td>
-                                                    <td><a>export</a></td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>Feb 14, 2023</td>
-                                                    <td>Report No.3</td>
-                                                    <td>The task were succe...&nbsp;<i class="las la-expand-arrows-alt"></i></td>
-                                                    <td>Achieved</td>
-                                                    <td><a>export</a></td>
-                                                </tr>
+                                                @foreach (var report in Model.Reports)
+                                                {
+                                                    <tr>
+                                                        <td>@report.rep_date</td>
+                                                        <td>@report.rep_no</td>
+                                                        <td>@report.rep_description <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no' ,'@report.rep_description', '@report.rep_stats', '@report.rep_date.ToString("MM/dd/yyyy")', '@report.rep_scope' ); $('#rep_date1').val('@report.rep_date.ToString("MM/dd/yyyy")');"></i></td>
+                                                        <td>@report.rep_stats</td>
+                                                        <td><a href="#">Export</a></td>
+                                                    </tr>
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
@@ -95,19 +86,19 @@
                             </div>
 
                             <div class="date">
-                                <label>Project Name: 6 Story Bldg</label>
+                                <label>Project Name: @ViewBag.ProjectName</label>
                             </div>
 
                             <div class="date">
-                                <label>Subject: Supply & Install AFSS and FOAS</label>
+                                <label>Subject: @ViewBag.Subject</label>
                             </div>
 
                             <div class="date">
-                                <label>Client: Lanao Milling Corp</label>
+                                <label>Client: @ViewBag.Client</label>
                             </div>
 
                             <div class="date">
-                                <label>Project Lead: Vincent M. Cordero</label>
+                                <label>Project Lead: @ViewBag.ProjectLead</label>
                             </div>
 
                             <div class="status">
@@ -124,12 +115,12 @@
 
                             <div class="date">
                                 <label class="title">Start Date: </label>
-                                <label><input class="start" type="date"></label>
+                                <label>@ViewBag.Startdate</label>
                             </div>
 
                             <div class="date">
                                 <label class="title">Finish Date: </label>
-                                <label><input type="date"></label>
+                                <label> @ViewBag.Enddate</label>
                             </div>
 
 
@@ -153,20 +144,14 @@
                                                     <table width="100%">
                                                         <tbody>
 
-                                                            <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>Person-in-charge</label></td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>Person-in-charge</label></td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>Person-in-charge</label></td>
-                                                            </tr>
+                                                            @foreach (var manpower in Model.Manpowers)
+                                                            {
+                                                                var attendance = Model.Attendances.FirstOrDefault(a => a.atte_proj_id == manpower.man_proj_id);
+                                                                <tr>
+                                                                    <td>@manpower.man_name</td>
+                                                                    <td>@manpower.man_postition</td>
+                                                                </tr>
+                                                            }
 
 
                                                         </tbody>
@@ -258,20 +243,20 @@
                                                     <tbody>
                                                         <tr>
                                                             <td><b>Installation</b></td>
-                                                            <td><label class="stat-on-going">Ongoing</label></label></td>
-                                                            <td>April 03, 2023</label></td>
+                                                            <td><label class="stat-on-going">Ongoing</label></td>
+                                                            <td>April 03, 2023</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td><b>Installation</b></td>
-                                                            <td><label class="stat-in-going">Ingoing</label></label></td>
-                                                            <td>April 03, 2023</label></td>
+                                                            <td><label class="stat-in-going">Ingoing</label></td>
+                                                            <td>April 03, 2023</td>
                                                         </tr>
 
                                                         <tr>
                                                             <td><b>Installation</b></td>
-                                                            <td><label class="stat-delayed">Delayed</label></label></td>
-                                                            <td>April 03, 2023</label></td>
+                                                            <td><label class="stat-delayed">Delayed</label></td>
+                                                            <td>April 03, 2023</td>
                                                         </tr>
 
                                                     </tbody>
@@ -299,7 +284,7 @@
             <div class="add-new-header">
                 <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
                 <center>
-                    <h3>EDIT PROJECT <i class="las la-rocket"></i></h3>
+                    <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
                 </center>
 
             </div>
@@ -309,40 +294,40 @@
                     <div class="input-fields">
                         <Label>Project Name</Label>
                         <br>
-                        <input type="text" name="projName" placeholder="Enter here..">
+                        <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name">
                     </div>
                     <div class="input-fields">
                         <Label>Subject</Label>
                         <br>
-                        <input type="text" name="projSubject" placeholder="Enter here..">
+                        <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject">
                     </div>
                     <div class="input-fields">
                         <Label>Client</Label>
                         <br>
-                        <input type="text" name="projClient" placeholder="Enter here..">
+                        <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client">
                     </div>
                     <div class="input-fields">
                         <Label>Location Site</Label>
                         <br>
-                        <input type="text" name="projLocation" placeholder="Enter here..">
+                        <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location">
                     </div>
                     <div class="grp">
                         <div class="input-fields left">
-                            <label for="">Project Lead</label>
+                            <Label>Project Lead</Label>
                             <br>
-                            <select id="select-lead" name="projLead" required>
-                                <option disabled selected>Select Lead</option>
+                            <select name="proj_lead" required>
+                                <option disabled>Select Lead</option>
+                                <option value="@Model.Project.proj_lead" selected>@Model.Project.proj_lead</option>
                             </select>
-
                         </div>
                         <div class="input-fields right">
                             <Label>Status</Label>
                             <br>
-                            <select name="projStatus" required>
-                                <option>Select Status</option>
-                                <option>On-going</option>
-                                <option>In-going</option>
-                                <option>delay</option>
+                            <select name="proj_status" required>
+                                <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
+                                <option>On Track</option>
+                                <option>Delayed</option>
+                                <option>Cancelled</option>
                             </select>
                         </div>
                     </div>
@@ -351,16 +336,16 @@
                         <div class="input-fields left">
                             <Label>Start Date</Label>
                             <br>
-                            <input type="date" name="projStartDate">
+                            <input type="text" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
                         </div>
                         <div class="input-fields right">
                             <Label>Baseline Finish</Label>
                             <br>
-                            <input type="date" name="projEndDate">
+                            <input type="date" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")">
                         </div>
                     </div>
 
-                    <button>UPDATE PROJECT</button>
+                    <button onclick="updatedata()">UPDATE PROJECT</button>
 
                 </div>
 
@@ -376,24 +361,8 @@
                                     <div class="mems">
                                         <div class="mems-body">
                                             <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%">
+                                                <table width="100%" id="clockinTable">
                                                     <tbody>
-
-                                                        <tr>
-                                                            <td><b>Vincent M. Cordero</b></td>
-                                                            <td>Person-in-charge</label></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td><b>Vincent M. Cordero</b></td>
-                                                            <td>Person-in-charge</label></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td><b>Vincent M. Cordero</b></td>
-                                                            <td>Person-in-charge</label></td>
-                                                        </tr>
-
 
                                                     </tbody>
                                                 </table>
@@ -423,7 +392,7 @@
                             <div class="input-mems">
                                 <div class="input-mems-body">
                                     <div class="table-responsive" style="overflow-x: auto;">
-                                        <table width="100%">
+                                        <table id="" width="100%">
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
@@ -432,8 +401,8 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td contenteditable="true"><b>Vincent M. Cordero</b></td>
-                                                    <td contenteditable="true">Person-in-charge</label></td>
+                                                    <td contenteditable="true"><b></b></td>
+                                                    <td contenteditable="true"></label></td>
                                                 </tr>
 
 
@@ -446,11 +415,12 @@
                     </div>
                 </div>
                 <center>
-                    <button onclick="closeInputMemForm()">Save</button>
+                    <button onclick="closeInputMemForm() + saveData1()">Save</button>
                     <button onclick="closeInputMemForm()">Cancel</button>
                 </center>
             </div>
         </div>
+
 
         <!-- END -->
         <!-- ADD REPORT - NEW LAYOUT - 04-12 -->
@@ -469,26 +439,27 @@
                         <div class="upper">
                             <div class="upper-content">
                                 <div class="label-container">
-                                    <label for="">Project Name: </label> &nbsp;<h3>6 Story Bldg</h3>
+                                    <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
                                 </div>
 
                                 <div class="label-container">
-                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>Supply & Install AFSS and FOAS</h3>
+                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
                                 </div>
 
                                 <div class="label-container">
-                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>Lanao Milling Corp.</h3>
+                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
                                 </div>
 
                                 <div class="label-container">
-                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>Lanao Milling Corp.</h3>
+                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
                                 </div>
 
                                 <div class="label-container">
-                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>Vincent M. Cordero</h3>
+                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
                                 </div>
                             </div>
                         </div>
+
                         <div class="mid">
 
                             <div class="mid-content" onclick="openInputManForm()">
@@ -496,6 +467,7 @@
                             </div>
 
                         </div>
+
                         <div class="lower">
                             <div class="low-list">
                                 <div class="low-grid">
@@ -503,35 +475,16 @@
                                         <div class="low">
                                             <div class="low-body">
                                                 <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table width="100%">
+                                                    <table id="outputTable" width="100%">
                                                         <thead>
                                                             <tr>
                                                                 <td>MANPOWER</td>
+                                                                <td>POSITION</td>
                                                                 <td>Time-In</td>
                                                                 <td>Time-Out</td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-
-                                                            <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>7:00 AM</td>
-                                                                <td>5:00 PM</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>7:00 AM</td>
-                                                                <td>5:00 PM</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>7:00 AM</td>
-                                                                <td>5:00 PM</td>
-                                                            </tr>
-
-
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -551,18 +504,17 @@
                             <div class="mid">
                                 <div class="mid-container">
                                     <div class="input">
-                                        <textarea name="" id="" placeholder="Input here"></textarea>
+                                        <textarea name="" id="rep_description" placeholder="Input here"></textarea>
                                     </div>
                                     <div class="attach">
-                                        <a href="#" id="attachBtn">
+                                        <button id="attachBtn">
                                             <i class="las la-paperclip"></i>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="lower">
                                 <div class="img-list" id="img-list">
-
 
                                 </div>
                             </div>
@@ -573,10 +525,10 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="date">
+                                    <input type="date" id="rep_date">
                                 </div>
                                 <div class="status">
-                                    <select required>
+                                    <select id="rep_status" required>
                                         <option>Select Status</option>
                                         <option>Achieved</option>
                                     </select>
@@ -584,7 +536,8 @@
                             </div>
                             <div class="mid">
                                 <div class="mid-container">
-                                    <i class="las la-project-diagram"></i> <input type="text" placeholder="Input here..."><i class="las la-location-arrow enter"></i>
+                                    <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
+                                    <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
                                 </div>
                             </div>
                             <div class="lower">
@@ -601,14 +554,7 @@
                                                                     <td>SCOPE OF WORK</td>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
-
-                                                                <tr>
-                                                                    <td><i class="las la-dot-circle"></i></td>
-                                                                    <td>Hydro test and tracing for possible leak</td>
-                                                                </tr>
-
-
+                                                            <tbody id="scope-list">
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -619,13 +565,52 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="button">
-                            <button>SUBMIT</button>
+                            <button onclick="saveReport() + SaveData1() + saveData()">SUBMIT</button>
                         </div>
+
+                        <script>
+                            function saveData() {
+                                var repDate = document.getElementById('rep_date').value;
+                                var repProjId = document.getElementById('rep_proj_id').value;
+
+                                var images = document.querySelectorAll('#img-list img');
+                                var imageStrings = [];
+
+                                for (var i = 0; i < images.length; i++) {
+                                    var canvas = document.createElement('canvas');
+                                    var context = canvas.getContext('2d');
+                                    canvas.width = images[i].naturalWidth;
+                                    canvas.height = images[i].naturalHeight;
+                                    context.drawImage(images[i], 0, 0);
+                                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
+                                    imageStrings.push(base64);
+                                }
+
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/Admin/SaveReportImages',
+                                    data: {
+                                        images: imageStrings,
+                                        rep_date: repDate,
+                                        rep_proj_id: repProjId
+                                    },
+                                    success: function (response) {
+                                        alert('Data has been saved successfully!');
+                                        location.reload();
+                                    },
+                                    error: function (xhr, status, error) {
+                                        alert('Error Saving Data');
+                                    }
+                                });
+                            }
+                        </script>
+
                     </div>
                 </div>
             </div>
-
 
 
         </div>
@@ -647,29 +632,31 @@
                         <div class="upper">
                             <div class="upper-content">
                                 <div class="label-container">
-                                    <label for="">Project Name: </label> &nbsp;<h3>6 Story Bldg</h3>
+                                    <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
                                 </div>
 
                                 <div class="label-container">
-                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>Supply & Install AFSS and FOAS</h3>
+                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
                                 </div>
 
                                 <div class="label-container">
-                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>Lanao Milling Corp.</h3>
+                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
                                 </div>
 
                                 <div class="label-container">
-                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>Lanao Milling Corp.</h3>
+                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
                                 </div>
 
                                 <div class="label-container">
-                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>Vincent M. Cordero</h3>
+                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
                                 </div>
                             </div>
+
+
                         </div>
                         <div class="mid">
 
-                            <div class="mid-content" onclick="openInputManForm()">
+                            <div class="mid-content" onclick="openInputManForm1()">
                                 <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
                             </div>
 
@@ -681,35 +668,28 @@
                                         <div class="low">
                                             <div class="low-body">
                                                 <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table width="100%">
+                                                    <table width="100%" id="Clockoutput">
                                                         <thead>
                                                             <tr>
                                                                 <td>MANPOWER</td>
+                                                                <td>POSITION</td>
                                                                 <td>Time-In</td>
                                                                 <td>Time-Out</td>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        <tbody id="manpowerTableBody">
 
+                                                            @foreach (var manpower in Model.Manpowers)
+                                                            {
+
+                                                                var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id);
                                                             <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>7:00 AM</td>
-                                                                <td>5:00 PM</td>
+                                                                <td>@manpower.man_name</td>
+                                                                <td>@manpower.man_postition</td>
+                                                                <td>@(attendance?.atte_timein?.ToString("hh:mm tt") ?? "-")</td>
+                                                                <td>@(attendance?.atte_timeout?.ToString("hh:mm tt") ?? "-")</td>
                                                             </tr>
-
-                                                            <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>7:00 AM</td>
-                                                                <td>5:00 PM</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><b>Vincent M. Cordero</b></td>
-                                                                <td>7:00 AM</td>
-                                                                <td>5:00 PM</td>
-                                                            </tr>
-
-
+                                                            }
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -724,24 +704,28 @@
                     <div class="mid">
                         <div class="mid-content">
                             <div class="upper">
-                                <label>REPORT # <a> 01 </a> </label>
+                                <label name="rep_no">REPORT ID @ViewBag.ReportNo</label>
                             </div>
                             <div class="mid">
                                 <div class="mid-container">
                                     <div class="input">
-                                        <textarea name="" id="" placeholder="Input here"></textarea>
+                                        
+                                        <input type="text" name="rep_description" id="rep_description"  readonly/>
+                                      
                                     </div>
                                     <div class="attach">
-                                        <a href="#" id="attachBtn">
-                                            <i class="las la-paperclip"></i>
-                                        </a>
+                                        <i class="las la-paperclip"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="lower">
                                 <div class="img-list">
-                                    <img src="../../images/01.jpg" alt="" class="report-img">
 
+
+                                    @foreach (var image in Model.ReportImage.Where(img => img.img_date?.ToString("MM/dd/yyyy") == ViewBag.ReportDate))
+                                    {
+                                        <img src="@Url.Content($"~/ReportImg/{image.img_image}")" alt="" class="report-img">
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -751,18 +735,16 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="date">
+                                    <input type="text" id="rep_date1" name="rep_date" value="@Model.SelectedReport.rep_date"  readonly />
                                 </div>
-                                <div class="status">
-                                    <select required>
-                                        <option>Select Status</option>
-                                        <option>Achieved</option>
-                                    </select>
+                                <div class="date">
+                                    <input type="text" name="rep_stats"  readonly />
+
                                 </div>
                             </div>
                             <div class="mid">
                                 <div class="mid-container">
-                                    <i class="las la-project-diagram"></i> <input type="text" placeholder="Input here..."><i class="las la-location-arrow enter"></i>
+                                    <i class="las la-project-diagram"></i> <input type="text" placeholder="Input here..." readonly><i class="las la-location-arrow enter"></i>
                                 </div>
                             </div>
                             <div class="lower">
@@ -780,13 +762,11 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-
                                                                 <tr>
-                                                                    <td><i class="las la-dot-circle"></i></td>
-                                                                    <td>Hydro test and tracing for possible leak</td>
+                                                                    <td name="rep_scope"><i class="las la-dot-circle"></i>  </td>
+
+
                                                                 </tr>
-
-
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -798,7 +778,7 @@
                             </div>
                         </div>
                         <div class="button">
-                            <button>EDIT</button>
+                            <button onclick="Edit()">EDIT</button>
                         </div>
                     </div>
                 </div>
@@ -828,19 +808,21 @@
                             <div class="input-man">
                                 <div class="input-man-body">
                                     <div class="table-responsive" style="overflow-x: auto;">
-                                        <table width="100%">
+                                        <table id="inputTable" width="100%">
                                             <thead>
                                                 <tr>
                                                     <td><b>MANPOWER</b></td>
+                                                    <td><b>POSITION</b></td>
                                                     <td>Time - In</td>
                                                     <td>Time - Out</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td contenteditable="true"><b>Vincent M. Cordero</b></td>
+                                                    <td contenteditable="true"><b></b></td>
+                                                    <td contenteditable="true"><b></b></td>
                                                     <td><button class="in">CLOCK IN</button></td>
-                                                    <td><button>CLOCK OUT</button></td>
+                                                    <td><button class="out">CLOCK OUT</button></td>
                                                 </tr>
 
 
@@ -856,7 +838,60 @@
         </div>
 
         <!-- END -->
+        <!-- ATTENDANCE POPUP PAGE 04-19 for Edit-->
+          <div class="input-man-container" id="input-man-container-edit">
+            <div class="input-man-main">
+                <div class="input-man-title">
+                    <div class="left">
+                        <i class="las la-braille"></i><h3>ATTENDANCE</h3>
+                    </div>
+                    <div class="right">
+                        <i class="las la-times-circle" onclick="closeInputManForm1()"></i>
+                    </div>
 
+                </div>
+                <div class="input-man-list">
+                    <div class="input-man-grid">
+                        <div class="input-man-projects">
+                            <div class="input-man">
+                                <div class="input-man-body">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table id="inputTable" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td><b>MANPOWER</b></td>
+                                                    <td><b>POSITION</b></td>
+                                                    <td>Time - In</td>
+                                                    <td>Time - Out</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var manpower in Model.Manpowers)
+                                                {
+                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id);
+
+                                                <tr>
+                                                    <td contenteditable="true"><b>@manpower.man_name</b></td>
+                                                    <td contenteditable="true"><b>@manpower.man_postition</b></td>
+                                                    <td>@(attendance?.atte_timein?.ToString("hh:mm tt") ?? "-")</td>
+                                                    <td></td>
+                                                    <td><button class="out" onclick="updateAttendance('@attendance.atte_id')">CLOCK OUT</button></td>
+                                                </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- END -->
 
 
 
@@ -877,164 +912,537 @@
         </div>
 
     </main>
-    </div>
-    <div class="footer">
-        <center>
-            <div class="footer-con">
-                <img src="../../images/codepheuse.png" alt="">
-                <h4>CodePheus | 2022</h4>
-            </div>
-        </center>
-    </div>
+</div>
+<div class="footer">
+    <center>
+        <div class="footer-con">
+            <img src="../../images/codepheuse.png" alt="">
+            <h4>CodePheus | 2022</h4>
+        </div>
+    </center>
+</div>
 
-    <script>
-        // Get the project ID from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const proj_type_id = urlParams.get('proj_type_id');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        // Get the input field elements
-        const projNameInput = document.querySelector('input[name="projName"]');
-        const subjectInput = document.querySelector('input[name="projSubject"]');
-        const clientInput = document.querySelector('input[name="projClient"]');
-        const locationInput = document.querySelector('input[name="projLocation"]');
-        const projLeadSelect = document.querySelector('select[name="projLead"]');
-        const statusSelect = document.querySelector('select[name="projStatus"]');
-        const startDateInput = document.querySelector('input[name="projStartDate"]');
-        const endDateInput = document.querySelector('input[name="projEndDate"]');
+<script>
+    function updateAttendance(projectId) {
+        // Get the current time as a string
+        var now = new Date();
+        var timeOut = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        // Add event listener to the "UPDATE PROJECT" button
-        document.querySelector('button').addEventListener('click', () => {
-            // Get the updated input field values
-            const projName = projNameInput.value;
-            const subject = subjectInput.value;
-            const client = clientInput.value;
-            const locationSite = locationInput.value;
-            const projLead = projLeadSelect.value;
-            const status = statusSelect.value;
-            const startDate = startDateInput.value;
-            const baselineFinish = endDateInput.value;
-
-            // Send the updated data to the backend using AJAX
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/admin/updateProject', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log(xhr.responseText);
-                }
-            };
-            const data = {
-                proj_type_id,
-                proj_name: projName,
-                proj_subject: subject,
-                proj_client: client,
-                proj_location: locationSite,
-                proj_lead: projLead,
-                proj_status: status,
-                proj_strDate: startDate,
-                proj_endDate: baselineFinish,
-            };
-            xhr.send(JSON.stringify(data));
+        // Make an AJAX call to the UpdateAttendance action
+        $.ajax({
+            url: '/Admin/UpdateAttendance',
+            type: 'POST',
+            data: { projectId: projectId, timeOut: timeOut },
+            success: function (result) {
+                // Reload the page on success
+                window.location.reload();
+            },
+            error: function (xhr, status, error) {
+                // Handle errors here
+                console.log(xhr.responseText);
+            }
         });
-    </script>
+    }
+</script>
 
-    <script>
+<script>
+    function Edit() {
+        // Get all the "CLOCK OUT" buttons in the table
+        var clockOutButtons = document.getElementsByClassName("out");
 
+        // Loop through each button
+        for (var i = 0; i < clockOutButtons.length; i++) {
+            var button = clockOutButtons[i];
+            var row = button.parentNode.parentNode; // Get the row of the button
 
-        function userFiltFunction() {
-            document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
-        }
+            // Check if the row already has a value in the "Time-Out" column
+            if (row.cells[3].innerHTML.trim() === "-") {
+                // If there's no value, update the attendance record with the current time
+                var now = new Date();
+                var timeOut = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                row.cells[3].innerHTML = timeOut;
 
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.user-filter-btn')) {
-                var myDropdown = document.getElementById("userFiltDropdown");
-                if (myDropdown.classList.contains('user-filter-show')) {
-                    myDropdown.classList.remove('user-filter-show');
-                }
+                // Send an AJAX request to update the attendance record on the server
+                var attendanceId = row.getAttribute("data-attendance-id");
+                $.ajax({
+                    url: "/Admin/UpdateAttendance",
+                    type: "POST",
+                    data: { attendanceId: attendanceId, timeOut: timeOut },
+                    success: function (result) {
+                        // Handle success
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle error
+                    }
+                });
             }
         }
+    }
+</script>
 
-        function userSortFunction() {
-            document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+<script>
+    // add event listener to close button
+    document.querySelector('.las.la-times-circle').addEventListener('click', function() {
+        // get the value of the time-out input field
+        var timeOut = document.querySelector('.time-out').value;
+
+        // send an AJAX request to the server to update the attendance record
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '@Url.Action("UpdateAttendance")');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+        var data = JSON.stringify({
+            projectId: '@Model.Project.proj_type_id',
+            timeOut: timeOut
+        });
+        xhr.send(data);
+    });
+</script>
+
+<script>
+    function saveReport() {
+        var scopeList = document.getElementById("scope-list");
+        var scopes = "";
+        for (var i = 0; i < scopeList.children.length; i++) {
+            var scope = scopeList.children[i].children[1].textContent;
+            scopes += scope + ", ";
+        }
+        var date = document.getElementById("rep_date").value;
+        var status = document.getElementById("rep_status").value;
+        var projectId = document.getElementById("rep_proj_id").value;
+        var description = document.getElementById("rep_description").value;
+        var data = {
+            "rep_scope": scopes,
+            "rep_date": date,
+            "rep_stats": status,
+            "rep_proj_id": projectId,
+            "rep_description": description
+        };
+        $.ajax({
+            type: "POST",
+            url: "/Admin/SaveReport",
+            data: data,
+            success: function (result) {
+                // do something on success
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                // do something on error
+            }
+        });
+    }
+</script>
+
+<script>
+      function updatedata() {
+        var projId = '@Model.Project.proj_type_id';
+        var projName = $('input[name="proj_name"]').val();
+        var projSubject = $('input[name="proj_subject"]').val();
+        var projClient = $('input[name="proj_client"]').val();
+        var projLocation = $('input[name="proj_location"]').val();
+        var projLead = $('select[name="proj_lead"]').val();
+        var projStatus = $('select[name="proj_status"]').val();
+        var projStartDate = $('input[name="proj_strDate"]').val();
+        var projEndDate = $('input[name="proj_endDate"]').val();
+
+// Check if required fields are not empty
+       if (projName.trim() === '' || projSubject.trim() === '' || projClient.trim() === '' || projLocation.trim() === '' || projLead.trim() === '' || projStatus.trim() === '' || projStartDate.trim() === '' || projEndDate.trim() === '') {
+        alert('Please fill out all required fields');
+        return;
         }
 
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.user-sort-btn')) {
-                var myDropdown = document.getElementById("userSortDropdown");
-                if (myDropdown.classList.contains('user-sort-show')) {
-                    myDropdown.classList.remove('user-sort-show');
-                }
+// Make an AJAX request to update the project
+$.ajax({
+    url: '@Url.Action("EditProject", "Admin")',
+    type: 'POST',
+    data: {
+        'projId': projId,
+        'projName': projName,
+        'projSubject': projSubject,
+        'projClient': projClient,
+        'projLocation': projLocation,
+        'projLead': projLead,
+        'projStatus': projStatus,
+        'projStartDate': projStartDate,
+        'projEndDate': projEndDate
+    },
+    success: function (response) {
+        if (response.success) {
+            alert('Project updated successfully');
+            // Redirect to the project details page
+            window.location.href = '@Url.Action("ProjectView", "Admin", new { id = Model.Project.proj_type_id })';
+        } else {
+            alert('Failed to update project');
+        }
+         },
+        error: function () {
+        alert('Failed to update project');
+        }
+     });
+  }
+</script>
+
+<script>
+    const inputTableBody = document.querySelector('#inputTable tbody');
+    const outputTableBody = document.querySelector('#outputTable tbody');
+
+    inputTableBody.addEventListener('click', function (event) {
+        if (event.target.classList.contains('in')) {
+            const row = event.target.closest('tr');
+            const manpower = row.cells[0].innerText;
+            const position = row.cells[1].innerText;
+            const timeIn = new Date().toLocaleTimeString();
+
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+  <td>${manpower}</td>
+  <td>${position}</td>
+  <td>${timeIn}</td>
+  <td></td>
+`;
+            console.log(newRow); // check if newRow contains the expected values
+            outputTableBody.appendChild(newRow);
+
+            row.remove();
+        } else if (event.target.classList.contains('out')) {
+            const row = event.target.closest('tr');
+            const timeOut = new Date().toLocaleTimeString();
+
+            row.cells[2].innerText = timeOut;
+        }
+    });
+</script>
+<script>
+    const addScopeButton = document.getElementById("add-scope");
+    const scopeInput = document.getElementById("rep_scope");
+    const scopeList = document.getElementById("scope-list");
+
+    addScopeButton.addEventListener("click", addScopeToList);
+    scopeInput.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            addScopeToList();
+        }
+    });
+
+    function addScopeToList() {
+        const scope = scopeInput.value.trim();
+
+        if (scope !== "") {
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+            <td><i class="las la-dot-circle"></i></td>
+            <td>${scope}</td>
+        `;
+            scopeList.appendChild(newRow);
+            scopeInput.value = "";
+        }
+    }
+</script>
+
+<script>
+    const attachBtn = document.getElementById("attachBtn");
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.multiple = true; // added multiple attribute
+    const imgList = document.getElementById("img-list");
+
+    attachBtn.addEventListener("click", function () {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener("change", function () {
+        const files = this.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.addEventListener("load", function () {
+                    const img = document.createElement("img");
+                    img.src = reader.result;
+                    img.alt = file.name;
+                    img.classList.add("report-img");
+                    imgList.appendChild(img);
+                });
+                reader.readAsDataURL(file);
             }
         }
+    });
+</script>
 
-        let canpopup = document.getElementById("can-popup");
+<script>
 
-        function canOpenPopup() {
-            canpopup.classList.add("can-popup-show")
+    function SaveData1() {
+        var data = [];
+
+        // Loop through each row of the table
+        $("#outputTable tbody tr").each(function () {
+            var row = {};
+
+            // Extract data from the columns of the current row
+            row.man_name = $(this).find("td:eq(0)").text();
+            row.man_position = $(this).find("td:eq(1)").text();
+            row.atte_timein = $(this).find("td:eq(2)").text();
+            row.atte_timeout = $(this).find("td:eq(3)").text();
+
+            // Add the row data to the array
+            data.push(row);
+        });
+
+        // Get the value of the rep_proj_id input
+        var projectId = $("#rep_proj_id").val();
+        var projectDate = $("#rep_date").val();
+
+        // Send an AJAX request to the server to save the data
+        $.ajax({
+            type: "POST",
+            url: "/Admin/SaveData",
+            data: JSON.stringify({ data: data, man_proj_id: projectId, man_date: projectDate }), // Include the projectId in the data
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                // Handle the response from the server
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                // Handle the error
+                console.log(xhr.responseText);
+            }
+        });
+    }
+</script>
+
+<script>
+    var buttons = document.getElementsByClassName("out");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function () {
+            // Get the parent row of the clicked button
+            var row = this.parentNode.parentNode;
+
+            // Update the Time-Out cell with the current time
+            var now = new Date();
+            var time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            row.cells[3].textContent = time;
+        });
+    }
+</script>
+
+@*<script>
+        $.ajax({
+            url: "/Admin/GetProjectData",
+            type: "POST",
+            data: { proj_type_id: proj_type_id },
+            success: function (data) {
+                // Assign the proj_type_id from the retrieved data to the proj_type_id variable
+                var proj_type_id = data.proj_type_id;
+
+                // Populate the form fields with the retrieved project data
+                $("input[name='proj_name']").val(data.proj_name);
+                $("input[name='proj_subject']").val(data.proj_subject);
+                $("input[name='proj_client']").val(data.proj_client);
+                $("input[name='proj_location']").val(data.proj_location);
+                $("select[name='proj_lead']").val(data.proj_lead);
+                $("select[name='proj_status']").val(data.proj_status);
+                $("input[name='proj_strDate']").val(data.proj_strDate);
+                $("input[name='proj_endDate']").val(data.proj_endDate);
+            },
+            error: function () {
+                alert("Error retrieving project data.");
+            }
+        });
+    </script>*@
+<script>
+    const myTable = document.querySelector('#inputTable');
+    const tbody = myTable.querySelector('tbody');
+
+    // Listen for 'keydown' events on the table row
+    tbody.addEventListener('keydown', (event) => {
+        // Check if the 'Enter' key was pressed
+        if (event.key === 'Enter') {
+            // Prevent default behavior (creating a new line)
+            event.preventDefault();
+
+            // Create a new table row
+            const newRow = document.createElement('tr');
+
+            // Create the first table cell with blank contenteditable attribute for Manpower
+            const nameCell = document.createElement('td');
+            nameCell.setAttribute('contenteditable', 'true');
+            newRow.appendChild(nameCell);
+
+            // Create the second table cell with blank contenteditable attribute for Position
+            const positionCell = document.createElement('td');
+            positionCell.setAttribute('contenteditable', 'true');
+            newRow.appendChild(positionCell);
+
+            // Create the third table cell with 'CLOCK IN' button
+            const inCell = document.createElement('td');
+            const inButton = document.createElement('button');
+            inButton.classList.add('in');
+            inButton.textContent = 'CLOCK IN';
+            inCell.appendChild(inButton);
+            newRow.appendChild(inCell);
+
+            // Create the fourth table cell with 'CLOCK OUT' button
+            const outCell = document.createElement('td');
+            const outButton = document.createElement('button');
+            outButton.textContent = 'CLOCK OUT';
+            outCell.appendChild(outButton);
+            newRow.appendChild(outCell);
+
+            // Add the new row to the table body
+            tbody.appendChild(newRow);
         }
+    });
+</script>
 
-        function canClosePopup() {
-            canpopup.classList.remove("can-popup-show")
+<script>
+
+
+    function userFiltFunction() {
+        document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.user-filter-btn')) {
+            var myDropdown = document.getElementById("userFiltDropdown");
+            if (myDropdown.classList.contains('user-filter-show')) {
+                myDropdown.classList.remove('user-filter-show');
+            }
         }
+    }
 
-        let rempopup = document.getElementById("rem-popup");
+    function userSortFunction() {
+        document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+    }
 
-        function remOpenPopup() {
-            rempopup.classList.add("rem-popup-show")
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.user-sort-btn')) {
+            var myDropdown = document.getElementById("userSortDropdown");
+            if (myDropdown.classList.contains('user-sort-show')) {
+                myDropdown.classList.remove('user-sort-show');
+            }
         }
+    }
 
-        function remClosePopup() {
-            rempopup.classList.remove("rem-popup-show")
-        }
+    let canpopup = document.getElementById("can-popup");
 
-        function openAddNewContainer() {
-            document.getElementById("add-new-container").style.display = "block";
-        }
+    function canOpenPopup() {
+        canpopup.classList.add("can-popup-show")
+    }
 
-        function closeAddNewContainer() {
-            document.getElementById("add-new-container").style.display = "none";
-        }
+    function canClosePopup() {
+        canpopup.classList.remove("can-popup-show")
+    }
 
-        function openInputMemForm() {
-            document.getElementById("input-mem-container").style.display = "block";
-        }
+    let rempopup = document.getElementById("rem-popup");
 
-        function closeInputMemForm() {
-            document.getElementById("input-mem-container").style.display = "none";
-        }
+    function remOpenPopup() {
+        rempopup.classList.add("rem-popup-show")
+    }
 
-        function openReportForm() {
-            document.getElementById("report-container").style.display = "block";
-        }
+    function remClosePopup() {
+        rempopup.classList.remove("rem-popup-show")
+    }
 
-        function closeReportForm() {
-            document.getElementById("report-container").style.display = "none";
-        }
+    function openReportEditForm(repno, description, stats, date, scope) {
 
-        function openReportNewForm() {
-            document.getElementById("report-new-container").style.display = "block";
-        }
+         @Model.SelectedReport.rep_date = rep_date;
 
-        function closeReportNewForm() {
-            document.getElementById("report-new-container").style.display = "none";
-        }
+        // update the value attribute of the rep_date1 input field
+        $('#rep_date1').val(rep_date);
+        document.getElementsByName('rep_description')[0].setAttribute('value', description);
+        const formattedDate = moment(date, "MM/DD/YYYY").format("YYYY-MM-DD");
+        document.getElementsByName('rep_date')[0].value = formattedDate;
+        document.getElementsByName('rep_stats')[0].setAttribute('value', stats);
+        document.getElementsByName('rep_scope')[0].innerHTML = `<i class="las la-dot-circle"></i> ${scope}`;
+        document.getElementById('report-edit-container').style.display = 'block';
 
-        function openInputManForm() {
-            document.getElementById("input-man-container").style.display = "block";
-        }
+        // Update the value of the input element with the formatted date
 
-        function closeInputManForm() {
-            document.getElementById("input-man-container").style.display = "none";
-        }
+    }
 
-        function openReportEditForm() {
-            document.getElementById("report-edit-container").style.display = "block";
-        }
 
-        function closeReportEditForm() {
-            document.getElementById("report-edit-container").style.display = "none";
-        }
 
-    </script>
+    function closeReportEditForm() {
+        document.getElementById("report-edit-container").style.display = "none";
+    }
+
+    function openAddNewContainer() {
+        document.getElementById("add-new-container").style.display = "block";
+    }
+
+    function closeAddNewContainer() {
+        document.getElementById("add-new-container").style.display = "none";
+    }
+
+    function openInputMemForm() {
+        document.getElementById("input-mem-container").style.display = "block";
+    }
+
+    function closeInputMemForm() {
+        document.getElementById("input-mem-container").style.display = "none";
+    }
+
+    function openReportForm() {
+        document.getElementById("report-container").style.display = "block";
+    }
+
+    function closeReportForm() {
+        document.getElementById("report-container").style.display = "none";
+    }
+
+    function openReportNewForm() {
+        document.getElementById("report-new-container").style.display = "block";
+    }
+
+    function closeReportNewForm() {
+        document.getElementById("report-new-container").style.display = "none";
+    }
+
+    function openInputManForm() {
+        document.getElementById("input-man-container").style.display = "block";
+    }
+
+    function closeInputManForm() {
+        document.getElementById("input-man-container").style.display = "none";
+    }
+
+    function openInputManForm1() {
+        document.getElementById("input-man-container-edit").style.display = "block";
+    }
+
+    function closeInputManForm1() {
+        // Get all the time-out input elements
+        var timeOutInputs = document.querySelectorAll('.time-out');
+
+        // Loop through the time-out input elements
+        timeOutInputs.forEach(function (input) {
+            // Get the manpower ID from the input ID
+            var manpowerId = input.id;
+            // Get the time-out value from the input value
+            var timeOutValue = input.value;
+
+            // Send an AJAX request to update the Attendance atte_timeout
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "/Admin/UpdateAttendance", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("manpowerId=" + manpowerId + "&timeOutValue=" + timeOutValue);
+        });
+
+        // Close the input form
+        document.getElementById("input-man-form").style.display = "none";
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const formattedDate = moment(date, "MM/DD/YYYY").format("YYYY-MM-DD");
+        document.getElementById('rep_date').value = formattedDate;
+    });
+</script>

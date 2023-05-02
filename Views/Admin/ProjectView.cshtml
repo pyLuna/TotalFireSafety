@@ -62,7 +62,7 @@
                                                     <tr>
                                                         <td>@report.rep_date</td>
                                                         <td>@report.rep_no</td>
-                                                        <td>@report.rep_description <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no' ,'@report.rep_description', '@report.rep_stats', '@report.rep_date.ToString("MM/dd/yyyy")', '@report.rep_scope' ); $('#rep_date1').val('@report.rep_date.ToString("MM/dd/yyyy")');"></i></td>
+                                                        <td>@report.rep_description  <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no', '@report.rep_description', '@report.rep_stats', '@report.rep_date.ToString("MM/dd/yyyy")', '@report.rep_scope', '@Model.SelectedReport.rep_no');"></i></td>
                                                         <td>@report.rep_stats</td>
                                                         <td><a href="#">Export</a></td>
                                                     </tr>
@@ -103,14 +103,7 @@
 
                             <div class="status">
                                 <label class="title">Status:</label>
-                                <label class="on-going">
-                                    <select required>
-                                        <option>Select Status</option>
-                                        <option class="on-going">On-going</option>
-                                        <option class="upcoming">Upcoming</option>
-                                        <option class="cancelled">Cancelled</option>
-                                    </select>
-                                </label>
+                                <label>@ViewBag.ProjectStats</label>
                             </div>
 
                             <div class="date">
@@ -325,8 +318,8 @@
                             <br>
                             <select name="proj_status" required>
                                 <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
-                                <option>On Track</option>
-                                <option>Delayed</option>
+                                <option>On-Going</option>
+                                <option>In-Line</option>
                                 <option>Cancelled</option>
                             </select>
                         </div>
@@ -722,7 +715,7 @@
                                 <div class="img-list">
 
 
-                                    @foreach (var image in Model.ReportImage.Where(img => img.img_date?.ToString("MM/dd/yyyy") == ViewBag.ReportDate))
+                                    @foreach (var image in Model.ReportImage.Where(img => img.img_date?.ToString("MM/dd/yyyy") == Model.SelectedReport.rep_date.ToString("MM/dd/yyyy")))
                                     {
                                         <img src="@Url.Content($"~/ReportImg/{image.img_image}")" alt="" class="report-img">
                                     }
@@ -735,7 +728,7 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="text" id="rep_date1" name="rep_date" value="@Model.SelectedReport.rep_date"  readonly />
+                                    <input type="text" id="rep_date1" name="rep_date" value=""  readonly />
                                 </div>
                                 <div class="date">
                                     <input type="text" name="rep_stats"  readonly />
@@ -1351,22 +1344,27 @@ $.ajax({
         rempopup.classList.remove("rem-popup-show")
     }
 
-    function openReportEditForm(repno, description, stats, date, scope) {
+     function openReportEditForm(rep_no, rep_description, rep_stats, rep_date, rep_scope, selected_rep_no) {
+    document.getElementById('report-edit-container').style.display = 'block';
 
-         @Model.SelectedReport.rep_date = rep_date;
-
-        // update the value attribute of the rep_date1 input field
-        $('#rep_date1').val(rep_date);
-        document.getElementsByName('rep_description')[0].setAttribute('value', description);
-        const formattedDate = moment(date, "MM/DD/YYYY").format("YYYY-MM-DD");
-        document.getElementsByName('rep_date')[0].value = formattedDate;
-        document.getElementsByName('rep_stats')[0].setAttribute('value', stats);
-        document.getElementsByName('rep_scope')[0].innerHTML = `<i class="las la-dot-circle"></i> ${scope}`;
-        document.getElementById('report-edit-container').style.display = 'block';
-
-        // Update the value of the input element with the formatted date
-
+    if (rep_no === selected_rep_no) {
+        var new_date = new Date(rep_date);
+        var formatted_date = new_date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        rep_date = formatted_date;
     }
+
+    // update the value attribute of the rep_date1 input field
+    $('#rep_date1').val(rep_date);
+
+    // update the value attribute of the rep_description input field
+    document.getElementsByName('rep_description')[0].setAttribute('value', rep_description);
+
+    // update the value attribute of the rep_stats input field
+    document.getElementsByName('rep_stats')[0].setAttribute('value', rep_stats);
+
+    // update the content of the rep_scope element
+    document.getElementsByName('rep_scope')[0].innerHTML = `<i class="las la-dot-circle"></i> ${rep_scope}`;
+}
 
 
 
@@ -1420,24 +1418,9 @@ $.ajax({
 
     function closeInputManForm1() {
         // Get all the time-out input elements
-        var timeOutInputs = document.querySelectorAll('.time-out');
-
-        // Loop through the time-out input elements
-        timeOutInputs.forEach(function (input) {
-            // Get the manpower ID from the input ID
-            var manpowerId = input.id;
-            // Get the time-out value from the input value
-            var timeOutValue = input.value;
-
-            // Send an AJAX request to update the Attendance atte_timeout
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("POST", "/Admin/UpdateAttendance", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("manpowerId=" + manpowerId + "&timeOutValue=" + timeOutValue);
-        });
-
-        // Close the input form
+      
         document.getElementById("input-man-form").style.display = "none";
+        location.reload();
     }
 </script>
 <script>

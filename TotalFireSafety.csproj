@@ -426,6 +426,7 @@
     <Content Include="Scripts\signalR.js" />
     <Content Include="Scripts\validations\InventoryValidation.js" />
     <Content Include="Scripts\validations\RequisitionValidation.js" />
+    <Content Include="Scripts\validations\ProjectValidation.js" />
     <Content Include="Scripts\validations\UserValidation.js" />
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\chart.min.js" />

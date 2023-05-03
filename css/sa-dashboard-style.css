@@ -9793,7 +9793,7 @@ hr {
     border-radius: 10px;
     z-index: 100;
     position: fixed;
-    overflow: hidden;
+    overflow: auto;
 }
 
     .add-new-container .add-new-header h3 {
@@ -9823,6 +9823,7 @@ hr {
         width: 100%;
         height: 627px;
         display: flex;
+        overflow: auto;
     }
 
         .add-new-container .add-new-main .add-new-left {

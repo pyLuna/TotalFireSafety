@@ -9,7 +9,11 @@
     dynamic projects = JsonConvert.DeserializeObject(projectsJson.ToString());
 }
 
-
+@*<style>
+    .error {
+        border: 2px solid red !important;
+    }
+</style>*@
 
 <div class="main-content">
 
@@ -205,64 +209,68 @@
 
             </div>
 
-            <div class="add-new-main">
+            <div class="add-new-main proj">
                 <div class="add-new-left">
-                    <div class="input-fields">
-                        <Label>Project Name</Label>
-                        <br>
-                        <input type="text" name="projName" placeholder="Enter here..">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Subject</Label>
-                        <br>
-                        <input type="text" name="projSubject" placeholder="Enter here..">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Client</Label>
-                        <br>
-                        <input type="text" name="projClient" placeholder="Enter here..">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Location Site</Label>
-                        <br>
-                        <input type="text" name="projLocation" placeholder="Enter here..">
-                    </div>
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <label for="">Project Lead</label>
+                    <form id="NewProForm">
+                        @*<p class="emErr" style="margin-top: 5px; color: red;"></p>*@
+                        <div class="input-fields">
+                            <Label>Project Name</Label>
                             <br>
-                            <select id="select-lead" name="projLead" required>
-                                <option disabled selected>Select Lead</option>
-                            </select>
-
+                            <input type="text" name="projName" id="projName" placeholder="Enter here.." required>
+                            <label id="projName-error" class="error" for="projName" style="display: none !important;"></label>
                         </div>
-                        <div class="input-fields right">
-                            <Label>Status</Label>
+                        <div class="input-fields">
+                            <Label>Subject</Label>
                             <br>
-                            <select name="projStatus" required>
-                                <option>Select Status</option>
-                                <option>On-going</option>
-                                <option>Upcoming</option>
-                                <option>Cancelled</option>
-                            </select>
+                            <input type="text" name="projSubject" id="projSubject" placeholder="Enter here.." required>
                         </div>
-                    </div>
-
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <Label>Start Date</Label>
+                        <div class="input-fields">
+                            <Label>Client</Label>
                             <br>
-                            <input type="date" name="projStartDate">
+                            <input type="text" name="projClient" id="projClient" placeholder="Enter here.." required>
                         </div>
-                        <div class="input-fields right">
-                            <Label>Baseline Finish</Label>
+                        <div class="input-fields">
+                            <Label>Location Site</Label>
                             <br>
-                            <input type="date" name="projEndDate">
+                            <input type="text" name="projLocation" id="projLocation" placeholder="Enter here.." required>
                         </div>
-                    </div>
+                        <div class="grp">
+                            <div class="input-fields left">
+                                <label for="">Project Lead</label>
+                                <br>
+                                <select id="select-lead" name="projLead" required>
+                                    <option disabled selected>Select Lead</option>
+                                </select>
 
-                    <button onclick="savePro() + saveData()">CREATE PROJECT</button>
+                            </div>
+                            <div class="input-fields right">
+                                <Label>Status</Label>
+                                <br>
+                                <select name="projStatus" id="projStatus" required>
+                                    <option>Select Status</option>
+                                    <option>On-going</option>
+                                    <option>Upcoming</option>
+                                    <option>Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
 
+                        <div class="grp">
+                            <div class="input-fields left">
+                                <Label>Start Date</Label>
+                                <br>
+                                <input type="date" name="projStartDate" required>
+                            </div>
+                            <div class="input-fields right">
+                                <Label>Baseline Finish</Label>
+                                <br>
+                                <input type="date" name="projEndDate" required>
+                            </div>
+                        </div>
+
+                        <button onclick="submitForm()">CREATE PROJECT</button>
+                        @*savePro() + saveData()*@
+                    </form>
                 </div>
 
                 <div class="add-new-right">
@@ -500,7 +508,7 @@ function filterByStatus() {
 
 
     </script>
-
+    <script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>
     <script>
         function saveData() {
             var manpowerList = [];
@@ -520,17 +528,20 @@ function filterByStatus() {
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(manpowerList),
                 success: function (response) {
-                    if (response.success) {
+                    location.reload();
+                    /*if (response.success) {
                         alert("Data saved successfully.");
-                        location.reload();
+                        
                     }
                     else {
                         alert("Error: " + response.message);
-                    }
-                },
+                        $(".emErr").html("Please input all fields.");
+                    }*/
+                }/*,
                 error: function () {
                     alert("Error: An error occurred while saving the data.");
-                }
+                    $(".emErr").html("Please input all fields.");
+                }*/
             });
         }
 
@@ -539,6 +550,37 @@ function filterByStatus() {
     </script>
  
     <script>
+        function submitForm() {
+            var bool = ProjectValidation();
+            if (bool) {
+                form.submit();
+            }
+        }
+        function ProjectValidation() {
+            /*var bool = savePro();
+            var bool2 = saveData();*/
+            /*var projectName = $('#projName').val();
+            var projectSub = $('#projSubject').val();
+            var projectClient = $('#projClient').val();
+            var projectLoc = $('#projLocation').val();
+            if (projectName === "" || projectSub === "" || projectClient === ""
+                || projectLoc === "") {
+                $(".emErr").html("Please input all fields.");
+            }
+            else {
+                savePro();
+                saveData();
+                closeAddNewContainer()
+            }*/
+            var bool = $('#NewProForm').valid();
+            if (bool) {
+                /*infoOpenPopup();*/
+                savePro();
+                saveData();
+            }
+            return bool;
+        }
+
         function savePro() {
             // Get the form data
             var projName = $("input[name=projName]").val();
@@ -573,11 +615,11 @@ function filterByStatus() {
                     closeAddNewContainer();
                     loadProjects();
                     location.reload();
-                },
-                error: function (xhr, status, error) {
+                }/*,
+                error: function (xhr, status, error) {*/
                     // Display an error message
-                    alert("An error occurred while saving the project: " + error);
-                }
+                    /*alert("An error occurred while saving the project: " + error);
+                }*/
             });
         }
     </script>
@@ -662,6 +704,7 @@ function filterByStatus() {
 
                 function closeAddNewContainer() {
                     document.getElementById("add-new-container").style.display = "none";
+                    $('#NewProForm').validate().resetForm();
                 }
 
                 function openInputMemForm() {

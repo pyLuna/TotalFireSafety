@@ -326,7 +326,8 @@ namespace TotalFireSafety.Controllers
                                     int quantityInt = int.Parse(quantityStr.Split(' ')[0]);
                                     return quantityInt;
                                 }).ToString() + " " + group.First().Inventory.in_quantity.Split(' ')[1],
-                                Items = group.First() // Use the first item in the group to get other properties
+                                Items = group.First(), // Use the first item in the group to get other properties
+                                Count = group.GroupBy(item => item.request_item).ToDictionary(g => g.Key, g => g.Count()) // Group by request_item and count occurrences
                             })
                             .OrderByDescending(x => x.TotalQuantity)
                             .ToList()
@@ -340,26 +341,11 @@ namespace TotalFireSafety.Controllers
                                                     Quantity = item.TotalQuantity,
                                                     Class = item.Items.Inventory.in_class,
                                                     Size = item.Items.Inventory.in_size,
-                                                    MostRequested = index == 0 // flag indicating whether item is most requested
+                                                    MostRequested = index == 0, // flag indicating whether item is most requested
+                                                    Count = item.Count
                                                 })
                                             })
                                             .ToList();
-                    //var groupedByCategory = await Task.Run(() => mostRequestedItems
-                    //                    .GroupBy(item => item.Items.Inventory.in_category)
-                    //                    .Select(group => new {
-                    //                        Category = group.Key,
-                    //                        Items = group.Select(item => new {
-                    //                            Name = item.Items.Inventory.in_name,
-                    //                            Quantity = item.TotalQuantity,
-                    //                            Size = item.Items.Inventory.in_size,
-                    //                            Class = item.Items.Inventory.in_class,
-                    //                            Type = item.Items.Inventory.in_type
-                    //                            abc = item.Mos
-                    //                        })
-                    //                    })
-                    //                    .ToList()
-                    //                    );
-
                     var serializedData = Utf8Json.JsonSerializer.Serialize(mostRequestedItems);
                     string jsonString = Encoding.UTF8.GetString(serializedData);
 

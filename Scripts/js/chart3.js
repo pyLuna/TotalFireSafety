@@ -47,8 +47,9 @@ function GetSupplies() {
         .then(data => {
             summ.length = 0;
             summ.push(data);
-            var results = PopulateLabels(summ, "all");
-            SetChart1(results.label, results.quant);
+            console.log(summ);
+            //var results = PopulateLabels(summ, "all");
+            //SetChart1(results.label, results.quant);
         })
         .catch(error => {
             //window.location.replace('/Error/InternalServerError');

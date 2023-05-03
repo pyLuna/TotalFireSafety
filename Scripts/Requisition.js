@@ -14,7 +14,6 @@ let filter = document.getElementById('filter');
 let addItem = document.getElementById('add-item');
 let table = document.querySelector('#myTable tbody');
 let emp_role = localStorage.getItem('emp_role');
-let emp_name = localStorage.getItem('emp_name');
 let reqDetails = document.querySelector('#reqDetails tbody');
 let apprItems = document.querySelector('#apprItems tbody');
 let reqId = document.getElementById('edit-reqId');
@@ -650,6 +649,8 @@ function SetLabels() {
 	let reqDate = document.getElementById('reqDate');
 	let reqName = document.getElementById('reqName');
 	let reqType = document.getElementById('reqType');
+	let emp_name = localStorage.getItem('emp_name');
+
 	let type = "";
 	let type1 = "";
 

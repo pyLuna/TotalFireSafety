@@ -1,5 +1,6 @@
 ﻿@using Newtonsoft.Json
 @using TotalFireSafety.Models
+
 @{
     ViewBag.Title = "Projects";
     Layout = "~/Views/AdminLayout.cshtml";
@@ -11,7 +12,7 @@
 
 
 <div class="main-content">
-   
+
     <header>
         <h2>
             <label for="nav-toggle">
@@ -140,12 +141,8 @@
             </div>
             &nbsp;
             <div class="drp-wrapper">
-                <select required>
-                    <option disabled selected>Request Type</option>
-                    <option>Purchasing</option>
-                    <option>Supply</option>
-                    <option>Deployment</option>
-                </select>
+               
+               
             </div>
         </div>
 
@@ -162,7 +159,9 @@
 
                     <select required>
                         <option disabled selected>Project Status</option>
-                        <option>Delayed</option>
+                        <option value="On-Going">On-Going</option>
+                        <option value="In-Line">In-Line</option>
+                        <option value="Cancelled">Cancelled</option>
                     </select>
 
                     <select required>
@@ -187,7 +186,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  
                                 </tbody>
                             </table>
                         </div>
@@ -244,8 +242,8 @@
                             <select name="projStatus" required>
                                 <option>Select Status</option>
                                 <option>On-going</option>
-                                <option>In-going</option>
-                                <option>delay</option>
+                                <option>Upcoming</option>
+                                <option>Cancelled</option>
                             </select>
                         </div>
                     </div>
@@ -370,61 +368,96 @@
     </main>
 
     <script>
-  $(document).ready(function () {
-    var projects = JSON.parse('@Html.Raw(ViewBag.Projects)');
-    var tableBody = $('#projectTable tbody');
+$(document).ready(function () {
+  var projects = JSON.parse('@Html.Raw(ViewBag.Projects)');
+  var tableBody = $('#projectTable tbody');
 
-    // Loop through each project and create a new row in the table
-    projects.forEach(function (project) {
-      var row = $('<tr>');
-      var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
-      link.text(project.proj_name);
-      row.append($('<td>').append(link));
+  // Loop through each project and create a new row in the table
+  projects.forEach(function (project) {
+    var row = $('<tr>');
+    var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+    link.text(project.proj_name);
+    row.append($('<td>').append(link));
       row.append($('<td>').text(project.proj_lead));
       row.append($('<td>').text(project.proj_strDate));
+    row.append($('<td>').addClass('status-column').text(project.proj_status));
+    row.append($('<td>').addClass('progress-column'));
 
-      // Calculate the percentage completion of the project
-      var startDate = new Date(project.proj_strDate);
-      var endDate = new Date(project.proj_endDate);
-      var now = new Date();
-      var percentage = ((now - startDate) / (endDate - startDate)) * 100;
+    // Calculate the percentage completion of the project
+    var startDate = new Date(project.proj_strDate);
+    var endDate = new Date(project.proj_endDate);
+    var now = new Date();
+    var percentage = ((now - startDate) / (endDate - startDate)) * 100;
 
-      // Create a new progress bar for the project
-      var progressBar = $('<div>').addClass('progress-bar');
-      var progressBarFill = $('<div>').addClass('progress-halfhalf');
-      progressBarFill.attr('role', 'progressbar');
-      progressBarFill.attr('aria-valuenow', percentage);
-      progressBarFill.attr('aria-valuemin', 0);
-      progressBarFill.attr('aria-valuemax', 100);
-      progressBarFill.css('width', percentage + '%');
-      progressBarFill.text(percentage.toFixed(2) + '%');
-      progressBar.append(progressBarFill);
+    // Set the progress bar fill to 100% if the project status is "Cancelled"
+    if (project.proj_status === 'Cancelled') {
+      percentage = 100;
+    }
 
-      // Set the background color of the progress bar fill based on the project status
-      if (project.proj_status === 'upcoming') {
-        row.append($('<td>').addClass('stat-appr').text(project.proj_status));
-        progressBarFill.css('background-color', '#FF6700');
-      } else if (project.proj_status === 'ongoing') {
-        row.append($('<td>').addClass('stat-appr').text(project.proj_status));
-        progressBarFill.css('background-color', '#09AF10');
-      } else if (project.proj_status === 'delay') {
-        row.append($('<td>').addClass('stat-appr').text(project.proj_status));
-        progressBarFill.css('background-color', '#FF0000');
+    // Create a new progress bar for the project
+    var progressBar = $('<div>').addClass('progress-bar');
+    var progressBarFill = $('<div>').addClass('progress-halfhalf');
+    progressBarFill.attr('role', 'progressbar');
+    progressBarFill.attr('aria-valuenow', percentage);
+    progressBarFill.attr('aria-valuemin', 0);
+    progressBarFill.attr('aria-valuemax', 100);
+    progressBarFill.css('width', percentage + '%');
+    progressBar.append(progressBarFill);
+
+    // Set the background color of the progress bar fill based on the project status
+    if (project.proj_status === 'In-Line') {
+      row.find('.progress-column').addClass('stat-appr');
+      progressBarFill.css('background-color', '#FF6700');
+    } else if (project.proj_status === 'On-Going') {
+      row.find('.progress-column').addClass('stat-appr');
+      progressBarFill.css('background-color', '#09AF10');
+    } else if (project.proj_status === 'Cancelled') {
+      row.find('.progress-column').addClass('stat-appr');
+      progressBarFill.css('background-color', '#FF0000');
+    } else {
+      row.find('.progress-column').addClass('stat-appr');
+    }
+
+    row.find('.progress-column').append(progressBar);
+    tableBody.append(row);
+  });
+
+  // Add search filtering functionality
+  $('.search-wrapper input').on('keyup', function () {
+    var searchText = $(this).val().toLowerCase();
+
+    tableBody.find('tr').each(function () {
+      var name = $(this).find('td:first-child a').text().toLowerCase();
+      var lead = $(this).find('td:nth-child(2)').text().toLowerCase();
+      var status = $(this).find('.status-column').text().toLowerCase();
+
+      if (name.indexOf(searchText) === -1 && lead.indexOf(searchText) === -1 && status.indexOf(searchText) === -1) {
+        $(this).hide();
       } else {
-        row.append($('<td>').addClass('stat-appr').text(project.proj_status));
+        $(this).show();
       }
-
-      // Set the color of the text in the status column based on the project status
-      if (project.proj_status === 'upcoming' || project.proj_status === 'delay') {
-        row.find('.stat-appr').css('color', '#FF0000');
-      } else {
-        row.find('.stat-appr').css('color', '#000000');
-      }
-
-      row.append($('<td>').append(progressBar));
-      tableBody.append(row);
     });
   });
+
+    $('#status-filter').on('change', function () {
+  // Call the status filtering function
+  filterByStatus();
+});
+
+function filterByStatus() {
+  var selectedStatus = $('#status-filter').val().toLowerCase();
+
+  tableBody.find('tr').each(function () {
+    var status = $(this).find('.status-column').text().toLowerCase();
+
+    if (selectedStatus && status !== selectedStatus) {
+      $(this).hide();
+    } else {
+      $(this).show();
+    }
+  });
+}
+});
     </script>
 
     <script>
@@ -439,9 +472,9 @@
                 const newRow = document.createElement("tr");
 
                 newRow.innerHTML = `
-                                                      <td contenteditable="true"></td>
-                                                      <td contenteditable="true"></td>
-                                                    `;
+                                                              <td contenteditable="true"></td>
+                                                              <td contenteditable="true"></td>
+                                                            `;
 
                 table.tBodies[0].insertBefore(newRow, row.nextSibling);
                 newRow.children[0].focus();
@@ -478,6 +511,7 @@
                 var manpower = {
                     man_id: null,
                     man_emp_no: null,
+                    man_proj_id: null,
                     man_name: $(this).find("td:eq(0)").text(),
                     man_postition: $(this).find("td:eq(1)").text()
                 };
@@ -506,6 +540,7 @@
 
 
     </script>
+ 
     <script>
         function savePro() {
             // Get the form data
@@ -572,73 +607,73 @@
     </script>
     <script>
 
-        function OnLoad() {
+                function OnLoad() {
 
-        }
-
-        function userFiltFunction() {
-            document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.user-filter-btn')) {
-                var myDropdown = document.getElementById("userFiltDropdown");
-                if (myDropdown.classList.contains('user-filter-show')) {
-                    myDropdown.classList.remove('user-filter-show');
                 }
-            }
-        }
 
-        function userSortFunction() {
-            document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function (e) {
-            if (!e.target.matches('.user-sort-btn')) {
-                var myDropdown = document.getElementById("userSortDropdown");
-                if (myDropdown.classList.contains('user-sort-show')) {
-                    myDropdown.classList.remove('user-sort-show');
+                function userFiltFunction() {
+                    document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
                 }
-            }
-        }
 
-        let canpopup = document.getElementById("can-popup");
+                // Close the dropdown if the user clicks outside of it
+                window.onclick = function (e) {
+                    if (!e.target.matches('.user-filter-btn')) {
+                        var myDropdown = document.getElementById("userFiltDropdown");
+                        if (myDropdown.classList.contains('user-filter-show')) {
+                            myDropdown.classList.remove('user-filter-show');
+                        }
+                    }
+                }
 
-        function canOpenPopup() {
-            canpopup.classList.add("can-popup-show")
-        }
+                function userSortFunction() {
+                    document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+                }
 
-        function canClosePopup() {
-            canpopup.classList.remove("can-popup-show")
-        }
+                // Close the dropdown if the user clicks outside of it
+                window.onclick = function (e) {
+                    if (!e.target.matches('.user-sort-btn')) {
+                        var myDropdown = document.getElementById("userSortDropdown");
+                        if (myDropdown.classList.contains('user-sort-show')) {
+                            myDropdown.classList.remove('user-sort-show');
+                        }
+                    }
+                }
 
-        let rempopup = document.getElementById("rem-popup");
+                let canpopup = document.getElementById("can-popup");
 
-        function remOpenPopup() {
-            rempopup.classList.add("rem-popup-show")
-        }
+                function canOpenPopup() {
+                    canpopup.classList.add("can-popup-show")
+                }
 
-        function remClosePopup() {
-            rempopup.classList.remove("rem-popup-show")
-        }
+                function canClosePopup() {
+                    canpopup.classList.remove("can-popup-show")
+                }
 
-        function openAddNewContainer() {
-            document.getElementById("add-new-container").style.display = "block";
-        }
+                let rempopup = document.getElementById("rem-popup");
 
-        function closeAddNewContainer() {
-            document.getElementById("add-new-container").style.display = "none";
-        }
+                function remOpenPopup() {
+                    rempopup.classList.add("rem-popup-show")
+                }
 
-        function openInputMemForm() {
-            document.getElementById("input-mem-container").style.display = "block";
-        }
+                function remClosePopup() {
+                    rempopup.classList.remove("rem-popup-show")
+                }
 
-        function closeInputMemForm() {
-            document.getElementById("input-mem-container").style.display = "none";
-        }
+                function openAddNewContainer() {
+                    document.getElementById("add-new-container").style.display = "block";
+                }
+
+                function closeAddNewContainer() {
+                    document.getElementById("add-new-container").style.display = "none";
+                }
+
+                function openInputMemForm() {
+                    document.getElementById("input-mem-container").style.display = "block";
+                }
+
+                function closeInputMemForm() {
+                    document.getElementById("input-mem-container").style.display = "none";
+                }
 
     </script>
 

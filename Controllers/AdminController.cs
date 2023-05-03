@@ -4,12 +4,16 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -240,10 +244,9 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-        public async Task<ActionResult> ProjectView(int? proj_type_id)
-        
-            {
-
+        public async Task<ActionResult> ProjectView(int? id, int? rep_no)
+        {
+            nwTFSEntity db = new nwTFSEntity();
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -251,10 +254,169 @@ namespace TotalFireSafety.Controllers
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
 
+            var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == id);
+            var lead = db.Employees.FirstOrDefault(e => e.emp_no == project.proj_emp_no);
+            var report = db.NewReports.FirstOrDefault(r => r.rep_no == id);
 
-            return View();
+            var viewModel = new ProjectReportViewModel
+            {
+                Project = project,
+                Reports = db.NewReports.Where(r => r.rep_proj_id == id).ToList(),
+                Manpowers = db.NewManpowers.Where(r => r.man_proj_id == id).ToList(),
+                Attendances = db.Attendances.Where(r => r.atte_proj_id == id).ToList(),
+                ReportImage = db.ReportImages.Where(r => r.img_proj_id == id).ToList(),
+
+                // Initialize SelectedReport to the first report in the list
+                SelectedReport = db.NewReports.FirstOrDefault(r => r.rep_proj_id == id)
+            };
+
+            ViewBag.ProjectID = project.proj_type_id;
+            ViewBag.ProjectName = project.proj_name;
+            ViewBag.Subject = project.proj_subject;
+            ViewBag.Client = project.proj_client;
+            ViewBag.Status = project.proj_status;
+            ViewBag.LocationSite = project.proj_location;
+            ViewBag.Startdate = project.proj_strDate?.ToString("MM/dd/yyyy");
+            ViewBag.Enddate = project.proj_endDate?.ToString("MM/dd/yyyy");
+            ViewBag.ProjectLead = $"{lead.emp_fname} {lead.emp_lname}";
+
+            ViewBag.ReportDescription = report?.rep_description;
+            ViewBag.ReportStats = report?.rep_stats;
+            ViewBag.ReportDate = report?.rep_date.ToString("MM/dd/yyyy");
+            ViewBag.ReportScope = report?.rep_scope;
+            ViewBag.ReportNo = report?.rep_no;
+
+            return View(viewModel);
         }
-        public async Task<ActionResult> ProjectAdd()
+
+       /* public ActionResult GetReportDate(int rep_no)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // Query the database to get the report for the given rep_no
+            // Query the database to get the rep_date for the given rep_no
+            var report = db.NewReports.SingleOrDefault(r => r.rep_no == rep_no);
+            if (report == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            // Return the rep_date as a string
+            return Content(report.rep_date.ToString("MM/dd/yyyy"));
+        }*/
+
+        [HttpPost]
+        public ActionResult UpdateAttendance(Guid projectId, string timeOut)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // Find the attendance record for the specified project ID
+            var attendance = db.Attendances.FirstOrDefault(a => a.atte_id == projectId);
+
+            // Update the atte_timeout property with the specified time
+            if (attendance != null)
+            {
+                attendance.atte_timeout = DateTime.Parse(timeOut);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult GetReportData(int rep_no)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // retrieve report data using the rep_no parameter
+            var report = db.NewReports.FirstOrDefault(r => r.rep_no == rep_no);
+
+            // return the report data as a JSON result
+            return Json(report, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UpdateAttendance(string manpowerName, int projectID)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // Get the Attendance record for the specified manpower and project
+            var attendance = db.Attendances.FirstOrDefault(a => a.NewManpower.man_name == manpowerName && a.atte_proj_id == projectID);
+
+            if (attendance != null && attendance.atte_timeout == null)
+            {
+                // Update the Attendance record with the current time as the TimeOut value
+                attendance.atte_timeout = DateTime.Now;
+                db.Entry(attendance).State = EntityState.Modified;
+                db.SaveChanges();
+
+                // Return the new TimeOut value to the AJAX request
+                return Content(attendance.atte_timeout.Value.ToString("hh:mm tt"));
+            }
+            else
+            {
+                // Return an error message if the Attendance record was not found or already has a TimeOut value
+                return Content("Error: No Attendance record found or TimeOut value already exists.");
+            }
+        }
+
+        public ActionResult EditProject(int projId)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // Fetch the project from the database
+            var project = db.NewProjects.SingleOrDefault(p => p.proj_type_id == projId);
+
+
+            // If project is not found, return a 404 error
+            if (project == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Create a new instance of the view model and populate it with data from the database
+            var viewModel = new NewProject
+            {
+
+                proj_type_id = project.proj_type_id,
+                proj_lead = project.proj_lead,
+                proj_status = project.proj_status,
+                proj_strDate = project.proj_strDate,
+                proj_endDate = project.proj_endDate
+            };
+
+            // Render the edit project view with the view model
+            return View(viewModel);
+        }
+
+        // POST: Admin/EditProject
+        [HttpPost]
+        public ActionResult EditProject(int projId, string projName, string projSubject, string projClient, string projLocation, string projLead, string projStatus, string projStartDate, string projEndDate)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // Fetch the project from the database
+            var project = db.NewProjects.SingleOrDefault(p => p.proj_type_id == projId);
+
+            // If project is not found, return a 404 error
+            if (project == null)
+            {
+                return HttpNotFound();
+            }
+            DateTime startDate = DateTime.Parse(projStartDate);
+            DateTime endDate = DateTime.Parse(projEndDate);
+
+            // Update the project data with the new values
+            project.proj_name = projName;
+            project.proj_subject = projSubject;
+            project.proj_client = projClient;
+            project.proj_location = projLocation;
+            project.proj_lead = projLead;
+            project.proj_status = projStatus;
+            project.proj_strDate = startDate;
+            project.proj_endDate = endDate;
+
+            // Save changes to the database
+            db.SaveChanges();
+
+            // Return a success response
+            return Json(new { success = true });
+        }
+    
+
+    public async Task<ActionResult> ProjectAdd()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -559,14 +721,28 @@ namespace TotalFireSafety.Controllers
             ViewBag.EmpId = empId;
             using (var db = new nwTFSEntity())
             {
-                var projects = db.Projects.ToList();
+
+                var projects = (
+                    from p in db.NewProjects
+                    join e in db.Employees on p.proj_emp_no equals e.emp_no
+                    select new
+                    {
+                        proj_type_id = p.proj_type_id,
+                        proj_name = p.proj_name,
+                        emp_fname = e.emp_fname,
+                        emp_lname = e.emp_lname,
+                        proj_strDate = p.proj_strDate,
+                        proj_endDate = p.proj_endDate,
+                        proj_status = p.proj_status
+                    }
+                ).ToList();
                 var jsonProjects = projects.Select(p => new
                 {
                     proj_type_id = p.proj_type_id,
                     proj_name = p.proj_name,
-                    proj_lead = p.proj_lead,
-                    proj_strDate = p.proj_strDate?.ToString("yyyy-MM-dd"),
-                    proj_endDate = p.proj_endDate?.ToString("yyyy-MM-dd "),
+                    proj_lead = p.emp_fname + ' ' + p.emp_lname,
+                    proj_strDate = p.proj_strDate.HasValue ? p.proj_strDate.Value.ToString("yyyy-MM-dd") : "",
+                    proj_endDate = p.proj_endDate.HasValue ? p.proj_endDate.Value.ToString("yyyy-MM-dd") : "",
                     proj_status = p.proj_status
                 });
                 var serialize = JsonConvert.SerializeObject(jsonProjects);
@@ -574,6 +750,7 @@ namespace TotalFireSafety.Controllers
             }
             return View();
         }
+
 
 
         public async Task<JsonResult> GetEmployees(int empId)
@@ -589,40 +766,54 @@ namespace TotalFireSafety.Controllers
         }
 
         [HttpPost]
-        public JsonResult SaveManpower(List<Manpower> manpowerList)
+        public JsonResult SaveData(List<Dictionary<string, string>> data, int man_proj_id, string man_date)
         {
             nwTFSEntity db = new nwTFSEntity();
-            try
+            foreach (var row in data)
             {
-                foreach (Manpower manpower in manpowerList)
-                {
-                    manpower.man_id = Guid.NewGuid();
-                    manpower.man_emp_no = (int)Session["emp_no"];
-                    db.Manpowers.Add(manpower);
-                }
+                // Create a new NewManpower object
+                var manpower = new NewManpower();
+                manpower.man_emp_no = (int?)Session["emp_no"];
+                manpower.man_id = Guid.NewGuid();
+                manpower.man_name = row["man_name"];
+                manpower.man_postition = row["man_position"];
+                manpower.man_proj_id = man_proj_id; // Set the man_proj_id property to the provided value
+                manpower.man_date = DateTime.Parse(man_date);
+
+                // Save the NewManpower object to the database
+                db.NewManpowers.Add(manpower);
                 db.SaveChanges();
-                return Json(new { success = true });
+
+                // Create a new Attendance object
+                var attendance = new Attendance();
+                attendance.atte_id = Guid.NewGuid();
+                attendance.atte_proj_id = man_proj_id;
+                attendance.atte_timein = DateTime.Parse(row["atte_timein"].ToString());
+                attendance.atte_timeout = attendance.atte_timeout;
+                attendance.NewManpower = manpower;
+
+                // Save the Attendance object to the database
+                db.Attendances.Add(attendance);
+                db.SaveChanges();
             }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = ex.Message });
-            }
+
+            return Json(new { success = true });
         }
 
         [HttpPost]
-        public JsonResult SaveProject(List<Project> projectList)
+        public JsonResult SaveProject(List<NewProject> projectList)
         {
             nwTFSEntity db = new nwTFSEntity();
             try
             {
-                foreach (Project project in projectList)
+                foreach (NewProject project in projectList)
                 {
                     Random rand = new Random();
                     int projTypeId = rand.Next(1000, 9999); // Generate a random 4-digit integer
                     project.proj_id = Guid.NewGuid();
                     project.proj_emp_no = (int)Session["emp_no"];
                     project.proj_type_id = projTypeId;
-                    db.Projects.Add(project);
+                    db.NewProjects.Add(project);
                 }
                 db.SaveChanges();
                 return Json(new { success = true });
@@ -632,35 +823,85 @@ namespace TotalFireSafety.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
-
-        [HttpPost]
-        public ActionResult UpdateProject(Project project)
-        {
-            nwTFSEntity db = new nwTFSEntity();
-            var dbProject = db.Projects.Find(project.proj_type_id);
-            if (dbProject != null)
-            {
-                dbProject.proj_name = project.proj_name;
-                dbProject.proj_subject = project.proj_subject;
-                dbProject.proj_client = project.proj_client;
-                dbProject.proj_location = project.proj_location;
-                dbProject.proj_lead = project.proj_lead;
-                dbProject.proj_status = project.proj_status;
-                dbProject.proj_strDate = project.proj_strDate;
-                dbProject.proj_endDate = project.proj_endDate;
-                db.SaveChanges();
-                return Json(new { success = true });
-            }
-            else
-            {
-                return Json(new { success = false });
-            }
-        }
         public async Task<ActionResult> ProjectList()
         {
             nwTFSEntity db = new nwTFSEntity();
-            var projects = db.Projects.ToList();
+            var projects = db.NewProjects.ToList();
             return View(projects);
+        }
+
+        [HttpPost]
+        public ActionResult SaveReport(string rep_scope, string rep_date, string rep_stats, string rep_proj_id, string rep_description)
+        {
+            // convert string values to their corresponding data types
+            DateTime date = DateTime.Parse(rep_date);
+            int projectId = int.Parse(rep_proj_id);
+            // create a new report object
+            NewReport report = new NewReport
+            {
+                rep_id = Guid.NewGuid(),
+                rep_emp_no = (int)Session["emp_no"],
+                rep_proj_id = projectId,
+                rep_scope = rep_scope,
+                rep_stats = rep_stats,
+                rep_date = date,
+                rep_description = rep_description
+            };
+            try
+            {
+                using (var context = new nwTFSEntity())
+                {
+                    context.NewReports.Add(report);
+                    context.SaveChanges();
+                }
+                return Json(new { success = true });
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
+                return Json(new { success = false, message = "Validation failed." });
+            }
+        }
+
+            [HttpPost]
+        public ActionResult SaveReportImages(List<string> images, string rep_date, int rep_proj_id)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+
+            foreach (var image in images)
+            {
+                var reportImage = new ReportImage
+                {
+                    img_id = Guid.NewGuid(),
+                    img_proj_id = rep_proj_id,
+                    img_date = DateTime.Parse(rep_date)
+                };
+
+                // get the filename from the base64 string
+                var base64Data = Regex.Match(image, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+                var fileName = $"{reportImage.img_id}.jpg";
+                var filePath = Path.Combine(Server.MapPath("~/ReportImg"), fileName);
+
+                // convert base64 string to byte array and save to server
+                var imageData = Convert.FromBase64String(base64Data);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    stream.Write(imageData, 0, imageData.Length);
+                }
+
+                // assign filename to img_image property and save to database
+                reportImage.img_image = fileName;
+                db.ReportImages.Add(reportImage);
+                db.SaveChanges();
+            }
+
+            return Json(new { success = true });
         }
 
 
@@ -1053,13 +1294,10 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("Login", "Base");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            var data = db.Requests.Where(d => d.request_type_id == id).ToList();
+            var data = db.Requests.Where(d => d.request_type_id == id && d.request_status == "Pending").ToList();
+            ViewBag.ActiveCount = data.Count(); // Count the number of items in data where request_type_status is "Active"
 
             return View(data);
-
-
-            //var datas = db.Requests.Where(d => d.request_type_id == id).FirstOrDefault();
-            //return View(datas);
         }
         public async Task<ActionResult> Requisition()
         {

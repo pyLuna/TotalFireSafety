@@ -255,10 +255,14 @@
     <Compile Include="Controllers\APIController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\ProjectReportsViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\APIRequestHandler.cs" />
+    <Compile Include="Models\Attendance.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Basecount.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
@@ -293,14 +297,21 @@
       <DependentUpon>LatestModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginCredential.cs" />
-    <Compile Include="Models\Manpower.cs">
+    <Compile Include="Models\NewEmployeeModel.cs" />
+    <Compile Include="Models\NewManpower.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\NewEmployeeModel.cs" />
+    <Compile Include="Models\NewProject.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NewReport.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Notification.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Project.cs">
+    <Compile Include="Models\ProjectReportViewModel.cs" />
+    <Compile Include="Models\ReportImage.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Request.cs">
@@ -506,6 +517,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ReportImg\" />
     <Folder Include="Uploads\Images\" />
   </ItemGroup>
   <ItemGroup>

@@ -12,13 +12,18 @@ namespace TotalFireSafety.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Manpower
+    public partial class NewReport
     {
-        public System.Guid man_id { get; set; }
-        public int man_emp_no { get; set; }
-        public string man_name { get; set; }
-        public string man_postition { get; set; }
+        public System.Guid rep_id { get; set; }
+        public int rep_no { get; set; }
+        public int rep_proj_id { get; set; }
+        public string rep_scope { get; set; }
+        public string rep_stats { get; set; }
+        public System.DateTime rep_date { get; set; }
+        public string rep_img { get; set; }
+        public int rep_emp_no { get; set; }
+        public string rep_description { get; set; }
     
-        public virtual Employee Employee { get; set; }
+        public virtual NewProject NewProject { get; set; }
     }
 }

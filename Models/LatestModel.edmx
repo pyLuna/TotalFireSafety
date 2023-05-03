@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="db_a97f85_totalfiresafetyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="atte_id" />
+          </Key>
+          <Property Name="atte_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="atte_proj_id" Type="int" />
+          <Property Name="atte_timein" Type="datetime" />
+          <Property Name="atte_timeout" Type="datetime" />
+        </EntityType>
         <EntityType Name="Basecount">
           <Key>
             <PropertyRef Name="bc_id" />
@@ -62,14 +71,46 @@
           <Property Name="in_arch_date" Type="datetime" />
           <Property Name="in_remarks" Type="nchar" MaxLength="10" />
         </EntityType>
-        <EntityType Name="Manpower">
+        <EntityType Name="NewManpowers">
           <Key>
             <PropertyRef Name="man_id" />
           </Key>
           <Property Name="man_id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="man_emp_no" Type="int" Nullable="false" />
+          <Property Name="man_emp_no" Type="int" />
           <Property Name="man_name" Type="varchar" MaxLength="100" />
           <Property Name="man_postition" Type="varchar" MaxLength="100" />
+          <Property Name="man_proj_id" Type="int" />
+          <Property Name="man_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="NewProjects">
+          <Key>
+            <PropertyRef Name="proj_type_id" />
+          </Key>
+          <Property Name="proj_id" Type="uniqueidentifier" />
+          <Property Name="proj_emp_no" Type="int" />
+          <Property Name="proj_type_id" Type="int" Nullable="false" />
+          <Property Name="proj_name" Type="varchar" MaxLength="250" />
+          <Property Name="proj_subject" Type="varchar" MaxLength="100" />
+          <Property Name="proj_client" Type="varchar" MaxLength="100" />
+          <Property Name="proj_location" Type="varchar" MaxLength="250" />
+          <Property Name="proj_lead" Type="varchar" MaxLength="150" />
+          <Property Name="proj_status" Type="varchar" MaxLength="10" />
+          <Property Name="proj_strDate" Type="datetime" />
+          <Property Name="proj_endDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="NewReport">
+          <Key>
+            <PropertyRef Name="rep_id" />
+          </Key>
+          <Property Name="rep_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="rep_no" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rep_proj_id" Type="int" Nullable="false" />
+          <Property Name="rep_scope" Type="varchar" MaxLength="250" />
+          <Property Name="rep_stats" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="rep_date" Type="datetime" Nullable="false" />
+          <Property Name="rep_img" Type="varchar" MaxLength="250" />
+          <Property Name="rep_emp_no" Type="int" Nullable="false" />
+          <Property Name="rep_description" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="Notifications">
           <Key>
@@ -83,21 +124,14 @@
           <Property Name="ntf_date" Type="datetime" Nullable="false" />
           <Property Name="ntf_type" Type="nchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <EntityType Name="Project">
+        <EntityType Name="ReportImage">
           <Key>
-            <PropertyRef Name="proj_emp_no" />
+            <PropertyRef Name="img_id" />
           </Key>
-          <Property Name="proj_id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="proj_emp_no" Type="int" Nullable="false" />
-          <Property Name="proj_type_id" Type="int" />
-          <Property Name="proj_name" Type="varchar" MaxLength="250" />
-          <Property Name="proj_subject" Type="varchar" MaxLength="100" />
-          <Property Name="proj_client" Type="varchar" MaxLength="100" />
-          <Property Name="proj_location" Type="varchar" MaxLength="250" />
-          <Property Name="proj_lead" Type="varchar" MaxLength="150" />
-          <Property Name="proj_status" Type="varchar" MaxLength="10" />
-          <Property Name="proj_strDate" Type="datetime" />
-          <Property Name="proj_endDate" Type="datetime" />
+          <Property Name="img_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="img_proj_id" Type="int" />
+          <Property Name="img_image" Type="varchar" MaxLength="250" />
+          <Property Name="img_date" Type="datetime" />
         </EntityType>
         <EntityType Name="Requests">
           <Key>
@@ -129,6 +163,18 @@
           <Property Name="IsLocked" Type="int" Nullable="false" />
           <Property Name="IsUser" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Attendance_NewManpowers">
+          <End Role="NewManpowers" Type="Self.NewManpowers" Multiplicity="1" />
+          <End Role="Attendance" Type="Self.Attendance" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="NewManpowers">
+              <PropertyRef Name="man_id" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="atte_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Basecount_Inventory1">
           <End Role="Inventories" Type="Self.Inventories" Multiplicity="1" />
           <End Role="Basecount" Type="Self.Basecount" Multiplicity="*" />
@@ -177,15 +223,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Manpower_Employees">
-          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
-          <End Role="Manpower" Type="Self.Manpower" Multiplicity="*" />
+        <Association Name="FK_NewManpowers_NewProject">
+          <End Role="NewProjects" Type="Self.NewProjects" Multiplicity="0..1" />
+          <End Role="NewManpowers" Type="Self.NewManpowers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewProjects">
+              <PropertyRef Name="proj_type_id" />
+            </Principal>
+            <Dependent Role="NewManpowers">
+              <PropertyRef Name="man_proj_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NewProjects_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="NewProjects" Type="Self.NewProjects" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Employees">
               <PropertyRef Name="emp_no" />
             </Principal>
-            <Dependent Role="Manpower">
-              <PropertyRef Name="man_emp_no" />
+            <Dependent Role="NewProjects">
+              <PropertyRef Name="proj_emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NewReport_NewProject">
+          <End Role="NewProjects" Type="Self.NewProjects" Multiplicity="1" />
+          <End Role="NewReport" Type="Self.NewReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewProjects">
+              <PropertyRef Name="proj_type_id" />
+            </Principal>
+            <Dependent Role="NewReport">
+              <PropertyRef Name="rep_proj_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -213,15 +283,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Project_Employees">
-          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
-          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+        <Association Name="FK_ReportImage_NewProject">
+          <End Role="NewProjects" Type="Self.NewProjects" Multiplicity="0..1" />
+          <End Role="ReportImage" Type="Self.ReportImage" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Employees">
-              <PropertyRef Name="emp_no" />
+            <Principal Role="NewProjects">
+              <PropertyRef Name="proj_type_id" />
             </Principal>
-            <Dependent Role="Project">
-              <PropertyRef Name="proj_emp_no" />
+            <Dependent Role="ReportImage">
+              <PropertyRef Name="img_proj_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -274,17 +344,24 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="db_a97f85_totalfiresafetyModelStoreContainer">
+          <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Basecount" EntityType="Self.Basecount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Credentials" EntityType="Self.Credentials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inv_Update" EntityType="Self.Inv_Update" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inventories" EntityType="Self.Inventories" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Manpower" EntityType="Self.Manpower" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewManpowers" EntityType="Self.NewManpowers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewProjects" EntityType="Self.NewProjects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NewReport" EntityType="Self.NewReport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReportImage" EntityType="Self.ReportImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Attendance_NewManpowers" Association="Self.FK_Attendance_NewManpowers">
+            <End Role="NewManpowers" EntitySet="NewManpowers" />
+            <End Role="Attendance" EntitySet="Attendance" />
+          </AssociationSet>
           <AssociationSet Name="FK_Basecount_Inventory1" Association="Self.FK_Basecount_Inventory1">
             <End Role="Inventories" EntitySet="Inventories" />
             <End Role="Basecount" EntitySet="Basecount" />
@@ -301,9 +378,17 @@
             <End Role="Inventories" EntitySet="Inventories" />
             <End Role="Inv_Update" EntitySet="Inv_Update" />
           </AssociationSet>
-          <AssociationSet Name="FK_Manpower_Employees" Association="Self.FK_Manpower_Employees">
+          <AssociationSet Name="FK_NewManpowers_NewProject" Association="Self.FK_NewManpowers_NewProject">
+            <End Role="NewProjects" EntitySet="NewProjects" />
+            <End Role="NewManpowers" EntitySet="NewManpowers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NewProjects_Employees" Association="Self.FK_NewProjects_Employees">
             <End Role="Employees" EntitySet="Employees" />
-            <End Role="Manpower" EntitySet="Manpower" />
+            <End Role="NewProjects" EntitySet="NewProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NewReport_NewProject" Association="Self.FK_NewReport_NewProject">
+            <End Role="NewProjects" EntitySet="NewProjects" />
+            <End Role="NewReport" EntitySet="NewReport" />
           </AssociationSet>
           <AssociationSet Name="FK_Notifications_Employee1" Association="Self.FK_Notifications_Employee1">
             <End Role="Employees" EntitySet="Employees" />
@@ -313,9 +398,9 @@
             <End Role="Inventories" EntitySet="Inventories" />
             <End Role="Notifications" EntitySet="Notifications" />
           </AssociationSet>
-          <AssociationSet Name="FK_Project_Employees" Association="Self.FK_Project_Employees">
-            <End Role="Employees" EntitySet="Employees" />
-            <End Role="Project" EntitySet="Project" />
+          <AssociationSet Name="FK_ReportImage_NewProject" Association="Self.FK_ReportImage_NewProject">
+            <End Role="NewProjects" EntitySet="NewProjects" />
+            <End Role="ReportImage" EntitySet="ReportImage" />
           </AssociationSet>
           <AssociationSet Name="FK_Requests_Employee" Association="Self.FK_Requests_Employee">
             <End Role="Employees" EntitySet="Employees" />
@@ -344,9 +429,7 @@
           <EntitySet Name="Employees" EntityType="db_a97f85_totalfiresafetyModel.Employee" />
           <EntitySet Name="Inv_Update" EntityType="db_a97f85_totalfiresafetyModel.Inv_Update" />
           <EntitySet Name="Inventories" EntityType="db_a97f85_totalfiresafetyModel.Inventory" />
-          <EntitySet Name="Manpowers" EntityType="db_a97f85_totalfiresafetyModel.Manpower" />
           <EntitySet Name="Notifications" EntityType="db_a97f85_totalfiresafetyModel.Notification" />
-          <EntitySet Name="Projects" EntityType="db_a97f85_totalfiresafetyModel.Project" />
           <EntitySet Name="Requests" EntityType="db_a97f85_totalfiresafetyModel.Request" />
           <EntitySet Name="Roles" EntityType="db_a97f85_totalfiresafetyModel.Role" />
           <EntitySet Name="Status" EntityType="db_a97f85_totalfiresafetyModel.Status" />
@@ -362,17 +445,9 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Credential" EntitySet="Credentials" />
           </AssociationSet>
-          <AssociationSet Name="FK_Manpower_Employees" Association="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Manpower" EntitySet="Manpowers" />
-          </AssociationSet>
           <AssociationSet Name="FK_Notifications_Employee1" Association="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1">
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Notification" EntitySet="Notifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Project_Employees" Association="db_a97f85_totalfiresafetyModel.FK_Project_Employees">
-            <End Role="Employee" EntitySet="Employees" />
-            <End Role="Project" EntitySet="Projects" />
           </AssociationSet>
           <AssociationSet Name="FK_Requests_Employee" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Employee">
             <End Role="Employee" EntitySet="Employees" />
@@ -398,7 +473,32 @@
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Request" EntitySet="Requests" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="NewProjects" EntityType="db_a97f85_totalfiresafetyModel.NewProject" />
+          <EntitySet Name="ReportImages" EntityType="db_a97f85_totalfiresafetyModel.ReportImage" />
+          <AssociationSet Name="FK_NewProjects_Employees" Association="db_a97f85_totalfiresafetyModel.FK_NewProjects_Employees">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="NewProject" EntitySet="NewProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReportImage_NewProject" Association="db_a97f85_totalfiresafetyModel.FK_ReportImage_NewProject">
+            <End Role="NewProject" EntitySet="NewProjects" />
+            <End Role="ReportImage" EntitySet="ReportImages" />
+          </AssociationSet>
+          <EntitySet Name="Attendances" EntityType="db_a97f85_totalfiresafetyModel.Attendance" />
+          <EntitySet Name="NewManpowers" EntityType="db_a97f85_totalfiresafetyModel.NewManpower" />
+          <AssociationSet Name="FK_Attendance_NewManpowers" Association="db_a97f85_totalfiresafetyModel.FK_Attendance_NewManpowers">
+            <End Role="NewManpower" EntitySet="NewManpowers" />
+            <End Role="Attendance" EntitySet="Attendances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NewManpowers_NewProject" Association="db_a97f85_totalfiresafetyModel.FK_NewManpowers_NewProject">
+            <End Role="NewProject" EntitySet="NewProjects" />
+            <End Role="NewManpower" EntitySet="NewManpowers" />
+          </AssociationSet>
+          <EntitySet Name="NewReports" EntityType="db_a97f85_totalfiresafetyModel.NewReport" />
+          <AssociationSet Name="FK_NewReport_NewProject" Association="db_a97f85_totalfiresafetyModel.FK_NewReport_NewProject">
+            <End Role="NewProject" EntitySet="NewProjects" />
+            <End Role="NewReport" EntitySet="NewReports" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Basecount">
           <Key>
             <PropertyRef Name="bc_id" />
@@ -433,12 +533,11 @@
           <Property Name="emp_lname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="emp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Credential" Relationship="db_a97f85_totalfiresafetyModel.FK_Credentials_Employee" FromRole="Employee" ToRole="Credential" />
-          <NavigationProperty Name="Manpowers" Relationship="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees" FromRole="Employee" ToRole="Manpower" />
           <NavigationProperty Name="Notifications" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" FromRole="Employee" ToRole="Notification" />
-          <NavigationProperty Name="Project" Relationship="db_a97f85_totalfiresafetyModel.FK_Project_Employees" FromRole="Employee" ToRole="Project" />
           <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
           <NavigationProperty Name="Role" Relationship="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="Status" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
+          <NavigationProperty Name="NewProjects" Relationship="db_a97f85_totalfiresafetyModel.FK_NewProjects_Employees" FromRole="Employee" ToRole="NewProject" />
         </EntityType>
         <EntityType Name="Inv_Update">
           <Key>
@@ -472,16 +571,6 @@
           <NavigationProperty Name="Notifications" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1" FromRole="Inventory" ToRole="Notification" />
           <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Inventory" ToRole="Request" />
         </EntityType>
-        <EntityType Name="Manpower">
-          <Key>
-            <PropertyRef Name="man_id" />
-          </Key>
-          <Property Name="man_id" Type="Guid" Nullable="false" />
-          <Property Name="man_emp_no" Type="Int32" Nullable="false" />
-          <Property Name="man_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="man_postition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Manpower_Employees" FromRole="Manpower" ToRole="Employee" />
-        </EntityType>
         <EntityType Name="Notification">
           <Key>
             <PropertyRef Name="guid" />
@@ -495,23 +584,6 @@
           <Property Name="ntf_type" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" FromRole="Notification" ToRole="Employee" />
           <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Inventory1" FromRole="Notification" ToRole="Inventory" />
-        </EntityType>
-        <EntityType Name="Project">
-          <Key>
-            <PropertyRef Name="proj_emp_no" />
-          </Key>
-          <Property Name="proj_id" Type="Guid" Nullable="false" />
-          <Property Name="proj_emp_no" Type="Int32" Nullable="false" />
-          <Property Name="proj_type_id" Type="Int32" />
-          <Property Name="proj_name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="proj_subject" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="proj_client" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="proj_location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="proj_lead" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="proj_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="proj_strDate" Type="DateTime" Precision="3" />
-          <Property Name="proj_endDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Project_Employees" FromRole="Project" ToRole="Employee" />
         </EntityType>
         <EntityType Name="Request">
           <Key>
@@ -583,18 +655,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Manpower_Employees">
-          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Manpower" Role="Manpower" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="emp_no" />
-            </Principal>
-            <Dependent Role="Manpower">
-              <PropertyRef Name="man_emp_no" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Notifications_Employee1">
           <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
           <End Type="db_a97f85_totalfiresafetyModel.Notification" Role="Notification" Multiplicity="*" />
@@ -604,18 +664,6 @@
             </Principal>
             <Dependent Role="Notification">
               <PropertyRef Name="emp_no" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Project_Employees">
-          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Project" Role="Project" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="emp_no" />
-            </Principal>
-            <Dependent Role="Project">
-              <PropertyRef Name="proj_emp_no" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -691,6 +739,134 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="NewProject">
+          <Key>
+            <PropertyRef Name="proj_type_id" />
+          </Key>
+          <Property Name="proj_id" Type="Guid" />
+          <Property Name="proj_emp_no" Type="Int32" />
+          <Property Name="proj_type_id" Type="Int32" Nullable="false" />
+          <Property Name="proj_name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="proj_subject" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="proj_client" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="proj_location" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="proj_lead" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="proj_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="proj_strDate" Type="DateTime" Precision="3" />
+          <Property Name="proj_endDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_NewProjects_Employees" FromRole="NewProject" ToRole="Employee" />
+          <NavigationProperty Name="ReportImages" Relationship="db_a97f85_totalfiresafetyModel.FK_ReportImage_NewProject" FromRole="NewProject" ToRole="ReportImage" />
+          <NavigationProperty Name="NewManpowers" Relationship="db_a97f85_totalfiresafetyModel.FK_NewManpowers_NewProject" FromRole="NewProject" ToRole="NewManpower" />
+          <NavigationProperty Name="NewReports" Relationship="db_a97f85_totalfiresafetyModel.FK_NewReport_NewProject" FromRole="NewProject" ToRole="NewReport" />
+        </EntityType>
+        <EntityType Name="ReportImage">
+          <Key>
+            <PropertyRef Name="img_id" />
+          </Key>
+          <Property Name="img_id" Type="Guid" Nullable="false" />
+          <Property Name="img_proj_id" Type="Int32" />
+          <Property Name="img_image" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="img_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="NewProject" Relationship="db_a97f85_totalfiresafetyModel.FK_ReportImage_NewProject" FromRole="ReportImage" ToRole="NewProject" />
+        </EntityType>
+        <Association Name="FK_NewProjects_Employees">
+          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="db_a97f85_totalfiresafetyModel.NewProject" Role="NewProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="NewProject">
+              <PropertyRef Name="proj_emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReportImage_NewProject">
+          <End Type="db_a97f85_totalfiresafetyModel.NewProject" Role="NewProject" Multiplicity="0..1" />
+          <End Type="db_a97f85_totalfiresafetyModel.ReportImage" Role="ReportImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewProject">
+              <PropertyRef Name="proj_type_id" />
+            </Principal>
+            <Dependent Role="ReportImage">
+              <PropertyRef Name="img_proj_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Attendance">
+          <Key>
+            <PropertyRef Name="atte_id" />
+          </Key>
+          <Property Name="atte_id" Type="Guid" Nullable="false" />
+          <Property Name="atte_proj_id" Type="Int32" />
+          <Property Name="atte_timein" Type="DateTime" Precision="3" />
+          <Property Name="atte_timeout" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="NewManpower" Relationship="db_a97f85_totalfiresafetyModel.FK_Attendance_NewManpowers" FromRole="Attendance" ToRole="NewManpower" />
+        </EntityType>
+        <EntityType Name="NewManpower">
+          <Key>
+            <PropertyRef Name="man_id" />
+          </Key>
+          <Property Name="man_id" Type="Guid" Nullable="false" />
+          <Property Name="man_emp_no" Type="Int32" />
+          <Property Name="man_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="man_postition" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="man_proj_id" Type="Int32" />
+          <NavigationProperty Name="Attendance" Relationship="db_a97f85_totalfiresafetyModel.FK_Attendance_NewManpowers" FromRole="NewManpower" ToRole="Attendance" />
+          <NavigationProperty Name="NewProject" Relationship="db_a97f85_totalfiresafetyModel.FK_NewManpowers_NewProject" FromRole="NewManpower" ToRole="NewProject" />
+          <Property Name="man_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Attendance_NewManpowers">
+          <End Type="db_a97f85_totalfiresafetyModel.NewManpower" Role="NewManpower" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Attendance" Role="Attendance" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="NewManpower">
+              <PropertyRef Name="man_id" />
+            </Principal>
+            <Dependent Role="Attendance">
+              <PropertyRef Name="atte_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NewManpowers_NewProject">
+          <End Type="db_a97f85_totalfiresafetyModel.NewProject" Role="NewProject" Multiplicity="0..1" />
+          <End Type="db_a97f85_totalfiresafetyModel.NewManpower" Role="NewManpower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewProject">
+              <PropertyRef Name="proj_type_id" />
+            </Principal>
+            <Dependent Role="NewManpower">
+              <PropertyRef Name="man_proj_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="NewReport">
+          <Key>
+            <PropertyRef Name="rep_id" />
+          </Key>
+          <Property Name="rep_id" Type="Guid" Nullable="false" />
+          <Property Name="rep_no" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rep_proj_id" Type="Int32" Nullable="false" />
+          <Property Name="rep_scope" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="rep_stats" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="rep_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="rep_img" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="rep_emp_no" Type="Int32" Nullable="false" />
+          <Property Name="rep_description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="NewProject" Relationship="db_a97f85_totalfiresafetyModel.FK_NewReport_NewProject" FromRole="NewReport" ToRole="NewProject" />
+        </EntityType>
+        <Association Name="FK_NewReport_NewProject">
+          <End Type="db_a97f85_totalfiresafetyModel.NewProject" Role="NewProject" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.NewReport" Role="NewReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewProject">
+              <PropertyRef Name="proj_type_id" />
+            </Principal>
+            <Dependent Role="NewReport">
+              <PropertyRef Name="rep_proj_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -759,16 +935,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Manpowers">
-            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Manpower">
-              <MappingFragment StoreEntitySet="Manpower">
-                <ScalarProperty Name="man_postition" ColumnName="man_postition" />
-                <ScalarProperty Name="man_name" ColumnName="man_name" />
-                <ScalarProperty Name="man_emp_no" ColumnName="man_emp_no" />
-                <ScalarProperty Name="man_id" ColumnName="man_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Notification">
               <MappingFragment StoreEntitySet="Notifications">
@@ -779,23 +945,6 @@
                 <ScalarProperty Name="in_code" ColumnName="in_code" />
                 <ScalarProperty Name="emp_no" ColumnName="emp_no" />
                 <ScalarProperty Name="guid" ColumnName="guid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Projects">
-            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Project">
-              <MappingFragment StoreEntitySet="Project">
-                <ScalarProperty Name="proj_endDate" ColumnName="proj_endDate" />
-                <ScalarProperty Name="proj_strDate" ColumnName="proj_strDate" />
-                <ScalarProperty Name="proj_status" ColumnName="proj_status" />
-                <ScalarProperty Name="proj_lead" ColumnName="proj_lead" />
-                <ScalarProperty Name="proj_location" ColumnName="proj_location" />
-                <ScalarProperty Name="proj_client" ColumnName="proj_client" />
-                <ScalarProperty Name="proj_subject" ColumnName="proj_subject" />
-                <ScalarProperty Name="proj_name" ColumnName="proj_name" />
-                <ScalarProperty Name="proj_type_id" ColumnName="proj_type_id" />
-                <ScalarProperty Name="proj_emp_no" ColumnName="proj_emp_no" />
-                <ScalarProperty Name="proj_id" ColumnName="proj_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -832,7 +981,71 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="NewProjects">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.NewProject">
+              <MappingFragment StoreEntitySet="NewProjects">
+                <ScalarProperty Name="proj_endDate" ColumnName="proj_endDate" />
+                <ScalarProperty Name="proj_strDate" ColumnName="proj_strDate" />
+                <ScalarProperty Name="proj_status" ColumnName="proj_status" />
+                <ScalarProperty Name="proj_lead" ColumnName="proj_lead" />
+                <ScalarProperty Name="proj_location" ColumnName="proj_location" />
+                <ScalarProperty Name="proj_client" ColumnName="proj_client" />
+                <ScalarProperty Name="proj_subject" ColumnName="proj_subject" />
+                <ScalarProperty Name="proj_name" ColumnName="proj_name" />
+                <ScalarProperty Name="proj_type_id" ColumnName="proj_type_id" />
+                <ScalarProperty Name="proj_emp_no" ColumnName="proj_emp_no" />
+                <ScalarProperty Name="proj_id" ColumnName="proj_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReportImages">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.ReportImage">
+              <MappingFragment StoreEntitySet="ReportImage">
+                <ScalarProperty Name="img_date" ColumnName="img_date" />
+                <ScalarProperty Name="img_image" ColumnName="img_image" />
+                <ScalarProperty Name="img_proj_id" ColumnName="img_proj_id" />
+                <ScalarProperty Name="img_id" ColumnName="img_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attendances">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Attendance">
+              <MappingFragment StoreEntitySet="Attendance">
+                <ScalarProperty Name="atte_timeout" ColumnName="atte_timeout" />
+                <ScalarProperty Name="atte_timein" ColumnName="atte_timein" />
+                <ScalarProperty Name="atte_proj_id" ColumnName="atte_proj_id" />
+                <ScalarProperty Name="atte_id" ColumnName="atte_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NewManpowers">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.NewManpower">
+              <MappingFragment StoreEntitySet="NewManpowers">
+                <ScalarProperty Name="man_date" ColumnName="man_date" />
+                <ScalarProperty Name="man_proj_id" ColumnName="man_proj_id" />
+                <ScalarProperty Name="man_postition" ColumnName="man_postition" />
+                <ScalarProperty Name="man_name" ColumnName="man_name" />
+                <ScalarProperty Name="man_emp_no" ColumnName="man_emp_no" />
+                <ScalarProperty Name="man_id" ColumnName="man_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NewReports">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.NewReport">
+              <MappingFragment StoreEntitySet="NewReport">
+                <ScalarProperty Name="rep_description" ColumnName="rep_description" />
+                <ScalarProperty Name="rep_emp_no" ColumnName="rep_emp_no" />
+                <ScalarProperty Name="rep_img" ColumnName="rep_img" />
+                <ScalarProperty Name="rep_date" ColumnName="rep_date" />
+                <ScalarProperty Name="rep_stats" ColumnName="rep_stats" />
+                <ScalarProperty Name="rep_scope" ColumnName="rep_scope" />
+                <ScalarProperty Name="rep_proj_id" ColumnName="rep_proj_id" />
+                <ScalarProperty Name="rep_no" ColumnName="rep_no" />
+                <ScalarProperty Name="rep_id" ColumnName="rep_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

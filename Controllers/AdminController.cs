@@ -475,9 +475,32 @@ namespace TotalFireSafety.Controllers
                 {
                     var allReq = _context.Requests
                                 .Where(x => x.request_type == "deployment")
-                                .OrderBy(x => x.request_date)
+                                //.OrderBy(x => x.request_date)
                                 .Include("Inventory")
                                 .ToList();
+
+                    //var groupedByCode = await Task.Run(() => allReq
+                    //        .GroupBy(item => item.Inventory.in_code)
+                    //        .Select(group => new {
+                    //            Code = group.Key,
+                    //            TotalQuantity = group.Sum(item => {
+                    //                string quantityStr = item.request_item_quantity;
+                    //                int quantityInt = int.Parse(quantityStr.Split(' ')[0]);
+                    //                return quantityInt;
+                    //            }).ToString() + " " + group.First().Inventory.in_quantity.Split(' ')[1],
+                    //            TotalRequest = group.Count(),
+                    //            Items = group.Select(item => new
+                    //            {
+                    //                Name = item.Inventory.in_name,
+                    //                Size = item.Inventory.in_size
+                    //            }),
+                    //            //Items = group.First(), // Use the first item in the group to get other properties
+                    //            //Count = group.GroupBy(item => item.request_item).Count()/*ToDictionary(g => g.Key, g => g.Count()) */// Group by request_item and count occurrences
+                    //        })
+                    //        .OrderByDescending(x => x.TotalQuantity)
+                    //        .ThenBy(x => x.Code)
+                    //        .ToList()
+                    //        );
 
                     var groupedByCode = await Task.Run(() => allReq
                             .GroupBy(item => item.Inventory.in_code)
@@ -487,31 +510,56 @@ namespace TotalFireSafety.Controllers
                                     string quantityStr = item.request_item_quantity;
                                     int quantityInt = int.Parse(quantityStr.Split(' ')[0]);
                                     return quantityInt;
-                                }).ToString() + " " + group.First().Inventory.in_quantity.Split(' ')[1],
-                                Items = group.First(), // Use the first item in the group to get other properties
-                                Count = group.GroupBy(item => item.request_item).ToDictionary(g => g.Key, g => g.Count()) // Group by request_item and count occurrences
+                                }),
+                                TotalQuantityUnit = group.First().Inventory.in_quantity.Split(' ')[1],
+                                TotalRequest = group.Count(),
+                                Items = group.Select(item => new
+                                {
+                                    Name = item.Inventory.in_name,
+                                    Size = item.Inventory.in_size
+                                }),
                             })
                             .OrderByDescending(x => x.TotalQuantity)
+                            .ThenBy(x => x.Code) // if there are ties in TotalQuantity, sort by Code ascending
                             .ToList()
+                            .Select(group => new {
+                                Code = group.Code,
+                                TotalQuantity = group.TotalQuantity.ToString() + " " + group.TotalQuantityUnit,
+                                TotalRequest = group.TotalRequest,
+                                Items = group.Items
+                            })
                             );
-                    var mostRequestedItems = groupedByCode
-                                            .GroupBy(x => x.Items.Inventory.in_category) // group by first two characters of code to get category
-                                            .Select(group => new {
-                                                Category = group.Key,
-                                                Items = group.Select((item, index) => new {
-                                                    Name = item.Items.Inventory.in_name,
-                                                    Quantity = item.TotalQuantity,
-                                                    Class = item.Items.Inventory.in_class,
-                                                    Size = item.Items.Inventory.in_size,
-                                                    MostRequested = index == 0, // flag indicating whether item is most requested
-                                                    Count = item.Count
-                                                })
-                                            })
-                                            .ToList();
-                    var serializedData = Utf8Json.JsonSerializer.Serialize(mostRequestedItems);
-                    string jsonString = Encoding.UTF8.GetString(serializedData);
+                    var ave = groupedByCode.Average(x => x.TotalRequest);
 
-                    return Content(jsonString,"application/json");
+                    using (var stream = new MemoryStream())
+                    {
+                        var writer = new Utf8JsonWriter(stream);
+                        writer.WriteStartArray();
+                            
+                        foreach (var item in groupedByCode)
+                        {
+                            writer.WriteStartObject();
+                            writer.WriteString("Category", item.Code);
+                            writer.WriteNumber("TotalRequest", item.TotalRequest);
+                            writer.WriteNumber("Average", ave);
+                            writer.WriteStartObject("Items");
+                            writer.WriteNull("Class");
+                            writer.WriteNull("Type");
+                            writer.WriteString("Name", item.Items.First().Name);
+                            writer.WriteString("Quantity", item.TotalQuantity);
+                            writer.WriteString("Size", item.Items.First().Size);
+                            writer.WriteEndObject();
+
+                            // add more properties as needed
+                            writer.WriteEndObject();
+                        }
+
+                        writer.WriteEndArray();
+                        writer.Flush();
+                        var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+
+                        return Content(jsonString, "application/json");
+                    }
                 }
             }
             catch(Exception ex)

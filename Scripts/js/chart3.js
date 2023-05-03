@@ -10,27 +10,40 @@ radioButtons.forEach(radioButton => {
     });
 });
 
+function PopulateLabels1(array, typeOf){
+    var label = [];
+    var quant = [];
+    for (var i = 0; i < array.length; i++) {
+        var size = array[i].Items.Size;
+
+        if (size == null || size == "null") {
+            size = "";
+        }
+        label.push(array[i].Items.Name + " " + size);
+        quant.push(extractNum(array[i].Items.Quantity).num);
+    }
+    return { label, quant };
+}
+
 function change(value) {
-    let arr = {};
+    let arr = [];
 
     if (value == "all") {
-            var results = PopulateLabels(summ, "all");
+        var results = PopulateLabels(summ, "other");
         SetChart1(results.label, results.quant);
         return;
     }
 
-    for (var i = 0; i < summ.length; i++) {
-        arr = summ[0][i].Items.filter(function (item) {
-            if (value == "fast" && item.MostRequested == true) {
-                return item;
-            }
-            else if (value == "slow" && item.MostRequested == false){
-                return summ[0][i];
-            }
-        });
+    for (var i = 0; i < summ[0].length; i++) {
+        if (summ[0][i].TotalRequest > summ[0][i].Average && value == "fast") {
+            arr.push(summ[0][i]);
+        }
+        else if (summ[0][i].TotalRequest < summ[0][i].Average && value == "slow") {
+            arr.push(summ[0][i]);
+        }
     }
     console.log(arr);
-    var results = PopulateLabels(arr, "filtered");
+    var results = PopulateLabels1(arr, "filtered");
     SetChart1(results.label, results.quant);
 }
 
@@ -47,9 +60,21 @@ function GetSupplies() {
         .then(data => {
             summ.length = 0;
             summ.push(data);
+            summ.sort((a, b) => {
+                const quantityA = extractNum(a.TotalQuantity).num;
+                const quantityB = extractNum(b.TotalQuantity).num;
+
+                if (quantityA < quantityB) {
+                    return -1;
+                }
+                if (quantityA > quantityB) {
+                    return 1;
+                }
+                return 0;
+            });
             console.log(summ);
-            //var results = PopulateLabels(summ, "all");
-            //SetChart1(results.label, results.quant);
+            var results = PopulateLabels(summ, "other");
+            SetChart1(results.label, results.quant);
         })
         .catch(error => {
             //window.location.replace('/Error/InternalServerError');
@@ -81,7 +106,7 @@ function SetChart1(labels, quantities) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Item Quantity',
+                label: 'Quantity',
                 data: quantities,
                 backgroundColor: [
                     '#09AF10'

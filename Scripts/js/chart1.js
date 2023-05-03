@@ -66,6 +66,17 @@ function PopulateLabels(array,typeOf) {
             }
         }
     }
+    else if (typeOf === "other") {
+        for (var i = 0; i < array[0].length; i++) {
+                var size = array[0][i].Items.Size;
+
+                if (size == null || size == "null") {
+                    size = "";
+                }
+                label.push(array[0][i].Items.Name + " " + size);
+                quant.push(extractNum(array[0][i].Items.Quantity).num);
+        }
+    }
     else {
         for (var i = 0; i < array.length; i++) {
                 var size = array[i].Size;
@@ -107,7 +118,7 @@ function SetChart(labels,quantities) {
 
             labels: labels,
             datasets: [{
-                label: '',
+                label: 'Quantity',
                 data: quantities,
 
                 backgroundColor: function (context) {

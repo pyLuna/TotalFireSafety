@@ -86,19 +86,23 @@
                             </div>
 
                             <div class="date">
-                                <label>Project Name: @ViewBag.ProjectName</label>
+                                <label class="title">Project Name:</label>
+                                <label>@ViewBag.ProjectName</label>
                             </div>
 
                             <div class="date">
-                                <label>Subject: @ViewBag.Subject</label>
+                                <label class="title">Subject: </label>
+                                <label>@ViewBag.Subject</label>
                             </div>
 
                             <div class="date">
-                                <label>Client: @ViewBag.Client</label>
+                                <label class="title">Client: </label>
+                                <label>@ViewBag.Client</label>
                             </div>
 
                             <div class="date">
-                                <label>Project Lead: @ViewBag.ProjectLead</label>
+                                <label class="title">Project Lead: </label>
+                                <label>@ViewBag.ProjectLead</label>
                             </div>
 
                             <div class="status">
@@ -120,8 +124,8 @@
                         </div>
                     </div>
 
-
-                    <div class="proj-mems-container">
+                    @*MANPOWER CARD*@
+                    @*<div class="proj-mems-container">
                         <div class="mems-main">
                             <div class="mems-title">
                                 <br>
@@ -156,7 +160,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>
@@ -276,9 +280,11 @@
         <div class="add-new-container" id="add-new-container">
             <form id="UpdateProForm">
                 <div class="add-new-header">
-                    <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                    <button type="reset" style="border: none;">
+                        <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                    </button>
                     <center>
-                        <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
+                        <h3>EDIT PROJECT <i class="las la-rocket"></i></h3>
                     </center>
 
                 </div>
@@ -344,8 +350,8 @@
 
 
                     </div>
-
-                    <div class="add-new-right">
+                    @*MAN POWER RIGHT SIDE*@
+                    @*<div class="add-new-right">
                         <div class="add-new-header">
                             <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
                         </div>
@@ -368,7 +374,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
 
                 </div>
             </form>
@@ -429,9 +435,10 @@
             </div>
 
             <div class="report-new-main">
-
+                
                 <div class="border">
                     <div class="left">
+                        <p class="emErr" style="font-weight: bold; color: red;"></p>
                         <div class="upper">
                             <div class="upper-content">
                                 <div class="label-container">
@@ -500,7 +507,7 @@
                             <div class="mid">
                                 <div class="mid-container">
                                     <div class="input">
-                                        <textarea name="" id="rep_description" placeholder="Input here"></textarea>
+                                        <textarea name="rep_description" id="rep_description" placeholder="Input Description here .. " required></textarea>
                                     </div>
                                     <div class="attach">
                                         <button id="attachBtn">
@@ -521,10 +528,10 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="date" id="rep_date">
+                                    <input type="date" id="rep_date" name="rep_date" required>
                                 </div>
                                 <div class="status">
-                                    <select id="rep_status" required>
+                                    <select id="rep_status" name="rep_status" required>
                                         <option>Select Status</option>
                                         <option>Achieved</option>
                                     </select>
@@ -598,7 +605,8 @@
                                         location.reload();
                                     },
                                     error: function (xhr, status, error) {
-                                        alert('Error Saving Data');
+                                        /*alert('Error Saving Data');*/
+                                        $(".emErr").html("Please fill all fields.");
                                     }
                                 });
                             }
@@ -607,7 +615,6 @@
                     </div>
                 </div>
             </div>
-
 
         </div>
 
@@ -773,9 +780,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="button">
+                        @*<div class="button">
                             <button onclick="Edit()">EDIT</button>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>
@@ -909,14 +916,14 @@
 
     </main>
 </div>
-<div class="footer">
+@*<div class="footer">
     <center>
         <div class="footer-con">
             <img src="../../images/codepheuse.png" alt="">
             <h4>CodePheus | 2022</h4>
         </div>
     </center>
-</div>
+</div>*@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>
@@ -1421,6 +1428,7 @@ $.ajax({
 
     function closeReportNewForm() {
         document.getElementById("report-new-container").style.display = "none";
+        $(".emErr").html("");
     }
 
     function openInputManForm() {

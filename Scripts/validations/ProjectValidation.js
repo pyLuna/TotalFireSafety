@@ -6,23 +6,23 @@ $(document).ready(function () {
 		rules: {
 			projName: {
 				required: true,
-				minlength: 4,
-				maxlength: 20
+				minlength: 5,
+				maxlength: 30
 			},
 			projSubject: {
 				required: true,
-				minlength: 4,
-				maxlength: 20
+				minlength: 5,
+				maxlength: 30
 			},
 			projClient: {
 				required: true,
-				minlength: 4,
-				maxlength: 20
+				minlength: 5,
+				maxlength: 30
 			},
 			projLocation: {
 				required: true,
-				minlength: 4,
-				maxlength: 20
+				minlength: 5,
+				maxlength: 50
 			},
 			projLead: {
 				required: true
@@ -40,23 +40,23 @@ $(document).ready(function () {
 		messages: {
 			projName: {
 				required: "Project name is required.",
-				minlength: "Project name be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				minlength: "Project name be at least 5 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
 			},
 			projSubject: {
 				required: "Project name is required.",
-				minlength: "Project name be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				minlength: "Project name be at least 5 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
 			},
 			projClient: {
 				required: "Project name is required.",
-				minlength: "Project name be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				minlength: "Project name be at least 5 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
 			},
 			projLocation: {
 				required: "Project name is required.",
-				minlength: "Project name be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				minlength: "Project name be at least 5 characters long.",
+				maxlength: "Maximum length of name is 50 characters only."
 			},
 			projLead: {
 				required: "Project lead is required"
@@ -83,23 +83,23 @@ $(document).ready(function () {
 		rules: {
 			proj_name: {
 				required: true,
-				minlength: 4,
-				maxlength: 20
+				minlength: 5,
+				maxlength: 30
 			},
 			proj_subject: {
 				required: true,
-				minlength: 4,
-				maxlength: 20
+				minlength: 5,
+				maxlength: 30
 			},
 			proj_client: {
 				required: true,
-				minlength: 4,
-				maxlength: 20
+				minlength: 5,
+				maxlength: 30
 			},
 			proj_location: {
 				required: true,
-				minlength: 4,
-				maxlength: 20
+				minlength: 5,
+				maxlength: 50
 			},
 			proj_lead: {
 				required: true
@@ -117,23 +117,23 @@ $(document).ready(function () {
 		messages: {
 			proj_name: {
 				required: "Project name is required.",
-				minlength: "Project name be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				minlength: "Project name be at least 5 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
 			},
 			proj_subject: {
 				required: "Project name is required.",
-				minlength: "Project name be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				minlength: "Project name be at least 5 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
 			},
 			proj_client: {
 				required: "Project name is required.",
-				minlength: "Project name be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				minlength: "Project name be at least 5 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
 			},
 			proj_location: {
 				required: "Project name is required.",
-				minlength: "Project name be at least 4 characters long.",
-				maxlength: "Maximum length of name is 20 characters only."
+				minlength: "Project name be at least 5 characters long.",
+				maxlength: "Maximum length of name is 50 characters only."
 			},
 			proj_lead: {
 				required: "Project lead is required"

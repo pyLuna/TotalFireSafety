@@ -145,7 +145,7 @@
                                                     </select>
                                                 </div>
                                                 <label id="inpSizeQuant-error" class="error manual-error" for="inpSizeQuant"></label>
-                                                <label id="sizeQuant-error" class="error manual-error" for="sizeQuant"></label>
+                                                <label id="sizeQuant-error" class="error manual-error" style="display:none!important;" for="sizeQuant"></label>
                                             </div>
                                             <input type="text" id="in_quantity" name="in_quantity" style="display:none!important;" required>
                                             <input type="text" id="in_remarks" name="in_remarks" style="display:none;" required>
@@ -469,7 +469,7 @@
 <script>
     document.getElementById('expBtn').addEventListener("click", function () {
         localStorage.setItem("allItems", JSON.stringify(fixedArray));
-        window.location.href = "/Admin/InventorylistExport";
+        /*window.location.href = "/Admin/InventorylistExport";*/
     });
 
     /*ADD NEW ITEM CHECKFORM VALIDATION*/

@@ -234,6 +234,23 @@ namespace TotalFireSafety.Controllers
 
             return View(data);
         }
+        public async Task<ActionResult> InventorylistExport(int? id)
+        {
+
+            nwTFSEntity db = new nwTFSEntity();
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            var empId = Session["emp_no"].ToString();
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            var data = db.Employees.Where(d => d.emp_no == id).ToList();
+            ViewBag.Name = data.FirstOrDefault()?.emp_fname + " " + data.FirstOrDefault()?.emp_lname;
+            ViewBag.Position = data.FirstOrDefault()?.emp_position;
+            ViewBag.Id = data.FirstOrDefault()?.emp_no;
+
+            return View(data);
+        }
         public async Task<ActionResult> InvReorder()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -1225,7 +1242,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        public ActionResult InventorylistExport()
+        /*public ActionResult InventorylistExport()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -1235,8 +1252,10 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             ViewBag.EmpId = empId;
             return View();
-        }
+        }*/
         #endregion
+
+
 
         #region Users
         public async Task<ActionResult> Users()

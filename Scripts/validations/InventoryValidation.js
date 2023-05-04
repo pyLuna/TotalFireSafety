@@ -33,7 +33,7 @@ $(document).ready(function () {
             inpsize: {
                 required: true
             },
-            inpsizequant: {
+            inpSizeQuant: {
                 required: true
             },
             sizequant: {
@@ -61,7 +61,7 @@ $(document).ready(function () {
             sizesel: {
                 required: ""
             },
-            inpsizequant: {
+            inpSizeQuant: {
                 required: "Quantity is required"
             },
             sizequant: {

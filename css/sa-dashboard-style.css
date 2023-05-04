@@ -9719,14 +9719,14 @@ hr {
 .add-new-container {
     display: none;
     width: 70%;
-    height: 760px;
+    height: 760px !important;
     position: fixed;
     top: 10%;
     left: 20%;
     background-color: #f1f5f9;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     border-radius: 10px;
-    /*z-index: 100;*/
+    z-index: 100;
     position: fixed;
     overflow: auto;
 }
@@ -10597,7 +10597,7 @@ hr {
 
 .add-new-container {
     display: none;
-    width: 70%;
+    width: 50%;
     height: 800px;
     position: fixed;
     top: 10%;
@@ -10665,10 +10665,10 @@ hr {
 
 .add-new-main .add-new-left button {
     /*position: fixed;*/
-    width: 1570px;
+    width: 100% !important;
     height: 40px;
     margin-top: 70px;
-    margin-left: 1px;
+    /*margin-left: 1px;*/
     margin-bottom: 20px;
     background: #16215B;
     border-radius: 5px;

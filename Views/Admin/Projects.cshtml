@@ -199,7 +199,9 @@
         <div class="add-new-container" id="add-new-container">
             <form id="NewProForm">
                 <div class="add-new-header">
-                    <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                    <button type="reset" style="border: none;">
+                        <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                    </button>
                     <center>
                         <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
                     </center>
@@ -265,7 +267,8 @@
                             @*savePro() + saveData()*@
                         </div>
                     </div>
-                    <div class="add-new-right">
+                    @*MAN POWER RIGHT SIDE*@
+                    @*<div class="add-new-right">
                         <div class="add-new-header">
                             <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
                         </div>
@@ -297,7 +300,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </form>
         </div>
@@ -679,6 +682,7 @@ function filterByStatus() {
         function closeAddNewContainer() {
             document.getElementById("add-new-container").style.display = "none";
             $('#NewProForm').validate().resetForm();
+            $('#NewProForm').reset();
         }
 
         function openInputMemForm() {

@@ -70,8 +70,10 @@
 
                     <button class="expo-btn" id="expBtn" title="EXPORT REPORT">
                         @*+ expoOpenPopup()*@
-                        EXPORT
-                        <span class="las la-file-download"></span>
+                        <a href="@Url.Action("InventorylistExport", "Admin", new { id = ViewBag.EmpId })" target="_blank">
+                            EXPORT
+                            <span class="las la-file-download"></span>
+                        </a>
                     </button>
 
                     <select id="filter" onchange="SortByCategory(this,this.value)">

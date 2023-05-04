@@ -274,92 +274,94 @@
         <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
 
         <div class="add-new-container" id="add-new-container">
-            <div class="add-new-header">
-                <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
-                <center>
-                    <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
-                </center>
-
-            </div>
-
-            <div class="add-new-main">
-                <div class="add-new-left">
-                    <div class="input-fields">
-                        <Label>Project Name</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Subject</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Client</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Location Site</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location">
-                    </div>
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <Label>Project Lead</Label>
-                            <br>
-                            <select name="proj_lead" required>
-                                <option disabled>Select Lead</option>
-                                <option value="@Model.Project.proj_lead" selected>@Model.Project.proj_lead</option>
-                            </select>
-                        </div>
-                        <div class="input-fields right">
-                            <Label>Status</Label>
-                            <br>
-                            <select name="proj_status" required>
-                                <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
-                                <option>On-Going</option>
-                                <option>In-Line</option>
-                                <option>Cancelled</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <Label>Start Date</Label>
-                            <br>
-                            <input type="text" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
-                        </div>
-                        <div class="input-fields right">
-                            <Label>Baseline Finish</Label>
-                            <br>
-                            <input type="date" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")">
-                        </div>
-                    </div>
-
-                    <button onclick="updatedata()">UPDATE PROJECT</button>
-
+            <form id="UpdateProForm">
+                <div class="add-new-header">
+                    <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                    <center>
+                        <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
+                    </center>
 
                 </div>
 
-                <div class="add-new-right">
-                    <div class="add-new-header">
-                        <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
+                <div class="add-new-main">
+                    <div class="add-new-left">
+                        <div class="input-fields">
+                            <Label>Project Name</Label>
+                            <br>
+                            <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name" required>
+                        </div>
+                        <div class="input-fields">
+                            <Label>Subject</Label>
+                            <br>
+                            <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject" required>
+                        </div>
+                        <div class="input-fields">
+                            <Label>Client</Label>
+                            <br>
+                            <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client" required>
+                        </div>
+                        <div class="input-fields">
+                            <Label>Location Site</Label>
+                            <br>
+                            <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location" required>
+                        </div>
+                        <div class="grp">
+                            <div class="input-fields left">
+                                <Label>Project Lead</Label>
+                                <br>
+                                <select name="proj_lead" required>
+                                    <option disabled>Select Lead</option>
+                                    <option value="@Model.Project.proj_lead" selected>@Model.Project.proj_lead</option>
+                                </select>
+                            </div>
+                            <div class="input-fields right">
+                                <Label>Status</Label>
+                                <br>
+                                <select name="proj_status" required>
+                                    <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
+                                    <option>On-Going</option>
+                                    <option>In-Line</option>
+                                    <option>Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grp">
+                            <div class="input-fields left">
+                                <Label>Start Date</Label>
+                                <br>
+                                <input type="text" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
+                            </div>
+                            <div class="input-fields right">
+                                <Label>Baseline Finish</Label>
+                                <br>
+                                <input type="date" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")" required>
+                            </div>
+                        </div>
+
+                        <button onclick="submitForm()">UPDATE PROJECT</button>
+                        @*updatedata()*@
+
+
                     </div>
 
-                    <div class="add-new-power">
-                        <div class="mems-list">
-                            <div class="mems-grid">
-                                <div class="mems-projects">
-                                    <div class="mems">
-                                        <div class="mems-body">
-                                            <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%" id="clockinTable">
-                                                    <tbody>
+                    <div class="add-new-right">
+                        <div class="add-new-header">
+                            <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
+                        </div>
 
-                                                    </tbody>
-                                                </table>
+                        <div class="add-new-power">
+                            <div class="mems-list">
+                                <div class="mems-grid">
+                                    <div class="mems-projects">
+                                        <div class="mems">
+                                            <div class="mems-body">
+                                                <div class="table-responsive" style="overflow-x: auto;">
+                                                    <table width="100%" id="clockinTable">
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -367,11 +369,10 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
-
-            </div>
-
-            <button>UPDATE PROJECT</button>
+            </form>
+            @*<button>UPDATE PROJECT</button>*@
 
         </div>
 
@@ -918,7 +919,7 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>
 <script>
     function updateAttendance(projectId) {
         // Get the current time as a string
@@ -1034,6 +1035,21 @@
 </script>
 
 <script>
+        function submitForm() {
+            var bool = EditProjectValidation();
+            if (bool) {
+                form.submit();
+            }
+        }
+
+        function EditProjectValidation() {
+            var bool = $('#UpdateProForm').valid();
+            if (bool) {
+                updatedata();
+            }
+            return bool;
+        }
+
       function updatedata() {
         var projId = '@Model.Project.proj_type_id';
         var projName = $('input[name="proj_name"]').val();
@@ -1047,7 +1063,7 @@
 
 // Check if required fields are not empty
        if (projName.trim() === '' || projSubject.trim() === '' || projClient.trim() === '' || projLocation.trim() === '' || projLead.trim() === '' || projStatus.trim() === '' || projStartDate.trim() === '' || projEndDate.trim() === '') {
-        alert('Please fill out all required fields');
+        /*alert('Please fill out all required fields');*/
         return;
         }
 
@@ -1068,15 +1084,15 @@ $.ajax({
     },
     success: function (response) {
         if (response.success) {
-            alert('Project updated successfully');
+            /*alert('Project updated successfully');*/
             // Redirect to the project details page
             window.location.href = '@Url.Action("ProjectView", "Admin", new { id = Model.Project.proj_type_id })';
         } else {
-            alert('Failed to update project');
+            /*alert('Failed to update project');*/
         }
          },
         error: function () {
-        alert('Failed to update project');
+        /*alert('Failed to update project');*/
         }
      });
   }
@@ -1380,6 +1396,7 @@ $.ajax({
 
     function closeAddNewContainer() {
         document.getElementById("add-new-container").style.display = "none";
+        $('#UpdateProForm').validate().resetForm();
     }
 
     function openInputMemForm() {
@@ -1421,7 +1438,7 @@ $.ajax({
     function closeInputManForm1() {
         // Get all the time-out input elements
       
-        document.getElementById("input-man-form").style.display = "none";
+        document.getElementById("input-man-container").style.display = "none";
         location.reload();
     }
 </script>

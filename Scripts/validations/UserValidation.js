@@ -122,10 +122,12 @@ $(document).ready(function () {
 
 	$('#Credential\\.username').rules('add', {
 		required: true,
-		minlength: 3,
+		minlength: 5,
+		maxlength: 12,
 		messages: {
 			required: "Username is required.",
-			minlength: "Username must be at least 3 characters."
+			minlength: "Username must be at least 5 characters.",
+			maxlength: "Maximum length of username is 12 characters only."
 		}
 	});
 	$('#Credential\\.username').on('keyup', function () {
@@ -133,10 +135,12 @@ $(document).ready(function () {
 	});
 	$('#Credential\\.password').rules('add', {
 		required: true,
-		minlength: 3,
+		minlength: 8,
+		maxlength: 16,
 		messages: {
 			required: "Password is required.",
-			minlength: "Password must be at least 3 characters."
+			minlength: "Password must be at least 8 characters.",
+			maxlength: "Maximum length of password is 16 characters only."
 		}
 	});
 	$('#Credential\\.password').on('keyup', function () {

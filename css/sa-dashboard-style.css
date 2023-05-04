@@ -9646,11 +9646,9 @@ hr {
     border: 2px solid #000;
     border-radius: 5px;
     margin-bottom: 10px;
-}*/
-
+}
+*/
 /* TABLE OF TASK LIST */
-
-
 /*.lower {
     height: 285px;
     overflow: auto;
@@ -9695,7 +9693,6 @@ hr {
             color: #FF0000;
         }*/
 /* END */
-
 /*.report-container button {
     width: 100px;
     height: 35px;
@@ -9716,31 +9713,40 @@ hr {
         background-color: #16215B;
         box-shadow: none;
     }*/
-
-
 /* END */
-
 /* ADD NEW PROJECT - NEW LAYOUT - 04/05 */
 
 .add-new-container {
     display: none;
     width: 70%;
-    height: 700px;
+    height: 760px;
     position: fixed;
     top: 10%;
     left: 20%;
     background-color: #f1f5f9;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     border-radius: 10px;
-    z-index: 100;
+    /*z-index: 100;*/
     position: fixed;
-    overflow: hidden;
+    overflow: auto;
 }
 
-    .add-new-container .add-new-header h3 {
-        font-size: 1.2rem;
-        margin-top: -28px;
-    }
+ .add-new-container form {
+     overflow: auto;
+     height: 100%; 
+     background-color: #fff;
+     
+ }
+
+.add-new-container .add-new-header {
+    background-color: #F1F5F9;
+    padding-bottom: 20px;
+}
+
+.add-new-container .add-new-header h3 {
+    font-size: 1.2rem;
+    margin-top: -28px;
+}
 
         .add-new-container .add-new-header h3 i {
             font-size: 1.8rem;
@@ -9884,11 +9890,17 @@ hr {
 
 /* add-new-footer */
 
+.CrtPro-btn {
+    
+}
+
 .add-new-container .add-new-footer {
     margin-top: -50px;
     width: 100%;
     height: 100%;
     text-align: center;
+    position: fixed;
+    padding-right: 10%;
 }
 
     .add-new-container .add-new-footer a {
@@ -9906,6 +9918,7 @@ hr {
         padding: .5rem;
         font-weight: 600;
         box-shadow: 4px 4px 3px #B2B2B2;
+        
     }
 
         .add-new-container .add-new-footer button:hover {
@@ -10585,7 +10598,7 @@ hr {
 .add-new-container {
     display: none;
     width: 70%;
-    height: 700px;
+    height: 800px;
     position: fixed;
     top: 10%;
     left: 20%;
@@ -10651,16 +10664,17 @@ hr {
 }
 
 .add-new-main .add-new-left button {
-    position: fixed;
-    width: 1350px;
+    /*position: fixed;*/
+    width: 1570px;
     height: 40px;
-    margin-top: 30px;
-    margin-left: 13px;
+    margin-top: 70px;
+    margin-left: 1px;
+    margin-bottom: 20px;
     background: #16215B;
     border-radius: 5px;
     color: #fff;
     font-size: .8rem;
-    padding: .5rem;
+    padding: 5px;
     font-weight: 600;
     box-shadow: 4px 4px 3px #B2B2B2;
 }

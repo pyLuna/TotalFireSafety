@@ -1399,6 +1399,7 @@ namespace TotalFireSafety.Controllers
                         {
                             return BadRequest("Request Not Found");
                         }
+                        var maxId = _context.Requests.Max(x => x.request_type_id);
                         if (item.request_status.Trim().ToLower() == "approved" && item.request_type.Trim().ToLower() == "supply")
                         {
                             var newGuid = Validate("requests");
@@ -1411,7 +1412,7 @@ namespace TotalFireSafety.Controllers
                                 request_id = newGuid.Item1,
                                 request_item = item.request_item,
                                 request_item_quantity = item.request_item_quantity,
-                                request_type_id = item.request_type_id,
+                                request_type_id = maxId + 1,
                                 request_type_status = "Active"
                             };
                             _context.Requests.Add(newReq);

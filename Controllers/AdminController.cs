@@ -198,7 +198,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> InvReportPrint()
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if(role == 4 || role ==3)
+            if(role ==3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -229,7 +229,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> InvReportExport(int? id)
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -251,7 +251,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> InvReorder()
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -1177,7 +1177,7 @@ namespace TotalFireSafety.Controllers
             try
             {
                 var role = int.Parse(Session["system_role"].ToString());
-                if (role == 4 || role == 3 || role == 1)
+                if (role == 3)
                 {
                     return RedirectToAction("Unauthorize", "Error");
                 }
@@ -1223,7 +1223,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> GetBarcode(string itemCode)
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3 || role == 1)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -1254,7 +1254,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> AddItem2(Inventory item)
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3 || role == 1)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -1300,7 +1300,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> AddItem1(Inventory item)
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3 || role == 1)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -1346,7 +1346,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> DeleteItem(string item)
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3 || role == 1)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -1380,7 +1380,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> Inventory()
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -1402,7 +1402,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> Inventory(Inventory items, string type)
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3 || role == 1)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -1448,7 +1448,7 @@ namespace TotalFireSafety.Controllers
         public async Task<ActionResult> InvArchive()
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
@@ -1465,7 +1465,7 @@ namespace TotalFireSafety.Controllers
         public ActionResult InventoryReport()
         {
             var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3)
+            if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }

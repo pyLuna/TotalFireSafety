@@ -103,119 +103,120 @@
 </head>
 <body>
 	<input type="checkbox" id="nav-toggle">
-	<div class="sidebar">
-		<div class="user-wrapper">
-			<div class="image-container">
-				<div class="circle">
-					<img src="@Url.Content(ViewBag.ProfilePath)" alt="Profile Picture" class="profile-user">
-					<div class="upload-button">
-						<label for="file-upload">
-							<i class="las la-camera" style="top: 20px; display: grid; align-items: start;"></i>
-						</label>
-						@*<form method="post" action="@Url.Action("SaveImage","Admin")" enctype="multipart/form-data" id="SaveImage">
-						</form>*@
-						<input type="file" id="file-upload">
-					</div>
-				</div>
-			</div>
-			<div>
-				<h4>@Session["name"]</h4>
-				<small>@Session["position"]</small>
-			</div>
+    <div class="sidebar">
+        <div class="user-wrapper">
+            <div class="image-container">
+                <div class="circle">
+                    <img src="@Url.Content(ViewBag.ProfilePath)" alt="Profile Picture" class="profile-user">
+                    <div class="upload-button">
+                        <label for="file-upload">
+                            <i class="las la-camera" style="top: 20px; display: grid; align-items: start;"></i>
+                        </label>
+                        @*<form method="post" action="@Url.Action("SaveImage","Admin")" enctype="multipart/form-data" id="SaveImage">
+                        </form>*@
+                        <input type="file" id="file-upload">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h4>@Session["name"]</h4>
+                <small>@Session["position"]</small>
+            </div>
 
-			@* NEW UPDATE *@
+            @* NEW UPDATE *@
 
-		</div>
+        </div>
 
-		<div class="sidebar-menu">
-			<ul>
-				<li>
-					<a href="@Url.Action("Dashboard","Admin")" class="@ViewBag.Dash">
-						<span class="las la-tv"></span>
-						<span>Dashboard</span>
-					</a>
-				</li>
-				@if (Int32.Parse(Session["system_role"].ToString()) == 1 || Int32.Parse(Session["system_role"].ToString()) == 2)
-				{
-					<button class="oper-dropdown-btn">
-						<a>
-							<span class=""></span>
-							<span>Inventories</span>
-						</a>
-					</button>
-					<div class="dropdown-container">
-					<li>
-						<a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
-							<span class="las la-cubes"></span>
-							<span>Inventory Lists</span>
-						</a>
-					</li>
-					<li>
-						<a href="@Url.Action("InvArchive","Admin")" class="@ViewBag.Arch">
-							<span class="las la-archive"></span>
-							<span>Inventory Archive</span>
-						</a>
-					</li>
-					<li>
-						<a href="@Url.Action("InventoryReport","Admin")" class="@ViewBag.Report">
-							<span class="las la-archive"></span>
-							<span>Inventory Report</span>
-						</a>
-					</li>
-			</div>
-		}
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="@Url.Action("Dashboard","Admin")" class="@ViewBag.Dash">
+                        <span class="las la-tv"></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                @if (Int32.Parse(Session["system_role"].ToString()) == 1 || Int32.Parse(Session["system_role"].ToString()) == 2)
+                {
+                    <button class="oper-dropdown-btn">
+                        <a>
+                            <span class=""></span>
+                            <span>Inventories</span>
+                        </a>
+                    </button>
+                    <div class="dropdown-container">
+                    <li>
+                        <a href="@Url.Action("Inventory","Admin")" class="@ViewBag.Inv">
+                            <span class="las la-cubes"></span>
+                            <span>Inventory Lists</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("InvArchive","Admin")" class="@ViewBag.Arch">
+                            <span class="las la-archive"></span>
+                            <span>Inventory Archive</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("InventoryReport","Admin")" class="@ViewBag.Report">
+                            <span class="las la-archive"></span>
+                            <span>Inventory Report</span>
+                        </a>
+                    </li>
+            </div>
+        }
 
-				<li>
-					<a href="@Url.Action("Requisition", "Admin")" class="@ViewBag.Req">
-						<span class="las la-file"></span>
-						<span>Requisition</span>
-					</a>
-				</li>
-				@if (Int32.Parse(Session["system_role"].ToString()) == 1)
-				{
-					<li>
-						<a href="@Url.Action("Users","Admin")" class="@ViewBag.Users">
-							<span class="las la-user-tie"></span>
-							<span>Employee</span>
-						</a>
-					</li>
-				}
-				@if (Int32.Parse(Session["system_role"].ToString()) != 2)
-				{
+                <li>
+                    <a href="@Url.Action("Requisition", "Admin")" class="@ViewBag.Req">
+                        <span class="las la-file"></span>
+                        <span>Requisition</span>
+                    </a>
+                </li>
+                @if (Int32.Parse(Session["system_role"].ToString()) == 1)
+                {
+                    <li>
+                        <a href="@Url.Action("Users","Admin")" class="@ViewBag.Users">
+                            <span class="las la-user-tie"></span>
+                            <span>Employee</span>
+                        </a>
+                    </li>
+                }
+                @if (Int32.Parse(Session["system_role"].ToString()) != 2)
+                {
 
-					//NEW SIDEBAR FOR PROJECT
+                    //NEW SIDEBAR FOR PROJECT
 
-					<button class="oper-dropdown-btn">
-						<a>
-							<span class=""></span>
-							<span>Projects</span>
-						</a>
-					</button>
-					<div class="dropdown-container">
-						<li>
-							<a href="@Url.Action("Projects", "Admin")" class="@ViewBag.Proj">
-								<span class="las la-pen-square"></span>
-								<span>Project Lists</span>
-							</a>
-						</li>
-						<li>
-							<a href="@Url.Action("Projects", "Admin")" class="@ViewBag.Proj">
-								<span class="las la-thumbtack"></span>
-								<span>Pinned Projects</span>
-							</a>
-						</li>
-					</div>
+                    @*<button class="oper-dropdown-btn">
+                        <a>
+                            <span class=""></span>
+                            <span>Projects</span>
+                        </a>
+                    </button>*@
+                    <li>
+                        <a href="@Url.Action("Projects", "Admin")" class="@ViewBag.Proj">
+                            <span class="las la-pen-square"></span>
+                            <span>Project Lists</span>
+                        </a>
+                    </li>
+                    <div class="dropdown-container">
 
-					
-				}
-				<li>
-					<a href="@Url.Action("Logout","Admin")">
-						<span class="las la-sign-out-alt"></span>
-						<span>Logout</span>
-					</a>
-				</li>
-				</ul>
-			</div>
+                        @*<li>
+                            <a href="@Url.Action("Projects", "Admin")" class="@ViewBag.Proj">
+                                <span class="las la-thumbtack"></span>
+                                <span>Pinned Projects</span>
+                            </a>
+                        </li>*@
+                    </div>
+
+
+                }
+                <li>
+                    <a href="@Url.Action("Logout","Admin")">
+                        <span class="las la-sign-out-alt"></span>
+                        <span>Logout</span>
+                    </a>
+                </li>
+                </ul>
+            </div>
 
 			<div class="logo-float">
 				<img src="~/images/tfsti-new.png" alt="">

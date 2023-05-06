@@ -261,7 +261,92 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
-        public async Task<ActionResult> ProjectView(int? id, int? rep_no)
+        public async Task<ActionResult> ProjectExport(int? id, int? rep_no)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+
+            var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == id);
+            var report = db.NewReports.FirstOrDefault(r => r.rep_no == id);
+            var data = db.NewReports.Where(d => d.rep_no == id).ToList();
+            var dataAttnc = db.Attendances.Where(d => d.atte_proj_id == id).ToList();
+            /*var lead = db.Employees.FirstOrDefault(e => e.emp_no == project.proj_emp_no);*/
+
+            /*var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == id);*/
+            var viewModel = new ProjectReportViewModel
+            {
+                Project = project,
+                
+                Manpowers = db.NewManpowers.Where(r => r.man_proj_id == id).ToList(),
+                Attendances = db.Attendances.Where(r => r.atte_proj_id == id).ToList(),
+                ReportImage = db.ReportImages.Where(r => r.img_proj_id == id).ToList(),
+
+                // Initialize SelectedReport to the first report in the list
+               
+            };
+
+            /* ViewBag.Name = data.FirstOrDefault()?.New.emp_fname + " " + data.FirstOrDefault()?.emp_lname;*/
+            ViewBag.ProjectName = data.FirstOrDefault()?.NewProject.proj_name;
+            ViewBag.ProjectLead = data.FirstOrDefault()?.NewProject.proj_lead;
+            /*ViewBag.ProjectLead = $"{lead.emp_fname} {lead.emp_lname}";*/
+            ViewBag.Subject = data.FirstOrDefault()?.NewProject.proj_subject;
+            ViewBag.Startdate = data.FirstOrDefault()?.NewProject.proj_strDate;
+            ViewBag.Client = data.FirstOrDefault()?.NewProject.proj_client;
+            ViewBag.Enddate = data.FirstOrDefault()?.NewProject.proj_endDate;
+            ViewBag.ProjectStats = data.FirstOrDefault()?.NewProject.proj_status;
+            ViewBag.ProjectLoc = data.FirstOrDefault()?.NewProject.proj_location;
+            ViewBag.Description = data.FirstOrDefault()?.rep_description;
+            ViewBag.Scope = data.FirstOrDefault()?.rep_scope;
+            ViewBag.DateSubmitted = data.FirstOrDefault()?.rep_date;
+            ViewBag.Remarks = data.FirstOrDefault()?.rep_stats;
+
+            /*ViewBag.Attendance = data.FirstOrDefault()?.;*/
+            ViewBag.Id = data.FirstOrDefault()?.rep_no;
+
+            return View(viewModel);
+        }
+
+        /*{
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+    }
+    ViewBag.ProfilePath = GetPath(int.Parse(empId));
+
+    nwTFSEntity db = new nwTFSEntity();
+
+    // Fetch the project details from the database
+    var project = await db.NewProjects.FindAsync(id);
+
+            // Pass the project details to the view
+            return View(project);
+}*/
+
+
+/*public async Task<ActionResult> ProjectExport(int? id, int? rep_no)
+{
+    var empId = Session["emp_no"]?.ToString();
+    if (empId == null)
+    {
+        return RedirectToAction("Login", "Base");
+    }
+
+    nwTFSEntity db = new nwTFSEntity();
+
+    // Fetch the project details from the database
+    var project = await db.NewProjects.FindAsync(id);
+
+    ViewBag.ProfilePath = GetPath(int.Parse(empId));
+    // Pass the project details to the view
+    return View(project);
+}*/
+public async Task<ActionResult> ProjectView(int? id, int? rep_no)
         {
             nwTFSEntity db = new nwTFSEntity();
             var empId = Session["emp_no"]?.ToString();

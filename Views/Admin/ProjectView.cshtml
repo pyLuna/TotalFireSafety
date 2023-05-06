@@ -62,9 +62,11 @@
                                                     <tr>
                                                         <td>@report.rep_date</td>
                                                         <td>@report.rep_no</td>
-                                                        <td>@report.rep_description  <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no', '@report.rep_description', '@report.rep_stats', '@report.rep_date.ToString("MM/dd/yyyy")', '@report.rep_scope', '@Model.SelectedReport.rep_no');"></i></td>
+                                                        <td>@report.rep_description  <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no',
+                                                           '@report.rep_description', '@report.rep_stats', '@report.rep_date.ToString("MM/dd/yyyy")', '@report.rep_scope', '@Model.SelectedReport.rep_no');"></i></td>
                                                         <td>@report.rep_stats</td>
-                                                        <td><a href="#">Export</a></td>
+                                                        @*<td><a href="@Url.Action("ProjectExport", "Admin")?Id=' + @Model.SelectedReport.rep_no)'">Export</a></td>*@
+                                                        <td><a href="@Url.Action("ProjectExport", "Admin")?Id=@Model.SelectedReport.rep_no" target="_blank">Export</a></td>
                                                     </tr>
                                                 }
                                             </tbody>
@@ -601,7 +603,7 @@
                                         rep_proj_id: repProjId
                                     },
                                     success: function (response) {
-                                        alert('Data has been saved successfully!');
+                                        /*alert('Data has been saved successfully!');*/
                                         location.reload();
                                     },
                                     error: function (xhr, status, error) {
@@ -686,12 +688,12 @@
                                                             {
 
                                                                 var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id);
-                                                            <tr>
-                                                                <td>@manpower.man_name</td>
-                                                                <td>@manpower.man_postition</td>
-                                                                <td>@(attendance?.atte_timein?.ToString("hh:mm tt") ?? "-")</td>
-                                                                <td>@(attendance?.atte_timeout?.ToString("hh:mm tt") ?? "-")</td>
-                                                            </tr>
+                                                                <tr>
+                                                                    <td>@manpower.man_name</td>
+                                                                    <td>@manpower.man_postition</td>
+                                                                    <td>@(attendance?.atte_timein?.ToString("hh:mm tt") ?? "-")</td>
+                                                                    <td>@(attendance?.atte_timeout?.ToString("hh:mm tt") ?? "-")</td>
+                                                                </tr>
                                                             }
                                                         </tbody>
                                                     </table>

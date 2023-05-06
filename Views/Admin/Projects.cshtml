@@ -230,10 +230,10 @@
                         </div>
                         <div class="grp">
                             <div class="input-fields left">
-                                <label for="">Project Lead</label>
+                                <label>Project Lead</label>
                                 <br>
                                 <select id="select-lead" name="projLead" required>
-                                    <option disabled selected>Select Lead</option>
+                                    <option value="" disabled selected>Select Lead</option>
                                 </select>
 
                             </div>
@@ -241,7 +241,7 @@
                                 <Label>Status</Label>
                                 <br>
                                 <select name="projStatus" id="projStatus" required>
-                                    <option>Select Status</option>
+                                    <option value="" disabled selected>Select Status</option>
                                     <option>On-going</option>
                                     <option>Upcoming</option>
                                     <option>Cancelled</option>
@@ -682,9 +682,9 @@ function filterByStatus() {
         function closeAddNewContainer() {
             document.getElementById("add-new-container").style.display = "none";
             $('#NewProForm').validate().resetForm();
-            $('#NewProForm').reset();
+            /*$('#NewProForm').reset();*/
         }
-
+            
         function openInputMemForm() {
             document.getElementById("input-mem-container").style.display = "block";
         }

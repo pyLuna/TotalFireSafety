@@ -311,7 +311,8 @@ function setTable(array) {
 			//row += `<button class="dec-btn" id="dec${i}" title="DECLINE REQUEST" onclick="UpdateStatus('${array[i].request_type_id}','pending')"> <a href="#"><span class="las la-times-circle"></span></a></button>`;
 			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" id="edit${i}" onclick="${changeListener}"><span class="lar la-edit"></span></button>`;
 
-			row += `<button class="expo-btn" onclick = "window.location.href='/admin/ExportReportNew?id=${array[i].request_type_id}'" title="EXPORT REPORT"><span class="las la-file-download"></span></button>`;
+			/*row += `<button class="expo-btn" onclick = "window.location.href='/admin/ExportReportNew?id=${array[i].request_type_id}'" title="EXPORT REPORT"><span class="las la-file-download"></span></button>`;*/
+			row += `<button class="expo-btn" onclick="window.open('/admin/ExportReportNew?id=${array[i].request_type_id}', '_blank')" title="EXPORT REPORT"><span class="las la-file-download"></span></button>`;
 			
 			row += `</div></td>`;
 			row += `</tr>`;

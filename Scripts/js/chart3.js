@@ -129,7 +129,7 @@ function SetChart1(labels, quantities) {
                 pointHoverBackgroundColor: '#16215B', // Set point hover background color
                 pointHoverBorderColor: '#fff', // Set point hover border color
                 pointHoverBorderWidth: 2, // Set point hover border width
-                //tension: 0.4 // Set curve tension
+                tension: 0 // Set curve tension
                 //borderWidth: 1,
                 //hoverBackgroundColor: '#fff',
                 //hoverBorderWidth: 1,

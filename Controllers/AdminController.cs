@@ -5,21 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
-
 using System.Linq;
-using System.Net;
-using System.Security.Claims;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
+//using System.Web.Http.Cors;
 using TotalFireSafety.Hubs;
 using TotalFireSafety.Models;
 
@@ -83,9 +79,14 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public async Task<ActionResult> SaveImage([System.Web.Http.FromBody] HttpPostedFileBase file)
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -193,8 +194,14 @@ namespace TotalFireSafety.Controllers
             }
         }
         #endregion
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvReportPrint()
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if(role == 4 || role ==3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -203,6 +210,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> ExportReportNew(int? id)
         {
             var empId = Session["emp_no"].ToString();
@@ -217,9 +225,14 @@ namespace TotalFireSafety.Controllers
             return View(data);
 
         }
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvReportExport(int? id)
         {
-
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             nwTFSEntity db = new nwTFSEntity();
             if (Session["emp_no"] == null)
             {
@@ -234,8 +247,14 @@ namespace TotalFireSafety.Controllers
 
             return View(data);
         }
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvReorder()
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -244,8 +263,10 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+        //[System.Web.Mvc.Authorize(Roles = "admin,office")]
         public async Task<ActionResult> ProjectView(int? id, int? rep_no)
         {
+
             nwTFSEntity db = new nwTFSEntity();
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -289,19 +310,19 @@ namespace TotalFireSafety.Controllers
             return View(viewModel);
         }
 
-       /* public ActionResult GetReportDate(int rep_no)
-        {
-            nwTFSEntity db = new nwTFSEntity();
-            // Query the database to get the report for the given rep_no
-            // Query the database to get the rep_date for the given rep_no
-            var report = db.NewReports.SingleOrDefault(r => r.rep_no == rep_no);
-            if (report == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
-            // Return the rep_date as a string
-            return Content(report.rep_date.ToString("MM/dd/yyyy"));
-        }*/
+        /* public ActionResult GetReportDate(int rep_no)
+         {
+             nwTFSEntity db = new nwTFSEntity();
+             // Query the database to get the report for the given rep_no
+             // Query the database to get the rep_date for the given rep_no
+             var report = db.NewReports.SingleOrDefault(r => r.rep_no == rep_no);
+             if (report == null)
+             {
+                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+             }
+             // Return the rep_date as a string
+             return Content(report.rep_date.ToString("MM/dd/yyyy"));
+         }*/
 
         [HttpPost]
         public ActionResult UpdateAttendance(Guid projectId, string timeOut)
@@ -414,9 +435,10 @@ namespace TotalFireSafety.Controllers
             // Return a success response
             return Json(new { success = true });
         }
-    
 
-    public async Task<ActionResult> ProjectAdd()
+
+        //[System.Web.Mvc.Authorize(Roles = "admin,office")]
+        public async Task<ActionResult> ProjectAdd()
         {
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
@@ -427,7 +449,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        private Timer updateTimer;
+        private readonly Timer updateTimer;
         public AdminController()
         {
             // Schedule the update to run once per day
@@ -439,9 +461,9 @@ namespace TotalFireSafety.Controllers
             }
 
             // Create and start the timer
-            this.updateTimer = new Timer(async state =>
+            updateTimer = new Timer(async state =>
             {
-                await this.AddItemsToBaseCount();
+                await AddItemsToBaseCount();
             }, null, dueTime, TimeSpan.FromDays(1));
         }
 
@@ -459,8 +481,8 @@ namespace TotalFireSafety.Controllers
                         bc_itemCode = item.in_code,
                         bc_id = Guid.NewGuid()
                     };
-                _context.Basecounts.Add(nbc);
-                   await _context.SaveChangesAsync();
+                    _context.Basecounts.Add(nbc);
+                    await _context.SaveChangesAsync();
                 }
             }
         }
@@ -504,9 +526,11 @@ namespace TotalFireSafety.Controllers
 
                     var groupedByCode = await Task.Run(() => allReq
                             .GroupBy(item => item.Inventory.in_code)
-                            .Select(group => new {
+                            .Select(group => new
+                            {
                                 Code = group.Key,
-                                TotalQuantity = group.Sum(item => {
+                                TotalQuantity = group.Sum(item =>
+                                {
                                     string quantityStr = item.request_item_quantity;
                                     int quantityInt = int.Parse(quantityStr.Split(' ')[0]);
                                     return quantityInt;
@@ -522,7 +546,8 @@ namespace TotalFireSafety.Controllers
                             .OrderByDescending(x => x.TotalQuantity)
                             .ThenBy(x => x.Code) // if there are ties in TotalQuantity, sort by Code ascending
                             .ToList()
-                            .Select(group => new {
+                            .Select(group => new
+                            {
                                 Code = group.Code,
                                 TotalQuantity = group.TotalQuantity.ToString() + " " + group.TotalQuantityUnit,
                                 TotalRequest = group.TotalRequest,
@@ -535,7 +560,7 @@ namespace TotalFireSafety.Controllers
                     {
                         var writer = new Utf8JsonWriter(stream);
                         writer.WriteStartArray();
-                            
+
                         foreach (var item in groupedByCode)
                         {
                             writer.WriteStartObject();
@@ -562,7 +587,7 @@ namespace TotalFireSafety.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(ex);
 
@@ -571,35 +596,126 @@ namespace TotalFireSafety.Controllers
                 return Content(jsonString, "application/json");
             }
         }
+        [HttpGet]
+        //project insights
+        public async Task<ActionResult> ProjectInsights()
+        {
+            using(var _context =  new nwTFSEntity())
+            {
+                var projs = _context.NewProjects.ToList();
+
+                var upcoming = projs.Where(x => x.proj_status.Trim().ToLower() == "upcoming").Count();
+                var ongoing = projs.Where(x => x.proj_status.Trim().ToLower() == "on-going").Count();
+                var finished = projs.Where(x => x.proj_status.Trim().ToLower() == "finished").Count();
+                var cancelled = projs.Where(x => x.proj_status.Trim().ToLower() == "cancelled").Count();
+                var allProjs = projs.Count();
+
+                var grouped = new
+                {
+                    Upcoming = upcoming,
+                    OnGoing = ongoing,
+                    Finished = finished,
+                    Cancelled = cancelled,
+                    AllProjects = allProjs
+                };
+                byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(grouped);
+
+                // Convert the byte array to a string
+                string jsonString = Encoding.UTF8.GetString(jsonBytes);
+                return Content(jsonString, "application/json");
+            }
+        }
+
+        //  for chart 3 / projects 
+        public static int CalculateWorkingDays(DateTime? start, DateTime? end)
+        {
+            if (!start.HasValue || !end.HasValue) return 0;
+
+            int workingDays = 0;
+            DateTime currentDay = start.Value;
+
+            while (currentDay <= end.Value)
+            {
+                if (currentDay.DayOfWeek != DayOfWeek.Saturday && currentDay.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    workingDays++;
+                }
+                currentDay = currentDay.AddDays(1);
+            }
+
+            return workingDays;
+        }
+        [HttpGet]
+        public async Task<ActionResult> AllProjects()
+        {
+            using(var _context = new nwTFSEntity())
+            {
+                var projs = _context.NewProjects
+                            .Where(x => x.proj_status.Trim().ToLower() == "on-going")
+                            .Include("Employee")
+                            .Include("NewReports")
+                            .ToList();
+
+                var ong = projs.GroupBy(e => e.proj_emp_no)
+                            .Select(p => new
+                            {
+                                Lead_ID = p.Key,
+                                Projects = p.Select(proj => new
+                                {
+                                    Lead_Name = proj.Employee.emp_fname  + " " + proj.Employee.emp_lname,
+                                    Name = proj.proj_name,
+                                    Reports = proj.NewReports.Count(),
+                                    Status = proj.proj_status,
+                                    Start = proj.proj_strDate,
+                                    End = proj.proj_endDate,
+                                    WorkingDays = CalculateWorkingDays(proj.proj_strDate, proj.proj_endDate)
+                                })
+                            });
+                // Serialize the object to a byte array
+                byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(ong);
+
+                // Convert the byte array to a string
+                string jsonString = Encoding.UTF8.GetString(jsonBytes);
+                return Content(jsonString, "application/json");
+            }
+        }
+
+
+
         // for chart 1 / Item Summary
         [HttpGet]
-        public async Task<ActionResult> BaseResult([System.Web.Http.FromUri] string end, [System.Web.Http.FromUri]  int diff)
+        public async Task<ActionResult> BaseResult([System.Web.Http.FromUri] string end, [System.Web.Http.FromUri] int diff)
         {
             using (var _context = new nwTFSEntity())
             {
-                if(diff == 0)
+                if (diff == 0)
                 {
                     var res = ItemSum();
-                    return Content(res,"application/json");
+                    return Content(res, "application/json");
                 }
                 // Parse the end date string to a DateTime object
                 DateTime endDate = DateTime.Parse(end);
-
+                if (diff == 1)
+                {
+                    endDate = endDate.AddDays(-diff);
+                }
                 // Calculate the start date based on the end date and the diff parameter
                 DateTime startDate = endDate.AddDays(-diff);
 
                 var allBase = _context.Basecounts
                     .Where(item => item.bc_date >= startDate && item.bc_date <= endDate)
-                    .OrderByDescending(item => item.bc_date)
+                    //.OrderByDescending(item => item.bc_date)
                     .Include("Inventory")
                     .ToList();
                 //var allItems = _context.Inventories.ToList();
 
                 var groupedByCode = await Task.Run(() => allBase
                             .GroupBy(item => item.Inventory.in_code)
-                            .Select(group => new {
+                            .Select(group => new
+                            {
                                 Code = group.Key,
-                                TotalQuantity = group.Sum(item => {
+                                TotalQuantity = group.Sum(item =>
+                                {
                                     string quantityStr = item.Inventory.in_quantity;
                                     int quantityInt = int.Parse(quantityStr.Split(' ')[0]);
                                     return quantityInt;
@@ -611,9 +727,11 @@ namespace TotalFireSafety.Controllers
 
                 var groupedByCategory = await Task.Run(() => groupedByCode
                                         .GroupBy(item => item.Items.Inventory.in_category)
-                                        .Select(group => new {
+                                        .Select(group => new
+                                        {
                                             Category = group.Key,
-                                            Items = group.Select(item => new {
+                                            Items = group.Select(item => new
+                                            {
                                                 Name = item.Items.Inventory.in_name,
                                                 Quantity = item.TotalQuantity,
                                                 Size = item.Items.Inventory.in_size,
@@ -628,7 +746,7 @@ namespace TotalFireSafety.Controllers
 
                 // Convert the byte array to a string
                 string jsonString = Encoding.UTF8.GetString(jsonBytes);
-                return Content(jsonString,"application/json");
+                return Content(jsonString, "application/json");
             }
         }
 
@@ -757,6 +875,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+        //[System.Web.Mvc.Authorize(Roles = "admin,office")]
         [HttpGet]
         public async Task<ActionResult> Projects()
         {
@@ -917,7 +1036,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-            [HttpPost]
+        [HttpPost]
         public ActionResult SaveReportImages(List<string> images, string rep_date, int rep_proj_id)
         {
             nwTFSEntity db = new nwTFSEntity();
@@ -970,6 +1089,11 @@ namespace TotalFireSafety.Controllers
         {
             try
             {
+                var role = int.Parse(Session["system_role"].ToString());
+                if (role == 4 || role == 3 || role == 1)
+                {
+                    return RedirectToAction("Unauthorize", "Error");
+                }
                 var act = Session["emp_no"];
                 Session["active"] = act;
                 var empId = Session["emp_no"]?.ToString();
@@ -1011,6 +1135,11 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public async Task<ActionResult> GetBarcode(string itemCode)
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3 || role == 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1037,6 +1166,11 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public async Task<ActionResult> AddItem2(Inventory item)
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3 || role == 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1078,6 +1212,11 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public async Task<ActionResult> AddItem1(Inventory item)
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3 || role == 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1119,6 +1258,11 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public async Task<ActionResult> DeleteItem(string item)
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3 || role == 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1145,8 +1289,14 @@ namespace TotalFireSafety.Controllers
             return Json("Item Deleted");
         }
 
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> Inventory()
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1164,6 +1314,11 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public async Task<ActionResult> Inventory(Inventory items, string type)
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3 || role == 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1202,8 +1357,14 @@ namespace TotalFireSafety.Controllers
             return RedirectToAction("Inventory");
         }
 
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvArchive()
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1213,8 +1374,14 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public ActionResult InventoryReport()
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1225,8 +1392,14 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public ActionResult InventorylistExport()
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1239,8 +1412,14 @@ namespace TotalFireSafety.Controllers
         #endregion
 
         #region Users
+        //[System.Web.Http.Authorize(Roles = "admin")]
         public async Task<ActionResult> Users()
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role != 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1253,6 +1432,11 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public async Task<ActionResult> Users(Employee employee)
         {
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role != 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
@@ -1260,7 +1444,7 @@ namespace TotalFireSafety.Controllers
             }
             var serializedModel = JsonConvert.SerializeObject(employee);
             var userToken = Session["access_token"].ToString();
-            string uri = "", message = "";
+            string uri = "";
             if (employee.formType == "add")
             {
                 uri = "Admin/Employee/Add";
@@ -1286,7 +1470,7 @@ namespace TotalFireSafety.Controllers
             var json = JsonConvert.DeserializeObject(response);
             ViewBag.Success = json.ToString();
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            if(json is JObject jsonObject)
+            if (json is JObject jsonObject)
             {
                 Session["errorresp"] = jsonObject.GetValue("Message").ToString();
             }
@@ -1298,6 +1482,7 @@ namespace TotalFireSafety.Controllers
             return RedirectToAction("Users");
         }
 
+        //[System.Web.Mvc.Authorize(Roles = "admin")]
         public async Task<ActionResult> SearchEmployee()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -1315,15 +1500,20 @@ namespace TotalFireSafety.Controllers
                 ViewBag.ProfilePath = GetPath(int.Parse(empId));
                 if (response == "BadRequest")
                 {
-                    //return Json("error", JsonRequestBehavior.AllowGet);
                     return RedirectToAction("BadRequest", "Error");
                 }
-                if (response == "InternalServerError")
+                else if (response == "InternalServerError")
                 {
                     return RedirectToAction("InternalServerError", "Error");
-                    //return Json("error", JsonRequestBehavior.AllowGet);
                 }
-                return Content(response,"application/json");
+                else if (response == "Unauthorized")
+                {
+                    return RedirectToAction("Unauthorize", "Error");
+                }
+                else
+                {
+                    return Content(response, "application/json");
+                }
             }
             catch (Exception ex)
             {

@@ -3,6 +3,8 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Routing;
 
 [assembly: OwinStartup(typeof(TotalFireSafety.AuthenticationStartup))]
 
@@ -29,10 +31,11 @@ namespace TotalFireSafety
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
+            // Register MVC routes
+            //RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            // Add global MVC authorization filter
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
-        //public void Configuration(IAppBuilder app)
-        //{
-        //    // Configure SignalR
-        //}
     }
 }

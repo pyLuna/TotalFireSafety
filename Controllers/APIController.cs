@@ -1,18 +1,15 @@
-﻿using Utf8Json;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using TotalFireSafety.Models;
 using System.IO;
-using ZXing;
-using ZXing.QrCode;
-//using System.Web.Mvc;
-using System.Web;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
+//using System.Web.Mvc;
+using System.Threading.Tasks;
+using System.Web.Http;
+using TotalFireSafety.Models;
+using ZXing.QrCode;
 
 namespace TotalFireSafety.Controllers
 {
@@ -78,7 +75,7 @@ namespace TotalFireSafety.Controllers
         }
 
         #region Status
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Status")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
@@ -132,7 +129,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Status/{id}")]
         [HttpGet]
         public async Task<IHttpActionResult> GetStatusById(int id)
@@ -157,7 +154,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Status/Add")]
         [HttpPost]
         public async Task<IHttpActionResult> AddStatus(Status items)
@@ -188,7 +185,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Status/Edit")]
         [HttpPost]
         public async Task<IHttpActionResult> UpdateStatus(Status item)
@@ -225,7 +222,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Status/Delete")]  //  Update Employee Route
         [HttpPost]
         public async Task<IHttpActionResult> DeleteStatus(int? id)
@@ -259,7 +256,7 @@ namespace TotalFireSafety.Controllers
         #endregion
 
         #region Credentials
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Credentials")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
@@ -310,7 +307,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Credentials/{id}")]
         [HttpGet]
         public async Task<IHttpActionResult> GetCredentialsById(int id)
@@ -335,7 +332,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Credentials/Add")]
         [HttpPost]
         public async Task<IHttpActionResult> AddCredentials(Credential items)
@@ -366,7 +363,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Credentials/Edit")]
         [HttpPost]
         public async Task<IHttpActionResult> UpdateCredential(Credential item)
@@ -403,7 +400,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Credentials/Delete")]  //  Update Employee Route
         [HttpPost]
         public async Task<IHttpActionResult> DeleteCredential(int? id)
@@ -434,10 +431,10 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        #endregion 
-        
+        #endregion
+
         #region Roles
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Roles")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
@@ -487,7 +484,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Roles/{id}")]
         [HttpGet]
         public async Task<IHttpActionResult> GetRolesById(int id)
@@ -512,7 +509,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Roles/Add")]
         [HttpPost]
         public async Task<IHttpActionResult> AddRoles(Role items)
@@ -524,53 +521,18 @@ namespace TotalFireSafety.Controllers
                     return BadRequest("Please verify your data");
                 }
                 using (var _context = new nwTFSEntity())
-                    {
-                        var roleExist = _context.Roles.Where(x => x.emp_no == items.emp_no).SingleOrDefault();
+                {
+                    var roleExist = _context.Roles.Where(x => x.emp_no == items.emp_no).SingleOrDefault();
 
-                        if (roleExist == null)
-                        {
-                            _context.Roles.Add(items);
-                            _context.SaveChanges();
-                            return Ok("Roles Added");
-                        }
+                    if (roleExist == null)
+                    {
+                        _context.Roles.Add(items);
+                        _context.SaveChanges();
+                        return Ok("Roles Added");
+                    }
                     return BadRequest("Please verify your data");
                 }
 
-            } catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
-        }
-
-        [Authorize(Roles = "admin")]
-        [Route("Admin/Roles/Edit")]
-        [HttpPost]
-        public async Task<IHttpActionResult> UpdateRoles(Role item)
-        {
-            try
-            {
-                if(item == null)
-                {
-                    return BadRequest("Please verify your data.");
-                }
-                using (var _context = new nwTFSEntity())
-                    {
-                        var role = _context.Roles.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
-
-                        if(role == null)
-                        {
-                            return BadRequest("ID not found.");
-                        }
-
-                        role = new Role()
-                            {
-                                emp_no = item.emp_no,
-                                role1 = item.role1
-                            };
-                            _context.Entry(role);
-                            _context.SaveChanges();
-                            return Ok("Role Updated");
-                    }
             }
             catch (Exception ex)
             {
@@ -578,7 +540,43 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        //[Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
+        [Route("Admin/Roles/Edit")]
+        [HttpPost]
+        public async Task<IHttpActionResult> UpdateRoles(Role item)
+        {
+            try
+            {
+                if (item == null)
+                {
+                    return BadRequest("Please verify your data.");
+                }
+                using (var _context = new nwTFSEntity())
+                {
+                    var role = _context.Roles.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
+
+                    if (role == null)
+                    {
+                        return BadRequest("ID not found.");
+                    }
+
+                    role = new Role()
+                    {
+                        emp_no = item.emp_no,
+                        role1 = item.role1
+                    };
+                    _context.Entry(role);
+                    _context.SaveChanges();
+                    return Ok("Role Updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        //[System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         //[Route("Admin/Roles/Delete")]  //  Update Employee Route
         //[HttpPost]
         //public async Task<IHttpActionResult> DeleteRole(int? id)
@@ -611,9 +609,9 @@ namespace TotalFireSafety.Controllers
         //}
 
         #endregion
-        
+
         #region Employees
-        [Authorize]
+        [System.Web.Http.Authorize]
         [Route("Admin/Employee")]  //  Get all Employee Route
         [HttpGet]
         // GET api/<controller>
@@ -661,7 +659,7 @@ namespace TotalFireSafety.Controllers
                                 writer.WriteNull("password");
                                 writer.WriteEndObject();
                             }
-                            if(item.Role != null)
+                            if (item.Role != null)
                             {
                                 writer.WriteStartObject("Role");
                                 writer.WriteNumber("emp_no", item.Role.emp_no);
@@ -704,58 +702,6 @@ namespace TotalFireSafety.Controllers
                         return Ok(_jsonDeserialized);
                     }
                 }
-                //using (var _context = new nwTFSEntity())
-                //{
-                //    var users = _context.Employees.Select(x => x).ToList();
-                //    var status = _context.Status.Select(x => x).ToList();
-                //    var roles = _context.Roles.Select(x => x).ToList();
-                //    var creds = _context.Credentials.Select(x => x).ToList();
-
-                //    var newList = new List<Employee>();
-
-                //    foreach (var item in users)
-                //    {
-                //        var newCreds = creds.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
-                //        var newRoles = roles.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
-                //        var newStatus = status.Where(x => x.emp_no == item.emp_no).SingleOrDefault();
-                //        var user = new Employee()
-                //        {
-                //            emp_no = item.emp_no,
-                //            emp_contact = item.emp_contact,
-                //            emp_hiredDate = item.emp_hiredDate,
-                //            emp_fname = item.emp_fname,
-                //            emp_lname = item.emp_lname,
-                //            emp_name = item.emp_name,
-                //            emp_position = item.emp_position,
-
-                //            Credential = newCreds?.emp_no == item.emp_no? new Credential { 
-                //                emp_no = newCreds.emp_no,
-                //                username = newCreds.username,
-                //                password = newCreds.password
-                //            } : null,
-                //            Role = newRoles?.emp_no == item.emp_no ? new Role
-                //            {
-                //                emp_no = newRoles.emp_no,
-                //                //IsUser = newRoles.IsUser,
-                //                role1 = newRoles.role1
-                //            } : null,
-                //            Status = newStatus?.emp_no == item.emp_no ? new Status
-                //            {
-                //                emp_no = newStatus.emp_no,
-                //                IsActive = newStatus.IsActive,
-                //                IsLocked = newStatus.IsLocked,
-                //                IsUser = newStatus.IsUser
-                //            } : null
-                //        };
-                //        newList.Add(user);
-                //    }
-
-                //    var _jsonSerialized = JsonConvert.SerializeObject(newList, Formatting.None, new JsonSerializerSettings()
-                //    {
-                //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                //    });
-                //    var _Deserialized = JsonConvert.DeserializeObject<List<Employee>>(_jsonSerialized);
-                //    return Ok(_Deserialized);
             }
             catch (Exception ex)
             {
@@ -763,7 +709,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Employee/{val}")]  //  Get Employee by any value Route
         [HttpGet]
         public async Task<IHttpActionResult> GetEmployeeById(string val)
@@ -799,7 +745,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Employee/Add")]  //  Add Employee Route
         [HttpPost]
         public async Task<IHttpActionResult> AddEemployee(Employee _emp)
@@ -816,7 +762,7 @@ namespace TotalFireSafety.Controllers
                         {
                             return BadRequest("ID is already in used");
                         }
-                        if(cre != null)
+                        if (cre != null)
                         {
                             return BadRequest("Username is already in used");
                         }
@@ -833,7 +779,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin")]
         [Route("Admin/Employee/Update")]  //  Update Employee Route
         [HttpPost]
         public async Task<IHttpActionResult> UpdateEmployee(Employee _emp)
@@ -897,26 +843,26 @@ namespace TotalFireSafety.Controllers
                     var newGUID = GetNewGuid("AddItem");
 
 
-                        Inv_Update update = new Inv_Update()
-                        {
-                            update_id = newGUID,
-                            update_date = DateTime.Now,
-                            update_item_id = item.in_code,
-                            update_quantity = item.in_quantity,
-                            update_type = "newitem"
-                        };
-                        _context.Inv_Update.Add(update);
-                        _context.SaveChanges();
+                    Inv_Update update = new Inv_Update()
+                    {
+                        update_id = newGUID,
+                        update_date = DateTime.Now,
+                        update_item_id = item.in_code,
+                        update_quantity = item.in_quantity,
+                        update_type = "newitem"
+                    };
+                    _context.Inv_Update.Add(update);
+                    _context.SaveChanges();
 
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return InternalServerError(ex);
                 }
                 return Ok();
             }
         }
-        [Authorize(Roles = "warehouse,admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "warehouse,admin,owner")]
         [Route("Warehouse/Inventory/Updates")]
         [HttpGet]
         public async Task<IHttpActionResult> AddedItemInfo()
@@ -969,7 +915,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [Authorize(Roles = "warehouse,admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "warehouse,admin,owner")]
         [Route("Warehouse/Inventory/Status")]
         [HttpPost]
         public async Task<IHttpActionResult> RestoreItem(Inventory val)
@@ -979,7 +925,7 @@ namespace TotalFireSafety.Controllers
                 using (var _context = new nwTFSEntity())
                 {
                     var item = _context.Inventories.Where(x => x.in_code == val.in_code).FirstOrDefault();
-                    if(item == null)
+                    if (item == null)
                     {
                         return BadRequest();
                     }
@@ -995,7 +941,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [Authorize(Roles = "warehouse,admin")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "warehouse,admin,owner")]
         [Route("Warehouse/Inventory/Archive")]
         [HttpGet]
         public async Task<IHttpActionResult> GetAllArchivedItem()
@@ -1021,7 +967,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [Authorize]
+        [System.Web.Http.AuthorizeAttribute(Roles = "warehouse,admin,owner")]
         [Route("Warehouse/Inventory")]
         [HttpGet]
         public async Task<IHttpActionResult> GetAllItem()
@@ -1067,7 +1013,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [Authorize(Roles = "admin,warehouse")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "warehouse,admin,owner")]
         [Route("Warehouse/Inventory/{val}")]
         [HttpGet]
         public async Task<IHttpActionResult> GetItemByValue(string val)
@@ -1131,7 +1077,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [Authorize(Roles = "admin,warehouse")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin,warehouse")]
         [Route("Warehouse/Inventory/Add")]
         [HttpPost]
         public async Task<IHttpActionResult> AddItem(Inventory _item)
@@ -1143,12 +1089,12 @@ namespace TotalFireSafety.Controllers
                     var newGuid = GetNewGuid("newitem");
                     if (_item != null)
                     {
-                         var response = UpdateNewItem(_item);
+                        var response = UpdateNewItem(_item);
                         _item.in_guid = newGuid;
                         _context.Inventories.Add(_item);
                         _context.SaveChanges();
-                        
-                        
+
+
                         return Ok("Item Added");
                     }
                     return BadRequest();
@@ -1159,7 +1105,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [Authorize(Roles = "admin,warehouse")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin,warehouse")]
         [Route("Warehouse/Inventory/Edit")]
         [HttpPost]
         public async Task<IHttpActionResult> UpdateItem(Inventory _item)
@@ -1202,8 +1148,8 @@ namespace TotalFireSafety.Controllers
                             //_context.Entry(reqs);
                             //_context.Entry(ups);
                             _context.SaveChanges();     //  Save to Database
-                            
-                            
+
+
                             return Ok("Process Completed!");
                         }
                         return BadRequest();
@@ -1216,7 +1162,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [Authorize(Roles = "admin,warehouse")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin,warehouse")]
         [Route("Warehouse/Inventory/Delete")]
         [HttpPost]
         public async Task<IHttpActionResult> DeleteItem(Inventory codeToFind)
@@ -1233,8 +1179,8 @@ namespace TotalFireSafety.Controllers
                         _item.in_arch_date = DateTime.Now;
                         _context.Entry(_item);
                         _context.SaveChanges();
-                        
-                        
+
+
                         return Ok("Item Deleted Successfully!");
                     }
                     return BadRequest();
@@ -1246,7 +1192,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize(Roles = "admin,warehouse")]
+        [System.Web.Http.AuthorizeAttribute(Roles = "admin,warehouse")]
         [Route("Warehouse/Inventory/Barcode")]
         [HttpPost]
         // Barcorde Generator
@@ -1298,7 +1244,7 @@ namespace TotalFireSafety.Controllers
         #endregion
 
         #region Request
-        [Authorize]
+        [System.Web.Http.AuthorizeAttribute]
         [Route("Requests/All")]
         [HttpGet]
         public async Task<IHttpActionResult> AllRequests()
@@ -1376,61 +1322,8 @@ namespace TotalFireSafety.Controllers
                         return Ok(_jsonDeserialized);
                     }
                 }
-
-                //using (var _context = new nwTFSEntity())
-                //{
-                //    var requests = _context.Requests.Select(x => x).ToList();
-                //    var employee = _context.Employees.Select(x => x).ToList();
-                //    var inventory = _context.Inventories.Select(x => x).ToList();
-                //    var newRequest = new List<Request>();
-                //    foreach (var item in requests)
-                //    {
-                //        var newInv = inventory.Where(x => x.in_code == item.request_item).SingleOrDefault();
-                //        var newEmployee = employee.Where(x => x.emp_no == item.request_employee_id).SingleOrDefault();
-                //        var req = new Request()
-                //        {
-                //            request_id = item.request_id,
-                //            request_type = item.request_type,
-                //            request_date = item.request_date,
-                //            request_employee_id = item.request_employee_id,
-                //            request_item = item.request_item,
-                //            request_item_quantity = item.request_item_quantity,
-                //            request_status = item.request_status.Trim(' '),
-                //            request_type_id = item.request_type_id,
-                //            request_type_status = item.request_type_status,
-                //            Employee = newEmployee?.emp_no == item.request_employee_id ? new Employee
-                //            {
-                //                emp_no = newEmployee.emp_no,
-                //                emp_contact = newEmployee.emp_contact,
-                //                emp_hiredDate = newEmployee.emp_hiredDate,
-                //                emp_fname = newEmployee.emp_fname,
-                //                emp_lname = newEmployee.emp_lname,
-                //                emp_name = newEmployee.emp_name,
-                //                emp_position = newEmployee.emp_position,
-                //            } : null,
-                //            Inventory = newInv?.in_code == item.request_item ? new Inventory
-                //            {
-                //                in_code = newInv.in_code,
-                //                in_category = newInv.in_category,
-                //                in_class = newInv.in_class,
-                //                in_name = newInv.in_name,
-                //                in_quantity = newInv.in_quantity,
-                //                in_size = newInv.in_size,
-                //                in_type = newInv.in_type
-                //            } : null
-                //        };
-                //        newRequest.Add(req);
-                //    }
-                //    var _jsonSerialized = JsonConvert.SerializeObject(newRequest, Formatting.None, new JsonSerializerSettings()
-                //    {
-                //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                //    });
-                //    //  Deserialize the serialized json format to remove the escape characters like \ 
-                //    var _jsonDeserialized = JsonConvert.DeserializeObject<List<Request>>(_jsonSerialized);
-                //    return Ok(_jsonDeserialized);
-                //}
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
@@ -1438,18 +1331,18 @@ namespace TotalFireSafety.Controllers
 
         public Guid GetNewGuid(string typeOf)
         {
-                var newId = Validate(typeOf);
-                if (newId.Item2)
-                {
-                    return newId.Item1;
-                }
-                else
-                {
-                    return GetNewGuid(typeOf);
-                }
+            var newId = Validate(typeOf);
+            if (newId.Item2)
+            {
+                return newId.Item1;
+            }
+            else
+            {
+                return GetNewGuid(typeOf);
+            }
         }
 
-        [Authorize]
+        [System.Web.Http.AuthorizeAttribute]
         [Route("Requests/Add")]
         [HttpPost]
         public async Task<IHttpActionResult> AddRequests(List<Request> req)
@@ -1458,7 +1351,7 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new nwTFSEntity())
                 {
-                    if(req == null)
+                    if (req == null)
                     {
                         return BadRequest("Please check your data.");
                     }
@@ -1466,7 +1359,8 @@ namespace TotalFireSafety.Controllers
                     {
                         var checkId = GetNewGuid("requests");
                         item.request_id = checkId;
-                        Request newReqs = new Request() {
+                        Request newReqs = new Request()
+                        {
                             request_date = item.request_date,
                             request_employee_id = item.request_employee_id,
                             request_id = item.request_id,
@@ -1489,7 +1383,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        [Authorize]
+        [System.Web.Http.AuthorizeAttribute]
         [Route("Requests/Edit")]
         [HttpPost]
         public async Task<IHttpActionResult> EditRequests(List<Request> req)
@@ -1498,11 +1392,30 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new nwTFSEntity())
                 {
-                    foreach (var item in req) { 
+                    foreach (var item in req)
+                    {
                         var request = _context.Requests.Where(x => x.request_id == item.request_id).SingleOrDefault();
                         if (request == null)
                         {
                             return BadRequest("Request Not Found");
+                        }
+                        if (item.request_status.Trim().ToLower() == "approved" && item.request_type.Trim().ToLower() == "supply")
+                        {
+                            var newGuid = Validate("requests");
+                            Request newReq = new Request()
+                            {
+                                request_type = "Deployment",
+                                request_status = "On Process",
+                                request_date = DateTime.Now,
+                                request_employee_id = item.request_employee_id,
+                                request_id = newGuid.Item1,
+                                request_item = item.request_item,
+                                request_item_quantity = item.request_item_quantity,
+                                request_type_id = item.request_type_id,
+                                request_type_status = "Active"
+                            };
+                            _context.Requests.Add(newReq);
+                            await _context.SaveChangesAsync();
                         }
                         request.request_status = item.request_status;
                         request.request_type = item.request_type;
@@ -1544,5 +1457,93 @@ namespace TotalFireSafety.Controllers
         //    }
         //}
         #endregion
+
+        //#region Project
+        //[System.Web.Http.Authorize(Roles = "admin,office,owner")]
+        //[Route("Projects/All")]
+        //[HttpGet]
+        //public async Task<IHttpActionResult> GetAllProj()
+        //{
+        //    try
+        //    {
+        //        using (var _context = new nwTFSEntity())
+        //        {
+        //            var roles = _context.NewProjects
+        //                .Include("Employee")
+        //                .Include("Inventory")
+        //                .ToList();
+
+        //            using (var stream = new MemoryStream())
+        //            {
+        //                var writer = new Utf8JsonWriter(stream);
+        //                writer.WriteStartArray();
+
+        //                foreach (var item in roles)
+        //                {
+        //                    string newID = "";
+        //                    if (item.request_type.ToLower() == "purchase")
+        //                    {
+        //                        newID = "PUR" + item.request_type_id;
+        //                    }
+        //                    if (item.request_type.ToLower() == "deploy" || item.request_type.ToLower() == "deployment")
+        //                    {
+        //                        newID = "DEP" + (item.request_type_id);
+        //                    }
+        //                    if (item.request_type.ToLower() == "supply")
+        //                    {
+        //                        newID = "SUP" + item.request_type_id;
+        //                    }
+        //                    writer.WriteStartObject();
+        //                    writer.WriteString("request_id", item.request_id);
+        //                    writer.WriteString("request_type", item.request_type);
+        //                    writer.WriteString("request_date", item.request_date);
+        //                    writer.WriteString("Id", newID);
+        //                    writer.WriteString("FormattedDate", item.request_date.ToString("MMMM dd, yyyy"));
+        //                    writer.WriteNumber("request_employee_id", int.Parse(item.request_employee_id.ToString()));
+        //                    writer.WriteString("request_item", item.request_item);
+        //                    writer.WriteString("request_item_quantity", item.request_item_quantity);
+        //                    writer.WriteString("request_status", item.request_status.Trim());
+        //                    writer.WriteNumber("request_type_id", item.request_type_id);
+        //                    writer.WriteString("request_type_status", item.request_type_status);
+        //                    writer.WriteStartObject("Employee");
+        //                    writer.WriteNumber("emp_no", item.Employee.emp_no);
+        //                    writer.WriteString("emp_hiredDate", item.Employee.emp_hiredDate?.ToString("dd-MM-yyyyTHH:mm:ss"));
+        //                    writer.WriteString("FormattedDate", item.Employee.emp_hiredDate?.ToString("MMMM dd, yyyy"));
+        //                    writer.WriteNumber("emp_contact", item.Employee.emp_contact);
+        //                    writer.WriteString("emp_fname", item.Employee.emp_fname);
+        //                    writer.WriteString("emp_lname", item.Employee.emp_lname);
+        //                    writer.WriteString("emp_mname", item.Employee.emp_name);
+        //                    writer.WriteString("emp_position", item.Employee.emp_position);
+        //                    writer.WriteEndObject();
+        //                    writer.WriteStartObject("Inventory");
+        //                    writer.WriteString("in_code", item.Inventory.in_code);
+        //                    writer.WriteString("in_category", item.Inventory.in_category);
+        //                    writer.WriteString("in_class", item.Inventory.in_class);
+        //                    writer.WriteString("in_name", item.Inventory.in_name);
+        //                    writer.WriteString("in_quantity", item.Inventory.in_quantity);
+        //                    writer.WriteString("in_size", item.Inventory.in_size);
+        //                    writer.WriteString("in_type", item.Inventory.in_type);
+        //                    writer.WriteEndObject();
+
+        //                    // add more properties as needed
+        //                    writer.WriteEndObject();
+        //                }
+
+        //                writer.WriteEndArray();
+        //                writer.Flush();
+        //                var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+        //                var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+        //                return Ok(_jsonDeserialized);
+        //            }
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return InternalServerError(ex);
+        //    }
+        //}
+
+
+        //#endregion
     }
 }

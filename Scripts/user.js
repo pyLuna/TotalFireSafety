@@ -37,11 +37,10 @@ selstats.addEventListener("change", function () {
 });
 
 function GetAllEmployeeInfo() {
-
     fetch('/Admin/SearchEmployee')
         .then(res => {
             if (res.ok) {
-                // API request was successful
+                console.log(res.url == "Error/Unauthorize");
                 return res.json();
             } else {
                 // Handle error if unsuccessful
@@ -67,6 +66,7 @@ function GetAllEmployeeInfo() {
         .catch(error => {
             //window.location.replace('/Error/InternalServerError');
             console.error(error);
+            console.log(error.url);
         });
 }
 

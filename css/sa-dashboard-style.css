@@ -1668,47 +1668,22 @@ input[type="month"] {
     .dsh-proj-headers h3 {
         color: #16215B;
         font-size: 1rem;
-        justify-content: space-between;
-        border-bottom: 1px solid #f0f0f0;
     }
 
 .dsh-proj-header {
     padding: 5px
 }
 
-.proj-header .proj-buttons-style select {
-    width: 160px;
-    height: 35px;
-    margin-left: 10px;
-    margin-top: -1px;
-    border-radius: 5px;
-    transition: all ease-in-out 0.2s;
-    cursor: pointer;
-    background-color: #fff;
-    border: 1px solid #B2B2B2;
-    box-shadow: 4px 3px 3px #B2B2B2;
-    font-weight: 800;
-}
-
 .dsh-proj-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.dsh-proj-headers h3 {
-    color: #16215B;
-    font-size: 1rem;
-}
-
-.dsh-proj-header h3 {
-    color: #16215B;
-    font-size: 1rem;
-}
-
-.dsh-proj-header {
-    padding: 5px
-}
+    .dsh-proj-header h3 {
+        color: #16215B;
+        font-size: 1rem;
+    }
 
 .dsh-proj .dsh-proj-header .date {
     width: 200px;
@@ -1722,50 +1697,27 @@ input[type="month"] {
     justify-content: space-between;
 }
 
-.dsh-proj-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    .dsh-proj .dsh-proj-header .date h3 {
+        border-right: 1px solid #000;
+        padding-right: 40px;
+        padding-top: 5px;
+        padding-left: 2px;
+        color: #000;
+    }
 
-.dsh-proj .dsh-proj-header .date h3 {
-    border-right: 1px solid #000;
-    padding-right: 40px;
-    padding-top: 5px;
-    padding-left: 2px;
-    color: #000;
-}
-
-.dsh-proj-header h3 {
-    color: #16215B;
-    font-size: 1rem;
-}
-
-.dsh-proj .dsh-proj-header .date select {
-    height: 28px;
-    width: 150px;
-    margin-top: 0px;
-    color: #000;
-    font-weight: 600;
-    border: none;
-    background: none;
-}
+    .dsh-proj .dsh-proj-header .date select {
+        height: 28px;
+        width: 150px;
+        margin-top: 0px;
+        color: #000;
+        font-weight: 600;
+        border: none;
+        background: none;
+    }
 
 .dsh-proj .chart {
     width: 100%;
     min-height: 400px;
-}
-
-.dsh-proj .dsh-proj-header .date {
-    width: 200px;
-    height: 30px;
-    border: 1px solid #000;
-    border-radius: 5px;
-    margin-right: 20px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
 }
 
 .dsh-proj .proj-insight-container {
@@ -1773,26 +1725,8 @@ input[type="month"] {
     margin-left: 5px;
 }
 
-.dsh-proj .dsh-proj-header .date h3 {
-    border-right: 1px solid #000;
-    padding-right: 40px;
-    padding-top: 5px;
-    padding-left: 2px;
-    color: #000;
-}
-
 .proj-insight-container .proj-row {
     display: flex;
-}
-
-.dsh-proj .dsh-proj-header .date select {
-    height: 28px;
-    width: 150px;
-    margin-top: 0px;
-    color: #000;
-    font-weight: 600;
-    border: none;
-    background: none;
 }
 
 .proj-insight-container .proj-column-left {
@@ -1804,29 +1738,19 @@ input[type="month"] {
     padding: 20px;
 }
 
-.dsh-proj .chart {
-    width: 100%;
-    min-height: 400px;
+.proj-insight-container .upper {
+    display: block;
 }
 
 .proj-insight-container .proj-column-left h3 {
     font-size: 3rem;
-    color: #FF0000;
-}
-
-.dsh-proj .proj-insight-container {
-    margin-top: 50px;
-    margin-left: 5px;
+    color: #09AF10;
 }
 
 .proj-insight-container .proj-column-left label {
     margin-top: 15px;
-    color: #FF0000;
+    color: #09AF10;
     font-size: 1rem;
-}
-
-.proj-insight-container .proj-row {
-    display: flex;
 }
 
 .proj-insight-container .proj-row .upper .top {
@@ -1843,28 +1767,15 @@ input[type="month"] {
     margin: 0;
 }
 
-.proj-insight-container .proj-column-right h3 {
-    margin-left: 10px;
-    font-size: 3rem;
-    color: #09AF10;
-}
+    .proj-insight-container .proj-row .upper .bottom i {
+        color: #09AF10;
+        font-size: 1.2rem;
+    }
 
-.proj-insight-container .proj-column-left h3 {
-    font-size: 3rem;
-    color: #FF0000;
-}
-
-.proj-insight-container .proj-column-right label {
-    margin-top: 15px;
-    color: #09AF10;
-    font-size: 1rem;
-}
-
-.proj-insight-container .proj-column-left label {
-    margin-top: 15px;
-    color: #FF0000;
-    font-size: 1rem;
-}
+        .proj-insight-container .proj-row .upper .bottom i:hover {
+            color: blue;
+            cursor: pointer;
+        }
 
 
 
@@ -1876,26 +1787,17 @@ input[type="month"] {
     padding: 20px;
 }
 
-.proj-insight-container .proj-row .mid-left label {
-    color: #09AF10;
-}
+    .proj-insight-container .proj-column-right h3 {
+        margin-left: 10px;
+        font-size: 3rem;
+        color: #09AF10;
+    }
 
-.proj-insight-container .proj-column-right h3 {
-    margin-left: 10px;
-    font-size: 3rem;
-    color: #09AF10;
-}
-
-.proj-insight-container .proj-row .mid-right h3 {
-    color: #FF0000;
-    margin-left: -30px;
-}
-
-.proj-insight-container .proj-column-right label {
-    margin-top: 15px;
-    color: #09AF10;
-    font-size: 1rem;
-}
+    .proj-insight-container .proj-column-right label {
+        margin-top: 15px;
+        color: #09AF10;
+        font-size: 1rem;
+    }
 
 .proj-insight-container .proj-row .mid-left h3 {
     color: #09AF10;
@@ -1903,11 +1805,6 @@ input[type="month"] {
 
 .proj-insight-container .proj-row .mid-left label {
     color: #09AF10;
-}
-
-.proj-insight-container .proj-row .mid-right label {
-    color: #FF0000;
-    margin-left: -50px;
 }
 
 .proj-insight-container .proj-row .mid-right h3 {

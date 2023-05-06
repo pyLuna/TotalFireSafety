@@ -303,7 +303,7 @@
 
             addpopup.classList.add("add-popup-show");
             document.getElementById("formType").value = "add";
-            document.getElementById("emp_id").setAttribute("readonly", false);
+            document.getElementById("emp_id").removeAttribute("readonly");
         });
 
         function openEditForm(value) {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using TotalFireSafety.Models;
-using System.Text;
 
 namespace TotalFireSafety
 {
@@ -49,6 +49,8 @@ namespace TotalFireSafety
                     return "warehouse";
                 case 3:
                     return "office";
+                case 4:
+                    return "owner";
             }
             return "";
         }
@@ -101,30 +103,31 @@ namespace TotalFireSafety
                     //find user
                     var _user = Hash(context.UserName, context.Password);
                     //verify role
-                    if (_user.username == context.UserName)
+                    if (_user.username != context.UserName)
                     {
-                        //find roles
-                        var _role = db.Roles.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
-                        //find status
-                        var _status = db.Status.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
-                        string authorization = VerifyRole(_role.role1);
-                        if (IsActive(_status.IsActive))
-                        {
-                            if (!IsLocked(_status.IsLocked))
-                            {
-                                identity.AddClaim(new Claim(ClaimTypes.Role, authorization));
-                                identity.AddClaim(new Claim("username", _user.username));
-                                identity.AddClaim(new Claim(ClaimTypes.Name, authorization));
-                                context.Validated(identity);
-                                return;
-                            }
-                            context.SetError("invalid_grant", "Locked Account. Contact Admin");
-                            return;
-                        }
+                        context.SetError("invalid_grant", "Username or Password is incorrect");
+                        return;
+                    }
+                    //find roles
+                    var _role = db.Roles.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
+                    //find status
+                    var _status = db.Status.Where(x => x.emp_no == _user.emp_no).SingleOrDefault();
+                    string authorization = VerifyRole(_role.role1);
+                    if (!IsActive(_status.IsActive))
+                    {
                         context.SetError("invalid_grant", "Inactive Account. Contact Admin");
                         return;
                     }
-                    context.SetError("invalid_grant", "Username or Password is incorrect");
+
+                    if (IsLocked(_status.IsLocked))
+                    {
+                        context.SetError("invalid_grant", "Locked Account. Contact Admin");
+                        return;
+                    }
+                    identity.AddClaim(new Claim(ClaimTypes.Role, authorization));
+                    identity.AddClaim(new Claim("username", _user.username));
+                    identity.AddClaim(new Claim(ClaimTypes.Name, authorization));
+                    context.Validated(identity);
                     return;
                 }
                 catch (Exception ex)
@@ -133,7 +136,6 @@ namespace TotalFireSafety
                     return;
                 }
             }
-
         }
     }
 }

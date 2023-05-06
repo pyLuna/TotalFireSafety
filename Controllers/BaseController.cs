@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNet.SignalR;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Mvc;
-using TotalFireSafety.Hubs;
 using TotalFireSafety.Models;
 
 

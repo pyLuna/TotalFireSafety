@@ -26,12 +26,63 @@ function GetAll() {
 			}
 		})
 		.then(data => {
-			SetCard(data)
+			SetCard(data);
 		})
 		.catch(error => {
 			window.location.replace('/Error/InternalServerError');
 			console.error(error);
 		});
+}
+
+function OverAllPerc(arr) {
+	let totalProgress = 0;
+
+	// loop through the array and add up all the progress percentages
+	for (let i = 0; i < arr.length; i++) {
+		totalProgress += arr[i];
+	}
+
+	// calculate the overall progress percentage by dividing the total by the length of the array
+	let overallProgress = totalProgress / arr.length;
+	let perc = document.getElementById('perc');
+
+	perc.innerHTML = Math.round(overallProgress) + "%";
+
+	//console.log(overallProgress); // output the overall progress percentage
+}
+
+function GetProjsCards() {
+	fetch("/Admin/ProjectInsights")
+		.then(res => {
+			if (res.ok) {
+				// API request was successful
+				return res.json();
+			} else {
+				console.log("error fetch");
+			}
+		})
+		.then(data => {
+			//console.log(data);
+			SetCard2(data);
+			OverAllPerc(progs);
+		})
+		.catch(error => {
+			//window.location.replace('/Error/InternalServerError');
+			console.error(error);
+		});
+}
+
+function SetCard2(array) {
+	let upcoming = document.getElementById('upcoming');
+	let finished = document.getElementById('finished');
+	let cancelled = document.getElementById('cancelled');
+	let total = document.getElementById('total');
+
+	upcoming.innerHTML = array.Upcoming;
+	finished.innerHTML = array.Finished;
+	cancelled.innerHTML = array.Cancelled;
+	//OnGoing.innerHTML = array.OnGoing;k
+	total.innerHTML = array.AllProjects;
 }
 
 function SetCard(array) {

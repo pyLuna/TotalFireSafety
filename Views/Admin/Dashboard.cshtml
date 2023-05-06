@@ -275,12 +275,12 @@
                     <div class="dsh-proj-header">
                         <h3>On-going Projects</h3>
 
-                        <div class="dsh-proj-grp">
+                        @*<div class="dsh-proj-grp">
                             <select required>
                                 <option disabled selected>Project Lead</option>
                                 <option>Juan Dela Cruz</option>
                             </select>
-                        </div>
+                        </div>*@
 
                     </div>
                     <div class="chart-border">
@@ -301,8 +301,8 @@
                     <div class="dsh-proj-header">
                         <h3>Project Insights</h3>
 
-                        <div class="date">
-                            <h3>Year</h3>
+                        <div class="date" style="display:none">
+                            @*<h3>Year</h3>
                             <select required>
                                 <option disabled selected></option>
                                 <option>2019</option>
@@ -310,7 +310,7 @@
                                 <option>2021</option>
                                 <option>2022</option>
                                 <option>2023</option>
-                            </select>
+                            </select>*@
                         </div>
                     </div>
 
@@ -320,29 +320,29 @@
                                 <div class="proj-insight-container">
 
                                     <div class="proj-row">
-                                        <div class="proj-column-left left upper">
+                                        <div class="proj-column-left left upper upper-left">
                                             <label class="top">Project Performance</label>
-                                            <h3>90%</h3>
+                                            <h3 id="perc"></h3>
                                             <label class="bottom">Tasks achieved <i class="las la-caret-up"></i></label>
                                         </div>
                                         <div class="proj-column-right upper">
-                                            <h3>5</h3>
+                                            <h3 id="upcoming"></h3>
                                             <label>Total Upcoming <br> Projects</label>
                                         </div>
                                     </div>
                                     <div class="proj-row">
                                         <div class="proj-column-left mid-left">
-                                            <h3>28</h3>
+                                            <h3 id="finished"></h3>
                                             <label>Finished <br> Projects</label>
                                         </div>
                                         <div class="proj-column-right mid-right">
-                                            <h3>7</h3>
+                                            <h3 id="cancelled"></h3>
                                             <label>Cancelled<br> Projects</label>
                                         </div>
                                     </div>
                                     <div class="proj-row">
                                         <div class="proj-column-left title">
-                                            <h3>50</h3>
+                                            <h3 id="total"></h3>
                                             <label>Total <br> Projects</label>
                                         </div>
                                         <div class="proj-column-right per">
@@ -375,6 +375,8 @@
         //GetItems();
         GetDate();
         GetSupplies();
+        GetProjects();
+        GetProjsCards();
     }
 
     `use strict`;
@@ -494,10 +496,6 @@
             localStorage.setItem("diff", end.diff(start, 'days'));
         }
 
-        function customYear(startYear) {
-            return [moment().year(startYear).startOf('year'), moment().year(startYear).endOf('year')];
-        }
-
         $('#reportrange').daterangepicker({
             startDate: start,
             endDate: end,
@@ -514,7 +512,19 @@
             "showDropdowns": true,
             "opens": "center",
             "showCustomRangeLabel": true,
-        }, cb);
+        }, function (start, end, label) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            var diff = 0;
+            if (label == "Yesterday") {
+                diff = 1;
+            }
+            else {
+                diff = end.diff(start, 'days');
+            }
+            localStorage.setItem("start", start.format('MMMM D, YYYY'));
+            localStorage.setItem("end", end.format('MMMM D, YYYY'));
+            localStorage.setItem("diff", diff);
+        });
 
         cb(start, end);
         $('#reportrange').on('apply.daterangepicker', function (ev, picker) {

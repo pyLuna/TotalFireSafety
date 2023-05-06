@@ -1,0 +1,300 @@
+﻿
+@{
+    ViewBag.Title = "ProjectExport";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TFSTI - Project Export</title>
+    <link rel="shortcut icon" type="image/icon" href="../../images/tfsti-logo-noname.png" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+        }
+
+        main {
+            background: #f1f5f9;
+        }
+
+        .logo-size {
+            height: 160px;
+            width: 350px;
+        }
+
+        .container-project-export {
+            height: 100%;
+            width: 1100px;
+            box-shadow: -1px -1px 15px -1px rgba(0,0,0,0.53);
+            -webkit-box-shadow: -1px -1px 15px -1px rgba(0,0,0,0.53);
+            -moz-box-shadow: -1px -1px 15px -1px rgba(0,0,0,0.53);
+        }
+
+        .hr-solid {
+            border: 1px solid black;
+        }
+
+        img {
+            height: 200px;
+            width: 200px;
+        }
+
+        .buttons1 {
+            background-color: rgb(22, 33, 91) !important;
+            width: 175px !important;
+        }
+
+        .buttons2 {
+            width: 175px !important;
+            height: 47px !important;
+            border: 1px solid rgb(22, 33, 91) !important;
+            color: rgb(22, 33, 91) !important;
+        }
+
+            .buttons2:hover {
+                background-color: rgb(22, 33, 91) !important;
+                color: white !important;
+            }
+
+        #pe-table {
+            border-radius: 10px;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1.5px solid black;
+            width: 100%;
+        }
+
+            #pe-table td, #pe-table th {
+                border: 1.5px solid black;
+                padding: 2px;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+
+            #pe-table thead {
+                background-color: rgb(22, 33, 91);
+            }
+
+        .pe-th {
+            border: 1.5px solid black;
+            padding: 2px;
+            border-top-right-radius: 8px !important;
+            border-top-left-radius: 8px !important;
+        }
+
+        .pe-th-bot {
+            border: 1.5px solid black;
+            padding: 2px;
+            border-bottom-right-radius: 8px !important;
+            border-bottom-left-radius: 8px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="d-flex justify-content-center">
+        <div class="card mt-4 mb-4 p-5 container-project-export">
+            <div class="d-flex justify-content-between mb-5">
+                <img src="../../images/tfsti-logo-inventory.png" class="logo-size" alt="">
+
+                <div class="mt-2">
+                    <table>
+                        <thead>
+                            <tr>
+                                <h2 class="font-weight-bold">Daily Report #1</h2>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th><h5>Date Submitted</h5>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th><h5>April 1, 2023</h5></th>
+                            </tr>
+                            <tr>
+                                <th><h5>Remaks</h5></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th class="text-success"><h5><B>Achieved</B></h5></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center flex-column">
+                <table id="pe-table">
+                    <thead>
+                    <th class="text-center text-light pe-th" colspan="4">
+                        PROJECT DETAILS
+                    </th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">PROJECT NAME</th>
+                            <td>6 Story Bldg</th>
+                            <th scope="row">PROJECT LEAD</th>
+                            <td>Vincent M. Cordero</th>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">SUBJECT</th>
+                            <td>Supply & Install AFSS and FOAS</td>
+                            <th scope="row">START DATE</th>
+                            <td>April 10, 2023</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">CLIENT</th>
+                            <td>Lanao Milling Corp</td>
+                            <th scope="row">BASELINE FINISH</th>
+                            <td>May 10, 2023</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">LOCATION SITE</th>
+                            <td>Lanao Milling Corp</td>
+                            <th scope="row">STATUS</th>
+                            <td><div class="text-success"> On-Going</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br><br>
+                <table id="pe-table">
+                    <thead>
+                    <th class="text-center text-light pe-th">
+                        PROJECT DESCRIPTION
+                    </th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-3 pe-th-bot">
+                                The Project was successfully achieved with.....
+                                <br><br><br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <div class="d-flex justify-content-between">
+                    <table id="pe-table" class="table table-sm pe-table mr-2">
+                        <thead>
+                            <tr>
+                                <th class="text-center text-light pe-th" colspan="3">
+                                    ATTENDANCE
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Manpower</th>
+                                <th>time - in</th>
+                                <th>Time - out</th>
+                            </tr>
+                            <tr>
+                                <td>Clarisse C. Vasquez</td>
+                                <td>08:00 AM</td>
+                                <td>05:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>chupapi P. Munyanyo</td>
+                                <td>08:00 AM</td>
+                                <td>05:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Isprikitik A. kitik</td>
+                                <td>08:00 AM</td>
+                                <td>05:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Trukinis A. Adiktutis</td>
+                                <td>08:00 AM</td>
+                                <td>05:00 PM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table id="pe-table" class="table table-sm pe-table ml-2">
+                        <thead>
+                        <th class="text-center text-light pe-th">
+                            SCOPE OF WORK
+                        </th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="p-3 pe-th-bot">
+                                    Hydro test and tracing for possible leak
+                                    <br><br><br><br><br><br>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>IMAGES</h3>
+            </div>
+            <hr class="hr-solid">
+            <div class="container">
+                <div class="row mb-4">
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4 d-flex justify-content-end mr-5 mb-5">
+        <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2">EXPORT</button>
+            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2">PRINT</button>
+            <button type="button" class="btn btn-outline-primary buttons2 ml-2">CANCEL</button>
+        </div>
+    </div>
+
+</body>
+</html>
+

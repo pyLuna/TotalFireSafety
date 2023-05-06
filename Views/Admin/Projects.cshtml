@@ -160,7 +160,7 @@
                     <select required>
                         <option disabled selected>Project Status</option>
                         <option value="On-Going">On-Going</option>
-                        <option value="In-Line">In-Line</option>
+                        <option value="In-Line">Upcoming</option>
                         <option value="Cancelled">Cancelled</option>
                     </select>
 
@@ -265,7 +265,7 @@
 
                 </div>
 
-                <div class="add-new-right">
+                @*<div class="add-new-right">
                     <div class="add-new-header">
                         <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
                     </div>
@@ -297,12 +297,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
 
             </div>
 
             <div class="add-new-footer">
-                <button onclick="savePro() + saveData()">CREATE PROJECT</button>
+                <button id="save-button" onclick="savePro()">CREATE PROJECT</button>
             </div>
 
         </div>
@@ -405,7 +405,7 @@ $(document).ready(function () {
     progressBar.append(progressBarFill);
 
     // Set the background color of the progress bar fill based on the project status
-    if (project.proj_status === 'In-Line') {
+    if (project.proj_status === 'Upcoming') {
       row.find('.progress-column').addClass('stat-appr');
       progressBarFill.css('background-color', '#FF6700');
     } else if (project.proj_status === 'On-Going') {
@@ -461,7 +461,33 @@ function filterByStatus() {
     </script>
 
     <script>
-        const table = document.getElementById("myTable");
+        $.ajax({
+            url: '/Admin/GetActiveEmployees',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var select = $('select'); // Replace with your own selector
+                select.empty(); // Clear any existing options
+                select.append($('<option>', {
+                    disabled: true,
+                    selected: true,
+                    text: 'Project Lead'
+                }));
+                $.each(data, function (index, employee) {
+                    select.append($('<option>', {
+                        value: employee.emp_no,
+                        text: employee.emp_name
+                    }));
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    </script>
+
+    <script>
+      @*  const table = document.getElementById("myTable");
 
         table.addEventListener("keydown", (event) => {
             const target = event.target;
@@ -501,11 +527,11 @@ function filterByStatus() {
             }
         }
 
-
+*@
     </script>
 
     <script>
-        function saveData() {
+       @* function saveData() {
             var manpowerList = [];
             $("#outputTable tbody tr").each(function () {
                 var manpower = {
@@ -538,11 +564,14 @@ function filterByStatus() {
         }
 
 
-
+*@
     </script>
  
     <script>
         function savePro() {
+            // Disable the button to prevent multiple clicks
+            $("#save-button").prop("disabled", true);
+
             // Get the form data
             var projName = $("input[name=projName]").val();
             var projSubject = $("input[name=projSubject]").val();
@@ -576,10 +605,16 @@ function filterByStatus() {
                     closeAddNewContainer();
                     loadProjects();
                     location.reload();
+
+                    // Enable the button
+                    $("#save-button").prop("disabled", false);
                 },
                 error: function (xhr, status, error) {
                     // Display an error message
                     alert("An error occurred while saving the project: " + error);
+
+                    // Enable the button
+                    $("#save-button").prop("disabled", false);
                 }
             });
         }

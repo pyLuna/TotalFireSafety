@@ -8087,7 +8087,6 @@ hr {
         width: auto;
         height: auto;
         border-radius: 5px;
-        margin-bottom: 20px;
     }
 
 .proj-des-container .descri-main {
@@ -9048,12 +9047,10 @@ hr {
         .report-edit-main .border .mid .mid-content .mid .mid-container {
             margin-left: 10px;
             margin-right: 10px;
-            margin-top: 10px;
             display: block;
         }
 
-        .report-edit-main .border .mid .mid-content .mid textarea {
-            resize: none;
+        .report-edit-main .border .mid .mid-content .mid .mid-container input {
             width: 100%;
             height: 100px;
             overflow: auto;
@@ -9063,6 +9060,7 @@ hr {
             -moz-box-shadow: none;
             box-shadow: none;
             border: none;
+            margin: 0;
         }
 
             .report-edit-main .border .mid .mid-content .mid textarea::-webkit-input-placeholder {
@@ -9070,8 +9068,6 @@ hr {
             }
 
         .report-edit-main .border .mid .mid-content .mid .mid-container .attach {
-            margin-left: 375px;
-            margin-top: -5px;
         }
 
             .report-edit-main .border .mid .mid-content .mid .mid-container .attach i {
@@ -9374,7 +9370,7 @@ hr {
                     padding-top: 50px;
                     padding-bottom: 30px;
                     text-align: center;
-                }*/
+                }
 
                     .report-container .report-grp .left-grp .img-container .img-list img {
                         width: 130px;
@@ -9664,7 +9660,7 @@ hr {
     }
 
         .add-new-container .add-new-main .add-new-left {
-            width: 50%;
+            width: 100% !important;
             padding: 30px;
         }
 
@@ -11965,6 +11961,10 @@ hr {
 
 /* 11 - PROJECT RESPONSIVE STYLES ALL SIZES */
 @media all and (max-width: 480px) {
+    ..proj-grid {
+        padding: 0;
+        margin: 0;
+    }
     .proj-projects {
         margin: 0;
         padding: 0;
@@ -12039,7 +12039,7 @@ hr {
     /* PROJECT VIEW RESPONSIVE STYLE */
 
     .proj-main-content {
-        width: 100;
+        width: 100%;
         margin: 0;
         padding: 0;
     }
@@ -12534,7 +12534,7 @@ hr {
     /* PROJECT VIEW RESPONSIVE STYLE */
 
     .proj-main-content {
-        width: 100;
+        width: 100%;
         margin: 0;
         padding: 0;
     }

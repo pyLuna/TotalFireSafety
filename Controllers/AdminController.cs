@@ -310,19 +310,107 @@ namespace TotalFireSafety.Controllers
             return View(viewModel);
         }
 
-        /* public ActionResult GetReportDate(int rep_no)
-         {
-             nwTFSEntity db = new nwTFSEntity();
-             // Query the database to get the report for the given rep_no
-             // Query the database to get the rep_date for the given rep_no
-             var report = db.NewReports.SingleOrDefault(r => r.rep_no == rep_no);
-             if (report == null)
-             {
-                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-             }
-             // Return the rep_date as a string
-             return Content(report.rep_date.ToString("MM/dd/yyyy"));
-         }*/
+        public async Task<ActionResult> ProjectExport()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
+
+        public ActionResult GetAttendanceByDate(DateTime rep_date)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var attendance = db.Attendances.Where(a => a.atte_timein == rep_date).ToList();
+            return Json(attendance, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAttendanceData()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var data = db.Attendances
+                .Join(db.NewManpowers, a => a.atte_id, m => m.man_id, (a, m) => new { Attendance = a, Manpower = m })
+                .Select(a => new
+                {
+                    Manpower = a.Manpower.man_name,
+                    Position = a.Manpower.man_postition,
+                    TimeIn = a.Attendance.atte_timein,
+                    TimeOut = a.Attendance.atte_timeout
+                })
+                .ToList();
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult GetAttendanceDatas()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var data = db.Attendances
+                .Join(db.NewManpowers, a => a.atte_id, m => m.man_id, (a, m) => new { Attendance = a, Manpower = m })
+                .Select(a => new
+                {
+                    Manpower = a.Manpower.man_name,
+                    Position = a.Manpower.man_postition,
+                    TimeIn = a.Attendance.atte_timein,
+                    TimeOut = a.Attendance.atte_timeout
+                })
+                .ToList();
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetReports(int rep_proj_id)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var reports = db.NewReports.Where(r => r.rep_proj_id == rep_proj_id).ToList();
+            return Json(reports, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetReportDatas(int rep_no)
+        {
+            // Validate the rep_no parameter
+            if (rep_no <= 0)
+            {
+                return Json(new { error = "Invalid rep_no parameter." }, JsonRequestBehavior.AllowGet);
+            }
+
+            nwTFSEntity db = new nwTFSEntity();
+            var report = db.NewReports.FirstOrDefault(r => r.rep_no == rep_no);
+
+            if (report == null)
+            {
+                return Json(new { error = "Report not found." }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Format report data for JavaScript
+            var reportData = new
+            {
+                rep_no = report.rep_no,
+                rep_description = report.rep_description,
+                rep_date = report.rep_date.ToString("yyyy-MM-dd"),
+                rep_stats = report.rep_stats,
+                rep_scope = report.rep_scope
+            };
+
+            return Json(reportData, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetReportImages(DateTime rep_date, int? proj_type_id)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var images = db.ReportImages
+                .Where(i => i.img_date.HasValue && DbFunctions.TruncateTime(i.img_date) == rep_date.Date
+                    && (!proj_type_id.HasValue || i.img_proj_id == proj_type_id.Value))
+                .Select(i => i.img_image)
+                .ToList();
+            return Json(images, JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpPost]
         public ActionResult UpdateAttendance(Guid projectId, string timeOut)
@@ -338,9 +426,8 @@ namespace TotalFireSafety.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return View();
         }
-
         [HttpPost]
         public JsonResult GetReportData(int rep_no)
         {
@@ -352,7 +439,7 @@ namespace TotalFireSafety.Controllers
             return Json(report, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateAttendance(string manpowerName, int projectID)
+        public ActionResult UpdateTimeOut(string manpowerName, int projectID)
         {
             nwTFSEntity db = new nwTFSEntity();
             // Get the Attendance record for the specified manpower and project
@@ -965,7 +1052,7 @@ namespace TotalFireSafety.Controllers
             }
 
             return Json(new { success = true });
-        }
+            }
 
         [HttpPost]
         public JsonResult SaveProject(List<NewProject> projectList)

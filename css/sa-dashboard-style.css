@@ -8241,12 +8241,14 @@ hr {
     }
 
         .prop-container .prop-main .prop-title {
-            padding-left: 10%;
-            padding-right: 10%;
+            margin-left: 10%;
+            margin-right: 10%;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #B2B2B2;
         }
 
         .prop-container .prop-main .prop-input-container {
-            margin-top: 50px;
+            margin-top: 30px;
             padding-left: 20px;
             padding-right: 20px;
             width: 100%;
@@ -8257,6 +8259,8 @@ hr {
             .prop-container .prop-main .prop-input-container .prop-main-input {
                 padding-left: 5%;
                 padding-right: 5%;
+                box-shadow: 3px 5px 5px 3px #B2B2B2;
+                border-radius: 5px;
             }
 
                 .prop-container .prop-main .prop-input-container .prop-main-input textarea {
@@ -8268,13 +8272,12 @@ hr {
                     border: 0;
                 }
 
-                    .prop-container .prop-main .prop-input-container .prop-main-input textarea:focus {
-                        outline: 0;
-                    }
+                .prop-container .prop-main .prop-input-container .prop-main-input textarea:focus {
+                    outline: 0;
+                }
 
             .prop-container .prop-main .prop-input-container .prop-list-input {
-                padding-left: 7%;
-                padding-right: 7%;
+                
                 margin-top: 20px;
             }
 
@@ -8282,6 +8285,8 @@ hr {
     margin-top: 10px;
     height: 200px;
     overflow: auto;
+    box-shadow: 3px 5px 5px 3px #B2B2B2;
+    border-radius: 5px;
 }
 
 .input-prop-projects {
@@ -8294,12 +8299,11 @@ hr {
     margin: 0;
 }
 
-
-
-    .input-prop-body table thead td {
-        font-size: 1rem;
-        font-weight: 600;
-    }
+.input-prop-body table thead td {
+    background-color: #DDDDDD;
+    font-size: 1rem;
+    font-weight: 600;
+}
 
     .input-prop-body table tbody td {
         font-weight: 400;

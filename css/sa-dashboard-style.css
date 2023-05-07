@@ -831,7 +831,6 @@ input::-webkit-inner-spin-button {
 
     .logo-float img {
         width: 200px;
-        height: 50ox;
     }
 
 .sidebar-logout {
@@ -1004,7 +1003,7 @@ header {
 
 .sidebar .user-wrapper a {
     margin-left: 10px;
-    width: 35;
+    width: 35px;
     padding: 0;
     height: 35px;
     border-radius: 5px;
@@ -8143,9 +8142,18 @@ hr {
     border: 2px solid #AEAEAE;
     box-shadow: 5px 5px 3px #B2B2B2;
     width: auto;
-    height: auto;
+    height: 50px;
     border-radius: 5px;
+    margin-top: 10px;
 }
+
+    .proj-main-content .proj-main-container .proj-right-container .proj-mems-container:hover {
+        background-color: #16215B;
+        color: #000;
+        cursor: pointer;
+    }
+
+
 
 .proj-mems-container .mems-main {
     margin: 10px;
@@ -8178,7 +8186,7 @@ hr {
             font-size: .8rem;
         }
 
-.mems {
+/*.mems {
     margin-top: 10px;
     height: 100px;
     overflow: auto;
@@ -8209,7 +8217,116 @@ hr {
     .mems-body table td {
         font-weight: 400;
         font-size: .8rem;
+    }*/
+
+
+/* PROPOSAL REQUEST */
+
+.prop-container {
+    display: none;
+    width: 700px;
+    height: 600px;
+    background-color: #fff;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
+    z-index: 100;
+    position: fixed;
+    top: 20%;
+    right: 30%;
+    border-radius: 5px;
+}
+
+    .prop-container .prop-main {
+        padding: 10px;
+        margin-top: 30px;
     }
+
+        .prop-container .prop-main .prop-title {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+
+        .prop-container .prop-main .prop-input-container {
+            margin-top: 50px;
+            padding-left: 20px;
+            padding-right: 20px;
+            width: 100%;
+            height: 400px;
+            display: block;
+        }
+
+            .prop-container .prop-main .prop-input-container .prop-main-input {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+                .prop-container .prop-main .prop-input-container .prop-main-input textarea {
+                    width: 100%;
+                    height: 150px;
+                    resize: none;
+                    color: #000;
+                    font-size: 1.1rem;
+                    border: 0;
+                }
+
+                    .prop-container .prop-main .prop-input-container .prop-main-input textarea:focus {
+                        outline: 0;
+                    }
+
+            .prop-container .prop-main .prop-input-container .prop-list-input {
+                padding-left: 7%;
+                padding-right: 7%;
+                margin-top: 20px;
+            }
+
+.input-prop {
+    margin-top: 10px;
+    height: 200px;
+    overflow: auto;
+}
+
+.input-prop-projects {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+.input-prop-body table {
+    margin: 0;
+}
+
+
+
+    .input-prop-body table thead td {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .input-prop-body table tbody td {
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+.prop-container .prop-main button {
+    width: 90px;
+    height: 35px;
+    margin-left: 10px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
+}
+
+    .prop-container .prop-main button:hover {
+        color: #fff;
+        border: 1px solid #fff;
+        background-color: #16215B;
+        box-shadow: none;
+    }
+
+/* END */
 
 .input-mem-container {
     display: none;
@@ -11334,8 +11451,8 @@ hr {
     .dashboard-content {
         grid-template-columns: 100%;
     }
-
     .proj-insight-container .proj-row .left {
+
         padding-left: 0;
     }
 

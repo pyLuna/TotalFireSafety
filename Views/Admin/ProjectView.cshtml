@@ -121,14 +121,11 @@
                     </div>
 
 
-                    @*<div class="proj-mems-container">
-                        <div class="mems-main">
-                            <div class="mems-title">
-                                <br>
-                                <h3>MANPOWER</h3>
-                                <hr>
-                            </div>
-                            <div class="mems-list">
+                    <div class="proj-mems-container">
+                        <div class="mems-main" onclick="openInputPropForm()">
+
+                            <h3>MANPOWER</h3>
+                            @*<div class="mems-list">
                                 <div class="mems-grid">
                                     <div class="mems-projects">
                                         <div class="mems">
@@ -154,9 +151,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         </div>
-                    </div>*@
+                    </div>
                 </div>
             </div>
         </div>
@@ -509,7 +506,7 @@
                             </div>
                             <div class="lower">
                                 <div class="img-list" id="img-list">
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -673,7 +670,6 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody id="table-body">
-
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -869,7 +865,60 @@
             </div>
         </div>
 
+        @* NEW LAYOUT ADDITION - PROPOSAL REQUEST *@
+        
+    <div class="prop-container" id="prop-container">
+        <div class="prop-main">
+            <div class="prop-title">
+                <center> <h3>PROJECT DESCRIPTION HERE PROJECT DESCRIPTION HERE</h3> </center>
+            </div>
 
+            <div class="prop-input-container">
+
+                <div class="prop-main-input">
+                    <textarea name="" id="" placeholder="Place your proposal messege here.."></textarea>
+                </div>
+
+                <div class="prop-list-input">
+                    <div class="input-prop-list">
+                        <div class="input-prop-grid">
+                            <div class="input-prop-projects">
+                                <div class="input-prop">
+                                    <div class="input-prop-body">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table id="" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Manpower List:</b>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td contenteditable="true"><i class="las la-dot-circle"></i><b></b></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <center>
+                <button onclick="closeInputPropForm()">Save</button>
+                <button onclick="closeInputPropForm()">Cancel</button>
+            </center>
+        </div>
+    </div>
+
+        @* END *@
 
         <!-- END -->
 
@@ -1508,6 +1557,14 @@ tbody.addEventListener('keydown', (event) => {
 
         document.getElementById("input-man-container-edit").style.display = "none";
 
+        }
+
+    function openInputPropForm() {
+        document.getElementById("prop-container").style.display = "block";
+        }
+
+    function closeInputPropForm() {
+        document.getElementById("prop-container").style.display = "none";
         }
 
 </script>

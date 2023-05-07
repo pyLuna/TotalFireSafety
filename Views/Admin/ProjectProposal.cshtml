@@ -1,0 +1,215 @@
+﻿
+
+
+
+@{
+    ViewBag.Title = "ProjectProposal";
+    Layout = "~/Views/AdminLayout.cshtml";
+}
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            Proposal Lists
+        </h2>
+    </header>
+    <main>
+
+        <!-- PROPOSAL TABLE FOR ENGINEER -->
+
+        <div class="propo-grid">
+            <div class="propo-header">
+                <h3>PROPOSAL LISTS</h3>
+
+
+            </div>
+            <div class="propo-projects">
+                <div class="propo">
+                    <div class="propo-body">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table width="100%">
+
+                                <tbody>
+
+                                    <tr class="read" onclick="openInputPropForm()">
+                                        <td><i class="las la-square-full"></i></td>
+                                        <td><a href="#">adsfasasdfasdfasdfasdfadhfasjkdfhalsdkfjhaldf...</a></td>
+                                        <td><label class="stat-appr">Approve</label></td>
+                                    </tr>
+
+                                    <tr class="unread" onclick="">
+                                        <td><i class="las la-square-full"></i></td>
+                                        <td><a href="#">adsfasasdfasdfasdfasdfadhfasjkdfhalsdkfjhaldf...</a></td>
+                                        <td><label class="stat-dec">Decline</label></td>
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- END -->
+        <!-- NEW LAYOUT ADDITION - PROPOSAL REQUEST  -->
+
+        <div class="prop-container" id="prop-container">
+            <div class="prop-main">
+                <div class="prop-title">
+                    <center> <h3>PROJECT DESCRIPTION HERE PROJECT DESCRIPTION HERE</h3> </center>
+                </div>
+
+                <div class="prop-input-container">
+
+                    <div class="prop-main-input">
+                        <textarea name="" id="" placeholder="Place your proposal messege here.."></textarea>
+                    </div>
+
+                    <div class="prop-list-input">
+                        <div class="input-prop-list">
+                            <div class="input-prop-grid">
+                                <div class="input-prop-projects">
+                                    <div class="input-prop">
+                                        <div class="input-prop-body">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table id="" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>
+                                                                <b>Manpower List:</b>
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td contenteditable="true"><i class="las la-dot-circle"></i><b></b></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <center>
+                    <button onclick="closeInputMemForm()">Save</button>
+                    <button onclick="closeInputMemForm()">Cancel</button>
+                </center>
+            </div>
+        </div>
+
+        <!-- END  -->
+
+        <div class="can-pop-container" id="can-popup">
+            <img src="../../images/warning.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to remove the user on the list?</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
+
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="../../images/remove.png">
+            <h2>Deleted!</h2>
+            <p>User removed in the list successfully!</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
+        </div>
+
+    </main>
+
+    <div class="footer">
+        <center>
+            <div class="footer-con">
+                <img src="../../images/codepheuse.png" alt="">
+                <h4>CodePheus | 2022</h4>
+            </div>
+        </center>
+    </div>
+
+    <script>
+
+
+        function userFiltFunction() {
+            document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.user-filter-btn')) {
+                var myDropdown = document.getElementById("userFiltDropdown");
+                if (myDropdown.classList.contains('user-filter-show')) {
+                    myDropdown.classList.remove('user-filter-show');
+                }
+            }
+        }
+
+        function userSortFunction() {
+            document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.user-sort-btn')) {
+                var myDropdown = document.getElementById("userSortDropdown");
+                if (myDropdown.classList.contains('user-sort-show')) {
+                    myDropdown.classList.remove('user-sort-show');
+                }
+            }
+        }
+
+        let canpopup = document.getElementById("can-popup");
+
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
+
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
+
+        let rempopup = document.getElementById("rem-popup");
+
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
+
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+
+        function openAddNewContainer() {
+            document.getElementById("add-new-container").style.display = "block";
+        }
+
+        function closeAddNewContainer() {
+            document.getElementById("add-new-container").style.display = "none";
+        }
+
+        function openInputMemForm() {
+            document.getElementById("input-mem-container").style.display = "block";
+        }
+
+        function closeInputMemForm() {
+            document.getElementById("input-mem-container").style.display = "none";
+        }
+
+        function openInputPropForm() {
+            document.getElementById("prop-container").style.display = "block";
+        }
+
+        function closeInputPropForm() {
+            document.getElementById("prop-container").style.display = "none";
+        }
+
+    </script>

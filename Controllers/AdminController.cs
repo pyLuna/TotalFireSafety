@@ -355,6 +355,17 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
+        public async Task<ActionResult> ProjectProposal()
+        {
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            return View();
+        }
+
         public ActionResult GetAttendanceByDate(DateTime rep_date)
         {
             nwTFSEntity db = new nwTFSEntity();

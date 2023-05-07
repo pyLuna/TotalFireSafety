@@ -10818,6 +10818,81 @@ hr {
 
 /* END */
 
+/* PROPOSAL TABLE LIST FOR ENGINEER */
+
+.propo {
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 5px 5px 3px #B2B2B2;
+    max-height: 600px;
+    height: 600px;
+    overflow: auto;
+}
+
+.propo-projects {
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: 100% auto;
+    border-spacing: 1px;
+}
+
+.propo-header {
+    margin-left: 40px;
+    margin-top: 50px;
+    margin-right: 40px;
+}
+
+    .propo-header h3 {
+        font-size: 1.2rem;
+        color: #000;
+    }
+
+.propo-body table {
+    margin: 0;
+}
+
+    .propo-body table tbody .unread {
+        background-color: #EEEEEE;
+    }
+
+    .propo-body table tbody tr:hover {
+        cursor: pointer;
+        background-color: #F0EBE3;
+    }
+
+    .propo-body table tbody a {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #000;
+    }
+
+    .propo-body table tbody td i {
+        font-size: 1rem;
+    }
+
+    .propo-body table td label {
+        color: #000;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .propo-body table td .stat-appr {
+        color: #09AF10;
+    }
+
+    .propo-body table td .stat-dec {
+        color: #FF0000;
+    }
+
+    .propo-body table td .stat-pen {
+        color: #FF6700;
+    }
+
+/* END */
+
 /************************* END ********************************/
 
 /******** 12 - RESPONSIVE STYLES - TENTATIVE DO NOT EDIT ******/

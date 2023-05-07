@@ -515,6 +515,7 @@
     <Content Include="Views\Admin\InventorylistExport.cshtml" />
     <Content Include="Views\Admin\ExportReportNew.cshtml" />
     <Content Include="Views\Admin\ProjectExport.cshtml" />
+    <Content Include="Views\Admin\ProjectProposal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

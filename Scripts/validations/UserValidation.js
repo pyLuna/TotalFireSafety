@@ -1,4 +1,15 @@
 $(document).ready(function () {
+	$("#emp_id").keypress(function (e) {
+		var length = this.value.length;
+		if (length >= 8) {
+			e.preventDefault();
+			/*alert("not allow more than 11 character");*/
+		}
+	});
+
+});
+
+$(document).ready(function () {
 	$("#emp_contact").keypress(function (e) {
 		var length = this.value.length;
 		if (length >= 11) {

@@ -70,7 +70,10 @@
 
                     <button class="expo-btn" id="expBtn" title="EXPORT REPORT">
                         @*+ expoOpenPopup()*@
-                        EXPORT
+                        <a href="@Url.Action("InventorylistExport", "Admin", new { id = ViewBag.EmpId })" target="_blank">
+                            EXPORT
+                            <span class="las la-file-download"></span>
+                        </a>
                         <span class="las la-file-download"></span>
                     </button>
 
@@ -467,7 +470,7 @@
 <script>
     document.getElementById('expBtn').addEventListener("click", function () {
         localStorage.setItem("allItems", JSON.stringify(fixedArray));
-        window.location.href = "/Admin/InventorylistExport";
+        /*window.location.href = "/Admin/InventorylistExport";*/
     });
 
     /*ADD NEW ITEM CHECKFORM VALIDATION*/

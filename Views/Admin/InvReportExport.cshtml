@@ -136,7 +136,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
         <script>
-            function exportToPdf() {
+            /*function exportToPdf() {
                 const element = document.querySelector('.container');
                 const options = {
                     margin: [0, 0, 0, 0],
@@ -165,6 +165,17 @@
                             }
                         }
                     }
+                };
+                html2pdf().set(options).from(element).save();
+            }*/
+            function exportToPdf() {
+                let element = document.querySelector('.container');
+                let options = {
+                    margin: [0, 0, 0, 0],
+                    filename: 'Inventort-report.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: getScaleFactor(element.offsetWidth, element.offsetHeight) },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
                 };
                 html2pdf().set(options).from(element).save();
             }

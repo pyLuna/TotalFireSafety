@@ -247,6 +247,40 @@ namespace TotalFireSafety.Controllers
 
             return View(data);
         }
+        public ActionResult InventorylistExport(int? id)
+        {
+            /*var role = int.Parse(Session["system_role"].ToString());
+            if (role == 4 || role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));    
+            ViewBag.EmpId = empId;
+            return View();*/
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
+            }
+            nwTFSEntity db = new nwTFSEntity();
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            var empId = Session["emp_no"].ToString();
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            var data = db.Employees.Where(d => d.emp_no == id).ToList();
+            ViewBag.Name = data.FirstOrDefault()?.emp_fname + " " + data.FirstOrDefault()?.emp_lname;
+            ViewBag.Position = data.FirstOrDefault()?.emp_position;
+            ViewBag.Id = data.FirstOrDefault()?.emp_no;
+
+            return View(data);
+        }
         //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvReorder()
         {
@@ -1480,22 +1514,7 @@ namespace TotalFireSafety.Controllers
         }
 
         //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
-        public ActionResult InventorylistExport()
-        {
-            var role = int.Parse(Session["system_role"].ToString());
-            if (role == 4 || role == 3)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
-            var empId = Session["emp_no"]?.ToString();
-            if (empId == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            ViewBag.EmpId = empId;
-            return View();
-        }
+        
         #endregion
 
         #region Users

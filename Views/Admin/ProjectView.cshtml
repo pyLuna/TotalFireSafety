@@ -270,7 +270,7 @@
 
         <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
 
-        <div class="add-new-container" id="add-new-container">
+        <!--<div class="add-new-container" id="add-new-container">
             <div class="add-new-header">
                 <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
                 <center>
@@ -338,7 +338,7 @@
                     <button onclick="updatedata()">UPDATE PROJECT</button>
 
 
-                </div>
+                </div>-->
 
                 @*<div class="add-new-right">
                     <div class="add-new-header">
@@ -870,13 +870,24 @@
     <div class="prop-container" id="prop-container">
         <div class="prop-main">
             <div class="prop-title">
-                <center> <h3>PROJECT DESCRIPTION HERE PROJECT DESCRIPTION HERE</h3> </center>
+                <center> <h3>@ViewBag.ProjectName - @ViewBag.Subject </h3> </center>
             </div>
 
             <div class="prop-input-container">
 
+                <div class="prop-select">
+                    <h3>
+                        Proposal:
+                    </h3>
+                    <select id="Engineer">
+                        <option value="">--Select Employee--</option>
+                    </select>
+
+                </div>
+
                 <div class="prop-main-input">
-                    <textarea name="" id="" placeholder="Place your proposal messege here.."></textarea>
+                    <textarea name="" id="proj_subject" placeholder="Place your proposal messege here.."></textarea>
+                    <input type="text" value="@ViewBag.ProjectID" hidden/>
                 </div>
 
                 <div class="prop-list-input">
@@ -886,7 +897,7 @@
                                 <div class="input-prop">
                                     <div class="input-prop-body">
                                         <div class="table-responsive" style="overflow-x: auto;">
-                                            <table id="" width="100%">
+                                            <table id="propInput" width="100%">
                                                 <thead>
                                                     <tr>
                                                         <td>
@@ -912,7 +923,7 @@
 
 
             <center>
-                <button onclick="closeInputPropForm()">Save</button>
+                <button onclick="SaveProposal()">Save</button>
                 <button onclick="closeInputPropForm()">Cancel</button>
             </center>
         </div>
@@ -954,6 +965,107 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+
+    // Add event listener to the save button or form submit button
+document.getElementById("saveButton").addEventListener("click", function(event) {
+    event.preventDefault(); // prevent form from submitting
+
+    // Get values from view bag and HTML elements
+    var projectName = "@ViewBag.ProjectName";
+    var projectSubject = "@ViewBag.Subject";
+    var engineer = document.getElementById("Engineer").value;
+    var projectDescription = document.getElementById("proj_subject").value;
+    var projectID = document.getElementById("projectID").value;
+    var manpowerList = [];
+    var rows = document.getElementById("propInput").rows;
+    for (var i = 1; i < rows.length; i++) {
+        var manpower = rows[i].cells[0].innerText.trim();
+        if (manpower !== "") {
+            manpowerList.push(manpower);
+        }
+    }
+    var proposalData = {
+        projectName: projectName,
+        projectSubject: projectSubject,
+        engineer: engineer,
+        projectDescription: projectDescription,
+        projectID: projectID,
+        manpowerList: manpowerList,
+        propTypeID: document.getElementById("propTypeID").value
+    };
+
+    // Send data to server using AJAX request
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/Admin/SaveProposalData");
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function() {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            // Handle successful response from server
+            console.log(this.responseText);
+        }
+    };
+    xhr.send(JSON.stringify(proposalData));
+});
+
+</script>
+
+<script>
+    const propTable = document.querySelector('#propInput');
+    const tbody = propTable.querySelector('tbody');
+
+    // Listen for 'keydown' events on the table row
+    tbody.addEventListener('keydown', (event) => {
+        // Check if the 'Enter' key was pressed
+        if (event.key === 'Enter') {
+            // Prevent default behavior (creating a new line)
+            event.preventDefault();
+
+            // Create a new table row
+            const newRow = document.createElement('tr');
+
+            // Create the first table cell with blank contenteditable attribute for Manpower
+            const nameCell = document.createElement('td');
+            nameCell.setAttribute('contenteditable', 'true');
+
+            // Create the icon element and add it to the table cell
+            const icon = document.createElement('i');
+            icon.classList.add('las', 'la-dot-circle');
+            nameCell.appendChild(icon);
+
+            newRow.appendChild(nameCell);
+
+            // Add the new row to the table body
+            tbody.appendChild(newRow);
+        } else if (event.key === 'Backspace' && event.target.innerHTML.trim() === '') {
+            // Check if the 'Backspace' key was pressed and the cell is empty
+            // Remove the new row from the table
+            const currentRow = event.target.parentNode;
+            const previousRow = currentRow.previousSibling;
+            currentRow.parentNode.removeChild(currentRow);
+            previousRow.lastChild.focus(); // Set focus to the last cell of the previous row
+        }
+    });
+</script>
+
+<script>
+$(document).ready(function () {
+    $.ajax({
+        url: '@Url.Action("GetEmployeeData", "Admin")',
+        type: 'GET',
+        success: function (data) {
+            $.each(data, function (i, item) {
+                var fullName = item.emp_fname + ' ' + item.emp_lname;
+                $('#Engineer').append($('<option>', {
+                    value: item.emp_no,
+                    text: fullName
+                }));
+            });
+        }
+    });
+});
+</script>
+
+<script>
    
         function updateAttendance(projectId) {
         // Get the current time as a string
@@ -989,7 +1101,7 @@
 </script>
 
 <script>
-    function Edit() {
+   @* function Edit() {*@
        @* // Get all the "CLOCK OUT" buttons in the table
         var clockOutButtons = document.getElementsByClassName("out");
 
@@ -1275,6 +1387,7 @@ $.ajax({
         });
 }
 </script>
+
 
 
 <script>

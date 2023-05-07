@@ -344,6 +344,33 @@ namespace TotalFireSafety.Controllers
             return View(viewModel);
         }
 
+       /* [HttpPost]
+        public ActionResult SaveProposalData(string projectName, string projectSubject, string engineer, string projectDescription, string projectID, List<string> manpowerList, int propTypeID)
+        {
+            // Create Proposal object using the data sent from the client
+            NewProposal proposal = new NewProposal
+            {
+                prop_id = Guid.NewGuid(),
+                prop_type_id = propTypeID,
+                prop_manpower = string.Join(", ", manpowerList),
+                prop_status = "New",
+                prop_description = projectDescription,
+                prop_subject = projectSubject,
+                prop_emp_no = int.Parse(engineer),
+                NewProject = new NewProject { proj_type_id = int.Parse(projectID), proj_name = projectName }
+            };
+
+            // Save Proposal object to database using Entity Framework
+            using (var db = new nwTFSEntity())
+            {
+                db.NewProposals.Add(proposal);
+                db.SaveChanges();
+            }
+
+            // Return success message to client
+            return Json("Proposal saved successfully");
+        }
+*/
         public async Task<ActionResult> ProjectExport()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -1116,6 +1143,15 @@ namespace TotalFireSafety.Controllers
             nwTFSEntity db = new nwTFSEntity();
             var projects = db.NewProjects.ToList();
             return View(projects);
+        }
+
+        public ActionResult GetEmployeeData()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var engineers = db.Employees.Where(e => e.emp_position == "Engineer")
+                                         .Select(e => new { emp_no = e.emp_no, emp_fname = e.emp_fname, emp_lname = e.emp_lname })
+                                         .ToList();
+            return Json(engineers, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

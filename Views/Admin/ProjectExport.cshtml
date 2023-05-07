@@ -1,4 +1,5 @@
-﻿
+﻿@using TotalFireSafety.Models
+@model ProjectReportViewModel
 @{
     ViewBag.Title = "ProjectExport";
 }
@@ -106,7 +107,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <h2 class="font-weight-bold">Daily Report #1</h2>
+                                <h2 class="font-weight-bold">Daily Report #@ViewBag.Id</h2>
                             </tr>
                         </thead>
                         <tbody>
@@ -116,7 +117,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th><h5>April 1, 2023</h5></th>
+                                <th><h5>@ViewBag.DateSubmitted</h5></th>
                             </tr>
                             <tr>
                                 <th><h5>Remaks</h5></th>
@@ -124,7 +125,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th class="text-success"><h5><B>Achieved</B></h5></th>
+                                <th @*class="text-success*@"><h5><B>@ViewBag.Remarks</B></h5></th>
                             </tr>
                         </tbody>
                     </table>
@@ -140,28 +141,28 @@
                     <tbody>
                         <tr>
                             <th scope="row">PROJECT NAME</th>
-                            <td>6 Story Bldg</th>
+                            <td>@ViewBag.ProjectName</td>
                             <th scope="row">PROJECT LEAD</th>
-                            <td>Vincent M. Cordero</th>
+                            <td>@ViewBag.ProjectLead</td>
                         </tr>
 
                         <tr>
                             <th scope="row">SUBJECT</th>
-                            <td>Supply & Install AFSS and FOAS</td>
+                            <td>@ViewBag.Subject</td>
                             <th scope="row">START DATE</th>
-                            <td>April 10, 2023</td>
+                            <td>@ViewBag.Startdate</td>
                         </tr>
                         <tr>
                             <th scope="row">CLIENT</th>
-                            <td>Lanao Milling Corp</td>
+                            <td>@ViewBag.Client</td>
                             <th scope="row">BASELINE FINISH</th>
-                            <td>May 10, 2023</td>
+                            <td>@ViewBag.Enddate</td>
                         </tr>
                         <tr>
                             <th scope="row">LOCATION SITE</th>
-                            <td>Lanao Milling Corp</td>
+                            <td>@ViewBag.ProjectLoc</td>
                             <th scope="row">STATUS</th>
-                            <td><div class="text-success"> On-Going</div></td>
+                            <td><div @*class="text-success"*@>@ViewBag.ProjectStats</div></td>
                         </tr>
                     </tbody>
                 </table>
@@ -175,7 +176,7 @@
                     <tbody>
                         <tr>
                             <td class="p-3 pe-th-bot">
-                                The Project was successfully achieved with.....
+                                @ViewBag.Description
                                 <br><br><br>
                             </td>
                         </tr>
@@ -191,32 +192,14 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
+                        <tbody id="table-body">
+                            <tr >
                                 <th>Manpower</th>
                                 <th>time - in</th>
                                 <th>Time - out</th>
                             </tr>
-                            <tr>
-                                <td>Clarisse C. Vasquez</td>
-                                <td>08:00 AM</td>
-                                <td>05:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>chupapi P. Munyanyo</td>
-                                <td>08:00 AM</td>
-                                <td>05:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Isprikitik A. kitik</td>
-                                <td>08:00 AM</td>
-                                <td>05:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Trukinis A. Adiktutis</td>
-                                <td>08:00 AM</td>
-                                <td>05:00 PM</td>
-                            </tr>
+                            
+
                         </tbody>
                     </table>
 
@@ -229,7 +212,7 @@
                         <tbody>
                             <tr>
                                 <td class="p-3 pe-th-bot">
-                                    Hydro test and tracing for possible leak
+                                    @ViewBag.Scope
                                     <br><br><br><br><br><br>
                                 </td>
                             </tr>
@@ -240,7 +223,7 @@
             </div>
             <hr class="hr-solid">
             <div class="container">
-                <div class="row mb-4">
+               @* <div class="row mb-4">
                     <div class="col-md-3 col-sm-6">
                         <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
                     </div>
@@ -283,18 +266,57 @@
                     <div class="col-md-3 col-sm-6">
                         <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
     <div class="mt-4 d-flex justify-content-end mr-5 mb-5">
         <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2">EXPORT</button>
-            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2">PRINT</button>
-            <button type="button" class="btn btn-outline-primary buttons2 ml-2">CANCEL</button>
+            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2" onclick="exportToPdf()">
+                EXPORT
+            </button>
+            <button type="button" class="btn btn-primary btn-lg buttons1 ml-2" onclick="window.print();">PRINT</button>
+            <button type="button" class="btn btn-outline-primary buttons2 ml-2">
+                <a href="@Url.Action("ProjectView", "Admin")" onclick="window.close(); return false;">
+                    CANCEL
+                </a>
+            </button>
         </div>
     </div>
 
 </body>
 </html>
+<script>
+
+
+    $.get('/Admin/GetReportImages', { rep_date: isoDate }, function (images) {
+        var container = $('#container');
+        container.empty(); // clear the container first
+        $.each(images, function (index, path) {
+            var img = $('<img>').attr('src', '/ReportImg/' + path).addClass('img-fluid');
+            container.append(img);
+        });
+    });
+            },
+    error: function (xhr, status, error) {
+        console.log(xhr.responseText);
+    }
+        });
+    }
+        
+
+</script>
+<script>
+    function exportToPdf() {
+        const element = document.querySelector('.main-print');
+        const options = {
+            margin: [0, 0, 0, 0],
+            filename: 'Project-report-form.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        };
+        html2pdf().set(options).from(element).save();
+    }
+</script>
 

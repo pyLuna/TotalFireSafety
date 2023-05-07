@@ -62,10 +62,14 @@
                                                     <tr>
                                                         <td>@report.rep_date</td>
                                                         <td>@report.rep_no</td>
-                                                        <td>@report.rep_description  <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no', '@Model.SelectedManpower.' );"></i></td>
-                                                        <td>@report.rep_stats</td>
-                                                        <td><a href="#">Export</a></td>
-                                                    </tr>
+                                                        <td>
+                                                            @report.rep_description  <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no',
+                                                           '@report.rep_description', '@report.rep_stats', '@report.rep_date.ToString("MM/dd/yyyy")', '@report.rep_scope', '@Model.SelectedReport.rep_no');"></i>
+                                                    </td>
+                                                    <td>@report.rep_stats</td>
+                                                    @*<td><a href="@Url.Action("ProjectExport", "Admin")?Id=' + @Model.SelectedReport.rep_no)'">Export</a></td>*@
+                                                    <td><a href="@Url.Action("ProjectExport", "Admin")?Id=@Model.SelectedReport.rep_no" target="_blank">Export</a></td>
+                                                </tr>
                                                 }
                                             </tbody>
                                         </table>
@@ -271,79 +275,81 @@
 
         </div>
 
-        <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
-
-        <div class="add-new-container" id="add-new-container">
-            <div class="add-new-header">
-                <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
-                <center>
-                    <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
-                </center>
-
-            </div>
-
-            <div class="add-new-main">
-                <div class="add-new-left">
-                    <div class="input-fields">
-                        <Label>Project Name</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Subject</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Client</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client">
-                    </div>
-                    <div class="input-fields">
-                        <Label>Location Site</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location">
-                    </div>
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <Label>Project Lead</Label>
-                            <br>
-                            <select name="proj_lead" required>
-                                <option disabled>Select Lead</option>
-                                <option value="@Model.Project.proj_lead" selected>@Model.Project.proj_lead</option>
-                            </select>
-                        </div>
-                        <div class="input-fields right">
-                            <Label>Status</Label>
-                            <br>
-                            <select name="proj_status" required>
-                                <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
-                                <option>On-Going</option>
-                                <option>In-Line</option>
-                                <option>Cancelled</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <Label>Start Date</Label>
-                            <br>
-                            <input type="text" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
-                        </div>
-                        <div class="input-fields right">
-                            <Label>Baseline Finish</Label>
-                            <br>
-                            <input type="date" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")">
-                        </div>
-                    </div>
-
-                    <button onclick="updatedata()">UPDATE PROJECT</button>
-
+        <!-- EDIT PROJECT - NEW LAYOUT - 04-05 -->
+        <form id="UpdateProForm">
+            <div class="add-new-container" id="add-new-container">
+                <div class="add-new-header">
+                    <button type="reset" style="border: none;">
+                        <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                    </button>
+                    <center>
+                        <h3>EDIT PROJECT <i class="las la-rocket"></i></h3>
+                    </center>
 
                 </div>
 
-                @*<div class="add-new-right">
+                <div class="add-new-main">
+                    <div class="add-new-left">
+                        <div class="input-fields">
+                            <Label>Client</Label>
+                            <br>
+                            <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client" required>
+                        </div>
+                        <div class="input-fields">
+                            <Label>Project Name</Label>
+                            <br>
+                            <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name" required>
+                        </div>
+                        <div class="input-fields">
+                            <Label>Subject</Label>
+                            <br>
+                            <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject" required>
+                        </div>
+
+                        <div class="input-fields">
+                            <Label>Location Site</Label>
+                            <br>
+                            <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location" required>
+                        </div>
+                        <div class="grp">
+                            <div class="input-fields left">
+                                <Label>Project Lead</Label>
+                                <br>
+                                <select name="proj_lead" required>
+                                    <option value="" disabled selected>Select Lead</option>
+                                    <option value="@Model.Project.proj_lead" selected>@Model.Project.proj_lead</option>
+                                </select>
+                            </div>
+                            <div class="input-fields right">
+                                <Label>Status</Label>
+                                <br>
+                                <select name="proj_status" required>
+                                    <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
+                                    <option>On-Going</option>
+                                    <option>In-Line</option>
+                                    <option>Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grp">
+                            <div class="input-fields left">
+                                <Label>Start Date</Label>
+                                <br>
+                                <input type="text" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
+                            </div>
+                            <div class="input-fields right">
+                                <Label>Baseline Finish</Label>
+                                <br>
+                                <input type="date" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")" required>
+                            </div>
+                        </div>
+
+                        <button id="UpdtProj">UPDATE PROJECT</button>
+                        @*updatedata()*@
+                    </div>
+
+                    @*<div class="add-new-right">
                     <div class="add-new-header">
                         <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
                     </div>
@@ -368,11 +374,12 @@
                     </div>
                 </div>*@
 
+                </div>
+
+                <button>UPDATE PROJECT</button>
+
             </div>
-
-            <button>UPDATE PROJECT</button>
-
-        </div>
+        </form>
 
         <div class="input-mem-container" id="input-mem-container">
             <div class="input-mems-main">
@@ -420,16 +427,16 @@
         <!-- ADD REPORT - NEW LAYOUT - 04-12 -->
 
         <div class="report-new-container" id="report-new-container">
-
             <div class="report-new-header">
-                <span class="las la-long-arrow-alt-left" onclick="closeReportNewForm()"></span>
+                <button type="reset" style="border: none;">
+                    <span class="las la-long-arrow-alt-left" onclick="closeReportNewForm()"></span>
+                </button>
                 <h3>REPORT</h3>
             </div>
-
             <div class="report-new-main">
-
                 <div class="border">
                     <div class="left">
+                        <p class="emErr" style="color: red;"></p>
                         <div class="upper">
                             <div class="upper-content">
                                 <div class="label-container">
@@ -498,18 +505,18 @@
                             <div class="mid">
                                 <div class="mid-container">
                                     <div class="input">
-                                        <textarea name="" id="rep_description" placeholder="Input here"></textarea>
+                                        <textarea name="rep_description" id="rep_description" placeholder="Input here"></textarea>
                                     </div>
                                     <div class="attach">
-                                        <button id="attachBtn">
-                                            <i class="las la-paperclip"></i>
-                                        </button>
+                                        @*<button>*@
+                                        <i id="attachBtn" class="las la-paperclip"></i>
+                                        @*</button>*@
                                     </div>
                                 </div>
                             </div>
                             <div class="lower">
                                 <div class="img-list" id="img-list">
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -519,11 +526,11 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="date" id="rep_date">
+                                    <input type="date" id="rep_date" name="rep_date" required>
                                 </div>
                                 <div class="status">
-                                    <select id="rep_status" required>
-                                        <option>Select Status</option>
+                                    <select id="rep_status" name="rep_status" required>
+                                        <option value="" disabled selected>Select Status</option>
                                         <option>Achieved</option>
                                         <option>Not Achieved</option>
                                     </select>
@@ -532,7 +539,11 @@
                             <div class="mid">
                                 <div class="mid-container">
                                     <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
-                                    <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
+                                    <i class="las la-project-diagram"></i>
+                                    <input type="text" id="rep_scope" name="rep_scope" placeholder="Input here...">
+                                    <button id="add-scope">
+                                        <i class="las la-location-arrow enter"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="lower">
@@ -561,53 +572,65 @@
                             </div>
                         </div>
 
-
+                        @*SUBMIT BUTTON PROJECT VIEW*@
                         <div class="button">
-                            <button onclick="SaveData1() + saveReport() +  saveData()">SUBMIT</button>
+                            <button id="addRepBtn">SUBMIT</button>
+                            @* onclick="EditProjectValidation2()"SaveData1() + saveReport() +  saveData()*@
                         </div>
-
-                        <script>
-                            function saveData() {
-                                var repDate = document.getElementById('rep_date').value;
-                                var repProjId = document.getElementById('rep_proj_id').value;
-
-                                var images = document.querySelectorAll('#img-list img');
-                                var imageStrings = [];
-
-                                for (var i = 0; i < images.length; i++) {
-                                    var canvas = document.createElement('canvas');
-                                    var context = canvas.getContext('2d');
-                                    canvas.width = images[i].naturalWidth;
-                                    canvas.height = images[i].naturalHeight;
-                                    context.drawImage(images[i], 0, 0);
-                                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
-                                    imageStrings.push(base64);
-                                }
-
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/Admin/SaveReportImages',
-                                    data: {
-                                        images: imageStrings,
-                                        rep_date: repDate,
-                                        rep_proj_id: repProjId
-                                    },
-                                    success: function (response) {
-                                        alert('Data has been saved successfully!');
-                                        location.reload();
-                                    },
-                                    error: function (xhr, status, error) {
-                                        alert('Error Saving Data');
-                                    }
-                                });
-                            }
-                        </script>
 
                     </div>
                 </div>
             </div>
+            <!-- ATTENDANCE POPUP PAGE 04-19 -->
+
+            <div class="input-man-container" id="input-man-container">
+                <div class="input-man-main">
+                    <div class="input-man-title">
+                        <div class="left">
+                            <i class="las la-braille"></i><h3>ATTENDANCE</h3>
+                        </div>
+                        <div class="right">
+                            <i class="lar la-check-circle"></i>
+                            <i class="las la-times-circle" onclick="closeInputManForm()"></i>
+                        </div>
+
+                    </div>
+                    <div class="input-man-list">
+                        <div class="input-man-grid">
+                            <div class="input-man-projects">
+                                <div class="input-man">
+                                    <div class="input-man-body">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table id="inputTable" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td><b>MANPOWER</b></td>
+                                                        <td><b>POSITION</b></td>
+                                                        <td>Time - In</td>
+                                                        <td>Time - Out</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td contenteditable="true"><b></b></td>
+                                                        <td contenteditable="true"><b></b></td>
+                                                        <td><button class="in">CLOCK IN</button></td>
+                                                        <td><button class="out">CLOCK OUT</button></td>
+                                                    </tr>
 
 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- END -->
         </div>
 
         <!-- END -->
@@ -764,56 +787,6 @@
         </div>
 
         <!-- END -->
-        <!-- ATTENDANCE POPUP PAGE 04-19 -->
-
-        <div class="input-man-container" id="input-man-container">
-            <div class="input-man-main">
-                <div class="input-man-title">
-                    <div class="left">
-                        <i class="las la-braille"></i><h3>ATTENDANCE</h3>
-                    </div>
-                    <div class="right">
-                        <i class="lar la-check-circle"></i>
-                        <i class="las la-times-circle" onclick="closeInputManForm()"></i>
-                    </div>
-
-                </div>
-                <div class="input-man-list">
-                    <div class="input-man-grid">
-                        <div class="input-man-projects">
-                            <div class="input-man">
-                                <div class="input-man-body">
-                                    <div class="table-responsive" style="overflow-x: auto;">
-                                        <table id="inputTable" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <td><b>MANPOWER</b></td>
-                                                    <td><b>POSITION</b></td>
-                                                    <td>Time - In</td>
-                                                    <td>Time - Out</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td><button class="in">CLOCK IN</button></td>
-                                                    <td><button class="out">CLOCK OUT</button></td>
-                                                </tr>
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- END -->
         <!-- ATTENDANCE POPUP PAGE 04-19 for Edit-->
         <div class="input-man-container" id="input-man-container-edit">
             <div class="input-man-main">
@@ -903,7 +876,45 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>
+<script>
 
+    function saveData() {
+        var repDate = document.getElementById('rep_date').value;
+        var repProjId = document.getElementById('rep_proj_id').value;
+
+        var images = document.querySelectorAll('#img-list img');
+        var imageStrings = [];
+
+        for (var i = 0; i < images.length; i++) {
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.width = images[i].naturalWidth;
+            canvas.height = images[i].naturalHeight;
+            context.drawImage(images[i], 0, 0);
+            var base64 = canvas.toDataURL('image/jpeg', 0.8);
+            imageStrings.push(base64);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/Admin/SaveReportImages',
+            data: {
+                images: imageStrings,
+                rep_date: repDate,
+                rep_proj_id: repProjId
+            },
+            success: function (response) {
+                alert('Data has been saved successfully!');
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                /*alert('Error Saving Data');*/
+                $(".emErr").html("Please fill all empty fields.");
+            }
+        });
+    }
+</script>
 <script>
    
         function updateAttendance(projectId) {
@@ -941,6 +952,7 @@
 
 <script>
     function Edit() {
+    }
        @* // Get all the "CLOCK OUT" buttons in the table
         var clockOutButtons = document.getElementsByClassName("out");
 
@@ -1025,6 +1037,7 @@
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 // do something on error
+                $(".emErr").html("Please fill all empty fields");
             }
         });
     }
@@ -1205,7 +1218,7 @@ $.ajax({
         console.log(response);
         },
     error: function (xhr, status, error) {
-        // Handle the error
+        $(".emErr").html("Please fill all empty fields.");
         console.log(xhr.responseText);
         }
     });
@@ -1466,6 +1479,7 @@ tbody.addEventListener('keydown', (event) => {
 
     function closeAddNewContainer() {
         document.getElementById("add-new-container").style.display = "none";
+        $('#UpdateProForm').validate().resetForm();
 }
 
     function openInputMemForm() {
@@ -1490,6 +1504,7 @@ tbody.addEventListener('keydown', (event) => {
 
     function closeReportNewForm() {
         document.getElementById("report-new-container").style.display = "none";
+        $('#SubmitProForm').validate().resetForm();
 }
 
     function openInputManForm() {

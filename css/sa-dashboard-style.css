@@ -7700,6 +7700,16 @@ acc-form-table .view-request-form-table-style table thead td {
             font-size: 1.2rem;
         }
 
+    .proj-main-content .proj-back-container label .notif-badge-approve {
+        position: absolute;
+        right: 30px;
+        margin-top: -20px;
+        padding: 1px 5px;
+        border-radius: 50%;
+        background-color: red;
+        color: #fff;
+    }
+
     .proj-main-content .proj-main-container {
         /* background-color: #fff; */
         border-radius: 5px;
@@ -8241,20 +8251,28 @@ hr {
     }
 
         .prop-container .prop-main .prop-title {
-            margin-left: 10%;
-            margin-right: 10%;
+            margin-left: 5%;
+            margin-right: 5%;
             padding-bottom: 10px;
             border-bottom: 2px solid #B2B2B2;
         }
 
-        .prop-container .prop-main .prop-input-container {
-            margin-top: 5px;
-            padding-left: 20px;
-            padding-right: 20px;
-            width: 100%;
-            height: 400px;
-            display: block;
-        }
+            .prop-container .prop-main .prop-title input {
+                background-color: none;
+                border: 0;
+                font-size: 1.5rem;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            .prop-container .prop-main .prop-input-container {
+                margin-top: 5px;
+                padding-left: 20px;
+                padding-right: 20px;
+                width: 100%;
+                height: 400px;
+                display: block;
+            }
 
             .prop-container .prop-main .prop-input-container h3 {
                 margin-top: 20px;
@@ -8344,6 +8362,154 @@ hr {
 
 /* END */
 
+/* EDIT PROPOSAL REQUEST */
+
+.prop-edit-container {
+    display: none;
+    width: 700px;
+    height: 630px;
+    background-color: #fff;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
+    z-index: 100;
+    position: fixed;
+    top: 20%;
+    right: 30%;
+    border-radius: 5px;
+}
+
+    .prop-edit-container .prop-main {
+        padding: 10px;
+        margin-top: 30px;
+    }
+
+        .prop-edit-container .prop-main .prop-title {
+            margin-left: 5%;
+            margin-right: 5%;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #B2B2B2;
+        }
+
+            .prop-edit-container .prop-main .prop-title input {
+                background-color: none;
+                border: 0;
+                font-size: 1.5rem;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            .prop-edit-container .prop-main .prop-title .status {
+                background-color: none;
+                border: 0;
+                font-size: 1rem;
+                font-weight: 800;
+                width: 100px;
+                top: 20px;
+            }
+
+            .prop-edit-container .prop-main .prop-title .approve {
+                color: #09AF10;
+            }
+
+            .prop-edit-container .prop-main .prop-title .decline {
+                color: #09AF10;
+            }
+
+            .prop-edit-container .prop-main .prop-input-container {
+                margin-top: 5px;
+                padding-left: 20px;
+                padding-right: 20px;
+                width: 100%;
+                height: 400px;
+                display: block;
+            }
+
+            .prop-edit-container .prop-main .prop-input-container h3 {
+                margin-top: 20px;
+            }
+
+            .prop-edit-container .prop-main .prop-input-container .prop-select {
+                margin-bottom: 5px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .prop-edit-container .prop-main .prop-input-container .prop-main-input {
+                padding-left: 5%;
+                padding-right: 5%;
+                box-shadow: 3px 5px 5px 3px #B2B2B2;
+                border-radius: 5px;
+            }
+
+                .prop-edit-container .prop-main .prop-input-container .prop-main-input textarea {
+                    width: 100%;
+                    height: 150px;
+                    resize: none;
+                    color: #000;
+                    font-size: 1.1rem;
+                    border: 0;
+                    padding-top: 20px;
+                }
+
+                    .prop-edit-container .prop-main .prop-input-container .prop-main-input textarea:focus {
+                        outline: 0;
+                    }
+
+            .prop-edit-container .prop-main .prop-input-container .prop-list-input {
+                margin-top: 20px;
+            }
+
+    .prop-edit-container .input-prop {
+        margin-top: 10px;
+        height: 200px;
+        overflow: auto;
+        box-shadow: 3px 5px 5px 3px #B2B2B2;
+        border-radius: 5px;
+    }
+
+    .prop-edit-container .input-prop-projects {
+        margin: 0;
+        display: grid;
+        grid-template-columns: 100%;
+    }
+
+    .prop-edit-container .input-prop-body table {
+        margin: 0;
+    }
+
+        .prop-edit-container .input-prop-body table thead td {
+            background-color: #DDDDDD;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .prop-edit-container .input-prop-body table tbody td {
+            font-weight: 400;
+            font-size: 1rem;
+        }
+
+    .prop-edit-container .prop-main button {
+        width: 90px;
+        height: 35px;
+        margin-top: 70px;
+        margin-left: 10px;
+        border-radius: 5px;
+        transition: all ease-in-out 0.2s;
+        cursor: pointer;
+        background-color: #fff;
+        border: 1px solid #B2B2B2;
+        box-shadow: 4px 3px 3px #B2B2B2;
+        font-weight: 800;
+    }
+
+        .prop-edit-container .prop-main button:hover {
+            color: #fff;
+            border: 1px solid #fff;
+            background-color: #16215B;
+            box-shadow: none;
+        }
+
+/* END */
+
 .input-mem-container {
     display: none;
     width: 700px;
@@ -8419,6 +8585,81 @@ hr {
         background-color: #16215B;
         box-shadow: none;
     }
+
+/* PROPOSAL TABLE LIST FOR ENGINEER */
+
+.propo {
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: 5px 5px 3px #B2B2B2;
+    max-height: 600px;
+    height: 600px;
+    overflow: auto;
+}
+
+.propo-projects {
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: 100% auto;
+    border-spacing: 1px;
+}
+
+.propo-header {
+    margin-left: 40px;
+    margin-top: 50px;
+    margin-right: 40px;
+}
+
+    .propo-header h3 {
+        font-size: 1.2rem;
+        color: #000;
+    }
+
+.propo-body table {
+    margin: 0;
+}
+
+    .propo-body table tbody .unread {
+        background-color: #EEEEEE;
+    }
+
+    .propo-body table tbody tr:hover {
+        cursor: pointer;
+        background-color: #F0EBE3;
+    }
+
+    .propo-body table tbody a {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #000;
+    }
+
+    .propo-body table tbody td i {
+        font-size: 1rem;
+    }
+
+    .propo-body table td label {
+        color: #000;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .propo-body table td .stat-appr {
+        color: #09AF10;
+    }
+
+    .propo-body table td .stat-dec {
+        color: #FF0000;
+    }
+
+    .propo-body table td .stat-pen {
+        color: #FF6700;
+    }
+
+/* END */
 
 
 /* NEW ADD REPORT STYLE */

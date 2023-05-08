@@ -16,13 +16,13 @@ namespace TotalFireSafety.Models
     {
         public System.Guid guid { get; set; }
         public int emp_no { get; set; }
-        public string in_code { get; set; }
         public string ntf_title { get; set; }
         public string ntf_content { get; set; }
         public System.DateTime ntf_date { get; set; }
         public string ntf_type { get; set; }
+        public Nullable<int> request_type_id { get; set; }
+        public string request_type { get; set; }
     
         public virtual Employee Employee { get; set; }
-        public virtual Inventory Inventory { get; set; }
     }
 }

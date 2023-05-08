@@ -225,6 +225,38 @@ namespace TotalFireSafety.Controllers
             return View(data);
 
         }
+
+        //VIEW FOR PROJECT PROPOSAL
+        public async Task<ActionResult> ProjectProposal(int? id)
+        {
+            var empId = Session["emp_no"].ToString();
+            nwTFSEntity db = new nwTFSEntity();
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+
+           
+
+            return View();
+
+        }
+
+        public ActionResult GetProposals()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+
+            var proposals = db.NewProposals.ToList();
+            var data = proposals.Select(p => new
+            {
+                prop_description = p.prop_description,
+                prop_status = p.prop_status
+            });
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        
+
         //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvReportExport(int? id)
         {
@@ -344,33 +376,28 @@ namespace TotalFireSafety.Controllers
             return View(viewModel);
         }
 
-       /* [HttpPost]
-        public ActionResult SaveProposalData(string projectName, string projectSubject, string engineer, string projectDescription, string projectID, List<string> manpowerList, int propTypeID)
+
+        [HttpPost]
+        public ActionResult SaveProposal(NewProposal proposal)
         {
-            // Create Proposal object using the data sent from the client
-            NewProposal proposal = new NewProposal
+            try
             {
-                prop_id = Guid.NewGuid(),
-                prop_type_id = propTypeID,
-                prop_manpower = string.Join(", ", manpowerList),
-                prop_status = "New",
-                prop_description = projectDescription,
-                prop_subject = projectSubject,
-                prop_emp_no = int.Parse(engineer),
-                NewProject = new NewProject { proj_type_id = int.Parse(projectID), proj_name = projectName }
-            };
+                proposal.prop_id = Guid.NewGuid();
+                proposal.prop_status = "Pending";
 
-            // Save Proposal object to database using Entity Framework
-            using (var db = new nwTFSEntity())
-            {
-                db.NewProposals.Add(proposal);
-                db.SaveChanges();
+                using (var db = new nwTFSEntity())
+                {
+                    db.NewProposals.Add(proposal);
+                    db.SaveChanges();
+                }
+
+                return Json(new { message = "Proposal saved successfully." });
             }
-
-            // Return success message to client
-            return Json("Proposal saved successfully");
+            catch (Exception ex)
+            {
+                return Json(new { message = "Error saving proposal: " + ex.Message });
+            }
         }
-*/
         public async Task<ActionResult> ProjectExport()
         {
             var empId = Session["emp_no"]?.ToString();

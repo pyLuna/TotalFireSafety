@@ -24,7 +24,8 @@
                     <a href="@Url.Action("Projects","Admin")"><span class="las la-long-arrow-alt-left"></span> VIEW PROJECT</a>
                 </div>
                 <div class="right">
-                    <label><a onclick="openAddNewContainer()">Edit</a> &nbsp; <span class="las la-thumbtack"></span></label>
+
+                    <label> <a onclick="openAddNewContainer()">Edit</a> &nbsp;</label> &nbsp;  <label><a onclick="openInputEditPropForm()">Manpower</a><label class="notif-badge-approve">1</label></label>
                 </div>
 
             </div>
@@ -126,32 +127,32 @@
 
                             <h3>MANPOWER</h3>
                             @*<div class="mems-list">
-                                <div class="mems-grid">
-                                    <div class="mems-projects">
-                                        <div class="mems">
-                                            <div class="mems-body">
-                                                <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table width="100%">
-                                                        <tbody>
+                                    <div class="mems-grid">
+                                        <div class="mems-projects">
+                                            <div class="mems">
+                                                <div class="mems-body">
+                                                    <div class="table-responsive" style="overflow-x: auto;">
+                                                        <table width="100%">
+                                                            <tbody>
 
-                                                            @foreach (var manpower in Model.Manpowers)
-                                                            {
-                                                                var attendance = Model.Attendances.FirstOrDefault(a => a.atte_proj_id == manpower.man_proj_id);
-                                                                <tr>
-                                                                    <td>@manpower.man_name</td>
-                                                                    <td>@manpower.man_postition</td>
-                                                                </tr>
-                                                            }
+                                                                @foreach (var manpower in Model.Manpowers)
+                                                                {
+                                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_proj_id == manpower.man_proj_id);
+                                                                    <tr>
+                                                                        <td>@manpower.man_name</td>
+                                                                        <td>@manpower.man_postition</td>
+                                                                    </tr>
+                                                                }
 
 
-                                                        </tbody>
-                                                    </table>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>*@
+                                </div>*@
                         </div>
                     </div>
                 </div>
@@ -269,7 +270,6 @@
         </div>
 
         <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
-
         <!--<div class="add-new-container" id="add-new-container">
             <div class="add-new-header">
                 <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
@@ -339,576 +339,20 @@
 
 
                 </div>-->
-
-                @*<div class="add-new-right">
-                    <div class="add-new-header">
-                        <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
-                    </div>
-
-                    <div class="add-new-power">
-                        <div class="mems-list">
-                            <div class="mems-grid">
-                                <div class="mems-projects">
-                                    <div class="mems">
-                                        <div class="mems-body">
-                                            <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%" id="clockinTable">
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
-
-            </div>
-
-            <button>UPDATE PROJECT</button>
-
-        </div>
-
-        <div class="input-mem-container" id="input-mem-container">
-            <div class="input-mems-main">
-                <div class="input-mems-title">
-                    <h3>MANPOWER</h3>
-
-                </div>
-                <div class="input-mems-list">
-                    <div class="input-mems-grid">
-                        <div class="input-mems-projects">
-                            <div class="input-mems">
-                                <div class="input-mems-body">
-                                    <div class="table-responsive" style="overflow-x: auto;">
-                                        <table id="" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                    <td>Position</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td contenteditable="true"></label></td>
-                                                </tr>
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <center>
-                    <button onclick="closeInputMemForm()">Save</button>
-                    <button onclick="closeInputMemForm()">Cancel</button>
-                </center>
-            </div>
-        </div>
-
-
-        <!-- END -->
-        <!-- ADD REPORT - NEW LAYOUT - 04-12 -->
-
-        <div class="report-new-container" id="report-new-container">
-
-            <div class="report-new-header">
-                <span class="las la-long-arrow-alt-left" onclick="closeReportNewForm()"></span>
-                <h3>REPORT</h3>
-            </div>
-
-            <div class="report-new-main">
-
-                <div class="border">
-                    <div class="left">
-                        <div class="upper">
-                            <div class="upper-content">
-                                <div class="label-container">
-                                    <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mid">
-
-                            <div class="mid-content-btn" onclick="openInputManForm()">
-                                <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
-                            </div>
-
-                        </div>
-
-                        <div class="lower">
-                            <div class="low-list">
-                                <div class="low-grid">
-                                    <div class="low-projects">
-                                        <div class="low">
-                                            <div class="low-body">
-                                                <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table id="outputTable" width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>MANPOWER</td>
-                                                                <td>POSITION</td>
-                                                                <td>Time-In</td>
-                                                                <td>Time-Out</td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mid main-mid">
-                        <div class="mid-content">
-                            <div class="upper">
-                                <label>REPORT # <a> 01 </a> </label>
-                            </div>
-                            <div class="mid">
-                                <div class="mid-container">
-                                    <div class="input">
-                                        <textarea name="" id="rep_description" placeholder="Input here"></textarea>
-                                    </div>
-                                    <div class="attach">
-                                        <button id="attachBtn">
-                                            <i class="las la-paperclip"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="lower">
-                                <div class="img-list" id="img-list">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="right">
-                        <div class="right-content">
-                            <div class="upper">
-                                <div class="date">
-                                    <input type="date" id="rep_date">
-                                </div>
-                                <div class="status">
-                                    <select id="rep_status" required>
-                                        <option>Select Status</option>
-                                        <option>Achieved</option>
-                                        <option>Not Achieved</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mid">
-                                <div class="mid-container">
-                                    <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
-                                    <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
-                                </div>
-                            </div>
-                            <div class="lower">
-                                <div class="low-list">
-                                    <div class="low-grid">
-                                        <div class="low-projects">
-                                            <div class="low">
-                                                <div class="low-body">
-                                                    <div class="table-responsive" style="overflow-x: auto;">
-                                                        <table width="100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td>SCOPE OF WORK</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="scope-list">
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="button">
-                            <button onclick="SaveData1() + saveReport() +  saveData()">SUBMIT</button>
-                        </div>
-
-                        <script>
-                            function saveData() {
-                                var repDate = document.getElementById('rep_date').value;
-                                var repProjId = document.getElementById('rep_proj_id').value;
-
-                                var images = document.querySelectorAll('#img-list img');
-                                var imageStrings = [];
-
-                                for (var i = 0; i < images.length; i++) {
-                                    var canvas = document.createElement('canvas');
-                                    var context = canvas.getContext('2d');
-                                    canvas.width = images[i].naturalWidth;
-                                    canvas.height = images[i].naturalHeight;
-                                    context.drawImage(images[i], 0, 0);
-                                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
-                                    imageStrings.push(base64);
-                                }
-
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '/Admin/SaveReportImages',
-                                    data: {
-                                        images: imageStrings,
-                                        rep_date: repDate,
-                                        rep_proj_id: repProjId
-                                    },
-                                    success: function (response) {
-                                        alert('Data has been saved successfully!');
-                                        location.reload();
-                                    },
-                                    error: function (xhr, status, error) {
-                                        alert('Error Saving Data');
-                                    }
-                                });
-                            }
-                        </script>
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
-        <!-- END -->
-        <!-- EDIT REPORT - NEW LAYOUT - 04-12 -->
-
-        <div class="report-edit-container" id="report-edit-container">
-
-            <div class="report-edit-header">
-                <span class="las la-long-arrow-alt-left" onclick="closeReportEditForm()"></span>
-                <h3>EDIT REPORT</h3>
-            </div>
-
-            <div class="report-edit-main">
-
-                <div class="border">
-                    <div class="left">
-                        <div class="upper">
-                            <div class="upper-content">
-                                <div class="label-container">
-                                    <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="mid">
-
-                            <div class="mid-content" onclick="openInputManForm1()">
-                                <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
-                            </div>
-
-                        </div>
-                        <div class="lower">
-                            <div class="low-list">
-                                <div class="low-grid">
-                                    <div class="low-projects">
-                                        <div class="low">
-                                            <div class="low-body">
-                                                <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table width="100%" id="Clockoutput">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>MANPOWER</td>
-                                                                <td>POSITION</td>
-                                                                <td>Time-In</td>
-                                                                <td>Time-Out</td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="table-body">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mid">
-                        <div class="mid-content">
-                            <div class="upper">
-                                <label name="rep_no">REPORT ID </label>
-                            </div>
-                            <div class="mid main-mid">
-                                <div class="mid-container">
-                                    <div class="input">
-
-                                        <input type="text" name="rep_description" id="rep_description1" readonly>
-
-                                    </div>
-                                    <div class="attach">
-                                        <i class="las la-paperclip"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="lower">
-                                <div class="img-list">
-                                    <div id="image-container"></div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="right">
-                        <div class="right-content">
-                            <div class="upper">
-                                <div class="date">
-                                    <input type="text" id="rep_date1" name="rep_date1" readonly>
-                                </div>
-                                <div class="date">
-                                    <input type="text" name="rep_stats" id="rep_stats" readonly>
-                                </div>
-                            </div>
-                            <div class="mid">
-                                <div class="mid-container">
-                                    <i class="las la-project-diagram"></i> <input type="text" placeholder="Input here..." readonly><i class="las la-location-arrow enter"></i>
-                                </div>
-                            </div>
-                            <div class="lower">
-                                <div class="low-list">
-                                    <div class="low-grid">
-                                        <div class="low-projects">
-                                            <div class="low">
-                                                <div class="low-body">
-                                                    <div class="table-responsive" style="overflow-x: auto;">
-                                                        <table width="100%" id="ScopeTable">
-                                                            <thead>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td>SCOPE OF WORK</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <!-- Scope of work rows will be added dynamically here -->
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @*<div class="button">
-                            <button onclick="Edit()">EDIT</button>
-                        </div>*@
-                    </div>
-                </div>
-            </div>
-
-
-
-        </div>
-
-        <!-- END -->
-        <!-- ATTENDANCE POPUP PAGE 04-19 -->
-
-        <div class="input-man-container" id="input-man-container">
-            <div class="input-man-main">
-                <div class="input-man-title">
-                    <div class="left">
-                        <i class="las la-braille"></i><h3>ATTENDANCE</h3>
-                    </div>
-                    <div class="right">
-                        <i class="lar la-check-circle"></i>
-                        <i class="las la-times-circle" onclick="closeInputManForm()"></i>
-                    </div>
-
-                </div>
-                <div class="input-man-list">
-                    <div class="input-man-grid">
-                        <div class="input-man-projects">
-                            <div class="input-man">
-                                <div class="input-man-body">
-                                    <div class="table-responsive" style="overflow-x: auto;">
-                                        <table id="inputTable" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <td><b>MANPOWER</b></td>
-                                                    <td><b>POSITION</b></td>
-                                                    <td>Time - In</td>
-                                                    <td>Time - Out</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td><button class="in">CLOCK IN</button></td>
-                                                    <td><button class="out">CLOCK OUT</button></td>
-                                                </tr>
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- END -->
-        <!-- ATTENDANCE POPUP PAGE 04-19 for Edit-->
-        <div class="input-man-container" id="input-man-container-edit">
-            <div class="input-man-main">
-                <div class="input-man-title">
-                    <div class="left">
-                        <i class="las la-braille"></i><h3>ATTENDANCE</h3>
-                    </div>
-                    <div class="right">
-                        <i class="lar la-check-circle" onclick="updateAllAttendances()"></i>
-                        <i class="las la-times-circle" onclick="closeInputManForm1()"></i>
-                    </div>
-
-                </div>
-                <div class="input-man-list">
-                    <div class="input-man-grid">
-                        <div class="input-man-projects">
-                            <div class="input-man">
-                                <div class="input-man-body">
-                                    <div class="table-responsive" style="overflow-x: auto;">
-                                        <table id="inputTable" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <td><b>MANPOWER</b></td>
-                                                    <td><b>POSITION</b></td>
-                                                    <td>Time - In</td>
-                                                    <td>Time - Out</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var manpower in Model.Manpowers)
-                                                {
-                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id);
-
-                                                    if (attendance?.atte_timein != null) // Check if attendance time in is not null
-                                                    {
-                                                        <tr>
-                                                            <td contenteditable="true"><b>@manpower.man_name</b></td>
-                                                            <td contenteditable="true"><b>@manpower.man_postition</b></td>
-                                                            <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
-                                                            <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
-                                                            <td><button class="out" onclick="updateAttendance('@attendance.atte_id')">CLOCK OUT</button></td>
-                                                        </tr>
-                                                    }
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @* NEW LAYOUT ADDITION - PROPOSAL REQUEST *@
-        
-    <div class="prop-container" id="prop-container">
-        <div class="prop-main">
-            <div class="prop-title">
-                <center> <h3>@ViewBag.ProjectName - @ViewBag.Subject </h3> </center>
-            </div>
-
-            <div class="prop-input-container">
-
-                <div class="prop-select">
-                    <h3>
-                        Proposal:
-                    </h3>
-                    <select id="Engineer">
-                        <option value="">--Select Employee--</option>
-                    </select>
-
+        @*<div class="add-new-right">
+                <div class="add-new-header">
+                    <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
                 </div>
 
-                <div class="prop-main-input">
-                    <textarea name="" id="proj_subject" placeholder="Place your proposal messege here.."></textarea>
-                    <input type="text" value="@ViewBag.ProjectID" hidden/>
-                </div>
-
-                <div class="prop-list-input">
-                    <div class="input-prop-list">
-                        <div class="input-prop-grid">
-                            <div class="input-prop-projects">
-                                <div class="input-prop">
-                                    <div class="input-prop-body">
+                <div class="add-new-power">
+                    <div class="mems-list">
+                        <div class="mems-grid">
+                            <div class="mems-projects">
+                                <div class="mems">
+                                    <div class="mems-body">
                                         <div class="table-responsive" style="overflow-x: auto;">
-                                            <table id="propInput" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <td>
-                                                            <b>Manpower List:</b>
-                                                        </td>
-                                                    </tr>
-                                                </thead>
+                                            <table width="100%" id="clockinTable">
                                                 <tbody>
-                                                    <tr>
-                                                        <td contenteditable="true"><i class="las la-dot-circle"></i><b></b></td>
-                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -918,38 +362,659 @@
                         </div>
                     </div>
                 </div>
+            </div>*@
 
+</div>
+
+<button>UPDATE PROJECT</button>
+
+        </div>
+
+<div class="input-mem-container" id="input-mem-container">
+    <div class="input-mems-main">
+        <div class="input-mems-title">
+            <h3>MANPOWER</h3>
+
+        </div>
+        <div class="input-mems-list">
+            <div class="input-mems-grid">
+                <div class="input-mems-projects">
+                    <div class="input-mems">
+                        <div class="input-mems-body">
+                            <div class="table-responsive" style="overflow-x: auto;">
+                                <table id="" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Position</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td contenteditable="true"><b></b></td>
+                                            <td contenteditable="true"></label></td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <center>
+            <button onclick="closeInputMemForm()">Save</button>
+            <button onclick="closeInputMemForm()">Cancel</button>
+        </center>
+    </div>
+</div>
+
+
+<!-- END -->
+<!-- ADD REPORT - NEW LAYOUT - 04-12 -->
+
+<div class="report-new-container" id="report-new-container">
+
+    <div class="report-new-header">
+        <span class="las la-long-arrow-alt-left" onclick="closeReportNewForm()"></span>
+        <h3>REPORT</h3>
+    </div>
+
+    <div class="report-new-main">
+
+        <div class="border">
+            <div class="left">
+                <div class="upper">
+                    <div class="upper-content">
+                        <div class="label-container">
+                            <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
+                        </div>
+
+                        <div class="label-container">
+                            <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
+                        </div>
+
+                        <div class="label-container">
+                            <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
+                        </div>
+
+                        <div class="label-container">
+                            <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
+                        </div>
+
+                        <div class="label-container">
+                            <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mid">
+
+                    <div class="mid-content-btn" onclick="openInputManForm()">
+                        <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
+                    </div>
+
+                </div>
+
+                <div class="lower">
+                    <div class="low-list">
+                        <div class="low-grid">
+                            <div class="low-projects">
+                                <div class="low">
+                                    <div class="low-body">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table id="outputTable" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <td>MANPOWER</td>
+                                                        <td>POSITION</td>
+                                                        <td>Time-In</td>
+                                                        <td>Time-Out</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <div class="mid main-mid">
+                <div class="mid-content">
+                    <div class="upper">
+                        <label>REPORT # <a> 01 </a> </label>
+                    </div>
+                    <div class="mid">
+                        <div class="mid-container">
+                            <div class="input">
+                                <textarea name="" id="rep_description" placeholder="Input here"></textarea>
+                            </div>
+                            <div class="attach">
+                                <button id="attachBtn">
+                                    <i class="las la-paperclip"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lower">
+                        <div class="img-list" id="img-list">
 
-            <center>
-                <button onclick="SaveProposal()">Save</button>
-                <button onclick="closeInputPropForm()">Cancel</button>
-            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="right-content">
+                    <div class="upper">
+                        <div class="date">
+                            <input type="date" id="rep_date">
+                        </div>
+                        <div class="status">
+                            <select id="rep_status" required>
+                                <option>Select Status</option>
+                                <option>Achieved</option>
+                                <option>Not Achieved</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mid">
+                        <div class="mid-container">
+                            <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
+                            <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
+                        </div>
+                    </div>
+                    <div class="lower">
+                        <div class="low-list">
+                            <div class="low-grid">
+                                <div class="low-projects">
+                                    <div class="low">
+                                        <div class="low-body">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>SCOPE OF WORK</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="scope-list">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="button">
+                    <button onclick="SaveData1() + saveReport() +  saveData()">SUBMIT</button>
+                </div>
+
+                <script>
+                    function saveData() {
+                        var repDate = document.getElementById('rep_date').value;
+                        var repProjId = document.getElementById('rep_proj_id').value;
+
+                        var images = document.querySelectorAll('#img-list img');
+                        var imageStrings = [];
+
+                        for (var i = 0; i < images.length; i++) {
+                            var canvas = document.createElement('canvas');
+                            var context = canvas.getContext('2d');
+                            canvas.width = images[i].naturalWidth;
+                            canvas.height = images[i].naturalHeight;
+                            context.drawImage(images[i], 0, 0);
+                            var base64 = canvas.toDataURL('image/jpeg', 0.8);
+                            imageStrings.push(base64);
+                        }
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Admin/SaveReportImages',
+                            data: {
+                                images: imageStrings,
+                                rep_date: repDate,
+                                rep_proj_id: repProjId
+                            },
+                            success: function (response) {
+                                alert('Data has been saved successfully!');
+                                location.reload();
+                            },
+                            error: function (xhr, status, error) {
+                                alert('Error Saving Data');
+                            }
+                        });
+                    }
+                </script>
+
+            </div>
         </div>
     </div>
 
-        @* END *@
 
-        <!-- END -->
+</div>
+
+<!-- END -->
+<!-- EDIT REPORT - NEW LAYOUT - 04-12 -->
+
+<div class="report-edit-container" id="report-edit-container">
+
+    <div class="report-edit-header">
+        <span class="las la-long-arrow-alt-left" onclick="closeReportEditForm()"></span>
+        <h3>EDIT REPORT</h3>
+    </div>
+
+    <div class="report-edit-main">
+
+        <div class="border">
+            <div class="left">
+                <div class="upper">
+                    <div class="upper-content">
+                        <div class="label-container">
+                            <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
+                        </div>
+
+                        <div class="label-container">
+                            <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
+                        </div>
+
+                        <div class="label-container">
+                            <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
+                        </div>
+
+                        <div class="label-container">
+                            <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
+                        </div>
+
+                        <div class="label-container">
+                            <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="mid">
+
+                    <div class="mid-content" onclick="openInputManForm1()">
+                        <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
+                    </div>
+
+                </div>
+                <div class="lower">
+                    <div class="low-list">
+                        <div class="low-grid">
+                            <div class="low-projects">
+                                <div class="low">
+                                    <div class="low-body">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <table width="100%" id="Clockoutput">
+                                                <thead>
+                                                    <tr>
+                                                        <td>MANPOWER</td>
+                                                        <td>POSITION</td>
+                                                        <td>Time-In</td>
+                                                        <td>Time-Out</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="table-body">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mid">
+                <div class="mid-content">
+                    <div class="upper">
+                        <label name="rep_no">REPORT ID </label>
+                    </div>
+                    <div class="mid main-mid">
+                        <div class="mid-container">
+                            <div class="input">
+
+                                <input type="text" name="rep_description" id="rep_description1" readonly>
+
+                            </div>
+                            <div class="attach">
+                                <i class="las la-paperclip"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lower">
+                        <div class="img-list">
+                            <div id="image-container"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="right-content">
+                    <div class="upper">
+                        <div class="date">
+                            <input type="text" id="rep_date1" name="rep_date1" readonly>
+                        </div>
+                        <div class="date">
+                            <input type="text" name="rep_stats" id="rep_stats" readonly>
+                        </div>
+                    </div>
+                    <div class="mid">
+                        <div class="mid-container">
+                            <i class="las la-project-diagram"></i> <input type="text" placeholder="Input here..." readonly><i class="las la-location-arrow enter"></i>
+                        </div>
+                    </div>
+                    <div class="lower">
+                        <div class="low-list">
+                            <div class="low-grid">
+                                <div class="low-projects">
+                                    <div class="low">
+                                        <div class="low-body">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%" id="ScopeTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>SCOPE OF WORK</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- Scope of work rows will be added dynamically here -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="button">
+                        <button onclick="Edit()">EDIT</button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
 
 
 
+</div>
 
-        <div class="can-pop-container" id="can-popup">
-            <img src="../../images/warning.png">
-            <h2>System Warning!</h2>
-            <p>Do you want to remove the user on the list?</p>
-            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
-            <button type="button" onclick="canClosePopup()">Cancel</button>
+<!-- END -->
+<!-- ATTENDANCE POPUP PAGE 04-19 -->
+
+<div class="input-man-container" id="input-man-container">
+    <div class="input-man-main">
+        <div class="input-man-title">
+            <div class="left">
+                <i class="las la-braille"></i><h3>ATTENDANCE</h3>
+            </div>
+            <div class="right">
+                <i class="lar la-check-circle"></i>
+                <i class="las la-times-circle" onclick="closeInputManForm()"></i>
+            </div>
+
+        </div>
+        <div class="input-man-list">
+            <div class="input-man-grid">
+                <div class="input-man-projects">
+                    <div class="input-man">
+                        <div class="input-man-body">
+                            <div class="table-responsive" style="overflow-x: auto;">
+                                <table id="inputTable" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td><b>MANPOWER</b></td>
+                                            <td><b>POSITION</b></td>
+                                            <td>Time - In</td>
+                                            <td>Time - Out</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td contenteditable="true"><b></b></td>
+                                            <td contenteditable="true"><b></b></td>
+                                            <td><button class="in">CLOCK IN</button></td>
+                                            <td><button class="out">CLOCK OUT</button></td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END -->
+<!-- ATTENDANCE POPUP PAGE 04-19 for Edit-->
+<div class="input-man-container" id="input-man-container-edit">
+    <div class="input-man-main">
+        <div class="input-man-title">
+            <div class="left">
+                <i class="las la-braille"></i><h3>ATTENDANCE</h3>
+            </div>
+            <div class="right">
+                <i class="lar la-check-circle" onclick="updateAllAttendances()"></i>
+                <i class="las la-times-circle" onclick="closeInputManForm1()"></i>
+            </div>
+
+        </div>
+        <div class="input-man-list">
+            <div class="input-man-grid">
+                <div class="input-man-projects">
+                    <div class="input-man">
+                        <div class="input-man-body">
+                            <div class="table-responsive" style="overflow-x: auto;">
+                                <table id="inputTable" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td><b>MANPOWER</b></td>
+                                            <td><b>POSITION</b></td>
+                                            <td>Time - In</td>
+                                            <td>Time - Out</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var manpower in Model.Manpowers)
+                                        {
+                                            var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id);
+
+                                            if (attendance?.atte_timein != null) // Check if attendance time in is not null
+                                            {
+                                                <tr>
+                                                    <td contenteditable="true"><b>@manpower.man_name</b></td>
+                                                    <td contenteditable="true"><b>@manpower.man_postition</b></td>
+                                                    <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
+                                                    <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
+                                                    <td><button class="out" onclick="updateAttendance('@attendance.atte_id')">CLOCK OUT</button></td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* NEW LAYOUT ADDITION - PROPOSAL REQUEST *@
+
+<div class="prop-container" id="prop-container">
+    <div class="prop-main">
+        <div class="prop-title">
+            <center> <input type="text" id="prop_description" value="@ViewBag.ProjectName - @ViewBag.Subject" readonly /> </center>
         </div>
 
-        <div class="rem-pop-container" id="rem-popup">
-            <img src="../../images/remove.png">
-            <h2>Deleted!</h2>
-            <p>User removed in the list successfully!</p>
-            <button type="button" onclick="remClosePopup()">OK</button>
+        <div class="prop-input-container">
+
+            <div class="prop-select">
+                <h3>
+                    Proposal:
+                </h3>
+                <select id="Engineer">
+                    <option value="">--Select Employee--</option>
+                </select>
+
+            </div>
+
+            <div class="prop-main-input">
+                <textarea name="" id="proj_subject" placeholder="Place your proposal messege here.."></textarea>
+                <input type="text" id="project_id" value="@ViewBag.ProjectID" hidden />
+            </div>
+
+            <div class="prop-list-input">
+                <div class="input-prop-list">
+                    <div class="input-prop-grid">
+                        <div class="input-prop-projects">
+                            <div class="input-prop">
+                                <div class="input-prop-body">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table id="propInput" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        <b>Manpower List:</b>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td contenteditable="true"><i class="las la-dot-circle"></i><b></b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
+
+        <center>
+            <button id="saveButton" onclick="saveProposal()">Save</button>
+            <button onclick="closeInputPropForm()">Cancel</button>
+        </center>
+    </div>
+</div>
+
+@* END *@
+
+<!-- END -->
+@* NEW LAYOUT ADDITION - EDIT PROPOSAL REQUEST *@
+
+<div class="prop-edit-container" id="prop-edit-container">
+    <div class="prop-main">
+        <div class="prop-title">
+            <input value="Approved" class="status approve decline" />
+            <center> <input type="text" id="prop_description" value="@ViewBag.ProjectName - @ViewBag.Subject" readonly /> </center>
+        </div>
+
+        <div class="prop-input-container">
+
+            <div class="prop-select">
+                <h3>
+                    Proposal:
+                </h3>
+                <select id="Engineer">
+                    <option value="">--Select Employee--</option>
+                </select>
+
+            </div>
+
+            <div class="prop-main-input">
+                <textarea name="" id="proj_subject" placeholder="Place your proposal messege here.."></textarea>
+                <input type="text" id="project_id" value="@ViewBag.ProjectID" hidden />
+            </div>
+
+            <div class="prop-list-input">
+                <div class="input-prop-list">
+                    <div class="input-prop-grid">
+                        <div class="input-prop-projects">
+                            <div class="input-prop">
+                                <div class="input-prop-body">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table id="propInput" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        <b>Manpower List:</b>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td contenteditable="true"><i class="las la-dot-circle"></i><b></b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <center>
+            <button id="saveButton" onclick="saveProposal()">Save</button>
+            <button onclick="closeInputEditPropForm()">Cancel</button>
+        </center>
+    </div>
+</div>
+
+@* END *@
+
+
+
+
+<div class="can-pop-container" id="can-popup">
+    <img src="../../images/warning.png">
+    <h2>System Warning!</h2>
+    <p>Do you want to remove the user on the list?</p>
+    <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+    <button type="button" onclick="canClosePopup()">Cancel</button>
+</div>
+
+<div class="rem-pop-container" id="rem-popup">
+    <img src="../../images/remove.png">
+    <h2>Deleted!</h2>
+    <p>User removed in the list successfully!</p>
+    <button type="button" onclick="remClosePopup()">OK</button>
+</div>
 
     </main>
 </div>
@@ -965,48 +1030,128 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    function saveProposal() {
+        // Get form values
+        var engineer = document.getElementById("Engineer").value;
+        var description = document.getElementById("prop_description").value;
+        var propID = document.getElementById("project_id").value;
+        var subject = document.getElementById("proj_subject").value;
+        var manpower = document.getElementById("propInput").innerText;
 
-    // Add event listener to the save button or form submit button
-document.getElementById("saveButton").addEventListener("click", function(event) {
-    event.preventDefault(); // prevent form from submitting
+        // Create JavaScript object
+        var proposal = {
+            prop_type_id: propID,
+            prop_manpower: manpower,
+            prop_status: "Pending",
+            prop_description: description,
+            prop_subject: subject,
+            prop_emp_no: engineer
+        };
 
-    // Get values from view bag and HTML elements
-    var projectName = "@ViewBag.ProjectName";
-    var projectSubject = "@ViewBag.Subject";
-    var engineer = document.getElementById("Engineer").value;
-    var projectDescription = document.getElementById("proj_subject").value;
-    var projectID = document.getElementById("projectID").value;
-    var manpowerList = [];
-    var rows = document.getElementById("propInput").rows;
-    for (var i = 1; i < rows.length; i++) {
-        var manpower = rows[i].cells[0].innerText.trim();
-        if (manpower !== "") {
-            manpowerList.push(manpower);
-        }
+        // Send POST request
+        fetch('/Admin/SaveProposal', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(proposal)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
-    var proposalData = {
-        projectName: projectName,
-        projectSubject: projectSubject,
-        engineer: engineer,
-        projectDescription: projectDescription,
-        projectID: projectID,
-        manpowerList: manpowerList,
-        propTypeID: document.getElementById("propTypeID").value
-    };
+</script>
 
-    // Send data to server using AJAX request
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/Admin/SaveProposalData");
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.onreadystatechange = function() {
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            // Handle successful response from server
-            console.log(this.responseText);
+<script>
+$(document).ready(function () {
+    $.ajax({
+        url: '@Url.Action("GetEmployeeData", "Admin")',
+        type: 'GET',
+        success: function (data) {
+            $.each(data, function (i, item) {
+                var fullName = item.emp_fname + ' ' + item.emp_lname;
+                $('#Engineer').append($('<option>', {
+                    value: item.emp_no,
+                    text: fullName
+                }));
+            });
         }
-    };
-    xhr.send(JSON.stringify(proposalData));
+    });
 });
+</script>
 
+<script>
+
+    function updateAttendance(projectId) {
+        // Get the current time as a string
+        var now = new Date();
+        var timeOut = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        // Make an AJAX call to the UpdateAttendance action
+        $.ajax({
+            url: '/Admin/UpdateAttendance',
+            type: 'POST',
+            data: { projectId: projectId, timeOut: timeOut },
+            success: function (result) {
+                // Reload the page on success
+                window.location.reload();
+            },
+            error: function (xhr, status, error) {
+                // Handle errors here
+                console.log(xhr.responseText);
+            }
+        });
+    }
+
+    function updateAllAttendances() {
+        $("tbody tr").each(function () {
+            var timeoutColumn = $(this).find("td:nth-child(4)");
+
+            if (timeoutColumn.text() != "") {
+                var attendanceId = $(this).find("button").attr("onclick").match(/\d+/)[0];
+                updateAttendance(attendanceId);
+            }
+        });
+    }
+</script>
+
+<script>
+   @* function Edit() {*@
+       @* // Get all the "CLOCK OUT" buttons in the table
+        var clockOutButtons = document.getElementsByClassName("out");
+
+        // Loop through each button
+        for (var i = 0; i < clockOutButtons.length; i++) {
+            var button = clockOutButtons[i];
+            var row = button.parentNode.parentNode; // Get the row of the button
+
+            // Check if the row already has a value in the "Time-Out" column
+            if (row.cells[3].innerHTML.trim() === "-") {
+                // If there's no value, update the attendance record with the current time
+                var now = new Date();
+                var timeOut = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                row.cells[3].innerHTML = timeOut;
+
+                // Send an AJAX request to update the attendance record on the server
+                var attendanceId = row.getAttribute("data-attendance-id");
+                $.ajax({
+                    url: "/Admin/UpdateAttendance",
+                    type: "POST",
+                    data: { attendanceId: attendanceId, timeOut: timeOut },
+                    success: function (result) {
+                        // Handle success
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle error
+                    }
+                });
+            }
+        }
+    }*@
 </script>
 
 <script>
@@ -1045,94 +1190,6 @@ document.getElementById("saveButton").addEventListener("click", function(event) 
             previousRow.lastChild.focus(); // Set focus to the last cell of the previous row
         }
     });
-</script>
-
-<script>
-$(document).ready(function () {
-    $.ajax({
-        url: '@Url.Action("GetEmployeeData", "Admin")',
-        type: 'GET',
-        success: function (data) {
-            $.each(data, function (i, item) {
-                var fullName = item.emp_fname + ' ' + item.emp_lname;
-                $('#Engineer').append($('<option>', {
-                    value: item.emp_no,
-                    text: fullName
-                }));
-            });
-        }
-    });
-});
-</script>
-
-<script>
-   
-        function updateAttendance(projectId) {
-        // Get the current time as a string
-        var now = new Date();
-        var timeOut = now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit' });
-
-        // Make an AJAX call to the UpdateAttendance action
-        $.ajax({
-            url: '/Admin/UpdateAttendance',
-        type: 'POST',
-        data: {projectId: projectId, timeOut: timeOut },
-        success: function (result) {
-            // Reload the page on success
-            window.location.reload();
-            },
-        error: function (xhr, status, error) {
-            // Handle errors here
-            console.log(xhr.responseText);
-            }
-        });
-    }
-
-        function updateAllAttendances() {
-            $("tbody tr").each(function () {
-                var timeoutColumn = $(this).find("td:nth-child(4)");
-
-                if (timeoutColumn.text() != "") {
-                    var attendanceId = $(this).find("button").attr("onclick").match(/\d+/)[0];
-                    updateAttendance(attendanceId);
-                }
-            });
-    }
-</script>
-
-<script>
-   @* function Edit() {*@
-       @* // Get all the "CLOCK OUT" buttons in the table
-        var clockOutButtons = document.getElementsByClassName("out");
-
-        // Loop through each button
-        for (var i = 0; i < clockOutButtons.length; i++) {
-            var button = clockOutButtons[i];
-            var row = button.parentNode.parentNode; // Get the row of the button
-
-            // Check if the row already has a value in the "Time-Out" column
-            if (row.cells[3].innerHTML.trim() === "-") {
-                // If there's no value, update the attendance record with the current time
-                var now = new Date();
-                var timeOut = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                row.cells[3].innerHTML = timeOut;
-
-                // Send an AJAX request to update the attendance record on the server
-                var attendanceId = row.getAttribute("data-attendance-id");
-                $.ajax({
-                    url: "/Admin/UpdateAttendance",
-                    type: "POST",
-                    data: { attendanceId: attendanceId, timeOut: timeOut },
-                    success: function (result) {
-                        // Handle success
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        // Handle error
-                    }
-                });
-            }
-        }
-    }*@
 </script>
 
 <script>
@@ -1249,30 +1306,30 @@ $.ajax({
     const outputTableBody = document.querySelector('#outputTable tbody');
 
     inputTableBody.addEventListener('click', function (event) {
-    if (event.target.classList.contains('in')) {
-        const row = event.target.closest('tr');
-    const manpower = row.cells[0].innerText;
-    const position = row.cells[1].innerText;
-    const timeIn = new Date().toLocaleTimeString();
+        if (event.target.classList.contains('in')) {
+            const row = event.target.closest('tr');
+            const manpower = row.cells[0].innerText;
+            const position = row.cells[1].innerText;
+            const timeIn = new Date().toLocaleTimeString();
 
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
     <td>${manpower}</td>
     <td>${position}</td>
     <td>${timeIn}</td>
     <td></td>
     `;
-    console.log(newRow); // check if newRow contains the expected values
-    outputTableBody.appendChild(newRow);
+            console.log(newRow); // check if newRow contains the expected values
+            outputTableBody.appendChild(newRow);
 
-    row.remove();
-    } else if (event.target.classList.contains('out')) {
-        const row = event.target.closest('tr');
-    const timeOut = new Date().toLocaleTimeString();
+            row.remove();
+        } else if (event.target.classList.contains('out')) {
+            const row = event.target.closest('tr');
+            const timeOut = new Date().toLocaleTimeString();
 
-    row.cells[2].innerText = timeOut;
-    }
-});
+            row.cells[2].innerText = timeOut;
+        }
+    });
 </script>
 <script>
     const addScopeButton = document.getElementById("add-scope");
@@ -1281,24 +1338,24 @@ $.ajax({
 
     addScopeButton.addEventListener("click", addScopeToList);
     scopeInput.addEventListener("keyup", function (event) {
-    if (event.keyCode === 13) {
-        addScopeToList();
-    }
-});
+        if (event.keyCode === 13) {
+            addScopeToList();
+        }
+    });
 
     function addScopeToList() {
-    const scope = scopeInput.value.trim();
+        const scope = scopeInput.value.trim();
 
-    if (scope !== "") {
-        const newRow = document.createElement("tr");
-    newRow.innerHTML = `
+        if (scope !== "") {
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
     <td><i class="las la-dot-circle"></i></td>
     <td>${scope}</td>
     `;
-    scopeList.appendChild(newRow);
-    scopeInput.value = "";
+            scopeList.appendChild(newRow);
+            scopeInput.value = "";
+        }
     }
-}
 </script>
 
 <script>
@@ -1310,67 +1367,67 @@ $.ajax({
 
     attachBtn.addEventListener("click", function () {
         fileInput.click();
-});
+    });
 
     fileInput.addEventListener("change", function () {
-    const files = this.files;
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-    if (file.type.startsWith("image/")) {
-            const reader = new FileReader();
-    reader.addEventListener("load", function () {
-                const img = document.createElement("img");
-    img.src = reader.result;
-    img.alt = file.name;
-    img.classList.add("report-img");
-    imgList.appendChild(img);
-            });
-    reader.readAsDataURL(file);
+        const files = this.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.addEventListener("load", function () {
+                    const img = document.createElement("img");
+                    img.src = reader.result;
+                    img.alt = file.name;
+                    img.classList.add("report-img");
+                    imgList.appendChild(img);
+                });
+                reader.readAsDataURL(file);
+            }
         }
-    }
-});
+    });
 </script>
 
 <script>
 
     function SaveData1() {
-    var data = [];
+        var data = [];
 
-    // Loop through each row of the table
-    $("#outputTable tbody tr").each(function () {
-        var row = { };
+        // Loop through each row of the table
+        $("#outputTable tbody tr").each(function () {
+            var row = {};
 
-    // Extract data from the columns of the current row
-    row.man_name = $(this).find("td:eq(0)").text();
-    row.man_position = $(this).find("td:eq(1)").text();
-    row.atte_timein = $(this).find("td:eq(2)").text();
-    row.atte_timeout = $(this).find("td:eq(3)").text();
+            // Extract data from the columns of the current row
+            row.man_name = $(this).find("td:eq(0)").text();
+            row.man_position = $(this).find("td:eq(1)").text();
+            row.atte_timein = $(this).find("td:eq(2)").text();
+            row.atte_timeout = $(this).find("td:eq(3)").text();
 
-    // Add the row data to the array
-    data.push(row);
-    });
+            // Add the row data to the array
+            data.push(row);
+        });
 
-    // Get the value of the rep_proj_id input
-    var projectId = $("#rep_proj_id").val();
-    var projectDate = $("#rep_date").val();
+        // Get the value of the rep_proj_id input
+        var projectId = $("#rep_proj_id").val();
+        var projectDate = $("#rep_date").val();
 
-    // Send an AJAX request to the server to save the data
-    $.ajax({
-        type: "POST",
-    url: "/Admin/SaveData",
-    data: JSON.stringify({data: data, man_proj_id: projectId, man_date: projectDate }), // Include the projectId in the data
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    success: function (response) {
-        // Handle the response from the server
-        console.log(response);
-        },
-    error: function (xhr, status, error) {
-        // Handle the error
-        console.log(xhr.responseText);
-        }
-    });
-}
+        // Send an AJAX request to the server to save the data
+        $.ajax({
+            type: "POST",
+            url: "/Admin/SaveData",
+            data: JSON.stringify({ data: data, man_proj_id: projectId, man_date: projectDate }), // Include the projectId in the data
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                // Handle the response from the server
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                // Handle the error
+                console.log(xhr.responseText);
+            }
+        });
+    }
 </script>
 
 <script>
@@ -1385,7 +1442,7 @@ $.ajax({
             var time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             row.cells[3].textContent = time;
         });
-}
+    }
 </script>
 
 
@@ -1394,45 +1451,45 @@ $.ajax({
     const myTable = document.querySelector('#inputTable');
     const tbody = myTable.querySelector('tbody');
 
-// Listen for 'keydown' events on the table row
-tbody.addEventListener('keydown', (event) => {
-    // Check if the 'Enter' key was pressed
-    if (event.key === 'Enter') {
-        // Prevent default behavior (creating a new line)
-        event.preventDefault();
+    // Listen for 'keydown' events on the table row
+    tbody.addEventListener('keydown', (event) => {
+        // Check if the 'Enter' key was pressed
+        if (event.key === 'Enter') {
+            // Prevent default behavior (creating a new line)
+            event.preventDefault();
 
-    // Create a new table row
-    const newRow = document.createElement('tr');
+            // Create a new table row
+            const newRow = document.createElement('tr');
 
-    // Create the first table cell with blank contenteditable attribute for Manpower
-    const nameCell = document.createElement('td');
-    nameCell.setAttribute('contenteditable', 'true');
-    newRow.appendChild(nameCell);
+            // Create the first table cell with blank contenteditable attribute for Manpower
+            const nameCell = document.createElement('td');
+            nameCell.setAttribute('contenteditable', 'true');
+            newRow.appendChild(nameCell);
 
-    // Create the second table cell with blank contenteditable attribute for Position
-    const positionCell = document.createElement('td');
-    positionCell.setAttribute('contenteditable', 'true');
-    newRow.appendChild(positionCell);
+            // Create the second table cell with blank contenteditable attribute for Position
+            const positionCell = document.createElement('td');
+            positionCell.setAttribute('contenteditable', 'true');
+            newRow.appendChild(positionCell);
 
-    // Create the third table cell with 'CLOCK IN' button
-    const inCell = document.createElement('td');
-    const inButton = document.createElement('button');
-    inButton.classList.add('in');
-    inButton.textContent = 'CLOCK IN';
-    inCell.appendChild(inButton);
-    newRow.appendChild(inCell);
+            // Create the third table cell with 'CLOCK IN' button
+            const inCell = document.createElement('td');
+            const inButton = document.createElement('button');
+            inButton.classList.add('in');
+            inButton.textContent = 'CLOCK IN';
+            inCell.appendChild(inButton);
+            newRow.appendChild(inCell);
 
-    // Create the fourth table cell with 'CLOCK OUT' button
-    const outCell = document.createElement('td');
-    const outButton = document.createElement('button');
-    outButton.textContent = 'CLOCK OUT';
-    outCell.appendChild(outButton);
-    newRow.appendChild(outCell);
+            // Create the fourth table cell with 'CLOCK OUT' button
+            const outCell = document.createElement('td');
+            const outButton = document.createElement('button');
+            outButton.textContent = 'CLOCK OUT';
+            outCell.appendChild(outButton);
+            newRow.appendChild(outCell);
 
-    // Add the new row to the table body
-    tbody.appendChild(newRow);
-    }
-});
+            // Add the new row to the table body
+            tbody.appendChild(newRow);
+        }
+    });
 </script>
 
 
@@ -1476,31 +1533,31 @@ tbody.addEventListener('keydown', (event) => {
 
     function userFiltFunction() {
         document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
-}
+    }
 
     // Close the dropdown if the user clicks outside of it
     window.onclick = function (e) {
-    if (!e.target.matches('.user-filter-btn')) {
-        var myDropdown = document.getElementById("userFiltDropdown");
-    if (myDropdown.classList.contains('user-filter-show')) {
-        myDropdown.classList.remove('user-filter-show');
+        if (!e.target.matches('.user-filter-btn')) {
+            var myDropdown = document.getElementById("userFiltDropdown");
+            if (myDropdown.classList.contains('user-filter-show')) {
+                myDropdown.classList.remove('user-filter-show');
+            }
         }
     }
-}
 
     function userSortFunction() {
         document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
-}
+    }
 
     // Close the dropdown if the user clicks outside of it
     window.onclick = function (e) {
-    if (!e.target.matches('.user-sort-btn')) {
-        var myDropdown = document.getElementById("userSortDropdown");
-    if (myDropdown.classList.contains('user-sort-show')) {
-        myDropdown.classList.remove('user-sort-show');
+        if (!e.target.matches('.user-sort-btn')) {
+            var myDropdown = document.getElementById("userSortDropdown");
+            if (myDropdown.classList.contains('user-sort-show')) {
+                myDropdown.classList.remove('user-sort-show');
+            }
         }
     }
-}
 
     let canpopup = document.getElementById("can-popup");
 
@@ -1599,7 +1656,7 @@ tbody.addEventListener('keydown', (event) => {
                     }
                 });
 
-               
+
 
                 $.get('/Admin/GetReportImages', { rep_date: isoDate }, function (images) {
                     var container = $('#image-container');
@@ -1620,70 +1677,79 @@ tbody.addEventListener('keydown', (event) => {
 
     function closeReportEditForm() {
         document.getElementById("report-edit-container").style.display = "none";
-}
+    }
 
     function openAddNewContainer() {
         document.getElementById("add-new-container").style.display = "block";
-}
+    }
 
     function closeAddNewContainer() {
         document.getElementById("add-new-container").style.display = "none";
-}
+    }
 
     function openInputMemForm() {
         document.getElementById("input-mem-container").style.display = "block";
-}
+    }
 
     function closeInputMemForm() {
         document.getElementById("input-mem-container").style.display = "none";
-}
+    }
 
     function openReportForm() {
         document.getElementById("report-container").style.display = "block";
-}
+    }
 
     function closeReportForm() {
         document.getElementById("report-container").style.display = "none";
-}
+    }
 
     function openReportNewForm() {
         document.getElementById("report-new-container").style.display = "block";
-}
+    }
 
     function closeReportNewForm() {
         document.getElementById("report-new-container").style.display = "none";
-}
+    }
 
     function openInputManForm() {
         document.getElementById("input-man-container").style.display = "block";
-}
+    }
 
     function closeInputManForm() {
         document.getElementById("input-man-container").style.display = "none";
-}
+    }
 
     function openInputManForm1() {
         document.getElementById("input-man-container-edit").style.display = "block";
-}
+    }
 
     function closeInputManForm1() {
 
         document.getElementById("input-man-container-edit").style.display = "none";
 
-        }
+    }
 
     function openInputPropForm() {
         document.getElementById("prop-container").style.display = "block";
-        }
+    }
 
     function closeInputPropForm() {
         document.getElementById("prop-container").style.display = "none";
-        }
+    }
+
+    function openInputEditPropForm() {
+        document.getElementById("prop-edit-container").style.display = "block";
+    }
+
+    function closeInputEditPropForm() {
+        document.getElementById("prop-edit-container").style.display = "none";
+    }
+
 
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const formattedDate = moment(date, "MM/DD/YYYY").format("YYYY-MM-DD");
-    document.getElementById('rep_date').value = formattedDate;
-});
+        const formattedDate = moment(date, "MM/DD/YYYY").format("YYYY-MM-DD");
+        document.getElementById('rep_date').value = formattedDate;
+    });
 </script>

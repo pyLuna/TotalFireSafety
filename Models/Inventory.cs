@@ -19,7 +19,6 @@ namespace TotalFireSafety.Models
         {
             this.Basecounts = new HashSet<Basecount>();
             this.Inv_Update = new HashSet<Inv_Update>();
-            this.Notifications = new HashSet<Notification>();
             this.Requests = new HashSet<Request>();
         }
     
@@ -41,8 +40,6 @@ namespace TotalFireSafety.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inv_Update> Inv_Update { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Notification> Notifications { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
         public string formType { get; set; }
         public string FormattedDate
@@ -51,3 +48,4 @@ namespace TotalFireSafety.Models
         }
     }
 }
+

@@ -7885,47 +7885,36 @@ acc-form-table .view-request-form-table-style table thead td {
         grid-template-columns: 2fr 1fr;
     }
 
-        .proj-main-content .proj-main-container .proj-task-list {
-            background-color: #fff;
-            border: 2px solid #AEAEAE;
-            box-shadow: 5px 5px 3px #B2B2B2;
-            width: auto;
-            height: auto;
-            margin: 20px;
-            border-radius: 5px;
+        .proj-main-content .proj-main-container .proj-task-list .task-header {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
         }
 
-            .proj-main-content .proj-main-container .proj-task-list .task-header {
-                display: flex;
-                margin-top: 20px;
+            .proj-main-content .proj-main-container .proj-task-list .task-header h2 {
+                margin-left: -20px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #707070;
             }
 
-                .proj-main-content .proj-main-container .proj-task-list .task-header h2 {
-                    margin-left: -20px;
-                    font-size: 1rem;
-                    font-weight: 600;
-                    color: #707070;
+
+
+            .proj-main-content .proj-main-container .proj-task-list .task-header .right-container a {
+                cursor: pointer;
+                color: #000;
+                font-weight: 600;
+                font-size: .8rem;
+            }
+
+                .proj-main-content .proj-main-container .proj-task-list .task-header .right-container a:hover {
+                    color: blue;
+                    text-decoration: underline;
                 }
 
-                .proj-main-content .proj-main-container .proj-task-list .task-header .right-container {
-                    margin-left: 780px;
+                .proj-main-content .proj-main-container .proj-task-list .task-header .right-container a span {
+                    font-size: 1.1rem;
                 }
-
-                    .proj-main-content .proj-main-container .proj-task-list .task-header .right-container a {
-                        cursor: pointer;
-                        color: #000;
-                        font-weight: 600;
-                        font-size: .8rem;
-                    }
-
-                        .proj-main-content .proj-main-container .proj-task-list .task-header .right-container a:hover {
-                            color: blue;
-                            text-decoration: underline;
-                        }
-
-                        .proj-main-content .proj-main-container .proj-task-list .task-header .right-container a span {
-                            font-size: 1.1rem;
-                        }
 
 .task {
     margin-top: 10px;
@@ -8652,19 +8641,27 @@ hr {
             }
 
         .report-new-main .border .mid .mid-content .mid .mid-container .attach {
-            margin-left: 375px;
-            margin-top: -5px;
+            
+            margin-top: -10px;
         }
 
-            .report-new-main .border .mid .mid-content .mid .mid-container .attach i {
-                font-size: 1.8rem;
+            .report-new-main .border .mid .mid-content .mid .mid-container .attach button {
+                background-color: #fff;
+                color: #16215B;
+                font-size: 1.5rem;
+                padding: 1px;
+                border-radius: 3px;
+                border: 1px solid #B2B2B2;
+                height: auto;
+                width: 30px;
             }
 
-                .report-new-main .border .mid .mid-content .mid .mid-container .attach i:hover {
-                    color: blue;
+                .report-new-main .border .mid .mid-content .mid .mid-container .attach button:hover {
+                    box-shadow: 4px 4px 3px #B2B2B2;
                     cursor: pointer;
-                    font-size: 2rem;
                 }
+
+                
 
     .report-new-main .border .mid .mid-content .lower {
         width: 100%;
@@ -9209,17 +9206,22 @@ hr {
                 font-style: italic;
             }
 
-        .report-edit-main .border .mid .mid-content .mid .mid-container .attach {
-        }
+       
 
-            .report-edit-main .border .mid .mid-content .mid .mid-container .attach i {
-                font-size: 1.8rem;
+            .report-edit-main .border .mid .mid-content .mid .mid-container .attach button {
+                background-color: #fff;
+                color: #16215B;
+                font-size: 1.5rem;
+                padding: 1px;
+                border-radius: 3px;
+                border: 1px solid #B2B2B2;
+                height: auto;
+                width: 30px;
             }
 
-                .report-edit-main .border .mid .mid-content .mid .mid-container .attach i:hover {
-                    color: blue;
+                .report-edit-main .border .mid .mid-content .mid .mid-container .attach button:hover {
+                    box-shadow: 4px 4px 3px #B2B2B2;
                     cursor: pointer;
-                    font-size: 2rem;
                 }
 
     .report-edit-main .border .mid .mid-content .lower {
@@ -12276,9 +12278,7 @@ hr {
                     height: 350px;
                 }
 
-                .proj-main-content .proj-main-container .proj-right-container .proj-mems-container {
-                    height: 200px;
-                }
+                
 
     /* END */
 
@@ -12503,7 +12503,7 @@ hr {
     /* PROJECT VIEW RESPONSIVE STYLE */
 
     .proj-main-content {
-        width: 100;
+        width: 100%;
         margin: 0;
         padding: 0;
     }
@@ -12530,9 +12530,7 @@ hr {
                     height: 350px;
                 }
 
-                .proj-main-content .proj-main-container .proj-right-container .proj-mems-container {
-                    height: 200px;
-                }
+                
 
     /* END */
 
@@ -12771,9 +12769,7 @@ hr {
                     height: 350px;
                 }
 
-                .proj-main-content .proj-main-container .proj-right-container .proj-mems-container {
-                    height: 200px;
-                }
+                
 
     /* END */
 

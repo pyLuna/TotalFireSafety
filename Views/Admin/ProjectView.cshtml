@@ -32,7 +32,7 @@
             <div class="proj-main-container">
                 <div class="proj-task-list">
                     <div class="task-header">
-                        <h2>Accomplistments</h2>
+                        <h2>Accomplihstments</h2>
                         <div class="right-container">
                             <a onclick="openReportNewForm()">
                                 <span class="lar la-plus-square"></span>Add Report
@@ -125,33 +125,37 @@
                         <div class="mems-main" onclick="openInputPropForm()">
 
                             <h3>MANPOWER</h3>
+                            <label class="notif-badge-approve"><i class="lar la-check-circle"></i></label>
+                            <label class="notif-badge-decline"><i class="las la-times-circle"></i></label>
+
+
                             @*<div class="mems-list">
-                                <div class="mems-grid">
-                                    <div class="mems-projects">
-                                        <div class="mems">
-                                            <div class="mems-body">
-                                                <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table width="100%">
-                                                        <tbody>
+            <div class="mems-grid">
+                <div class="mems-projects">
+                    <div class="mems">
+                        <div class="mems-body">
+                            <div class="table-responsive" style="overflow-x: auto;">
+                                <table width="100%">
+                                    <tbody>
 
-                                                            @foreach (var manpower in Model.Manpowers)
-                                                            {
-                                                                var attendance = Model.Attendances.FirstOrDefault(a => a.atte_proj_id == manpower.man_proj_id);
-                                                                <tr>
-                                                                    <td>@manpower.man_name</td>
-                                                                    <td>@manpower.man_postition</td>
-                                                                </tr>
-                                                            }
+                                        @foreach (var manpower in Model.Manpowers)
+                                        {
+                                            var attendance = Model.Attendances.FirstOrDefault(a => a.atte_proj_id == manpower.man_proj_id);
+                                            <tr>
+                                                <td>@manpower.man_name</td>
+                                                <td>@manpower.man_postition</td>
+                                            </tr>
+                                        }
 
 
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>*@
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
                         </div>
                     </div>
                 </div>
@@ -922,9 +926,6 @@
 
         <!-- END -->
 
-
-
-
         <div class="can-pop-container" id="can-popup">
             <img src="../../images/warning.png">
             <h2>System Warning!</h2>
@@ -942,14 +943,7 @@
 
     </main>
 </div>
-<div class="footer">
-    <center>
-        <div class="footer-con">
-            <img src="../../images/codepheuse.png" alt="">
-            <h4>CodePheus | 2022</h4>
-        </div>
-    </center>
-</div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

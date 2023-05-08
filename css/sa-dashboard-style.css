@@ -2576,14 +2576,14 @@ input[type="month"] {
 
 .purchase-header {
     margin-left: 40px;
-    margin-top: px;
+    margin-top: 0px;
     margin-right: 40px;
 }
 
     .purchase-header h3 {
         font-size: 1.2rem;
         color: #000;
-        margin-bottom: -40px;
+        margin-bottom: 40px;
     }
 
 .purchase-body table {
@@ -7724,6 +7724,7 @@ acc-form-table .view-request-form-table-style table thead td {
             .proj-main-content .proj-main-container .proj-task-list .task-header {
                 display: flex;
                 margin-top: 20px;
+                justify-content: space-between;
             }
 
                 .proj-main-content .proj-main-container .proj-task-list .task-header h2 {
@@ -7734,7 +7735,7 @@ acc-form-table .view-request-form-table-style table thead td {
                 }
 
                 .proj-main-content .proj-main-container .proj-task-list .task-header .right-container {
-                    margin-left: 780px;
+                    margin-right: 0px;
                 }
 
                     .proj-main-content .proj-main-container .proj-task-list .task-header .right-container a {
@@ -8159,7 +8160,28 @@ hr {
     margin: 10px;
 }
 
-    .proj-mems-container .mems-main .mems-title h3 {
+    .proj-mems-container .mems-main label {
+        position: absolute;
+        right: 45px;
+        margin-top: -25px;
+        padding: 5px 10px;
+        border-radius: 50%;
+        background-color: #09AF10;
+        color: #fff;
+    }
+
+    .proj-mems-container .mems-main .notif-badge-approve {
+        background-color: #09AF10;
+        color: #fff;
+    }
+
+    .proj-mems-container .mems-main .notif-badge-decline {
+        display: none;
+        background-color: red;
+        color: #fff;
+    }
+
+    /*.proj-mems-container .mems-main .mems-title h3 {
         font-size: 1rem;
     }
 
@@ -8171,8 +8193,7 @@ hr {
             .proj-mems-container .mems-main .mems-title h3 a:hover {
                 cursor: pointer;
                 color: blue;
-            }
-
+            }*/
     .proj-mems-container .mems-main .mems-list {
         margin-top: 20px;
     }
@@ -10952,10 +10973,7 @@ hr {
         height: 920px;
     }
 
-    .proj-grid {
-        margin-left: 20rem;
-        width: 40%;
-    }
+    
 }
 
 @media all and (max-width: 1350px) {
@@ -11116,12 +11134,6 @@ hr {
 
     .new-info {
         margin-left: 2rem;
-    }
-
-    .proj-grid {
-        margin-top: 3rem;
-        margin-left: 13rem;
-        width: 60%;
     }
 
     .proj-info {
@@ -12157,14 +12169,16 @@ hr {
 
 /* 11 - PROJECT RESPONSIVE STYLES ALL SIZES */
 @media all and (max-width: 480px) {
-    ..proj-grid {
+    .proj-grid {
         padding: 0;
         margin: 0;
+        width: 100%;
     }
     .proj-projects {
         margin: 0;
         padding: 0;
         margin-top: 10px;
+        width: 100%;
     }
 
     .proj-header {
@@ -12172,7 +12186,7 @@ hr {
     }
 
         .proj-header .proj-buttons-style {
-            justify-content: normal;
+            display: block;
             margin: 0;
             margin-top: 50px;
             margin-left: -10px;

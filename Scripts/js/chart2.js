@@ -4,7 +4,7 @@ let names = [];
 let projName = [];
 let progs = [];
 //all base count items
-function GetProjects() {
+async function GetProjects() {
     fetch(`/Admin/AllProjects`)
         .then(res => {
             if (res.ok) {

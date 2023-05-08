@@ -761,18 +761,6 @@ function DisplayDataOnRow(idToFind, typeOf) {
 
 	for (let ind = 0; ind < newReqs.length; ind++) {
 		row = '';
-		//if (emp_role == 1) {
-		//	row += `<tr class="view" onclick="SeperateRow(this)" id="${items[ind].in_code}">`;
-		//}
-		//else if (emp_role == 2 && newReqs[ind].request_type.trim().toLowerCase() == 'supply') {
-		//	row += `<tr class="view" onclick="SeperateRow(this)" id="${items[ind].in_code}">`;
-		//}
-		//else if (emp_role == 3) {
-		//	row += `<tr class="view" onclick="SeperateRow(this)" id="${items[ind].in_code}">`;
-		//}
-		//else {
-		//	row += `<tr class="view" id="${items[ind].in_code}">`
-		//}
 		let listener = "";
 		let className = "";
 		if (typeOf === "edit") {

@@ -29,6 +29,44 @@ namespace TotalFireSafety.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly Timer updateTimer;
+        public AdminController()
+        {
+            // Schedule the update to run once per day
+            var updateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 0);
+            var dueTime = updateTime - DateTime.Now;
+            if (dueTime < TimeSpan.Zero)
+            {
+                dueTime = TimeSpan.Zero;
+            }
+
+            // Create and start the timer
+            updateTimer = new Timer(async state =>
+            {
+                await AddItemsToBaseCount();
+            }, null, dueTime, TimeSpan.FromDays(1));
+        }
+
+        private async Task AddItemsToBaseCount()
+        {
+            using (var _context = new nwTFSEntity())
+            {
+                var allItems = _context.Inventories.ToList();
+                foreach (var item in allItems)
+                {
+                    var nbc = new Basecount()
+                    {
+                        bc_count = item.in_quantity,
+                        bc_date = DateTime.Now,
+                        bc_itemCode = item.in_code,
+                        bc_id = Guid.NewGuid()
+                    };
+                    _context.Basecounts.Add(nbc);
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }
+
         readonly APIRequestHandler api_req = new APIRequestHandler();
         #region SignalR
         private async Task SendNotif(string message)
@@ -66,6 +104,89 @@ namespace TotalFireSafety.Controllers
         //    return new Tuple<string, string> (uri,message);
         //}
         #region Others
+        private Tuple<Guid, Boolean> Validate(string typeOf)
+        {
+            using (var _context = new nwTFSEntity())
+            {
+                var newGuid = Guid.NewGuid();
+                switch (typeOf.ToLower())
+                {
+                    case "newitem":
+                        var checkitem = _context.Inventories.Where(x => x.in_guid == newGuid).SingleOrDefault();
+                        if (checkitem == null)
+                        {
+                            return new Tuple<Guid, Boolean>(newGuid, true);
+                        }
+                        else
+                        {
+                            return Validate("newitem");
+                        }
+                    case "done":
+                        return new Tuple<Guid, Boolean>(newGuid, false);
+                }
+                return Validate("done");
+            }
+        }
+        private async Task CreateNotif(string ntf_type, string req_id, string req_type, int? emp_no)
+        {
+            using (var _context = new nwTFSEntity())
+            {
+                Notification ntf = new Notification();
+                switch (ntf_type)
+                {
+                    case "request":
+                            var newGuid = Validate("newitem");
+                        ntf = new Notification()
+                        {
+                            guid = newGuid.Item1,
+                            emp_no = emp_no.Value,
+                            ntf_title = "Request Approved",
+                            ntf_content = "The " + req_type + " Request with Request ID " + req_id + " has been marked as Approved.",
+                            ntf_date = DateTime.Now,
+                            ntf_for = "",
+                            ntf_type = ntf_type,
+                            request_type = req_type,
+                            request_type_id = int.Parse(req_id)
+                        };
+                        _context.Notifications.Add(ntf);
+                        await _context.SaveChangesAsync();
+                        break;
+                    case "project":
+                        break;
+                }
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult> Notifications(int emp_id)
+        {
+            using (var _context = new nwTFSEntity())
+            {
+                var allNtfs = _context.Notifications.Where(x => x.emp_no == emp_id).ToList();
+
+                using (var stream = new MemoryStream())
+                {
+                    var writer = new Utf8JsonWriter(stream);
+                    writer.WriteStartArray();
+
+                    foreach (var item in allNtfs)
+                    {
+                        writer.WriteStartObject();
+                        //writer.WriteString("in_guid", item.in_guid);
+                        writer.WriteString("ntf_title", item.ntf_title);
+                        writer.WriteString("ntf_content", item.ntf_content);
+                        writer.WriteString("ntf_date", item.ntf_date.ToString("MMMM dd, yyyy"));
+                        writer.WriteString("ntf_type", item.ntf_type.Trim());
+                        // add more properties as needed
+                        writer.WriteEndObject();
+                    }
+                    writer.WriteEndArray();
+                    writer.Flush();
+                    var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                    var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                    return Content(jsonString);
+                }
+            }
+        }
         protected string GetPath(int emp_no)
         {
             using (var _context = new nwTFSEntity())
@@ -157,7 +278,7 @@ namespace TotalFireSafety.Controllers
                     uri = "Warehouse/Inventory/Updates";
                     response = await api_req.GetAllMethod(uri, userToken);
                     reports = JsonConvert.DeserializeObject<List<Inv_Update>>(response);
-                    result = Json(reports, JsonRequestBehavior.AllowGet);
+                    return Json(reports, JsonRequestBehavior.AllowGet);
                 }
                 if (requestType == "deleted")
                 {
@@ -536,43 +657,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
-        private readonly Timer updateTimer;
-        public AdminController()
-        {
-            // Schedule the update to run once per day
-            var updateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 0);
-            var dueTime = updateTime - DateTime.Now;
-            if (dueTime < TimeSpan.Zero)
-            {
-                dueTime = TimeSpan.Zero;
-            }
 
-            // Create and start the timer
-            updateTimer = new Timer(async state =>
-            {
-                await AddItemsToBaseCount();
-            }, null, dueTime, TimeSpan.FromDays(1));
-        }
-
-        private async Task AddItemsToBaseCount()
-        {
-            using (var _context = new nwTFSEntity())
-            {
-                var allItems = _context.Inventories.ToList();
-                foreach (var item in allItems)
-                {
-                    var nbc = new Basecount()
-                    {
-                        bc_count = item.in_quantity,
-                        bc_date = DateTime.Now,
-                        bc_itemCode = item.in_code,
-                        bc_id = Guid.NewGuid()
-                    };
-                    _context.Basecounts.Add(nbc);
-                    await _context.SaveChangesAsync();
-                }
-            }
-        }
 
         // for chart 2 / Item Supplies
         [HttpGet]
@@ -587,29 +672,6 @@ namespace TotalFireSafety.Controllers
                                 //.OrderBy(x => x.request_date)
                                 .Include("Inventory")
                                 .ToList();
-
-                    //var groupedByCode = await Task.Run(() => allReq
-                    //        .GroupBy(item => item.Inventory.in_code)
-                    //        .Select(group => new {
-                    //            Code = group.Key,
-                    //            TotalQuantity = group.Sum(item => {
-                    //                string quantityStr = item.request_item_quantity;
-                    //                int quantityInt = int.Parse(quantityStr.Split(' ')[0]);
-                    //                return quantityInt;
-                    //            }).ToString() + " " + group.First().Inventory.in_quantity.Split(' ')[1],
-                    //            TotalRequest = group.Count(),
-                    //            Items = group.Select(item => new
-                    //            {
-                    //                Name = item.Inventory.in_name,
-                    //                Size = item.Inventory.in_size
-                    //            }),
-                    //            //Items = group.First(), // Use the first item in the group to get other properties
-                    //            //Count = group.GroupBy(item => item.request_item).Count()/*ToDictionary(g => g.Key, g => g.Count()) */// Group by request_item and count occurrences
-                    //        })
-                    //        .OrderByDescending(x => x.TotalQuantity)
-                    //        .ThenBy(x => x.Code)
-                    //        .ToList()
-                    //        );
 
                     var groupedByCode = await Task.Run(() => allReq
                             .GroupBy(item => item.Inventory.in_code)
@@ -1209,7 +1271,7 @@ namespace TotalFireSafety.Controllers
                 }
                 var json = JsonConvert.DeserializeObject(response);
                 JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
-                await SendNotif(Session["emp_no"].ToString());
+                //await SendNotif(Session["emp_no"].ToString());
                 //await SendNotif("notification");
                 return result;
             }
@@ -1371,8 +1433,8 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            await SendNotif(Session["emp_no"].ToString());
-            await SendMessage("notification");
+            //await SendNotif(Session["emp_no"].ToString());
+            //await SendMessage("notification");
             return Json("Item Deleted");
         }
 
@@ -1679,7 +1741,11 @@ namespace TotalFireSafety.Controllers
             JsonResult result = Json(json, JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            await SendNotif("notification");
+            if(jsonData.Select(x => x.request_status).FirstOrDefault().Trim().ToLower() == "approved")
+            {
+                await CreateNotif("request", jsonData.Select(x => x.request_type_id ).FirstOrDefault().ToString(), jsonData.Select(x => x.request_type).FirstOrDefault().ToString(), jsonData.Select(x => x.request_employee_id).FirstOrDefault());
+            }
+                await SendNotif("notification");
             ViewBag.Message = message;
             return result;
         }

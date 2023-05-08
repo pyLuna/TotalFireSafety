@@ -304,6 +304,9 @@
     <Compile Include="Models\NewProject.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\NewProposal.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\NewReport.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
@@ -311,6 +314,9 @@
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProjectReportViewModel.cs" />
+    <Compile Include="Models\Proposal.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReportImage.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>

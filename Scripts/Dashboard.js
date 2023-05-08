@@ -51,7 +51,7 @@ function OverAllPerc(arr) {
 	//console.log(overallProgress); // output the overall progress percentage
 }
 
-function GetProjsCards() {
+async function GetProjsCards() {
 	fetch("/Admin/ProjectInsights")
 		.then(res => {
 			if (res.ok) {
@@ -63,8 +63,8 @@ function GetProjsCards() {
 		})
 		.then(data => {
 			//console.log(data);
-			SetCard2(data);
 			OverAllPerc(progs);
+			SetCard2(data);
 		})
 		.catch(error => {
 			//window.location.replace('/Error/InternalServerError');

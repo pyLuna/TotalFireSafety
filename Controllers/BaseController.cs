@@ -5,7 +5,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Mvc;
 using TotalFireSafety.Models;
-
+using TotalFireSafety.Hubs;
+using System.Threading.Tasks;
 
 namespace TotalFireSafety.Controllers
 {
@@ -13,7 +14,12 @@ namespace TotalFireSafety.Controllers
     {
         readonly Dictionary dict = new Dictionary();
         readonly APIRequestHandler requestHandler = new APIRequestHandler();
+        private readonly MyHub hubs;
 
+        public BaseController()
+        {
+            hubs = new MyHub();
+        }
 
         // GET: Base
         [HttpGet]
@@ -26,7 +32,7 @@ namespace TotalFireSafety.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Login(Credential creds)
+        public async Task<ActionResult> Login(Credential creds)
         {
             using (var _client = new HttpClient())
             {
@@ -66,6 +72,7 @@ namespace TotalFireSafety.Controllers
                             Session["system_role"] = _roles.role1;
                             Session["name"] = _actuser.emp_fname + " " + _actuser.emp_lname;
                             Session["position"] = _actuser.emp_position;
+                            //await hubs.AddToGroup(_roles.role1.ToString());
                         }
                         //var hubContext = GlobalHost.ConnectionManager.GetHubContext<MyHub>();
                         //hubContext.Groups.Add("test",HttpContext.Current.Session.SessionID.ToString());

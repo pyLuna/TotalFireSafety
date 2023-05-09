@@ -136,6 +136,19 @@
           <Property Name="ntf_type" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="request_type_id" Type="int" />
           <Property Name="request_type" Type="nvarchar" MaxLength="50" />
+          <Property Name="ntf_for" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Proposal">
+          <Key>
+            <PropertyRef Name="prop_id" />
+          </Key>
+          <Property Name="prop_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="prop_type_id" Type="int" />
+          <Property Name="prop_manpower" Type="varchar" MaxLength="250" />
+          <Property Name="prop_status" Type="varchar" MaxLength="10" />
+          <Property Name="prop_description" Type="varchar" MaxLength="250" />
+          <Property Name="prop_subject" Type="varchar" MaxLength="250" />
+          <Property Name="prop_emp_no" Type="int" />
         </EntityType>
         <EntityType Name="ReportImage">
           <Key>
@@ -284,6 +297,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Proposal_NewProjects">
+          <End Role="NewProjects" Type="Self.NewProjects" Multiplicity="0..1" />
+          <End Role="Proposal" Type="Self.Proposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewProjects">
+              <PropertyRef Name="proj_type_id" />
+            </Principal>
+            <Dependent Role="Proposal">
+              <PropertyRef Name="prop_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ReportImage_NewProject">
           <End Role="NewProjects" Type="Self.NewProjects" Multiplicity="0..1" />
           <End Role="ReportImage" Type="Self.ReportImage" Multiplicity="*" />
@@ -356,6 +381,7 @@
           <EntitySet Name="NewProposal" EntityType="Self.NewProposal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NewReport" EntityType="Self.NewReport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proposal" EntityType="Self.Proposal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReportImage" EntityType="Self.ReportImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
@@ -395,6 +421,10 @@
           <AssociationSet Name="FK_Notifications_Employee1" Association="Self.FK_Notifications_Employee1">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_NewProjects" Association="Self.FK_Proposal_NewProjects">
+            <End Role="NewProjects" EntitySet="NewProjects" />
+            <End Role="Proposal" EntitySet="Proposal" />
           </AssociationSet>
           <AssociationSet Name="FK_ReportImage_NewProject" Association="Self.FK_ReportImage_NewProject">
             <End Role="NewProjects" EntitySet="NewProjects" />
@@ -496,6 +526,11 @@
           <AssociationSet Name="FK_NewProposal_NewProjects" Association="db_a97f85_totalfiresafetyModel.FK_NewProposal_NewProjects">
             <End Role="NewProject" EntitySet="NewProjects" />
             <End Role="NewProposal" EntitySet="NewProposals" />
+          </AssociationSet>
+          <EntitySet Name="Proposals" EntityType="db_a97f85_totalfiresafetyModel.Proposal" />
+          <AssociationSet Name="FK_Proposal_NewProjects" Association="db_a97f85_totalfiresafetyModel.FK_Proposal_NewProjects">
+            <End Role="NewProject" EntitySet="NewProjects" />
+            <End Role="Proposal" EntitySet="Proposals" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Attendance">
@@ -612,6 +647,7 @@
           <NavigationProperty Name="NewReports" Relationship="db_a97f85_totalfiresafetyModel.FK_NewReport_NewProject" FromRole="NewProject" ToRole="NewReport" />
           <NavigationProperty Name="ReportImages" Relationship="db_a97f85_totalfiresafetyModel.FK_ReportImage_NewProject" FromRole="NewProject" ToRole="ReportImage" />
           <NavigationProperty Name="NewProposal" Relationship="db_a97f85_totalfiresafetyModel.FK_NewProposal_NewProjects" FromRole="NewProject" ToRole="NewProposal" />
+          <NavigationProperty Name="Proposals" Relationship="db_a97f85_totalfiresafetyModel.FK_Proposal_NewProjects" FromRole="NewProject" ToRole="Proposal" />
         </EntityType>
         <EntityType Name="NewReport">
           <Key>
@@ -641,6 +677,7 @@
           <Property Name="request_type_id" Type="Int32" />
           <Property Name="request_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Notifications_Employee1" FromRole="Notification" ToRole="Employee" />
+          <Property Name="ntf_for" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="ReportImage">
           <Key>
@@ -879,6 +916,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Proposal">
+          <Key>
+            <PropertyRef Name="prop_id" />
+          </Key>
+          <Property Name="prop_id" Type="Guid" Nullable="false" />
+          <Property Name="prop_type_id" Type="Int32" />
+          <Property Name="prop_manpower" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="prop_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="prop_description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="prop_subject" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="prop_emp_no" Type="Int32" />
+          <NavigationProperty Name="NewProject" Relationship="db_a97f85_totalfiresafetyModel.FK_Proposal_NewProjects" FromRole="Proposal" ToRole="NewProject" />
+        </EntityType>
+        <Association Name="FK_Proposal_NewProjects">
+          <End Type="db_a97f85_totalfiresafetyModel.NewProject" Role="NewProject" Multiplicity="0..1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Proposal" Role="Proposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NewProject">
+              <PropertyRef Name="proj_type_id" />
+            </Principal>
+            <Dependent Role="Proposal">
+              <PropertyRef Name="prop_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1004,6 +1066,7 @@
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Notification">
               <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="ntf_for" ColumnName="ntf_for" />
                 <ScalarProperty Name="request_type" ColumnName="request_type" />
                 <ScalarProperty Name="request_type_id" ColumnName="request_type_id" />
                 <ScalarProperty Name="ntf_type" ColumnName="ntf_type" />
@@ -1061,6 +1124,19 @@
           <EntitySetMapping Name="NewProposals">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.NewProposal">
               <MappingFragment StoreEntitySet="NewProposal">
+                <ScalarProperty Name="prop_emp_no" ColumnName="prop_emp_no" />
+                <ScalarProperty Name="prop_subject" ColumnName="prop_subject" />
+                <ScalarProperty Name="prop_description" ColumnName="prop_description" />
+                <ScalarProperty Name="prop_status" ColumnName="prop_status" />
+                <ScalarProperty Name="prop_manpower" ColumnName="prop_manpower" />
+                <ScalarProperty Name="prop_type_id" ColumnName="prop_type_id" />
+                <ScalarProperty Name="prop_id" ColumnName="prop_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proposals">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Proposal">
+              <MappingFragment StoreEntitySet="Proposal">
                 <ScalarProperty Name="prop_emp_no" ColumnName="prop_emp_no" />
                 <ScalarProperty Name="prop_subject" ColumnName="prop_subject" />
                 <ScalarProperty Name="prop_description" ColumnName="prop_description" />

@@ -29,3 +29,4 @@ namespace TotalFireSafety.Models
         public object Inv_Update_Date { get; internal set; }
     }
 }
+

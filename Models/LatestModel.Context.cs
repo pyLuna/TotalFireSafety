@@ -40,5 +40,6 @@ namespace TotalFireSafety.Models
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Status> Status { get; set; }
         public virtual DbSet<NewProposal> NewProposals { get; set; }
+        public virtual DbSet<Proposal> Proposals { get; set; }
     }
 }

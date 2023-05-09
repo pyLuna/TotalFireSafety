@@ -12,18 +12,16 @@ namespace TotalFireSafety.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Notification
+    public partial class Proposal
     {
-        public System.Guid guid { get; set; }
-        public int emp_no { get; set; }
-        public string ntf_title { get; set; }
-        public string ntf_content { get; set; }
-        public System.DateTime ntf_date { get; set; }
-        public string ntf_type { get; set; }
-        public Nullable<int> request_type_id { get; set; }
-        public string request_type { get; set; }
-        public string ntf_for { get; set; }
+        public System.Guid prop_id { get; set; }
+        public Nullable<int> prop_type_id { get; set; }
+        public string prop_manpower { get; set; }
+        public string prop_status { get; set; }
+        public string prop_description { get; set; }
+        public string prop_subject { get; set; }
+        public Nullable<int> prop_emp_no { get; set; }
     
-        public virtual Employee Employee { get; set; }
+        public virtual NewProject NewProject { get; set; }
     }
 }

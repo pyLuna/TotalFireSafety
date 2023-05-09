@@ -950,16 +950,45 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new nwTFSEntity())
                 {
-                    var items = _context.Inventories.Where(x => x.in_status == "archived");
-
-                    var _jsonSerialized = JsonConvert.SerializeObject(items, Formatting.None, new JsonSerializerSettings()
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                    });
+                    //var _jsonSerialized = JsonConvert.SerializeObject(items, Formatting.None, new JsonSerializerSettings()
+                    //{
+                    //    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    //});
                     //  Deserialize the serialized json format to remove the escape characters like \ 
-                    var _jsonDeserialized = JsonConvert.DeserializeObject<List<Inventory>>(_jsonSerialized);
+                    //var _jsonDeserialized = JsonConvert.DeserializeObject<List<Inventory>>(_jsonSerialized);
 
-                    return Ok(_jsonDeserialized);
+                    var items = _context.Inventories.Where(x => x.in_status == "archived").ToList();
+
+                    using (var stream = new MemoryStream())
+                    {
+                        var writer = new Utf8JsonWriter(stream);
+                        writer.WriteStartArray();
+
+                        foreach (var item in items)
+                        {
+                            var arch_date = item.in_arch_date?.ToString("MMMM dd, yyyy");
+                            writer.WriteStartObject();
+                            //writer.WriteString("in_guid", item.in_guid);
+                            writer.WriteString("in_code", item.in_code);
+                            writer.WriteString("in_name", item.in_name);
+                            writer.WriteString("FormattedDate", arch_date);
+                            writer.WriteString("in_quantity", item.in_quantity);
+                            writer.WriteString("in_category", item.in_category);
+                            writer.WriteString("in_type", item.in_type);
+                            writer.WriteString("in_size", item.in_size);
+                            writer.WriteString("in_type", item.in_status);
+                            writer.WriteString("in_remarks", item.in_remarks.Trim());
+                            writer.WriteString("in_class", item.in_class);
+                            // add more properties as needed
+                            writer.WriteEndObject();
+                        }
+
+                        writer.WriteEndArray();
+                        writer.Flush();
+                        var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                        var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                        return Ok(_jsonDeserialized);
+                    }
                 }
             }
             catch (Exception ex)
@@ -967,7 +996,7 @@ namespace TotalFireSafety.Controllers
                 return InternalServerError(ex);
             }
         }
-        [System.Web.Http.AuthorizeAttribute(Roles = "warehouse,admin,owner")]
+        [System.Web.Http.Authorize]
         [Route("Warehouse/Inventory")]
         [HttpGet]
         public async Task<IHttpActionResult> GetAllItem()
@@ -1392,6 +1421,7 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new nwTFSEntity())
                 {
+                    var maxId = _context.Requests.Max(x => x.request_type_id);
                     foreach (var item in req)
                     {
                         var request = _context.Requests.Where(x => x.request_id == item.request_id).SingleOrDefault();
@@ -1399,7 +1429,6 @@ namespace TotalFireSafety.Controllers
                         {
                             return BadRequest("Request Not Found");
                         }
-                        var maxId = _context.Requests.Max(x => x.request_type_id);
                         if (item.request_status.Trim().ToLower() == "approved" && item.request_type.Trim().ToLower() == "supply")
                         {
                             var newGuid = Validate("requests");

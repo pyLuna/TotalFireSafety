@@ -35,6 +35,8 @@
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_ReportImage_NewProject" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewProposal" Width="1.5" PointX="5.25" PointY="33" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_NewProposal_NewProjects" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Proposal" Width="1.5" PointX="5.25" PointY="15.125" />
+        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Proposal_NewProjects" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

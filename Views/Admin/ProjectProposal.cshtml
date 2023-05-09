@@ -1,4 +1,7 @@
-﻿
+﻿@using TotalFireSafety.Models
+@model List<NewProposal>
+
+
 @{
     ViewBag.Title = "ProjectProposal";
     Layout = "~/Views/AdminLayout.cshtml";
@@ -27,11 +30,20 @@
                 <div class="propo">
                     <div class="propo-body">
                         <div class="table-responsive" style="overflow-x: auto;">
-                            <table id="proposal-table" width="100%">
+                            <table width="100%">
                                 <thead>
-                                  
+                                   
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    @foreach (var proposal in Model)
+                                    {
+                                        <tr class="read" onclick="openInputPropForm('@proposal.prop_type_id', '@proposal.prop_description', '@proposal.prop_status', '@proposal.prop_subject', '@proposal.prop_manpower')">
+                                            <td><i class="las la-square-full"></i></td>
+                                            <td><a href="#" name="prop_description">@proposal.prop_description</a></td>
+                                            <td><label class="stat-appr" name="status">@proposal.prop_status</label></td>
+                                        </tr>
+                                    }
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -54,15 +66,18 @@
                         <h3>
                             Proposal:
                         </h3>
-                        <select id="Engineer">
-                            <option value="">--Select Employee--</option>
+                        <select id="Engineer" name="">
+                            <option value="">--Status--</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Approved">Declined</option>
+                            <option value="Pending">Pending</option>
                         </select>
 
                     </div>
 
                     <div class="prop-main-input">
                         <textarea name="" id="proj_subject" placeholder="Place your proposal messege here.."></textarea>
-                        <input type="text" id="project_id" hidden />
+                        <input type="text" id="project_id" value=""  hidden />
                     </div>
 
                     <div class="prop-list-input">
@@ -98,8 +113,8 @@
 
 
                 <center>
-                    <button id="saveButton" onclick="saveProposal()">Approved</button>
-                    <button onclick="closeInputPropForm()">Decline</button>
+                    <button id="saveButton" onclick="updateProposal()">Save</button>
+                    <button onclick="closeInputPropForm()">Cancel</button>
                 </center>
             </div>
         </div>
@@ -127,36 +142,38 @@
 
 
 
-<script>
-    $(document).ready(function () {
-        // Retrieve proposal data from server
-        $.ajax({
-            url: "/Admin/GetProposals",
-            type: "GET",
-            success: function (data) {
-                // Populate table with proposal data
-                var tbody = $("#proposal-table tbody");
-                for (var i = 0; i < data.length; i++) {
-                    var row = $("<tr>").addClass("read");
-                    var description = $("<a>").attr("href", "#").attr("name", "prop_description").text(data[i].prop_description);
-                    var status = $("<label>").addClass("stat-appr").attr("name", "status").text(data[i].prop_status);
-                    row.append($("<td>").html('<i class="las la-square-full"></i>'));
-                    row.append($("<td>").append(description));
-                    row.append($("<td>").append(status));
-                    tbody.append(row);
+@*<script>
+        $(document).ready(function () {
+            // Retrieve proposal data from server
+            $.ajax({
+                url: "/Admin/GetProposals",
+                type: "GET",
+                success: function (data) {
+                    // Populate table with proposal data
+                    var tbody = $("#proposal-table tbody");
+                    for (var i = 0; i < data.length; i++) {
+                        var row = $("<tr>").addClass("read");
+                        var description = $("<a>").attr("href", "#").attr("name", "prop_description").text(data[i].prop_description);
+                        var status = $("<label>").addClass("stat-appr").attr("name", "status").text(data[i].prop_status);
+                        row.append($("<td>").html('<i class="las la-square-full"></i>'));
+                        row.append($("<td>").append(description));
+                        row.append($("<td>").append(status));
+                        tbody.append(row);
 
-                    // Add event listener to row
-                    row.on("click", function () {
-                        openInputPropForm();
-                    });
+                        // Add event listener to row
+                        row.on("click", function () {
+                            openInputPropForm();
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error retrieving proposal data:", error);
                 }
-            },
-            error: function (xhr, status, error) {
-                console.log("Error retrieving proposal data:", error);
-            }
+            });
         });
-    });
-</script>
+
+
+    </script>*@
 
 <script>
 
@@ -225,8 +242,80 @@
         document.getElementById("input-mem-container").style.display = "none";
     }
 
-    function openInputPropForm() {
+    function openInputPropForm(propTypeId, propDescription, propStatus, propSubject, propManpower) {
+        document.getElementById("prop_description").value = propDescription;
+        document.getElementById("project_id").value = propTypeId;
+        document.getElementById("proj_subject").value = propSubject;
+
+      
+
+        // Set the selected option based on the propStatus value
+        var statusSelect = document.getElementById("Engineer");
+        for (var i = 0; i < statusSelect.options.length; i++) {
+            if (statusSelect.options[i].value == propStatus) {
+                statusSelect.selectedIndex = i;
+                break;
+            }
+        }
+
+        var manpowerTable = document.getElementById("propInput");
+        var tbody = manpowerTable.getElementsByTagName("tbody")[0];
+        tbody.innerHTML = "";
+
+        var propManpowerArray = propManpower.split(",");
+        for (var i = 0; i < propManpowerArray.length; i++) {
+            var row = tbody.insertRow(-1);
+            var cell = row.insertCell(0);
+            cell.innerHTML = "<i class='las la-dot-circle'></i><b>" + propManpowerArray[i] + "</b>";
+        }
+
         document.getElementById("prop-container").style.display = "block";
+    }
+
+    function updateProposal() {
+        // Get the updated values from the input fields
+        var propTypeId = document.getElementById("project_id").value;
+        var propDescription = document.getElementById("prop_description").value;
+        var propStatus = document.getElementById("Engineer").value;
+        var propSubject = document.getElementById("proj_subject").value;
+
+        // Build the manpower list from the table rows
+        var manpowerList = [];
+        var manpowerTable = document.getElementById("propInput");
+        var rows = manpowerTable.getElementsByTagName("tr");
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            if (cells.length > 0) {
+                var manpower = cells[0].getElementsByTagName("b")[0].innerText;
+                manpowerList.push(manpower);
+            }
+        }
+        var propManpower = manpowerList.join(",");
+
+        // Send the updated values to the server-side script using AJAX
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/Admin/Update", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                // Handle the response from the server
+                var response = JSON.parse(this.responseText);
+                if (response.success) {
+                    // Close the form and update the proposal list
+                    document.getElementById("prop-container").style.display = "none";
+                    getProposalList();
+                } else {
+                    // Display an error message
+                    alert(response.message);
+                }
+            }
+        };
+        var data = "propTypeId=" + encodeURIComponent(propTypeId)
+            + "&propDescription=" + encodeURIComponent(propDescription)
+            + "&propStatus=" + encodeURIComponent(propStatus)
+            + "&propSubject=" + encodeURIComponent(propSubject)
+            + "&propManpower=" + encodeURIComponent(propManpower);
+        xhr.send(data);
     }
 
     function closeInputPropForm() {

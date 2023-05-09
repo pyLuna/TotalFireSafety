@@ -236,29 +236,61 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("Login", "Base");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
+            List<NewProposal> proposals = db.NewProposals.ToList();
 
-           
+            return View(proposals);
 
-            return View();
+
 
         }
 
-        public ActionResult GetProposals()
+        [HttpPost]
+        public ActionResult Update(NewProposal model)
         {
             nwTFSEntity db = new nwTFSEntity();
-
-            var proposals = db.NewProposals.ToList();
-            var data = proposals.Select(p => new
+            if (ModelState.IsValid)
             {
-                prop_description = p.prop_description,
-                prop_status = p.prop_status
-            });
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
-        
+                var proposal = db.NewProposals.Find(model.prop_type_id); // Find the proposal by its ID
+                if (proposal != null)
+                {
+                    // Update the proposal properties with the new values
+                    proposal.prop_description = model.prop_description;
+                    proposal.prop_status = model.prop_status;
+                    proposal.prop_subject = model.prop_subject;
+                    proposal.prop_manpower = model.prop_manpower;
 
-        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
-        public async Task<ActionResult> InvReportExport(int? id)
+                    db.SaveChanges(); // Save changes to the database
+
+                    return Json(new { success = true }); // Return success response to the client
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Proposal not found." }); // Return error response to the client
+                }
+            }
+            else
+            {
+                return Json(new { success = false, message = "Invalid model state." }); // Return error response to the client
+            }
+        }
+    
+
+    /*public ActionResult GetProposals()
+    {
+        nwTFSEntity db = new nwTFSEntity();
+
+        var proposals = db.NewProposals.ToList();
+        var data = proposals.Select(p => new
+        {
+            prop_description = p.prop_description,
+            prop_status = p.prop_status
+        });
+        return Json(data, JsonRequestBehavior.AllowGet);
+    }*/
+
+
+    //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
+    public async Task<ActionResult> InvReportExport(int? id)
         {
             var role = int.Parse(Session["system_role"].ToString());
             if (role == 3)

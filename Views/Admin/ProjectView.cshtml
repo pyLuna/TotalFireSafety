@@ -64,7 +64,7 @@
                                                     <tr>
                                                         <td>@report.rep_date</td>
                                                         <td>@report.rep_no</td>
-                                                        <td>@report.rep_description  <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no', '@Model.SelectedManpower.' );"></i></td>
+                                                        <td>@report.rep_description  <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
                                                         <td>@report.rep_stats</td>
                                                         <td><a href="#">Export</a></td>
                                                     </tr>
@@ -339,7 +339,7 @@
                     <button onclick="updatedata()">UPDATE PROJECT</button>
 
 
-    @*            </div>
+                </div>
         <div class="add-new-right">
                 <div class="add-new-header">
                     <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
@@ -363,15 +363,15 @@
                         </div>
                     </div>
                 </div>
-            </div>*@@*
+            </div>
 
 </div>
 
 <button>UPDATE PROJECT</button>
 
-        </div>*@
+        </div>
 
-@*<div class="input-mem-container" id="input-mem-container">
+<div class="input-mem-container" id="input-mem-container">
     <div class="input-mems-main">
         <div class="input-mems-title">
             <h3>MANPOWER</h3>
@@ -410,7 +410,7 @@
             <button onclick="closeInputMemForm()">Cancel</button>
         </center>
     </div>
-</div*@>
+</div>
 
 
 <!-- END -->
@@ -1448,7 +1448,7 @@ $.ajax({
 
 
 
-<script>
+@*<script>
     const myTable = document.querySelector('#inputTable');
     const tbody = myTable.querySelector('tbody');
 
@@ -1491,7 +1491,7 @@ $.ajax({
             tbody.appendChild(newRow);
         }
     });
-</script>
+</script>*@
 
 
 <script>
@@ -1531,56 +1531,8 @@ $.ajax({
 
 <script>
 
-
-    function userFiltFunction() {
-        document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.user-filter-btn')) {
-            var myDropdown = document.getElementById("userFiltDropdown");
-            if (myDropdown.classList.contains('user-filter-show')) {
-                myDropdown.classList.remove('user-filter-show');
-            }
-        }
-    }
-
-    function userSortFunction() {
-        document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.user-sort-btn')) {
-            var myDropdown = document.getElementById("userSortDropdown");
-            if (myDropdown.classList.contains('user-sort-show')) {
-                myDropdown.classList.remove('user-sort-show');
-            }
-        }
-    }
-
-    let canpopup = document.getElementById("can-popup");
-
-    function canOpenPopup() {
-        canpopup.classList.add("can-popup-show")
-    }
-
-    function canClosePopup() {
-        canpopup.classList.remove("can-popup-show")
-    }
-
-    let rempopup = document.getElementById("rem-popup");
-
-    function remOpenPopup() {
-        rempopup.classList.add("rem-popup-show")
-    }
-
-    function remClosePopup() {
-        rempopup.classList.remove("rem-popup-show")
-    }
-
     function openReportEditForm(selectedRepNo) {
+
         document.getElementById('report-edit-container').style.display = 'block';
 
         $.ajax({
@@ -1675,6 +1627,64 @@ $.ajax({
     }
 
 
+    function closeReportEditForm() {
+        document.getElementById("report-edit-container").style.display = "none";
+    }
+
+</script>
+
+<script>
+
+
+    function userFiltFunction() {
+        document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.user-filter-btn')) {
+            var myDropdown = document.getElementById("userFiltDropdown");
+            if (myDropdown.classList.contains('user-filter-show')) {
+                myDropdown.classList.remove('user-filter-show');
+            }
+        }
+    }
+
+    function userSortFunction() {
+        document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.user-sort-btn')) {
+            var myDropdown = document.getElementById("userSortDropdown");
+            if (myDropdown.classList.contains('user-sort-show')) {
+                myDropdown.classList.remove('user-sort-show');
+            }
+        }
+    }
+
+    let canpopup = document.getElementById("can-popup");
+
+    function canOpenPopup() {
+        canpopup.classList.add("can-popup-show")
+    }
+
+    function canClosePopup() {
+        canpopup.classList.remove("can-popup-show")
+    }
+
+    let rempopup = document.getElementById("rem-popup");
+
+    function remOpenPopup() {
+        rempopup.classList.add("rem-popup-show")
+    }
+
+    function remClosePopup() {
+        rempopup.classList.remove("rem-popup-show")
+    }
+
+  
 
     function closeReportEditForm() {
         document.getElementById("report-edit-container").style.display = "none";
@@ -1748,10 +1758,9 @@ $.ajax({
 
 
 </script>
-@*<script>
+<script>
     document.addEventListener('DOMContentLoaded', function () {
         const formattedDate = moment(date, "MM/DD/YYYY").format("YYYY-MM-DD");
         document.getElementById('rep_date').value = formattedDate;
     });
 </script>
-*@

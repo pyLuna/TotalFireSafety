@@ -74,7 +74,7 @@ function PopulateLabels(array,typeOf) {
                     size = "";
                 }
                 label.push(array[0][i].Items.Name + " " + size);
-                quant.push(extractNum(array[0][i].Items.Quantity).num);
+            quant.push(array[0][i].TotalRequest);
         }
     }
     else {

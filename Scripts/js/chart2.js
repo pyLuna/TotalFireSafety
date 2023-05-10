@@ -19,6 +19,7 @@ async function GetProjects() {
             projs.push(data);
             var result = PopulateLabels2(projs);
             result = SetChart2(result.labels, result.quant);
+            GetProjsCards();
         })
         .catch(error => {
             //window.location.replace('/Error/InternalServerError');

@@ -812,7 +812,7 @@ namespace TotalFireSafety.Controllers
                                     Size = item.Inventory.in_size
                                 }),
                             })
-                            .OrderByDescending(x => x.TotalQuantity)
+                            .OrderByDescending(x => x.TotalRequest)
                             .ThenBy(x => x.Code) // if there are ties in TotalQuantity, sort by Code ascending
                             .ToList()
                             .Select(group => new

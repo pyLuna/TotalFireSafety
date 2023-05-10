@@ -20,7 +20,7 @@ function PopulateLabels1(array, typeOf){
             size = "";
         }
         label.push(array[i].Items.Name + " " + size);
-        quant.push(extractNum(array[i].Items.Quantity).num);
+        quant.push(array[i].TotalRequest);
     }
     return { label, quant };
 }

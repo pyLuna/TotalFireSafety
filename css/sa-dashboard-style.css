@@ -4732,15 +4732,21 @@ acc-form-table .view-request-form-table-style table thead td {
 }
 
 .itemlist-form-table table td .stat-standard {
-    color: #09AF10;
+    color: #000080;
 }
 
-.itemlist-form-table table td .stat-re-order {
-    color: red;
+.itemlist-form-table table td .stat-reorder {
+    color: #FF932F;
 }
 
 .itemlist-form-table table td .stat-average {
-    color: #FF932F;
+    color: #09AF10;
+}
+.itemlist-form-table table td .stat-overstock {
+    color: #a80a7b;
+}
+.itemlist-form-table table td .stat-critical {
+    color: #FF0000;
 }
 
 .itemlist-form-container .save:hover {

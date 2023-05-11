@@ -190,7 +190,7 @@ function InvsetTable(array) {
 		let remclass = "";
 		if (holder.trim() == 'critical') {
 			remarks = 'Critical';
-			remclass = 'stat-re-order';
+			remclass = 'stat-critical';
 		}
 		else if (holder.trim() == 'standard') {
 			remarks = 'Standard';
@@ -199,6 +199,14 @@ function InvsetTable(array) {
 		else if (holder.trim() == 'average') {
 			remarks = 'Average';
 			remclass = 'stat-average';
+		}
+		else if (holder.trim() == 'overstock') {
+			remarks = 'Overstock';
+			remclass = 'stat-overstock';
+		}
+		else if (holder.trim() == 'reorder') {
+			remarks = 'Reorder';
+			remclass = 'stat-reorder';
 		}
 		let row = `<tr onclick="openInputQTYForm('${array[i].in_code}')">`;
 		row += `<td> ${array[i].in_name}</td>`;

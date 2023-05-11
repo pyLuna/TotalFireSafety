@@ -1118,6 +1118,30 @@ namespace TotalFireSafety.Controllers
                     var newGuid = GetNewGuid("newitem");
                     if (_item != null)
                     {
+
+                        var quantity = int.Parse(_item.in_quantity.Split(' ')[0]);
+
+                        if (quantity >= 100)
+                        {
+                            _item.in_remarks = "overstock";
+                        }
+                        else if (quantity <= 99 && quantity >= 50)
+                        {
+                            _item.in_remarks = "standard";
+                        }
+                        else if (quantity <= 49 && quantity >= 30)
+                        {
+                            _item.in_remarks = "average";
+                        }
+                        else if (quantity <= 29 && quantity >= 10)
+                        {
+                            _item.in_remarks = "reorder";
+                        }
+                        else if (quantity <= 9)
+                        {
+                            _item.in_remarks = "critical";
+                        }
+
                         var response = UpdateNewItem(_item);
                         _item.in_guid = newGuid;
                         _context.Inventories.Add(_item);
@@ -1154,6 +1178,30 @@ namespace TotalFireSafety.Controllers
 
                         if (itemDB != null)
                         {
+
+                            var quantity = int.Parse(_item.in_quantity.Split(' ')[0]);
+
+                            if (quantity >= 100)
+                            {
+                                itemDB.in_remarks = "overstock";
+                            }
+                            else if (quantity <= 99 && quantity >= 50)
+                            {
+                                itemDB.in_remarks = "standard";
+                            }
+                            else if (quantity <= 49 && quantity >= 30)
+                            {
+                                itemDB.in_remarks = "average";
+                            }
+                            else if (quantity <= 29 && quantity >= 10)
+                            {
+                                itemDB.in_remarks = "reorder";
+                            }
+                            else if (quantity <= 9)
+                            {
+                                itemDB.in_remarks = "critical";
+                            }
+
                             //  Convert _item into itemDB
                             itemDB.in_name = _item.in_name;
                             itemDB.in_category = _item.in_category;
@@ -1176,7 +1224,7 @@ namespace TotalFireSafety.Controllers
                             _context.Entry(itemDB);
                             //_context.Entry(reqs);
                             //_context.Entry(ups);
-                            _context.SaveChanges();     //  Save to Database
+                            await _context.SaveChangesAsync();     //  Save to Database
 
 
                             return Ok("Process Completed!");
@@ -1488,92 +1536,52 @@ namespace TotalFireSafety.Controllers
         //}
         #endregion
 
-        //#region Project
-        //[System.Web.Http.Authorize(Roles = "admin,office,owner")]
-        //[Route("Projects/All")]
-        //[HttpGet]
-        //public async Task<IHttpActionResult> GetAllProj()
-        //{
-        //    try
-        //    {
-        //        using (var _context = new nwTFSEntity())
-        //        {
-        //            var roles = _context.NewProjects
-        //                .Include("Employee")
-        //                .Include("Inventory")
-        //                .ToList();
+       //[AllowAnonymous]
+       //[HttpGet]
+       // [Route("EditInventory")]
+       // public async Task<IHttpActionResult> EditInv()
+       // {
+       //     try
+       //     {
+       //         using (var _context = new nwTFSEntity())
+       //         {
+       //             var allItems = _context.Inventories.ToList();
 
-        //            using (var stream = new MemoryStream())
-        //            {
-        //                var writer = new Utf8JsonWriter(stream);
-        //                writer.WriteStartArray();
+       //             foreach (var item in allItems)
+       //             {
+       //                 var quantity = int.Parse(item.in_quantity.Split(' ')[0]);
 
-        //                foreach (var item in roles)
-        //                {
-        //                    string newID = "";
-        //                    if (item.request_type.ToLower() == "purchase")
-        //                    {
-        //                        newID = "PUR" + item.request_type_id;
-        //                    }
-        //                    if (item.request_type.ToLower() == "deploy" || item.request_type.ToLower() == "deployment")
-        //                    {
-        //                        newID = "DEP" + (item.request_type_id);
-        //                    }
-        //                    if (item.request_type.ToLower() == "supply")
-        //                    {
-        //                        newID = "SUP" + item.request_type_id;
-        //                    }
-        //                    writer.WriteStartObject();
-        //                    writer.WriteString("request_id", item.request_id);
-        //                    writer.WriteString("request_type", item.request_type);
-        //                    writer.WriteString("request_date", item.request_date);
-        //                    writer.WriteString("Id", newID);
-        //                    writer.WriteString("FormattedDate", item.request_date.ToString("MMMM dd, yyyy"));
-        //                    writer.WriteNumber("request_employee_id", int.Parse(item.request_employee_id.ToString()));
-        //                    writer.WriteString("request_item", item.request_item);
-        //                    writer.WriteString("request_item_quantity", item.request_item_quantity);
-        //                    writer.WriteString("request_status", item.request_status.Trim());
-        //                    writer.WriteNumber("request_type_id", item.request_type_id);
-        //                    writer.WriteString("request_type_status", item.request_type_status);
-        //                    writer.WriteStartObject("Employee");
-        //                    writer.WriteNumber("emp_no", item.Employee.emp_no);
-        //                    writer.WriteString("emp_hiredDate", item.Employee.emp_hiredDate?.ToString("dd-MM-yyyyTHH:mm:ss"));
-        //                    writer.WriteString("FormattedDate", item.Employee.emp_hiredDate?.ToString("MMMM dd, yyyy"));
-        //                    writer.WriteNumber("emp_contact", item.Employee.emp_contact);
-        //                    writer.WriteString("emp_fname", item.Employee.emp_fname);
-        //                    writer.WriteString("emp_lname", item.Employee.emp_lname);
-        //                    writer.WriteString("emp_mname", item.Employee.emp_name);
-        //                    writer.WriteString("emp_position", item.Employee.emp_position);
-        //                    writer.WriteEndObject();
-        //                    writer.WriteStartObject("Inventory");
-        //                    writer.WriteString("in_code", item.Inventory.in_code);
-        //                    writer.WriteString("in_category", item.Inventory.in_category);
-        //                    writer.WriteString("in_class", item.Inventory.in_class);
-        //                    writer.WriteString("in_name", item.Inventory.in_name);
-        //                    writer.WriteString("in_quantity", item.Inventory.in_quantity);
-        //                    writer.WriteString("in_size", item.Inventory.in_size);
-        //                    writer.WriteString("in_type", item.Inventory.in_type);
-        //                    writer.WriteEndObject();
-
-        //                    // add more properties as needed
-        //                    writer.WriteEndObject();
-        //                }
-
-        //                writer.WriteEndArray();
-        //                writer.Flush();
-        //                var jsonString = Encoding.UTF8.GetString(stream.ToArray());
-        //                var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
-        //                return Ok(_jsonDeserialized);
-        //            }
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return InternalServerError(ex);
-        //    }
-        //}
-
-
-        //#endregion
+       //                 if (quantity >= 100)
+       //                 {
+       //                     item.in_remarks = "overstock";
+       //                 }
+       //                 else if (quantity <= 99 && quantity >= 50)
+       //                 {
+       //                     item.in_remarks = "standard";
+       //                 }
+       //                 else if (quantity <= 49 && quantity >= 30)
+       //                 {
+       //                     item.in_remarks = "average";
+       //                 }
+       //                 else if (quantity <= 29 && quantity >= 10)
+       //                 {
+       //                     item.in_remarks = "reorder";
+       //                 }
+       //                 else if (quantity <= 9)
+       //                 {
+       //                     item.in_remarks = "critical";
+       //                 }
+       //                 _context.Entry(item);
+       //                 await _context.SaveChangesAsync();
+       //             }
+       //                 return Ok("Successful");
+       //             //return BadRequest();
+       //         }
+       //     }
+       //     catch(Exception ex)
+       //     {
+       //         return InternalServerError(ex);
+       //     }
+       // }
     }
 }

@@ -1448,7 +1448,7 @@ input[type="month"] {
     display: flex;
     height: 20px;
     width: 20px;
-    background-color: #09AF10;
+    background-color: #a80a7b;
     margin-left: 20px;
 }
 
@@ -1462,7 +1462,7 @@ input[type="month"] {
     display: flex;
     height: 20px;
     width: 20px;
-    background-color: #8F00FF;
+    background-color: #000080;
     margin-left: 100px;
 }
 
@@ -1476,11 +1476,37 @@ input[type="month"] {
     display: flex;
     height: 20px;
     width: 20px;
-    background-color: #FF0000;
+    background-color: #09AF10;
     margin-left: 90px;
 }
 
     .legend-content .legend-content-3 label {
+        margin-left: 25px;
+        margin-top: 1px;
+        font-size: .9rem;
+    }
+.legend-content .legend-content-4 {
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: #FF932F;
+    margin-left: 90px;
+}
+
+    .legend-content .legend-content-4 label {
+        margin-left: 25px;
+        margin-top: 1px;
+        font-size: .9rem;
+    }
+.legend-content .legend-content-5 {
+    display: flex;
+    height: 20px;
+    width: 20px;
+    background-color: #FF0000;
+    margin-left: 90px;
+}
+
+    .legend-content .legend-content-5 label {
         margin-left: 25px;
         margin-top: 1px;
         font-size: .9rem;
@@ -1997,15 +2023,23 @@ input[type="month"] {
 
     .inventory-body table td .stat-standard {
         font-weight: bold;
-        color: #09AF10;
+        color: #000080;
     }
 
     .inventory-body table td .stat-average {
         font-weight: bold;
-        color: #FF932F;
+        color: #09AF10;
     }
 
-    .inventory-body table td .stat-re-order {
+    .inventory-body table td .stat-reorder {
+        font-weight: bold;
+        color: #FF932F;
+    }
+    .inventory-body table td .stat-overstock {
+        font-weight: bold;
+        color: #a80a7b;
+    }
+    .inventory-body table td .stat-critical {
         font-weight: bold;
         color: #FF0000;
     }

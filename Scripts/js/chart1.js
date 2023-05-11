@@ -74,7 +74,7 @@ function PopulateLabels(array,typeOf) {
                     size = "";
                 }
                 label.push(array[0][i].Items.Name + " " + size);
-            quant.push(array[0][i].TotalRequest);
+                quant.push(extractNum(array[0][i].Items.Quantity).num);
         }
     }
     else {
@@ -124,14 +124,19 @@ function SetChart(labels,quantities) {
                 backgroundColor: function (context) {
                     var value = context.dataset.data[context.dataIndex];
 
-                    if (value > 50) {
+                    if (value >= 100) {
+                        return '#a80a7b';
+                    }
+                    else if (value <= 99 && value >= 50) {
+                        return '#000080';
+                    }
+                    else if (value <= 49 && value >= 30) {
                         return '#09AF10';
                     }
-                    else if (value > 20) {
-                        return '#8F00FF';
+                    else if (value <= 29 && value >= 10) {
+                        return '#FF932F';
                     }
-
-                    else {
+                    else if (value <= 9) {
                         return '#FF0000';
                     }
                 }

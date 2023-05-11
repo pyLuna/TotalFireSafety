@@ -189,7 +189,7 @@ function setTable(array) {
 			let remclass = "";
 			if (holder.trim() == 'critical') {
 				remarks = 'Critical';
-				remclass = 'stat-re-order';
+				remclass = 'stat-critical';
 			}
 			else if (holder.trim() == 'standard') {
 				remarks = 'Standard';
@@ -198,6 +198,14 @@ function setTable(array) {
 			else if (holder.trim() == 'average'){
 				remarks = 'Average';
 				remclass = 'stat-average';
+			}
+			else if (holder.trim() == 'overstock') {
+				remarks = 'Overstock';
+				remclass = 'stat-overstock';
+			}
+			else if (holder.trim() == 'reorder') {
+				remarks = 'Reorder';
+				remclass = 'stat-reorder';
 			}
 			/* class ng remarks 
 			 * stat-standard
@@ -557,7 +565,7 @@ function setHiddensEdit() {
 	var qt1 = document.getElementById('in_quantity2');
 	var rm1 = document.getElementById('in_remarks2');
 	var oldqt = extractNum(filtered[0].in_quantity);
-	var newqt = Number(oldqt.num) + Number(inpQuant2.value);
+	var newqt = /*Number(oldqt.num) + */Number(inpQuant2.value);
 	cat1.value = catsel.options[catsel.selectedIndex].value;
 	cl1.value = classsel.options[classsel.selectedIndex].value;
 	ty1.value = typesel.options[typesel.selectedIndex].value;

@@ -157,8 +157,9 @@
                         <button class="add-btn" title="ADD NEW ITEM">NEW PROJECT</button>
                     </a>
 
-                    <select required>
+                    <select id="status" required>
                         <option disabled selected>Project Status</option>
+                        <option value="All">All</option>
                         <option value="On-Going">On-Going</option>
                         <option value="In-Line">Upcoming</option>
                         <option value="Cancelled">Cancelled</option>
@@ -166,6 +167,7 @@
 
                     <select id="select-leads" required>
                         <option disabled selected>Project Lead</option>
+                        <option value="All">All</option>
 
                     </select>
 
@@ -466,24 +468,44 @@ $(document).ready(function () {
     });
   });
 
-    $('#status-filter').on('change', function () {
-  // Call the status filtering function
-  filterByStatus();
-});
+    $('#select-leads').on('change', function () {
+        var selectedLead = $(this).find('option:selected').text().toLowerCase();
 
-function filterByStatus() {
-  var selectedStatus = $('#status-filter').val().toLowerCase();
+        if (selectedLead === 'all') {
+            selectedLead = ''; // Set the selectedLead to an empty string or any other value you desire
+        }
 
-  tableBody.find('tr').each(function () {
-    var status = $(this).find('.status-column').text().toLowerCase();
+        // Loop through each row in the table and show/hide based on selected lead
+        tableBody.find('tr').each(function () {
+            var lead = $(this).find('td:nth-child(2)').text().toLowerCase();
 
-    if (selectedStatus && status !== selectedStatus) {
-      $(this).hide();
-    } else {
-      $(this).show();
-    }
-  });
-}
+            if (selectedLead && lead !== selectedLead) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
+   
+    // Filter table by project status
+    $('#status').on('change', function () {
+        var selectedstats = $(this).find('option:selected').text().toLowerCase();
+
+        if (selectedstats === 'all') {
+            selectedstats = ''; // Set the selectedLead to an empty string or any other value you desire
+        }
+
+        // Loop through each row in the table and show/hide based on selected lead
+        tableBody.find('tr').each(function () {
+            var stats = $(this).find('td:nth-child(4)').text().toLowerCase();
+
+            if (selectedstats && stats !== selectedstats) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
 });
     </script>
 

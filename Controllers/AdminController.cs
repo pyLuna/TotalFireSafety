@@ -511,6 +511,8 @@ namespace TotalFireSafety.Controllers
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
 
+
+
             var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == id);
             var lead = db.Employees.FirstOrDefault(e => e.emp_no == project.proj_emp_no);
             var report = db.NewReports.FirstOrDefault(r => r.rep_no == id);
@@ -545,8 +547,18 @@ namespace TotalFireSafety.Controllers
             ViewBag.ReportNo = report?.rep_no;
 
             ViewBag.ProposalStats = newProposal?.prop_status;
+            ViewBag.ProposalStatus = newProposal?.prop_status;
             ViewBag.ProposalDescription = newProposal?.prop_description;
-            ViewBag.ProposalEngineer = newProposal?.prop_emp_no;
+            // Retrieve the Employee object using the prop_emp_no value
+            Employee engineer = null;
+            if (newProposal != null && newProposal.prop_emp_no != null)
+            {
+                engineer = db.Employees.FirstOrDefault(e => e.emp_no == newProposal.prop_emp_no);
+            }
+
+            // Assign the emp_fname and emp_lname to ViewBag.ProposalEngineer
+            ViewBag.ProposalEngineer = engineer?.emp_fname + " " + engineer?.emp_lname;
+            ViewBag.ProposalEngineerID = newProposal?.prop_emp_no;
             ViewBag.ProposalMan = newProposal?.prop_manpower;
             ViewBag.ProposalSubject = newProposal?.prop_subject;
             ViewBag.NewProposal = newProposal;
@@ -572,9 +584,44 @@ namespace TotalFireSafety.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { message = "Error saving proposal: " + ex.Message });
+                return Content($"<script>alert('Error saving proposal: One propsal only please check the manpower button above'); window.location.href = '/Admin/Index';</script>");
             }
         }
+
+        [HttpPost]
+        public ActionResult UpdateProposal(NewProposal updatedProposal)
+        {
+            try
+            {
+                // Retrieve the existing proposal based on the updatedProposal.prop_type_id or any other identifier
+                using (var db = new nwTFSEntity())
+                {
+                    var existingProposal = db.NewProposals.FirstOrDefault(p => p.prop_type_id == updatedProposal.prop_type_id);
+                    if (existingProposal != null)
+                    {
+                        // Update the fields of the existing proposal with the updated values
+                        existingProposal.prop_manpower = updatedProposal.prop_manpower;
+                        existingProposal.prop_status = updatedProposal.prop_status;
+                        existingProposal.prop_description = updatedProposal.prop_description;
+                        existingProposal.prop_subject = updatedProposal.prop_subject;
+                        existingProposal.prop_emp_no = updatedProposal.prop_emp_no;
+
+                        db.SaveChanges();
+
+                        return Json(new { message = "Proposal updated successfully." });
+                    }
+                    else
+                    {
+                        return Json(new { message = "Proposal not found." });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { message = "Error updating proposal: " + ex.Message });
+            }
+        }
+
         public async Task<ActionResult> ProjectExport()
         {
             var empId = Session["emp_no"]?.ToString();
@@ -1179,6 +1226,7 @@ namespace TotalFireSafety.Controllers
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             ViewBag.EmpId = empId;
+            ViewBag.emp_position = "Project Lead";
             using (var db = new nwTFSEntity())
             {
 

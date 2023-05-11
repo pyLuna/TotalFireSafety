@@ -47,7 +47,22 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                <label class="stat-appr" name="status">@proposal.prop_status</label>
+                                                @if (proposal.prop_status == "Declined")
+                                                {
+                                                    <label class="stat-dec" name="status">@proposal.prop_status</label>
+                                                }
+                                                else if (proposal.prop_status == "Approved")
+                                                {
+                                                    <label class="stat-appr" name="status">@proposal.prop_status</label>
+                                                }
+                                                else if (proposal.prop_status == "Pending")
+                                                {
+                                                    <label class="stat-pen" name="status">@proposal.prop_status</label>
+                                                }
+                                                else
+                                                {
+                                                    <label name="status">@proposal.prop_status</label>
+                                                }
                                             </td>
                                             <td>
                                                 <button onclick="openInputPropForm('@proposal.prop_type_id', '@(HttpUtility.JavaScriptStringEncode(proposal.prop_description))', '@(HttpUtility.JavaScriptStringEncode(proposal.prop_status))', '@(HttpUtility.JavaScriptStringEncode(proposal.prop_subject))', '@(HttpUtility.JavaScriptStringEncode(proposal.prop_manpower))')">View</button>
@@ -293,11 +308,13 @@
         var manpowerList = [];
         var manpowerTable = document.getElementById("propInput");
         var rows = manpowerTable.getElementsByTagName("tr");
-        for (var i = 0; i < rows.length; i++) {
+        for (var i = 1; i < rows.length; i++) {
             var cells = rows[i].getElementsByTagName("td");
             if (cells.length > 0) {
                 var manpower = cells[0].getElementsByTagName("b")[0].innerText;
-                manpowerList.push(manpower);
+                if (!manpowerList.includes(manpower)) {
+                    manpowerList.push(manpower);
+                }
             }
         }
         var propManpower = manpowerList.join(",");
@@ -311,21 +328,23 @@
                 // Handle the response from the server
                 var response = JSON.parse(this.responseText);
                 if (response.success) {
-                    // Close the form and update the proposal list
-                    document.getElementById("prop-container").style.display = "none";
-                    getProposalList();
-                    location.reload(); // Reload the page
+                    // Display a success message
+                    alert("Proposal updated successfully.");
+                    // Reload the page
+                    location.reload();
                 } else {
                     // Display an error message
                     alert(response.message);
                 }
             }
         };
+
         var data = "propTypeId=" + encodeURIComponent(propTypeId)
             + "&propDescription=" + encodeURIComponent(propDescription)
             + "&propStatus=" + encodeURIComponent(propStatus)
             + "&propSubject=" + encodeURIComponent(propSubject)
             + "&propManpower=" + encodeURIComponent(propManpower);
+
         xhr.send(data);
     }
 

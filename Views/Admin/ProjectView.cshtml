@@ -26,7 +26,7 @@
                 </div>
                 <div class="right">
 
-                    <label> <a onclick="openAddNewContainer()">Edit</a> &nbsp;</label> &nbsp;  <label><a onclick="openInputEditPropForm()">Manpower</a><label class="notif-badge-approve">1</label></label>
+                    <a @if (ViewBag.emp_position == "Project Lead") { <text> style="display: none;" </text> } onclick="openAddNewContainer()">Edit</a> &nbsp;</label> &nbsp;  <label><a onclick="openInputEditPropForm()">Manpower</a><label class="notif-badge-approve">@((ViewBag.ProposalStats == "Approved" || ViewBag.ProposalStats == "Declined") ? "1" : "0")</label></label>
                 </div>
 
             </div>
@@ -36,9 +36,12 @@
                     <div class="task-header">
                         <h2>Accomplistments</h2>
                         <div class="right-container">
-                            <a onclick="openReportNewForm()">
-                                <span class="lar la-plus-square"></span>Add Report
-                            </a>
+                            @if ((ViewBag.ProposalStatus != null && ViewBag.ProposalStatus != "Declined") && (ViewBag.ProposalStats != null && ViewBag.ProposalStats != "Pending"))
+                            {
+                                <a onclick="openReportNewForm()">
+                                    <span class="lar la-plus-square"></span>Add Report
+                                </a>
+                            }
                         </div>
                     </div>
 
@@ -947,6 +950,7 @@
             <div class="prop-main">
                 <div class="prop-title">
                     <input name="prop_status" id="prop_status" value="@ViewBag.ProposalStats" class="status approve decline" />
+                    <input name="prop_status" id="prop_statuses" value="Pending" class="status approve decline" hidden />
                     <center> <input type="text" id="prop_description" value="@ViewBag.ProposalDescription" readonly /> </center>
                 </div>
 
@@ -956,13 +960,13 @@
                         <h3>
                             Proposal:
                         </h3>
-                        <select id="Engineer">
-                            <option value="@ViewBag.ProposalEngineer">@ViewBag.ProposalEngineer</option>
+                        <select id="Engineer1">
+                            <option value="@ViewBag.ProposalEngineerID">@ViewBag.ProposalEngineer</option>
                         </select>
                     </div>
 
                     <div class="prop-main-input">
-                        <textarea name="" id="proj_subject" placeholder="Place your proposal message here..">@ViewBag.ProposalSubject</textarea>
+                        <textarea name="" id="proj_subject1"  value="@ViewBag.ProposalSubject" readonly>@ViewBag.ProposalSubject</textarea>
                         <input type="text" id="project_id" value="@ViewBag.ProjectID" hidden />
                     </div>
 
@@ -973,7 +977,7 @@
                                     <div class="input-prop">
                                         <div class="input-prop-body">
                                             <div class="table-responsive" style="overflow-x: auto;">
-                                                <table id="propInput" width="100%">
+                                                <table id="propInput1" width="100%">
                                                     <thead>
                                                         <tr>
                                                             <td>
@@ -997,11 +1001,13 @@
 
                 </div>
 
-                <center>
-                    <button id="saveButton" onclick="saveProposal()">Save</button>
-                    <button onclick="closeInputEditPropForm()">Cancel</button>
-                </center>
-            </div>
+                
+                    <center>
+                        <button id="saveButton" onclick="UpdateProp()" @if (ViewBag.ProposalStats != null && ViewBag.ProposalStats.ToString().Trim() == "Approved") { <text> style="display: none;" </text> }>Save</button>
+                        <button onclick="closeInputEditPropForm()">Cancel</button>
+                       
+                    </center>
+</div>
         </div>
 
         @* END *@
@@ -1036,8 +1042,89 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 @*<script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>*@
 <script>
+    $(document).ready(function () {
+        var proposalStatus = $('#prop_status').val();
+
+        if (proposalStatus === 'Declined') {
+            $('#prop_status').addClass('status-dec');
+        } else if (proposalStatus === 'Approved') {
+            $('#prop_status').addClass('status-appr');
+        } else if (proposalStatus === 'Pending') {
+            $('#prop_status').addClass('status-pendi');
+        }
+    });
+</script>
+<script>
+    function UpdateProp() {
+        // Get the updated values from the input fields
+        var engineer = document.getElementById("Engineer1").value;
+        var description = document.getElementById("prop_description").value;
+        var propID = document.getElementById("project_id").value;
+        var subject = document.getElementById("proj_subject1").value;
+
+        // Build the manpower list from the table rows
+        var manpowerList = [];
+        var manpowerTable = document.getElementById("propInput1");
+        var rows = manpowerTable.getElementsByTagName("tr");
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            if (cells.length > 0) {
+                var manpower = cells[0].innerText.trim();
+                if (manpower !== "") {
+                    manpowerList.push(manpower);
+                }
+            }
+        }
+        var manpower = manpowerList.join(",");
+
+        // Create a JavaScript object with the updated values
+        var updatedProposal = {
+            prop_type_id: propID,
+            prop_manpower: manpower,
+            prop_status: document.getElementById("prop_statuses").value,
+            prop_description: description,
+            prop_subject: subject,
+            prop_emp_no: engineer
+        };
+
+        // Send the updated proposal to the server using a fetch request or AJAX
+        fetch('/Admin/UpdateProposal', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedProposal)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                if (data.message.includes('successfully')) {
+                    // Success message
+                    alert('Proposal updated successfully.');
+                    // Reload the page
+                    location.reload();
+                } else {
+                    // Error message
+                    alert('Error updating proposal: ' + data.message);
+                    // Optionally, you can perform any other necessary actions
+                }
+            })
+            .catch(error => {
+                // Handle any errors that occur during the request
+                console.error(error);
+                // Display an error message
+                alert('An error occurred while updating the proposal.');
+                // Optionally, you can perform any other necessary actions
+            });
+    }
+</script>
+<script>
+
+
+
     @*function UpdateProjectValidation() {
         var bool = $('#UpdateProForm').valid();
         if (bool) {
@@ -1074,9 +1161,17 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data.message);
+                // Display popup message if the save is successful
+                if (data.message.includes('successfully')) {
+                    alert('Proposal saved successfully.');
+                    // Reload the page
+                    location.reload();
+                }
             })
             .catch(error => {
                 console.error(error);
+                // Display error message in a pop-up
+                alert("One proposal only every project please check the manpower button above.");
             });
     }
 </script>

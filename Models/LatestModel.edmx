@@ -552,8 +552,6 @@
           <Property Name="bc_date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="bc_count" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1" FromRole="Basecount" ToRole="Inventory" />
-          <NavigationProperty Name="Basecount1" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecounts_Basecounts" FromRole="Basecount" ToRole="Basecount1" />
-          <NavigationProperty Name="Basecount2" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecounts_Basecounts" FromRole="Basecount1" ToRole="Basecount" />
         </EntityType>
         <EntityType Name="Credential">
           <Key>

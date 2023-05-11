@@ -30,6 +30,7 @@ namespace TotalFireSafety.Controllers
     public class AdminController : Controller
     {
         private readonly Timer updateTimer;
+        private readonly List<Basecount> bcItems;
         public AdminController()
         {
             // Schedule the update to run once per day
@@ -45,6 +46,15 @@ namespace TotalFireSafety.Controllers
             {
                 await AddItemsToBaseCount();
             }, null, dueTime, TimeSpan.FromDays(1));
+
+            //using (var _context = new nwTFSEntity())
+            //{
+            //    bcItems = _context.Basecounts
+            //             .Select(x => x)
+            //             .Include("Inventory")
+            //             .ToList();
+            //}
+
         }
 
         private async Task AddItemsToBaseCount()
@@ -318,15 +328,15 @@ namespace TotalFireSafety.Controllers
         //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvReportPrint()
         {
-            var role = int.Parse(Session["system_role"].ToString());
-            if(role ==3)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            var role = int.Parse(Session["system_role"].ToString());
+            if(role ==3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
@@ -995,12 +1005,14 @@ namespace TotalFireSafety.Controllers
                 // Calculate the start date based on the end date and the diff parameter
                 DateTime startDate = endDate.AddDays(-diff);
 
+                //                var allBase1 = _context.Basecounts
+                //    .Where(item => item.bc_date >= startDate && item.bc_date <= endDate)
+                //    .ToList();
+                //var allBase1Items = allBase1.First().Inventory;
                 var allBase = _context.Basecounts
                     .Where(item => item.bc_date >= startDate && item.bc_date <= endDate)
-                    //.OrderByDescending(item => item.bc_date)
-                    .Include("Inventory")
+                    //.Include("Inventory")
                     .ToList();
-                //var allItems = _context.Inventories.ToList();
 
                 var groupedByCode = await Task.Run(() => allBase
                             .GroupBy(item => item.Inventory.in_code)

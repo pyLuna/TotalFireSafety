@@ -182,27 +182,33 @@ function setTable(array) {
 				array[i].in_size = '';
 			}
 			let remarks = "";
+			let tooltip = ""
 			let holder = array[i].in_remarks === null ? "" : array[i].in_remarks;
 			let remclass = "";
 			if (holder.trim() == 'critical') {
 				remarks = 'Critical';
 				remclass = 'stat-critical';
+				tooltip = "Below Minimum Quantity. Item is Critical ";
 			}
 			else if (holder.trim() == 'standard') {
 				remarks = 'Standard';
 				remclass = 'stat-standard';
+				tooltip = "Item Quantity is on Standard Level";
 			}
 			else if (holder.trim() == 'average'){
 				remarks = 'Average';
 				remclass = 'stat-average';
+				tooltip = "Item Quantity is on Average Level";
 			}
 			else if (holder.trim() == 'overstock') {
 				remarks = 'Overstock';
 				remclass = 'stat-overstock';
+				tooltip = "Maximum Quantity Reached. Item Overstock.";
 			}
 			else if (holder.trim() == 'reorder') {
 				remarks = 'Reorder';
 				remclass = 'stat-reorder';
+				tooltip = "Item Quantity is in Minimum Level. Items need to restock";
 			}
 			/* class ng remarks 
 			 * stat-standard
@@ -216,7 +222,7 @@ function setTable(array) {
 			row += `<td name="in_type"><label>${array[i].in_type}</label></td>`;
 			row += `<td name="in_size"><label>${array[i].in_size}</label></td>`;
 			row += `<td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
-			row += `<td name="in_remarks"><label class="${remclass}">${remarks}</label></td>`;
+			row += `<td name="in_remarks"><label class="${remclass}" title="${tooltip}">${remarks}</label></td>`;
 			row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
 			if (sessionId == 2) {
 			row += `<td id="hideActionBtn"><div class="inventory-action-style">`;

@@ -364,21 +364,20 @@ namespace TotalFireSafety.Controllers
 
 
         }
-
         [HttpPost]
-        public ActionResult Update(NewProposal model)
+        public ActionResult Update(int propTypeId, string propDescription, string propStatus, string propSubject, string propManpower)
         {
             nwTFSEntity db = new nwTFSEntity();
-            if (ModelState.IsValid)
+            if (propTypeId != 0)
             {
-                var proposal = db.NewProposals.Find(model.prop_type_id); // Find the proposal by its ID
+                var proposal = db.NewProposals.Find(propTypeId); // Find the proposal by its ID
                 if (proposal != null)
                 {
                     // Update the proposal properties with the new values
-                    proposal.prop_description = model.prop_description;
-                    proposal.prop_status = model.prop_status;
-                    proposal.prop_subject = model.prop_subject;
-                    proposal.prop_manpower = model.prop_manpower;
+                    proposal.prop_description = propDescription;
+                    proposal.prop_status = propStatus;
+                    proposal.prop_subject = propSubject;
+                    proposal.prop_manpower = propManpower;
 
                     db.SaveChanges(); // Save changes to the database
 
@@ -394,24 +393,42 @@ namespace TotalFireSafety.Controllers
                 return Json(new { success = false, message = "Invalid model state." }); // Return error response to the client
             }
         }
-    
 
-    /*public ActionResult GetProposals()
-    {
-        nwTFSEntity db = new nwTFSEntity();
-
-        var proposals = db.NewProposals.ToList();
-        var data = proposals.Select(p => new
+     /*   [HttpGet]
+        public ActionResult GetProposalData(int propTypeId)
         {
-            prop_description = p.prop_description,
-            prop_status = p.prop_status
-        });
-        return Json(data, JsonRequestBehavior.AllowGet);
-    }*/
+            nwTFSEntity db = new nwTFSEntity();
+            // Retrieve the proposal data based on the prop_type_id
+            NewProposal proposal = db.NewProposals.FirstOrDefault(p => p.prop_type_id == propTypeId);
+
+            if (proposal != null)
+            {
+                ViewBag.Proposal = proposal; // Store the proposal data in ViewBag
+                return View();
+            }
+            else
+            {
+                ViewBag.Message = "Failed to retrieve proposal data.";
+                return View("Error"); // Show an error view
+            }
+        }*/
+
+        /*public ActionResult GetProposals()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+
+            var proposals = db.NewProposals.ToList();
+            var data = proposals.Select(p => new
+            {
+                prop_description = p.prop_description,
+                prop_status = p.prop_status
+            });
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }*/
 
 
-    //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
-    public async Task<ActionResult> InvReportExport(int? id)
+        //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
+        public async Task<ActionResult> InvReportExport(int? id)
         {
             var role = int.Parse(Session["system_role"].ToString());
             if (role == 3)
@@ -497,6 +514,7 @@ namespace TotalFireSafety.Controllers
             var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == id);
             var lead = db.Employees.FirstOrDefault(e => e.emp_no == project.proj_emp_no);
             var report = db.NewReports.FirstOrDefault(r => r.rep_no == id);
+            var newProposal = db.NewProposals.FirstOrDefault(p => p.prop_type_id == project.proj_type_id);
 
             var viewModel = new ProjectReportViewModel
             {
@@ -526,6 +544,12 @@ namespace TotalFireSafety.Controllers
             ViewBag.ReportScope = report?.rep_scope;
             ViewBag.ReportNo = report?.rep_no;
 
+            ViewBag.ProposalStats = newProposal?.prop_status;
+            ViewBag.ProposalDescription = newProposal?.prop_description;
+            ViewBag.ProposalEngineer = newProposal?.prop_emp_no;
+            ViewBag.ProposalMan = newProposal?.prop_manpower;
+            ViewBag.ProposalSubject = newProposal?.prop_subject;
+            ViewBag.NewProposal = newProposal;
             return View(viewModel);
         }
 
@@ -1189,14 +1213,26 @@ namespace TotalFireSafety.Controllers
 
 
 
-        public async Task<JsonResult> GetEmployees(int empId)
+        public JsonResult GetEmployees()
         {
             nwTFSEntity db = new nwTFSEntity();
 
-            var employees = await db.Employees
-                .Where(e => e.emp_no == empId)
+            var employees = db.Employees
+                .Where(e => e.emp_position == "Project Lead")
                 .Select(e => new { e.emp_no, e.emp_fname, e.emp_lname })
-                .ToListAsync();
+                .ToList();
+
+            return Json(employees, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetEmployeeses()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+
+            var employees = db.Employees
+                .Where(e => e.emp_position == "Project Lead")
+                .Select(e => new { e.emp_no, e.emp_fname, e.emp_lname })
+                .ToList();
 
             return Json(employees, JsonRequestBehavior.AllowGet);
         }
@@ -1247,16 +1283,16 @@ namespace TotalFireSafety.Controllers
                     Random rand = new Random();
                     int projTypeId = rand.Next(1000, 9999); // Generate a random 4-digit integer
                     project.proj_id = Guid.NewGuid();
-                    project.proj_emp_no = (int)Session["emp_no"];
+                    project.proj_emp_no = int.Parse(project.proj_lead); // Set proj_emp_no to the selected value from proj_lead
                     project.proj_type_id = projTypeId;
                     db.NewProjects.Add(project);
                 }
                 db.SaveChanges();
-                return Json(new { success = true });
+                return Json(new { success = true, message = "Project saved successfully." });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message });
+                return Json(new { success = false, message = "An error occurred while saving the project: " + ex.Message });
             }
         }
         public async Task<ActionResult> ProjectList()

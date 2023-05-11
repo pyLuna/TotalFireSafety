@@ -841,7 +841,11 @@
         var code = document.getElementById('hiddenCode').value;
         if (quant === '' || quant === null || isNaN(quant)) {
             $(".emErr").html("Please input quantity.");
-        } else {
+        }
+        else if (quant > 200) {
+            $(".emErr").html("Quantity must not exceed 200");
+        }
+        else {
             DataToAdd(quant, code);
             closeInputQTYForm();
             document.getElementById('quantVal').value = '';

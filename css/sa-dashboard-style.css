@@ -8647,6 +8647,19 @@ hr {
         font-weight: 500;
     }
 
+    .propo-body table tbody td button {
+        width: 70px;
+        height: 35px;
+        margin-left: 10px;
+        border-radius: 5px;
+        transition: all ease-in-out 0.2s;
+        cursor: pointer;
+        background-color: #fff;
+        border: 1px solid #B2B2B2;
+        box-shadow: 4px 3px 3px #B2B2B2;
+        font-weight: 800;
+    }
+
     .propo-body table td .stat-appr {
         color: #09AF10;
     }
@@ -10025,18 +10038,20 @@ hr {
             color: blue;
         }
 
-    .add-new-container .add-new-main {
-        background-color: #fff;
-        margin-top: 20px;
-        width: 100%;
-        height: 627px;
-        display: flex;
-    }
+.add-new-container .add-new-main {
+    width: 100%;
+    height: 650px;
+    display: flex;
+    padding-bottom: 25px;
+    overflow: auto;
+}
 
-        .add-new-container .add-new-main .add-new-left {
-            width: 100% !important;
-            padding: 30px;
-        }
+    .add-new-container .add-new-main .add-new-left {
+        width: 100% !important;
+        padding-left: 30px;
+        padding-right: 30px;
+        overflow: auto;
+    }
 
 .add-new-main .add-new-left .input-fields label {
     font-size: 1rem;

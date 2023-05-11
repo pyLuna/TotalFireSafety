@@ -14,6 +14,7 @@ namespace TotalFireSafety.Models
 
         public NewManpower SelectedManpower { get; set; }
 
+        public NewProposal NewProposal { get; set; }
 
         public List<NewReport> Reports { get; set; }
 

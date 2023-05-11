@@ -73,7 +73,6 @@ qtyCode.addEventListener("keydown",Scan)
 //#endregion
 
 function GetAll() {
-	let start = performance.now();
 	fetch('/Admin/FindDataOf?requestType=inventory')
 		.then(res => {
 			if (res.ok) {
@@ -98,8 +97,6 @@ function GetAll() {
 			if (table !== null) {
 				setTable(fixedArray);
 			}
-			let end = performance.now();
-			console.log(`Response time : ${end - start}`);
 		})
 		.catch(error => {
 			//window.location.replace('/Error/InternalServerError');
@@ -538,6 +535,16 @@ function SetHiddenValues() {
 	in_size.value = inpSizeSel.value + ' ' + sizeSel.options[sizeSel.selectedIndex].value;
 	in_quantity.value = inpSizeQuant.value + ' ' + sizeQuant.options[sizeQuant.selectedIndex].value;
 
+	if (inpSizeQuant.value >= 100) {
+		openOverPopup();
+	}
+	else if (inpSizeQuant.value <= 10) {
+		openAddOverPopup();
+	}
+	else {
+		checkForm();
+	}
+
 	if (inpSizeSel > 60) {
 		in_remarks.value = 'standard';
 	}
@@ -564,13 +571,23 @@ function setHiddensEdit() {
 	var sz1 = document.getElementById('in_size2');
 	var qt1 = document.getElementById('in_quantity2');
 	var rm1 = document.getElementById('in_remarks2');
-	var oldqt = extractNum(filtered[0].in_quantity);
+	//var oldqt = extractNum(filtered[0].in_quantity);
 	var newqt = /*Number(oldqt.num) + */Number(inpQuant2.value);
 	cat1.value = catsel.options[catsel.selectedIndex].value;
 	cl1.value = classsel.options[classsel.selectedIndex].value;
 	ty1.value = typesel.options[typesel.selectedIndex].value;
 	qt1.value = newqt + ' ' + inpQuant2A.options[inpQuant2A.selectedIndex].value;
 	sz1.value = inpSize2.value + ' ' + inpSize2A.options[inpSize2A.selectedIndex].value;
+
+	if (inpQuant2.value >= 100) {
+		openExtraOverPopup();
+	}
+	else if (inpQuant2.value <= 10) {
+		openCritPopup();
+	}
+	else {
+		checkForm();
+	}
 
 	if (newqt < 40) {
 		rm1.value = 'critical';

@@ -1606,15 +1606,16 @@ namespace TotalFireSafety.Controllers
         //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> Inventory()
         {
-            var role = int.Parse(Session["system_role"].ToString());
-            if (role == 3)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
+
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
             }
             if (Session["edit"] == null)
             {

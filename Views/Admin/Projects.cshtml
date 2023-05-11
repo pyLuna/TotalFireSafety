@@ -206,7 +206,7 @@
         <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
 
         <div class="add-new-container" id="add-new-container">
-            <form id="NewProForm">
+            @*<form id="NewProForm">*@
                 <div class="add-new-header">
                     @*<span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>*@
                     <button type="reset" style="border: none;">
@@ -315,14 +315,14 @@
 
                 </div>
 
-                @* <div class="add-new-footer">
+                 <div class="add-new-footer">
                         <button id="save-button" onclick="savePro()">CREATE PROJECT</button>
-                    </div>*@
-                <div class="add-new-footer">
-                    <button id="save-button" onclick="CreateProjectValidation">CREATE PROJECT</button>
+                    </div>
+                <!--<div class="add-new-footer">
+                    <button id="save-button" onclick="CreateProjectValidation">CREATE PROJECT</button>-->
                     @*savePro()*@
-                </div>
-            </form>
+                <!--</div>-->
+            @*</form>*@
 
         </div>
 
@@ -385,16 +385,16 @@
         </div>
 
     </main>
-    <script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>
+    @*<script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>*@
     <script>
         /*savePro()*/
-        function CreateProjectValidation() {
+        /*function CreateProjectValidation() {
             var bool = $('#NewProForm').valid();
             if (bool) {
                 savePro();
             }
             return bool;
-        }
+        }*/
 $(document).ready(function () {
   var projects = JSON.parse('@Html.Raw(ViewBag.Projects)');
   var tableBody = $('#projectTable tbody');

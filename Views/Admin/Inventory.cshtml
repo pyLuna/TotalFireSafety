@@ -51,7 +51,7 @@
                 <div class="inventory-buttons-style" id="hideBtn">
 
                     @*<button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()">ADD NEW ITEM</button>
-                        <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
+                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
                     @if (Int32.Parse(Session["system_role"].ToString()) == 2)
                     {
                         <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + AppendOption(addFormSel) + setDatalist();">ADD NEW ITEM</button>
@@ -121,14 +121,14 @@
                                             <input type="text" id="in_class" name="in_class" style="display:none;">
                                             <div class="input-field">
                                                 <label>type</label>
-                                                <input type="text" id="in_type" list="typelist" name="in_type" placeholder="Enter item type" >
+                                                <input type="text" id="in_type" list="typelist" name="in_type" placeholder="Enter item type">
                                                 <datalist id="typelist"></datalist>
                                             </div>
                                             <div class="input-field">
                                                 <label>size</label>
                                                 <div class="input-field-size">
-                                                    <input type="number" id="inpSizeSel" name="inpSizeSel" placeholder="00000" >
-                                                    <select id="sizeSel" name="sizeSel" >
+                                                    <input type="number" id="inpSizeSel" name="inpSizeSel" placeholder="00000">
+                                                    <select id="sizeSel" name="sizeSel">
                                                         <option value="" selected>Unit</option>
                                                     </select>
                                                 </div>
@@ -163,7 +163,7 @@
                                 </div>
 
                                 <div class="form-add-btns">
-                                    <button class="save" onclick="checkForm() + SetHiddenValues()">
+                                    <button class="save" onclick="SetHiddenValues()">
                                         @*infoOpenPopup('addForm')*@
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>
@@ -259,14 +259,14 @@
                                 </div>
 
                                 <div class="form-add-btns">
-                                    <button class="save" onclick="checkForm_Add_Quan() + setHiddens()">
+                                    <button class="save" onclick="setHiddens()">
                                         @*infoOpenPopup('qtyForm')*@
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>
                                     </button>
 
                                     <button class="cancel">
-                                        <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                        <span class="btnText" onclick="checkForm_Add_Quan() + canOpenPopup()">Cancel</span>
                                         <i class="las la-window-close"></i>
                                     </button>
                                 </div>
@@ -362,7 +362,7 @@
                                 </div>
 
                                 <div class="form-add-btns">
-                                    <button class="save" onclick="checkForm_Edit_Itm() + setHiddensEdit()">
+                                    <button class="save" onclick="setHiddensEdit()">
                                         @*infoOpenPopup('editForm')*@
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>
@@ -462,6 +462,42 @@
             <button type="button" onclick="expoClosePopup()">OK</button>
         </div>
 
+        @* POPUP FOR OVERSTACKED AND CRITICAL *@
+
+        <div class="over-pop-container" id="over-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>This item will be marked as Overstacked. Are you sure?</p>
+            <button type="submit" id="addOverConf">Yes</button>
+            <button type="button" onclick="closeOverPopup()">Cancel</button>
+        </div>
+
+        <div class="over-pop-container" id="add-over-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>This item will be marked as Critical. Are you sure?</p>
+            <button type="submit" id="addCritConf">Yes</button>
+            <button type="button" onclick="closeAddOverPopup()">Cancel</button>
+        </div>
+
+        <div class="over-pop-container" id="extra-over-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>This item will be marked as Overstacked. Are you sure?</p>
+            <button type="submit" id="qtyOverConf">Yes</button>
+            <button type="button" onclick="closeExtraOverPopup()">Cancel</button>
+        </div>
+
+        <div class="crit-pop-container" id="crit-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>This item will be marked as Critical. Are you sure?</p>
+            <button type="submit" id="qtyCritConf">Yes</button>
+            <button type="button" onclick="closeCritPopup()">Cancel</button>
+        </div>
+
+        @* END *@
+
     </main>
 </div>
 <script src="@Url.Content("~/Scripts/Inventory.js")"></script>
@@ -477,6 +513,8 @@
         var bool = $('#addForm').valid();
         if (bool) {
             infoOpenPopup('addForm');
+            closeOverPopup();
+            closeAddOverPopup();
         }
     }
 
@@ -495,6 +533,8 @@
         var bool = $('#editForm').valid();
         if (bool) {
             infoOpenPopup('editForm');
+            closeExtraOverPopup();
+            closeCritPopup();
         }
     }
 
@@ -550,6 +590,59 @@
         }
     }
     //Messege Box
+
+    let extraoverpopup = document.getElementById("extra-over-popup");
+    function openExtraOverPopup() {
+        extraoverpopup.classList.add("over-popup-show");
+        var button = document.getElementById("qtyOverConf");
+        button.addEventListener("click", function () {
+            checkForm_Edit_Itm();
+        });
+    }
+
+    function closeExtraOverPopup() {
+        extraoverpopup.classList.remove("over-popup-show")
+    }
+
+    let addoverpopup = document.getElementById("add-over-popup");
+    function openAddOverPopup() {
+        addoverpopup.classList.add("over-popup-show")
+        var button = document.getElementById("addCritConf");
+        button.addEventListener("click", function () {
+            checkForm();
+        });
+    }
+
+    function closeAddOverPopup() {
+        addoverpopup.classList.remove("over-popup-show")
+    }
+
+    let overpopup = document.getElementById("over-popup");
+    function openOverPopup() {
+        overpopup.classList.add("over-popup-show")
+        var button = document.getElementById("addOverConf");
+        button.addEventListener("click", function () {
+            checkForm();
+        });
+    }
+
+    function closeOverPopup() {
+        overpopup.classList.remove("over-popup-show")
+    }
+
+    let critpopup = document.getElementById("crit-popup");
+    function openCritPopup() {
+        critpopup.classList.add("crit-popup-show")
+        var button = document.getElementById("qtyCritConf");
+        button.addEventListener("click", function () {
+            checkForm_Edit_Itm();
+        });
+    }
+
+    function closeCritPopup() {
+        critpopup.classList.remove("crit-popup-show")
+    }
+
     let popup = document.getElementById("popup");
     function openPopup() {
         popup.classList.add("open-popup-show")

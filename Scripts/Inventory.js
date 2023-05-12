@@ -592,7 +592,7 @@ function setHiddensEdit() {
 		openCritPopup();
 	}
 	else {
-		checkForm();
+		checkForm_Edit_Itm();
 	}
 
 	if (newqt < 40) {

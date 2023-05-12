@@ -30,10 +30,12 @@ $(document).ready(function () {
 				required: true
 			},
 			projStartDate: {
-				required: true
+				required: true,
+				dateComparison: true
 			},
 			projEndDate: {
-				required: true
+				required: true,
+				dateComparison: true
 			}
 		},
 		messages: {
@@ -65,6 +67,7 @@ $(document).ready(function () {
 			},
 			projStartDate: {
 				required: "Project Start Date is required"
+				
 			},
 			projEndDate: {
 				required: "Baseline Finish is required"
@@ -78,18 +81,18 @@ $(document).ready(function () {
 		var endDate = $(this).val();
 
 		if (startDate === endDate) {
-			/*alert("Start date and end date cannot be the same.");*/
+			alert("Start date and end date cannot be the same.");
 			$(".emErrP").html("Start date and Baseline Finish cannot be the same.");
-			/*$(this).val('');*/
+			$(this).val('');
 		}
-		/*else if (startDate > endDate){
+		else if (startDate > endDate){
 			$(".emErrP").html("Invalid input! Baseline Finish is ahead to start date.");
-		}*/
+		}
 		else {
 			$(".emErrP").html("");
 		}
 		return startDate
-		/*if (startDate > endDate) {
+		if (startDate > endDate) {
 			alert("Invalid input! Baseline Finish is ahead to start date. ");
 			$(this).val('');
 			$(".emErrP").html("Invalid input! Baseline Finish is ahead to start date.");
@@ -98,23 +101,24 @@ $(document).ready(function () {
 			$(".emErrP").html("");
 		}
 
-		return startDate;*/
+		return startDate;
 	});
+
 
 	$('input[name="projStartDate"]').change(function () {
 		var endDate = $('input[name="projEndDate"]').val();
 		var startDate = $(this).val();
 
 		if (endDate === startDate) {
-			/*alert("Start date and end date cannot be the same.");*/
+			alert("Start date and end date cannot be the same.");
 			$(".emErrP").html("Start date and Baseline Finish cannot be the same.");
-			/*$(this).val('');*/
+			$(this).val('');
 		}
 		else {
 			$(".emErrP").html("");
 		}
 		return endDate
-		/*
+		
 				if (startDate > endDate) {
 					alert("Invalid input! Baseline Finish is ahead to start date. ");
 					$(this).val('');
@@ -123,7 +127,7 @@ $(document).ready(function () {
 				else {
 					$(".emErrP").html("");
 				}
-				return endDate;*/
+				return endDate;
 	});
 
 });

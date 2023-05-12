@@ -2298,7 +2298,7 @@ input[type="month"] {
 
 .add-qty-popup-inv {
     height: auto;
-    width: 70%;
+    width: 60%;
     border-radius: 6px;
     position: absolute;
     top: 0;
@@ -2316,6 +2316,62 @@ input[type="month"] {
     visibility: visible;
     top: 50%;
     transform: translate(-50%,-50%) scale(1);
+}
+
+.inventory-form-contents .add-qty-header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.inventory-form-contents .add-qty-header .add-qty {
+    display: flex;
+    margin-right: 10px;
+}
+
+.inventory-form-contents .add-qty-header .add-qty label {
+    color: #000;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.inventory-form-contents .add-qty-header .add-qty input {
+    height: 40px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+    border: 1px solid #B2B2B2;
+    border-radius: 5px;
+    box-shadow: 4px 4px 3px #B2B2B2;
+    padding-left: 5px;
+}
+
+.inventory-form-contents .item {
+    display: block;
+    margin-top: 20px;
+}
+
+.inventory-form-contents .item .item-header label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #000;
+}
+
+.inventory-form-contents .item .text-area {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.inventory-form-contents .item .text-area textarea {
+    width: 100%;
+    height: 250px;
+    resize: none;
+    border: 1px solid #B2B2B2;
+    border-radius: 5px;
+    box-shadow: 4px 4px 3px #B2B2B2;
+    font-size: 1rem;
 }
 
 /* END */
@@ -8172,39 +8228,58 @@ acc-form-table .view-request-form-table-style table thead td {
     color: #FF0000;
 }
 
+.proj-main-content .proj-main-container .proj-right-container {
+    width: auto;
+    height: auto;
+    margin: 20px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+    .proj-main-content .proj-main-container .proj-right-container .proj-incharge-container {
+        background-color: #fff;
+        border: 2px solid #AEAEAE;
+        box-shadow: 5px 5px 3px #B2B2B2;
+        width: auto;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
 .proj-right-container .proj-incharge-container .incharge {
     height: 180px;
     font-size: .9rem;
     margin-left: 20px;
+    margin-right: 20px;
+    height: 300px;
+    margin-bottom: 0;
 }
 
-hr {
-    border: 1px solid black;
-    width: 90%;
+.proj-incharge-container .incharge .incharge-header {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-bottom: 2px solid #000;
 }
 
-.proj-incharge-container .incharge .incharge-header label {
+.proj-incharge-container .incharge .incharge-header a {
+    font-size: 1rem;
+}
+
+.proj-incharge-container .incharge .incharge-header a:hover {
+    cursor: pointer;
+    text-decoration: underline;
     color: blue;
-    font-size: .8rem;
 }
 
-.proj-incharge-container .incharge .date {
-    margin-top: 20px;
-}
-
-    .proj-incharge-container .incharge .date label input {
-        border: 1px solid #B2B2B2;
-        border-radius: 5px;
-        width: 150px;
-        height: 30px;
-        font-size: .9rem;
+    .proj-incharge-container .incharge .date {
+        margin-top: 10px;
     }
 
-    .proj-incharge-container .incharge .date label .start {
-        margin-left: 5px;
-    }
+    
 
-    .proj-incharge-container .incharge .date .title {
+    .proj-incharge-container .incharge .date label {
         font-weight: 600;
     }
 
@@ -8224,7 +8299,18 @@ hr {
         width: 150px;
         height: 30px;
         font-weight: 600;
-        margin-left: 30px;
+        margin-left: 40px;
+        padding: 0;
+    }
+
+    .proj-incharge-container .incharge .date input {
+        border: 1px solid #B2B2B2;
+        border-radius: 5px;
+        font-size: .9rem;
+        width: 150px;
+        height: 30px;
+        font-weight: 600;
+        margin-left: 10px;
     }
 
         .proj-incharge-container .incharge .status select .on-going {
@@ -8239,98 +8325,53 @@ hr {
             color: #FF0000;
         }
 
-.proj-main-content .proj-main-container .proj-right-container {
-    width: auto;
-    height: auto;
-    margin: 20px;
-    border-radius: 5px;
-    display: grid;
-    grid-template-columns: 1fr;
-}
 
-    .proj-main-content .proj-main-container .proj-right-container .proj-incharge-container {
-        background-color: #fff;
-        border: 2px solid #AEAEAE;
-        box-shadow: 5px 5px 3px #B2B2B2;
-        width: auto;
-        height: auto;
-        border-radius: 5px;
-    }
-
-.proj-des-container .descri-main {
-    margin: 10px;
-    height: 100px;
-}
-
-    .proj-des-container .descri-main .descri-title input {
-        border: none;
-        border-bottom: 1px solid #000;
-        border-radius: 0;
-        font-size: .9rem;
-        width: 200px;
-    }
-
-        .proj-des-container .descri-main .descri-title input::-webkit-input-placeholder {
-            font-style: italic;
-        }
-
-    .proj-des-container .descri-main .descri-content {
-        font-size: .9rem;
-        margin-top: 10px;
-        margin-bottom: -40px;
-    }
-
-        .proj-des-container .descri-main .descri-content textarea {
-            width: 100%;
-            height: 60px;
-            overflow: auto;
-            resize: none;
-            font-size: 1rem;
-        }
-
-            .proj-des-container .descri-main .descri-content textarea::-webkit-scrollbar {
-                display: none;
-            }
-
-            .proj-des-container .descri-main .descri-content textarea::-webkit-input-placeholder {
-                font-style: italic;
-            }
-
-.proj-main-content .proj-main-container .proj-right-container .proj-des-container {
-    background-color: #fff;
-    border: 2px solid #AEAEAE;
-    box-shadow: 5px 5px 3px #B2B2B2;
-    width: auto;
-    height: auto;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
 
 .proj-main-content .proj-main-container .proj-right-container .proj-mems-container {
     background-color: #fff;
     border: 2px solid #AEAEAE;
     box-shadow: 5px 5px 3px #B2B2B2;
     width: auto;
-    height: 50px;
+    height: 385px;
     border-radius: 5px;
-    margin-top: 10px;
 }
-
-    .proj-main-content .proj-main-container .proj-right-container .proj-mems-container:hover {
-        background-color: #16215B;
-        color: #000;
-        cursor: pointer;
-    }
-
-
 
 .proj-mems-container .mems-main {
-    margin: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+   
+.proj-main-content .proj-main-container .proj-right-container .proj-mems-container .mems-main .mems-header {
+    justify-content: space-between;
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 5px;
 }
 
-    .proj-mems-container .mems-main .mems-title h3 {
-        font-size: 1rem;
-    }
+.proj-mems-container .mems-main .mems-header h2 {
+    font-size: 1.2rem;
+}
+
+.proj-right-container .proj-mems-container .mems-main .mems-header button {
+    width: 130px;
+    height: 30px;
+    margin-top: -5px;
+    margin-left: 10px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
+    font-size: .8rem;
+}
+
+.proj-right-container .proj-mems-container .mems-main .mems-header button:hover {
+    color: #fff;
+    border: 1px solid var(--text-color-black);
+    background-color: #16215B;
+}
 
         .proj-mems-container .mems-main .mems-title h3 a {
             font-size: 1.5rem;
@@ -8355,11 +8396,11 @@ hr {
             font-size: .8rem;
         }
 
-/*.mems {
-    margin-top: 10px;
-    height: 100px;
+.mems {
+    border-top: 3px solid #000;
+    height: 300px;
     overflow: auto;
-    margin-bottom: -20px;
+    margin-top: -20px;
 }
 
 .mems-projects {
@@ -8372,6 +8413,7 @@ hr {
 
 .mems-body table {
     margin: 0;
+    overflow: auto;
 }
 
     .mems-body table thead {
@@ -8386,7 +8428,12 @@ hr {
     .mems-body table td {
         font-weight: 400;
         font-size: .8rem;
-    }*/
+    }
+
+.mems-body table tbody tr:hover {
+     cursor: pointer;
+     background-color: #F0EBE3;
+}
 
 
 /* PROPOSAL REQUEST */

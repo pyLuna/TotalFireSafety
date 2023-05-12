@@ -192,7 +192,36 @@
                                         ADD QUANTITY
                                     </div>
                                     <div class="inventory-form-contents">
-                                        <div class="fields">
+
+                                        <div class="add-qty-header">
+                                            <div class="search-wrapper add-search">
+                                                <span class="las la-search"></span>
+                                                <input type="text" placeholder="Search here">
+                                            </div>
+
+
+                                            <div class="add-qty">
+                                                <label>Quantity:</label>
+                                                <input type="number" max="999"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="item">
+                                            <div class="item-header">
+                                                <label>Item Codes:</label>
+                                            </div>
+
+                                            <div class="text-area">
+                                                <textarea></textarea>
+                                            </div>
+
+                                        </div>
+                                       
+                                            
+                                            
+                                        
+
+                                        @*<div class="fields">
                                             <div class="input-field">
                                                 <label>Item ID</label>
                                                 <input type="text" id="in_code1" name="in_code" placeholder="ABCD-EFG-HIJ" required>
@@ -254,7 +283,7 @@
 
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>*@
                                     </div>
                                 </div>
 
@@ -391,13 +420,20 @@
                                         <td>Category</td>
                                         <td>Type</td>
                                         <td>Size</td>
-                                        <td>Quantity</td>
-                                        <td>Remarks<span title="Quantity &#10; Over 100 = Overstocked &#10; 50 to 99 = Standard &#10; 49 t0 30 = Average &#10; 29 to 10 = Reorder &#10; Below 9 = Critical"><i class="las la-info-circle"></i></span></td>
+                                        <td>On-hand Quantity</td>
+                                        <td>Minimum</td>
+                                        <td>Maximum</td>
+                                        <td>Re-order</td>
+
+                                        @*<td>Remarks<span title="Quantity &#10; Over 100 = Overstocked &#10; 50 to 99 = Standard &#10; 49 t0 30 = Average &#10; 29 to 10 = Reorder &#10; Below 9 = Critical"><i class="las la-info-circle"></i></span></td>*@
+                                        
                                         <td><a onclick="Sort(this,'in_class')">Class<i class="las la-sort-down"></i></a></td>
+                                        <td>Running Quantity</td>
                                         @if (Int32.Parse(Session["system_role"].ToString()) == 2)
                                         {
                                             <td id="hideAction">Action</td>
                                         }
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>

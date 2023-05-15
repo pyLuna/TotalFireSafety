@@ -172,6 +172,7 @@
           <Property Name="request_status" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="request_type_id" Type="int" Nullable="false" />
           <Property Name="request_type_status" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="request_proj_id" Type="int" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -702,6 +703,7 @@
           <Property Name="request_type_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Request" ToRole="Employee" />
           <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Request" ToRole="Inventory" />
+          <Property Name="request_proj_id" Type="Int32" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -1089,6 +1091,7 @@
           <EntitySetMapping Name="Requests">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Request">
               <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="request_proj_id" ColumnName="request_proj_id" />
                 <ScalarProperty Name="request_type_status" ColumnName="request_type_status" />
                 <ScalarProperty Name="request_type_id" ColumnName="request_type_id" />
                 <ScalarProperty Name="request_status" ColumnName="request_status" />

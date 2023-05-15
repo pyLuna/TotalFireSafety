@@ -23,6 +23,7 @@ namespace TotalFireSafety.Models
         public string request_status { get; set; }
         public int request_type_id { get; set; }
         public string request_type_status { get; set; }
+        public Nullable<int> request_proj_id { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual Inventory Inventory { get; set; }

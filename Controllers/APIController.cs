@@ -1465,7 +1465,8 @@ namespace TotalFireSafety.Controllers
                             request_status = "On Process",
                             request_type = item.request_type,
                             request_type_id = item.request_type_id,
-                            request_type_status = "Active"
+                            request_type_status = "Active",
+                            request_proj_id = item.request_proj_id
                         };
                         _context.Requests.Add(newReqs);
                         _context.SaveChanges();

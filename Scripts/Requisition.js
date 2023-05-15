@@ -33,7 +33,8 @@ const template = {
 	"request_employee_id": "",
 	"request_status": "",
 	"request_type_id": 0,
-	"request_type_status": ""
+	"request_type_status": "",
+	"request_proj_id": 0
 };
 
 const template2 = {
@@ -82,7 +83,7 @@ document.getElementById('cnfBtn').addEventListener("click", function () {
 	localStorage.setItem('typeData', 'add');
 });
 
-function GetAllItem() {
+async function GetAllItem() {
 	fetch('/Admin/FindDataOf?requestType=inventory')
 		.then(res => {
 			if (res.ok) {
@@ -103,7 +104,7 @@ function GetAllItem() {
 			console.error(error);
 		});
 }
-function GetAllEmployee() {
+async function GetAllEmployee() {
 	fetch('/Admin/SearchEmployee')
 		.then(res => {
 			if (res.ok) {
@@ -123,7 +124,7 @@ function GetAllEmployee() {
 			console.error(error);
 		});
 }
-function GetAll() {
+async function GetAll() {
 	fetch('/Admin/FindDataOf?requestType=requisition')
 		.then(res => {
 			if (res.ok) {
@@ -148,9 +149,15 @@ function GetAll() {
 			jsonArray.push(data);
 			fixArray(jsonArray, 1);
 			DeleteCertainPart();
+			let projectId = localStorage.getItem("projId");
 			//if (table !== null) {
 			let result = MergeSameId(viewData);
 			setTable(result);
+			if (projectId != "") {
+				createrequestOpenPopupPur();
+				SetLabels();
+				projectId = "";
+			}
 			//}
 		})
 		.catch(error => {
@@ -514,7 +521,7 @@ function saveRequest() {
 function setTemplate(Id, typeOf) {
 	//let fields = document.querySelectorAll(domId);
 	//let emp_no = localStorage.getItem('emp_no');
-
+	let projId = localStorage.getItem("projId");
 	let fields = document.querySelectorAll(Id);
 	let arr = [];
 	let arr2 = [];
@@ -548,6 +555,7 @@ function setTemplate(Id, typeOf) {
 			newObj.request_item = row.getAttribute('id');
 			newObj.request_item_quantity = row.cells[cell].innerText;
 			newObj.request_type_status = 'Active';
+				newObj.request_proj_id = projId;
 			arr.push(newObj);
 		});
 	}
@@ -648,10 +656,10 @@ function SortByCategory(element, value) {
 //#region request details
 function MaxRequestId() {
 	const requestTypeIds = viewData.map(request => request.request_type_id);
+	const maxRequestTypeId = Math.max(...requestTypeIds);
 	if (requestTypeIds.length == 0) {
 		return 100;
-    }
-	const maxRequestTypeId = Math.max(...requestTypeIds);
+	}
 	return maxRequestTypeId;
 }
 // on create request

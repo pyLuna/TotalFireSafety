@@ -395,7 +395,7 @@
 
     </main>
     @*<script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>*@
-    <script>
+<script>
         /*savePro()*/
        /* function submitFormVali() {
             var bool = CreateProjectValidation();
@@ -416,12 +416,12 @@ $(document).ready(function () {
 
   // Loop through each project and create a new row in the table
   projects.forEach(function (project) {
-    var row = $('<tr>');
-      var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
-      link.addClass('project-name');
-    link.text(project.proj_name);
+     var row = $('<tr>');
+    var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+    var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
+    link.text(projectName);
     row.append($('<td>').append(link));
-      row.append($('<td>').text(project.proj_lead));
+    row.append($('<td>').text(project.proj_lead));
       row.append($('<td>').text(project.proj_strDate));
     row.append($('<td>').addClass('status-column').text(project.proj_status));
     row.append($('<td>').addClass('progress-column'));
@@ -504,7 +504,7 @@ $(document).ready(function () {
     }
 
 });
-    </script>
+</script>
 
     <script>
         $.ajax({

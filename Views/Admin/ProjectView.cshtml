@@ -63,7 +63,7 @@
                                                         <tr>
                                                             <td>@report.rep_date</td>
                                                             <td>@report.rep_no</td>
-                                                            <td>@report.rep_description <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
+                                                            <td>@Html.Raw(report.rep_description.Length > 20 ? report.rep_description.Substring(0, 20) + "..." : report.rep_description)<i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
                                                             <td>@report.rep_stats</td>
                                                             <td><a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })">Export</a></td>
                                                         </tr>

@@ -580,6 +580,48 @@ namespace TotalFireSafety.Controllers
         }
 
 
+
+        public async Task<ActionResult> ProjectExport(int? rep_no)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+
+            var report = db.NewReports.FirstOrDefault(r => r.rep_no == rep_no);
+            var images = db.ReportImages
+     .Where(i => i.img_image != null)
+     .Select(i => Url.Content("~/ReportImg/" + i.img_image))
+     .ToList();
+
+
+            ViewBag.Images = images;
+
+
+            ViewBag.ReportDescription = report?.rep_description;
+            ViewBag.ReportStats = report?.rep_stats;
+            ViewBag.ReportDate = report?.rep_date.ToString("MM/dd/yyyy");
+            ViewBag.ReportScope = report?.rep_scope;
+            ViewBag.ReportNo = report?.rep_no;
+
+
+            ViewBag.ProjectName = report?.NewProject.proj_name;
+            ViewBag.ProjectSubject = report?.NewProject.proj_subject;
+            ViewBag.ProjectClient = report?.NewProject.proj_client;
+            ViewBag.ProjectLead = report?.NewProject.proj_lead;
+            ViewBag.ProjectLocation = report?.NewProject.proj_location;
+            ViewBag.StartDate = report?.NewProject.proj_strDate;
+            ViewBag.EndDate = report?.NewProject.proj_endDate;
+            ViewBag.Status = report?.NewProject.proj_status;
+
+            return View();
+        }
+
+
+
         [HttpPost]
         public ActionResult SaveProposal(NewProposal proposal)
         {

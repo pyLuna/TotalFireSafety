@@ -32,11 +32,11 @@
                     <div class="task-header">
                         <h2>Accomplistments</h2>
                         <div class="right-container">
-                           
-                                <a onclick="openReportNewForm()">
-                                    <span class="lar la-plus-square"></span>Add Report
-                                </a>
-                            
+
+                            <a onclick="openReportNewForm()">
+                                <span class="lar la-plus-square"></span>Add Report
+                            </a>
+
                         </div>
                     </div>
 
@@ -62,9 +62,9 @@
                                                     <tr>
                                                         <td>@report.rep_date</td>
                                                         <td>@report.rep_no</td>
-                                                        <td>@report.rep_description  <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
+                                                        <td>@report.rep_description <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
                                                         <td>@report.rep_stats</td>
-
+                                                        <td><a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })">Export</a></td>
                                                     </tr>
                                                 }
                                             </tbody>
@@ -82,9 +82,9 @@
                             <div class="incharge-header">
 
                                 <h2>DESCRIPTION</h2>
-                               
-                                    <a onclick="openAddNewContainer()">edit</a>
-                                
+
+                                <a onclick="openAddNewContainer()">edit</a>
+
                             </div>
 
                             <div class="date">
@@ -473,29 +473,29 @@
 
                 </div>
                 @*<div class="add-new-right">
-                    <div class="add-new-header">
-                        <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
-                    </div>
+                        <div class="add-new-header">
+                            <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
+                        </div>
 
-                    <div class="add-new-power">
-                        <div class="mems-list">
-                            <div class="mems-grid">
-                                <div class="mems-projects">
-                                    <div class="mems">
-                                        <div class="mems-body">
-                                            <div class="table-responsive" style="overflow-x: auto;">
-                                                <table width="100%" id="clockinTable">
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
+                        <div class="add-new-power">
+                            <div class="mems-list">
+                                <div class="mems-grid">
+                                    <div class="mems-projects">
+                                        <div class="mems">
+                                            <div class="mems-body">
+                                                <div class="table-responsive" style="overflow-x: auto;">
+                                                    <table width="100%" id="clockinTable">
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
 
             </div>
 
@@ -1224,50 +1224,50 @@
 
 @*<script>
 
-    function SaveData1() {
-        var data = [];
+        function SaveData1() {
+            var data = [];
 
-        // Loop through each row of the table
-        $("#outputTable tbody tr").each(function () {
-            var row = {};
+            // Loop through each row of the table
+            $("#outputTable tbody tr").each(function () {
+                var row = {};
 
-            // Extract data from the columns of the current row
-            row.man_name = $(this).find("td:eq(0)").text();
-            row.man_position = $(this).find("td:eq(1)").text();
-            row.atte_timein = $(this).find("td:eq(2)").text();
-            row.atte_timeout = $(this).find("td:eq(3)").text();
+                // Extract data from the columns of the current row
+                row.man_name = $(this).find("td:eq(0)").text();
+                row.man_position = $(this).find("td:eq(1)").text();
+                row.atte_timein = $(this).find("td:eq(2)").text();
+                row.atte_timeout = $(this).find("td:eq(3)").text();
 
-            // Add the row data to the array
-            data.push(row);
-        });
+                // Add the row data to the array
+                data.push(row);
+            });
 
-        // Get the value of the rep_proj_id input
-        var projectId = $("#rep_proj_id").val();
-        var projectDate = $("#rep_date").val();
+            // Get the value of the rep_proj_id input
+            var projectId = $("#rep_proj_id").val();
+            var projectDate = $("#rep_date").val();
 
-        if (projectDate === null) {
-            alert('Please fill out all required fields');
-            return;
-        }
-
-        // Send an AJAX request to the server to save the data
-        $.ajax({
-            type: "POST",
-            url: "/Admin/SaveData",
-            data: JSON.stringify({ data: data, man_proj_id: projectId, man_date: projectDate }), // Include the projectId in the data
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (response) {
-                // Handle the response from the server
-                console.log(response);
-            },
-            error: function (xhr, status, error) {
-                // Handle the error
-                console.log(xhr.responseText);
+            if (projectDate === null) {
+                alert('Please fill out all required fields');
+                return;
             }
-        });
-    }
-</script>*@
+
+            // Send an AJAX request to the server to save the data
+            $.ajax({
+                type: "POST",
+                url: "/Admin/SaveData",
+                data: JSON.stringify({ data: data, man_proj_id: projectId, man_date: projectDate }), // Include the projectId in the data
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    // Handle the response from the server
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    // Handle the error
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+    </script>*@
 
 <script>
     $(document).ready(function () {
@@ -1494,41 +1494,41 @@ $(document).ready(function () {
 </script>
 
 <script>
-    const propTable = document.querySelector('#propInput');
-    const tbody1 = propTable.querySelector('tbody');
+        const propTable = document.querySelector('#propInput');
+        const tbody1 = propTable.querySelector('tbody');
 
-    // Listen for 'keydown' events on the table row
-    tbody1.addEventListener('keydown', (event) => {
-        // Check if the 'Enter' key was pressed
-        if (event.key === 'Enter') {
-            // Prevent default behavior (creating a new line)
-            event.preventDefault();
+        // Listen for 'keydown' events on the table row
+        tbody1.addEventListener('keydown', (event) => {
+            // Check if the 'Enter' key was pressed
+            if (event.key === 'Enter') {
+                // Prevent default behavior (creating a new line)
+                event.preventDefault();
 
-            // Create a new table row
-            const newRow = document.createElement('tr');
+                // Create a new table row
+                const newRow = document.createElement('tr');
 
-            // Create the first table cell with blank contenteditable attribute for Manpower
-            const nameCell = document.createElement('td');
-            nameCell.setAttribute('contenteditable', 'true');
+                // Create the first table cell with blank contenteditable attribute for Manpower
+                const nameCell = document.createElement('td');
+                nameCell.setAttribute('contenteditable', 'true');
 
-            // Create the icon element and add it to the table cell
-            const icon = document.createElement('i');
-            icon.classList.add('las', 'la-dot-circle');
-            nameCell.appendChild(icon);
+                // Create the icon element and add it to the table cell
+                const icon = document.createElement('i');
+                icon.classList.add('las', 'la-dot-circle');
+                nameCell.appendChild(icon);
 
-            newRow.appendChild(nameCell);
+                newRow.appendChild(nameCell);
 
-            // Add the new row to the table body
-            tbody1.appendChild(newRow);
-        } else if (event.key === 'Backspace' && event.target.innerHTML.trim() === '') {
-            // Check if the 'Backspace' key was pressed and the cell is empty
-            // Remove the new row from the table
-            const currentRow = event.target.parentNode;
-            const previousRow = currentRow.previousSibling;
-            currentRow.parentNode.removeChild(currentRow);
-            previousRow.lastChild.focus(); // Set focus to the last cell of the previous row
-        }
-    });
+                // Add the new row to the table body
+                tbody1.appendChild(newRow);
+            } else if (event.key === 'Backspace' && event.target.innerHTML.trim() === '') {
+                // Check if the 'Backspace' key was pressed and the cell is empty
+                // Remove the new row from the table
+                const currentRow = event.target.parentNode;
+                const previousRow = currentRow.previousSibling;
+                currentRow.parentNode.removeChild(currentRow);
+                previousRow.lastChild.focus(); // Set focus to the last cell of the previous row
+            }
+        });
 </script>
 
 <script>
@@ -1555,43 +1555,43 @@ $(document).ready(function () {
 </script>
 
 @*<script>
-    function saveReport() {
-        var scopeList = document.getElementById("scope-list");
-        var scopes = "";
-        for (var i = 0; i < scopeList.children.length; i++) {
-            var scope = scopeList.children[i].children[1].textContent;
-            scopes += scope + ", ";
-        }
-        var date = document.getElementById("rep_date").value;
-        var status = document.getElementById("rep_status").value;
-        var projectId = document.getElementById("rep_proj_id").value;
-        var description = document.getElementById("rep_description").value;
-
-        if (date === null || status === null || description.trim() === '') {
-            alert('Please fill out all required fields');
-            return;
-        }
-
-        var data = {
-            "rep_scope": scopes,
-            "rep_date": date,
-            "rep_stats": status,
-            "rep_proj_id": projectId,
-            "rep_description": description
-        };
-        $.ajax({
-            type: "POST",
-            url: "/Admin/SaveReport",
-            data: data,
-            success: function (result) {
-                // do something on success
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                // do something on error
+        function saveReport() {
+            var scopeList = document.getElementById("scope-list");
+            var scopes = "";
+            for (var i = 0; i < scopeList.children.length; i++) {
+                var scope = scopeList.children[i].children[1].textContent;
+                scopes += scope + ", ";
             }
-        });
-    }
-</script>*@
+            var date = document.getElementById("rep_date").value;
+            var status = document.getElementById("rep_status").value;
+            var projectId = document.getElementById("rep_proj_id").value;
+            var description = document.getElementById("rep_description").value;
+
+            if (date === null || status === null || description.trim() === '') {
+                alert('Please fill out all required fields');
+                return;
+            }
+
+            var data = {
+                "rep_scope": scopes,
+                "rep_date": date,
+                "rep_stats": status,
+                "rep_proj_id": projectId,
+                "rep_description": description
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Admin/SaveReport",
+                data: data,
+                success: function (result) {
+                    // do something on success
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    // do something on error
+                }
+            });
+        }
+    </script>*@
 
 
 

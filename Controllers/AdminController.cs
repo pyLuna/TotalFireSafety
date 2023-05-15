@@ -540,6 +540,7 @@ namespace TotalFireSafety.Controllers
                 Attendances = db.Attendances.Where(r => r.atte_proj_id == id).ToList(),
                 ReportImage = db.ReportImages.Where(r => r.img_proj_id == id).ToList(),
 
+
                 // Initialize SelectedReport to the first report in the list
                 SelectedReport = db.NewReports.FirstOrDefault(r => r.rep_proj_id == id)
             };
@@ -576,10 +577,27 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProposalMan = newProposal?.prop_manpower;
             ViewBag.ProposalSubject = newProposal?.prop_subject;
             ViewBag.NewProposal = newProposal;
+
+
+
             return View(viewModel);
         }
 
+        [HttpPost]
+        public ActionResult UpdateProjectStatus(int projTypeId, string status)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // Retrieve the project and update the status based on proj_type_id
+            var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == projTypeId);
+            if (project != null)
+            {
+                project.proj_status = status;
+                db.SaveChanges();
+                return Json(new { success = true });
+            }
 
+            return Json(new { success = false });
+        }
 
         public async Task<ActionResult> ProjectExport(int? rep_no)
         {
@@ -592,13 +610,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
 
             var report = db.NewReports.FirstOrDefault(r => r.rep_no == rep_no);
-            var images = db.ReportImages
-     .Where(i => i.img_image != null)
-     .Select(i => Url.Content("~/ReportImg/" + i.img_image))
-     .ToList();
-
-
-            ViewBag.Images = images;
+           
 
 
             ViewBag.ReportDescription = report?.rep_description;
@@ -617,10 +629,28 @@ namespace TotalFireSafety.Controllers
             ViewBag.EndDate = report?.NewProject.proj_endDate;
             ViewBag.Status = report?.NewProject.proj_status;
 
+            var reportImages = db.ReportImages
+         .Where(r => !string.IsNullOrEmpty(r.img_image) && r.img_date == report.rep_date) // Filter out null or empty image paths and match the image date with the report date
+         .Select(r => r.img_image)
+         .ToList();
+
+            ViewBag.ImagePaths = reportImages;
+
+          var attendanceList = db.Attendances
+    .Include(a => a.NewManpower)
+    .Where(a => a.NewManpower.man_proj_id == report.rep_proj_id && 
+           (a.atte_timein != null || a.atte_timein == null) && 
+           a.NewManpower.man_date == report.rep_date)
+    .ToList();
+
+ViewBag.AttendanceList = attendanceList;
+
+            
+
             return View();
         }
 
-
+      
 
         [HttpPost]
         public ActionResult SaveProposal(NewProposal proposal)
@@ -678,17 +708,7 @@ namespace TotalFireSafety.Controllers
             }
         }
 
-        public async Task<ActionResult> ProjectExport()
-        {
-            var empId = Session["emp_no"]?.ToString();
-            if (empId == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            return View();
-        }
-
+      
         public ActionResult GetAttendanceByDate(DateTime rep_date)
         {
             nwTFSEntity db = new nwTFSEntity();

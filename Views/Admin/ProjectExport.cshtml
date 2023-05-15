@@ -106,7 +106,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <h2 class="font-weight-bold">Daily Report #1</h2>
+                                <h2 class="font-weight-bold">Daily Report # @ViewBag.ReportNo</h2>
                             </tr>
                         </thead>
                         <tbody>
@@ -116,7 +116,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th><h5>April 1, 2023</h5></th>
+                                <th><h5>@ViewBag.ReportDate</h5></th>
                             </tr>
                             <tr>
                                 <th><h5>Remaks</h5></th>
@@ -124,7 +124,7 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th class="text-success"><h5><B>Achieved</B></h5></th>
+                                <th class="text-success"><h5><B>@ViewBag.ReportStats</B></h5></th>
                             </tr>
                         </tbody>
                     </table>
@@ -140,28 +140,28 @@
                     <tbody>
                         <tr>
                             <th scope="row">PROJECT NAME</th>
-                            <td>6 Story Bldg</th>
+                            <td> @ViewBag.ProjectName</th>
                             <th scope="row">PROJECT LEAD</th>
-                            <td>Vincent M. Cordero</th>
+                            <td>@ViewBag.ProjectLead</th>
                         </tr>
 
                         <tr>
                             <th scope="row">SUBJECT</th>
-                            <td>Supply & Install AFSS and FOAS</td>
+                            <td>@ViewBag.ProjectSubject</td>
                             <th scope="row">START DATE</th>
-                            <td>April 10, 2023</td>
+                            <td>@ViewBag.StartDate</td>
                         </tr>
                         <tr>
                             <th scope="row">CLIENT</th>
                             <td>Lanao Milling Corp</td>
                             <th scope="row">BASELINE FINISH</th>
-                            <td>May 10, 2023</td>
+                            <td>@ViewBag.EndDate</td>
                         </tr>
                         <tr>
                             <th scope="row">LOCATION SITE</th>
-                            <td>Lanao Milling Corp</td>
+                            <td>@ViewBag.ProjectLocation</td>
                             <th scope="row">STATUS</th>
-                            <td><div class="text-success"> On-Going</div></td>
+                            <td><div class="text-success"> @ViewBag.Status</div></td>
                         </tr>
                     </tbody>
                 </table>
@@ -175,7 +175,7 @@
                     <tbody>
                         <tr>
                             <td class="p-3 pe-th-bot">
-                                The Project was successfully achieved with.....
+                                @ViewBag.ReportDescription
                                 <br><br><br>
                             </td>
                         </tr>
@@ -197,26 +197,15 @@
                                 <th>time - in</th>
                                 <th>Time - out</th>
                             </tr>
-                            <tr>
-                                <td>Clarisse C. Vasquez</td>
-                                <td>08:00 AM</td>
-                                <td>05:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>chupapi P. Munyanyo</td>
-                                <td>08:00 AM</td>
-                                <td>05:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Isprikitik A. kitik</td>
-                                <td>08:00 AM</td>
-                                <td>05:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Trukinis A. Adiktutis</td>
-                                <td>08:00 AM</td>
-                                <td>05:00 PM</td>
-                            </tr>
+                            @foreach (var attendance in ViewBag.AttendanceList)
+                            {
+                                <tr>
+                                    <td>@attendance.NewManpower.man_name</td>
+                                    <td>@attendance.atte_timein</td>
+                                    <td>@attendance.atte_timeout</td>
+                                </tr>
+                            }
+
                         </tbody>
                     </table>
 
@@ -229,7 +218,7 @@
                         <tbody>
                             <tr>
                                 <td class="p-3 pe-th-bot">
-                                    Hydro test and tracing for possible leak
+                                    @ViewBag.ReportScope
                                     <br><br><br><br><br><br>
                                 </td>
                             </tr>
@@ -239,51 +228,21 @@
                 <h3>IMAGES</h3>
             </div>
             <hr class="hr-solid">
+            <div id="imageContainer"></div>
             <div class="container">
-                <div class="row mb-4">
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
+                <div class="row mb-4" id="image-container">
+
+                    @foreach (var imagePath in ViewBag.ImagePaths)
+                    {
+                        if (!string.IsNullOrEmpty(imagePath))
+                        {
+                            <img src="@Url.Content("/ReportImg/" + imagePath)" class="img-fluid" alt="Responsive image">
+                        }
+                    }
+
                 </div>
 
-                <div class="row mb-4">
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                </div>
 
-                <div class="row mb-4">
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <img src="../../images/Mark-Zuckerberg.jpg" class="img-fluid" alt="Responsive image">
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -294,7 +253,10 @@
             <button type="button" class="btn btn-outline-primary buttons2 ml-2">CANCEL</button>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
 </body>
+
+
 </html>
 

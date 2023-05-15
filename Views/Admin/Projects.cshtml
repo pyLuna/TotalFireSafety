@@ -417,7 +417,8 @@ $(document).ready(function () {
   // Loop through each project and create a new row in the table
   projects.forEach(function (project) {
     var row = $('<tr>');
-    var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+      var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+      link.addClass('project-name');
     link.text(project.proj_name);
     row.append($('<td>').append(link));
       row.append($('<td>').text(project.proj_lead));

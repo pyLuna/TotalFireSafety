@@ -46,31 +46,33 @@
                             <div class="task">
                                 <div class="task-body">
                                     <div class="table-responsive" style="overflow-x: auto;">
-                                        <table width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <td>Date Submitted</td>
-                                                    <td>Report No.</td>
-                                                    <td>Description</td>
-                                                    <td>Remarks</td>
-                                                    <td></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var report in Model.Reports)
-                                                {
+                                        <div id="reportTableContainer">
+                                            <table width="100%">
+                                                <thead>
                                                     <tr>
-                                                        <td>@report.rep_date</td>
-                                                        <td>@report.rep_no</td>
-                                                        <td>@report.rep_description <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
-                                                        <td>@report.rep_stats</td>
-                                                        <td><a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })">Export</a></td>
+                                                        <td>Date Submitted</td>
+                                                        <td>Report No.</td>
+                                                        <td>Description</td>
+                                                        <td>Remarks</td>
+                                                        <td></td>
                                                     </tr>
-                                                }
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var report in Model.Reports)
+                                                    {
+                                                        <tr>
+                                                            <td>@report.rep_date</td>
+                                                            <td>@report.rep_no</td>
+                                                            <td>@report.rep_description <i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
+                                                            <td>@report.rep_stats</td>
+                                                            <td><a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })">Export</a></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -1268,7 +1270,32 @@
             });
         }
     </script>*@
+<script>
+  $(window).on('load', function() {
+    // Function to update the project status
+    function updateProjectStatus(projTypeId) {
+        // Check if the table has any rows
+        if ($('#reportTableContainer table tbody tr').length > 0) {
+            // Make an AJAX call to update the project status
+            $.ajax({
+                url: '@Url.Action("UpdateProjectStatus", "Admin")',
+                type: 'POST',
+                data: { projTypeId: projTypeId, status: 'On-going' }, // Pass the proj_type_id and status values
+                success: function(result) {
+                    console.log('Project status updated successfully');
+                },
+                error: function() {
+                    console.log('Error occurred while updating project status');
+                }
+            });
+        }
+    }
 
+    // Get the proj_type_id from the ViewBag or any other source and pass it to the updateProjectStatus function
+    var projTypeId = @ViewBag.ProjectID;
+    updateProjectStatus(projTypeId);
+});
+</script>
 <script>
     $(document).ready(function () {
         var proposalStatus = $('#prop_status').val();

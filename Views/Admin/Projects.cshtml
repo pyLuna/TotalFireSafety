@@ -268,7 +268,6 @@
                                 <Label>Start Date</Label>
                                 <br>
                                 <input type="date" id="projStartDate" name="projStartDate" required>
-                                <input type="date" id="projStartDate" name="projStartDate" required>
                             </div>
                             <div class="input-fields right">
                                 <Label>Baseline Finish</Label>
@@ -686,14 +685,10 @@ $(document).ready(function () {
 
             // Validate start date and baseline finish date
             if (projStartDate === projEndDate) {
-                alert("Start date cannot be same date to baseline finish date.");
+                alert("Start date cannot be the same as the baseline finish date.");
                 $("#save-button").prop("disabled", false); // Enable the button
                 return;
             }
-           /* if (new Date(projEndDate) < new Date(projStartDate)) {
-                alert("End date cannot be earlier than the start date.");
-                $("#save-button").prop("disabled", false); // Enable the button
-                return;*/
 
             // Create a Project object with the form data
             var project = {
@@ -718,9 +713,7 @@ $(document).ready(function () {
                         // Project saved successfully
                         alert(response.message);
 
-                        // Close the add-new container and refresh the project list
-                        closeAddNewContainer();
-                        loadProjects();
+                        // Reload the page
                         location.reload();
                     } else {
                         // An error occurred while saving the project
@@ -739,7 +732,6 @@ $(document).ready(function () {
                 }
             });
         }
-
     </script>
 
 

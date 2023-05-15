@@ -172,18 +172,31 @@
                     @if (Int32.Parse(Session["system_role"].ToString()) != 1)
                     {
                         <button class="create-req-btn" title="CREATE ORDER" onclick="createrequestOpenPopupPur() + SetLabels() + HideApprovedItems()">
-                            <a onclick="createrequestOpenPopupPur() + SetLabels()">
+                            <a id="autoClickLink" onclick="createrequestOpenPopupPur() + SetLabels()">
                                 CREATE REQUEST
                                 <span class="las la-file-alt"></span>
                             </a>
                         </button>
                     }
+                    <script>
+                        window.addEventListener("message", function (event) {
+                            if (event.data === "autoClickLink") {
+                                var autoClickLink = document.getElementById("autoClickLink");
+                                if (autoClickLink) {
+                                    autoClickLink.click(); // trigger the click event on the target link
+                                }
+                            }
+                        });
+
+                       
+                    </script>
+                   
                     @*<select id="filter" onchange="SortByCategory(this,this.value)">
-                    <option disabled selected>FILTER</option>
-                    <option>All</option>
-                    <option>Local</option>
-                    <option>Import</option>
-                </select>*@
+            <option disabled selected>FILTER</option>
+            <option>All</option>
+            <option>Local</option>
+            <option>Import</option>
+        </select>*@
 
                 </div>
 
@@ -684,6 +697,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 <script>
+    window.onload = function () {
+        var projectId = getUrlParameter("projectId");
+        document.getElementById("rep_proj_id").value = projectId;
+        // Use the projectId value as needed
+    };
+
+    function getUrlParameter(name) {
+        name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+</script>
+
+<script>
     //function submitForm() {
     //    form.submit();
     //}
@@ -952,7 +980,12 @@
     }
 
     function remClosePopup() {
-        rempopup.classList.remove("rem-popup-show")
+        const projectId = getUrlParameter('projectId');
+        if (projectId !== '') {
+            window.close(); // Close the window if projectId is not empty
+        } else {
+            rempopup.classList.remove('rem-popup-show');
+        }
     }
 
     let printpopup = document.getElementById("print-popup");

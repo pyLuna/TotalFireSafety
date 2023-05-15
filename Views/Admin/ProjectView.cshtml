@@ -8,6 +8,8 @@
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Proj = "active";
 }
+
+
 <div class="main-content">
     <header>
         <h2>
@@ -21,13 +23,7 @@
 
         <div class="proj-main-content">
             <div class="proj-back-container">
-                <div class="left">
-                    <a href="@Url.Action("Projects","Admin")"><span class="las la-long-arrow-alt-left"></span> VIEW PROJECT</a>
-                </div>
-                <div class="right">
 
-                    <a @if (ViewBag.emp_position == "Project Lead") { <text> style="display: none;" </text> } onclick="openAddNewContainer()">Edit</a> &nbsp;</label> &nbsp;  <label><a onclick="openInputEditPropForm()">Manpower</a><label class="notif-badge-approve">@((ViewBag.ProposalStats == "Approved" || ViewBag.ProposalStats == "Declined") ? "1" : "0")</label></label>
-                </div>
 
             </div>
 
@@ -36,12 +32,11 @@
                     <div class="task-header">
                         <h2>Accomplistments</h2>
                         <div class="right-container">
-                            @if ((ViewBag.ProposalStatus != null && ViewBag.ProposalStatus != "Declined") && (ViewBag.ProposalStats != null && ViewBag.ProposalStats != "Pending"))
-                            {
+                           
                                 <a onclick="openReportNewForm()">
                                     <span class="lar la-plus-square"></span>Add Report
                                 </a>
-                            }
+                            
                         </div>
                     </div>
 
@@ -85,9 +80,11 @@
                     <div class="proj-incharge-container">
                         <div class="incharge">
                             <div class="incharge-header">
-                                <br>
+
                                 <h2>DESCRIPTION</h2>
-                                <hr>
+                               
+                                    <a onclick="openAddNewContainer()">edit</a>
+                                
                             </div>
 
                             <div class="date">
@@ -108,17 +105,24 @@
 
                             <div class="status">
                                 <label class="title">Status:</label>
-                                <label>@ViewBag.ProjectStats</label>
+                                <select required>
+                                    <option selected value="@ViewBag.Status">@ViewBag.Status</option>
+                                </select>
+                                @*<label>@ViewBag.ProjectStats</label>*@
                             </div>
 
                             <div class="date">
                                 <label class="title">Start Date: </label>
-                                <label>@ViewBag.Startdate</label>
+                                &nbsp; <input type="text" value="@ViewBag.Startdate" readonly />
+
+                                @*<label>@ViewBag.Startdate</label>*@
                             </div>
 
                             <div class="date">
                                 <label class="title">Finish Date: </label>
-                                <label> @ViewBag.Enddate</label>
+                                &nbsp; <input type="text" value="@ViewBag.Enddate" readonly />
+
+                                @*<label> @ViewBag.Enddate</label>*@
                             </div>
 
 
@@ -127,41 +131,147 @@
 
 
                     <div class="proj-mems-container">
-                        <div class="mems-main" onclick="openInputPropForm()">
+                        <div class="mems-main" onclick="">
 
-                            <h3>MANPOWER</h3>
-                            @*<div class="mems-list">
-                                    <div class="mems-grid">
-                                        <div class="mems-projects">
-                                            <div class="mems">
-                                                <div class="mems-body">
-                                                    <div class="table-responsive" style="overflow-x: auto;">
-                                                        <table width="100%">
-                                                            <tbody>
+                            <div class="mems-header">
 
-                                                                @foreach (var manpower in Model.Manpowers)
-                                                                {
-                                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_proj_id == manpower.man_proj_id);
-                                                                    <tr>
-                                                                        <td>@manpower.man_name</td>
-                                                                        <td>@manpower.man_postition</td>
-                                                                    </tr>
-                                                                }
+                                <h2>Item Requested</h2>
 
+                                <button class="create-req-btn" title="CREATE ORDER" onclick="createrequestOpenPopupPur() + SetLabels() + HideApprovedItems()">
+                                    <a id="projectPageLink" href="@Url.Action("Requisition", "Admin", new { projectId = ViewBag.ProjectID })">
+                                        create request
+                                        <span class="las la-file-alt"></span>
+                                    </a>
 
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                </button>
+                                <script>
+                                    document.getElementById("projectPageLink").addEventListener("click", function (event) {
+                                        event.preventDefault(); // prevent the default behavior of the link
+                                        window.open(this.href, "requestPage"); // open the request page in a new window or tab
+                                        setTimeout(function () {
+                                            var requestPage = window.open('', "requestPage"); // get a reference to the request page
+                                            requestPage.postMessage("autoClickLink", "*"); // send a message to the request page
+                                        }, 1000); // wait for 1 second before sending the message
+                                    });
+                                </script>
+                            </div>
+
+                            <div class="mems-list">
+                                <div class="mems-grid">
+                                    <div class="mems-projects">
+                                        <div class="mems">
+                                            <div class="mems-body">
+                                                <div class="table-responsive" style="overflow-x: auto;">
+                                                    <table width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <td>Date Requested</td>
+                                                                <td>Request ID</td>
+                                                                <td>Remarks</td>
+                                                                <td>Date Approved</td>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+
+                                                            @foreach (var request in ViewBag.Requests)
+                                                            {
+                                                                <tr onclick="openMostContainer()">
+                                                                    <td>@request.FormattedDate</td>
+                                                                    <td>@request.Id</td>
+                                                                    <td>@request.request_status</td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            }
+
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>*@
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        @* MOST REQUESTED FORM *@
+
+        <div class="most-container" id="most-container">
+
+            <div class="most-header">
+
+                <button type="reset" style="border: none;">
+                    <span class="las la-long-arrow-alt-left" onclick="closeMostContainer()"></span>
+                </button>
+                <center>
+                    <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
+                </center>
+
+            </div>
+
+            <div class="most-main">
+
+                <div class="most-req">
+                    @if (ViewBag.Requests != null && ViewBag.Requests.Count > 0)
+                    {
+                        <div class="most-req-header">
+                            Request ID: @ViewBag.Requests[0].Id
+                        </div>
+                    }
+                    <div class="most-req-contents">
+                        <div class="most-req-table">
+                            <div class="most-req-table-style">
+                                <div class="table-responsive" style="overflow-x: auto;">
+                                    <table width="100%" id="reqDetails">
+                                        <thead>
+                                            <tr>
+                                                <td>Date Requested</td>
+                                                <td>Item ID</td>
+                                                <td>Item Code</td>
+                                                <td>Item Name</td>
+                                                <td>Category</td>
+                                                <td>Type</td>
+                                                <td>Size</td>
+                                                <td>Class</td>
+                                                <td>Requested Quantity</td>
+                                                <td>Date Approved</td>
+                                                <td>Remarks</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var request in ViewBag.Requests)
+                                            {
+                                                <tr>
+                                                    <td>@request.FormattedDate</td>
+                                                    <td>@request.Id</td>
+                                                    <td>@request.request_item</td>
+                                                    <td>@(request.Inventory != null ? request.Inventory.in_name : "")</td>
+                                                    <td>@(request.Inventory != null ? request.Inventory.in_category : "")</td>
+                                                    <td>@(request.Inventory != null ? request.Inventory.in_type : "")</td>
+                                                    <td>@(request.Inventory != null ? request.Inventory.in_size : "")</td>
+                                                    <td>@(request.Inventory != null ? request.Inventory.in_class : "")</td>
+                                                    <td>@request.request_item_quantity</td>
+                                                    <td></td>
+                                                    <td>@request.request_status</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>q
+
+        </div>
+
+        @* END *@
 
         <div class="report-container" id="report-container">
             <h3>DAILY REPORT</h3>
@@ -276,109 +386,108 @@
         <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
         <div class="add-new-container" id="add-new-container">
             @*<form id="UpdateProForm">*@
-                <div class="add-new-header">
-                    @*<span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>*@
-                    <button type="reset" style="border: none;">
-                        <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
-                    </button>
-                    <center>
-                        <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
-                    </center>
+            <div class="add-new-header">
+                @*<span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>*@
+                <button type="reset" style="border: none;">
+                    <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                </button>
+                <center>
+                    <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
+                </center>
+
+            </div>
+
+            <div class="add-new-main">
+                <div class="add-new-left">
+                    <div class="input-fields">
+                        <Label>Client</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client" required>
+                    </div>
+                    <div class="input-fields">
+                        <Label>Project Name</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name" required>
+                    </div>
+                    <div class="input-fields">
+                        <Label>Subject</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject" readonly>
+                    </div>
+                    <div class="input-fields">
+                        <Label>Location Site</Label>
+                        <br>
+                        <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location" required>
+                    </div>
+                    <div class="grp">
+                        <div class="input-fields left">
+                            <Label>Project Lead</Label>
+                            <br>
+                            <select name="proj_lead" required>
+                                <option disabled>Select Lead</option>
+                                <option value="@Model.Project.proj_lead" selected>@Model.Project.proj_lead</option>
+                            </select>
+                        </div>
+                        <div class="input-fields right">
+                            <Label>Status</Label>
+                            <br>
+                            <select name="proj_status" required>
+                                <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
+                                <option>On-Going</option>
+                                <option>In-Line</option>
+                                <option>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grp">
+                        <div class="input-fields left">
+                            <Label>Start Date</Label>
+                            <br>
+                            <input type="text" id="proj_strDate" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
+                        </div>
+                        <div class="input-fields right">
+                            <Label>Baseline Finish</Label>
+                            <br>
+                            <input type="date" id="proj_endDate" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")" required>
+                        </div>
+                    </div>
+                    <script>
+                        // Disable past dates in proj_strDate
+                        var projStartDate = document.getElementById('proj_strDate');
+                        var today = new Date().toISOString().split('T')[0];
+                        projStartDate.setAttribute('min', today);
+
+                        // Disable today and past dates in proj_endDate
+                        var projEndDate = document.getElementById('proj_endDate');
+                        projEndDate.setAttribute('min', today);
+                    </script>
+                    @*<p class="emErrP" style="margin-top: 5px; color: red; font-weight: bold;"></p>*@
+
+
+                    <!--<button onclick="UpdateProjectValidation()">UPDATE PROJECT</button>-->
+                    @*updatedata()*@
+
+                    <button onclick="updatedata()">UPDATE PROJECT</button>
+
 
                 </div>
-
-                <div class="add-new-main">
-                    <div class="add-new-left">
-                        <div class="input-fields">
-                            <Label>Client</Label>
-                            <br>
-                            <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client" required>
-                        </div>
-                        <div class="input-fields">
-                            <Label>Project Name</Label>
-                            <br>
-                            <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name" required>
-                        </div>
-                        <div class="input-fields">
-                            <Label>Subject</Label>
-                            <br>
-                            <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject" readonly>
-                        </div>
-                        <div class="input-fields">
-                            <Label>Location Site</Label>
-                            <br>
-                            <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location" required>
-                        </div>
-                        <div class="grp">
-                            <div class="input-fields left">
-                                <Label>Project Lead</Label>
-                                <br>
-                                <select name="proj_lead" required>
-                                    <option disabled>Select Lead</option>
-                                    <option value="@Model.Project.proj_lead" selected>@Model.Project.proj_lead</option>
-                                </select>
-                            </div>
-                            <div class="input-fields right">
-                                <Label>Status</Label>
-                                <br>
-                                <select name="proj_status" required>
-                                    <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
-                                    <option>On-Going</option>
-                                    <option>In-Line</option>
-                                    <option>Cancelled</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grp">
-                            <div class="input-fields left">
-                                <Label>Start Date</Label>
-                                <br>
-                                <input type="text" id="proj_strDate" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
-                            </div>
-                            <div class="input-fields right">
-                                <Label>Baseline Finish</Label>
-                                <br>
-                                <input type="date" id="proj_endDate" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")" required>
-                            </div>
-                        </div>
-                        <script>
-                            // Disable past dates in proj_strDate
-                            var projStartDate = document.getElementById('proj_strDate');
-                            var today = new Date().toISOString().split('T')[0];
-                            projStartDate.setAttribute('min', today);
-
-                            // Disable today and past dates in proj_endDate
-                            var projEndDate = document.getElementById('proj_endDate');
-                            projEndDate.setAttribute('min', today);
-                        </script>
-                        @*<p class="emErrP" style="margin-top: 5px; color: red; font-weight: bold;"></p>*@
-
-
-                        <!--<button onclick="UpdateProjectValidation()">UPDATE PROJECT</button>-->
-                        @*updatedata()*@
-
-                        <button onclick="updatedata()">UPDATE PROJECT</button>
-
-
+                @*<div class="add-new-right">
+                    <div class="add-new-header">
+                        <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
                     </div>
-                    <div class="add-new-right">
-                        <div class="add-new-header">
-                            <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
-                        </div>
 
-                        <div class="add-new-power">
-                            <div class="mems-list">
-                                <div class="mems-grid">
-                                    <div class="mems-projects">
-                                        <div class="mems">
-                                            <div class="mems-body">
-                                                <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table width="100%" id="clockinTable">
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                    <div class="add-new-power">
+                        <div class="mems-list">
+                            <div class="mems-grid">
+                                <div class="mems-projects">
+                                    <div class="mems">
+                                        <div class="mems-body">
+                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                <table width="100%" id="clockinTable">
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -386,10 +495,11 @@
                             </div>
                         </div>
                     </div>
+                </div>*@
 
-                </div>
+            </div>
 
-                <button>UPDATE PROJECT</button>
+            <button>UPDATE PROJECT</button>
 
         </div>
 
@@ -580,9 +690,8 @@
                             </div>
                         </div>
 
-
                         <div class="button">
-                            <button onclick="SaveData1() + saveReport() +  saveData()">SUBMIT</button>
+                            <button onclick="saveData()">SUBMIT</button>
                         </div>
 
                         <script>
@@ -593,12 +702,33 @@
                                 var images = document.querySelectorAll('#img-list img');
                                 var imageStrings = [];
 
-                                /*if (repDate === null || images === null) {
-                                    alert('Please fill out all required fields');
-                                    return;
-                                }*/
+                                var data = [];
 
-                                if (repDate === null || images === null || images.length === 0) {
+                                // Loop through each row of the table
+                                $("#outputTable tbody tr").each(function () {
+                                    var row = {};
+
+                                    // Extract data from the columns of the current row
+                                    row.man_name = $(this).find("td:eq(0)").text();
+                                    row.man_position = $(this).find("td:eq(1)").text();
+                                    row.atte_timein = $(this).find("td:eq(2)").text();
+                                    row.atte_timeout = $(this).find("td:eq(3)").text();
+
+                                    // Add the row data to the array
+                                    data.push(row);
+                                });
+
+                                var scopeList = document.getElementById("scope-list");
+                                var scopes = "";
+                                for (var i = 0; i < scopeList.children.length; i++) {
+                                    var scope = scopeList.children[i].children[1].textContent;
+                                    scopes += scope + ", ";
+                                }
+
+                                var description = document.getElementById("rep_description").value;
+                                var status = document.getElementById("rep_status").value;
+
+                                if (repDate === null || images === null || images.length === 0 || data.length === 0 || status === null || description.trim() === '') {
                                     alert('Please fill out all required fields and select at least one image');
                                     return;
                                 }
@@ -613,21 +743,48 @@
                                     imageStrings.push(base64);
                                 }
 
-                                $.ajax({
+                                // Create an array to store the AJAX requests
+                                var requests = [];
+
+                                // Add the AJAX request for saving report images
+                                requests.push($.ajax({
                                     type: 'POST',
                                     url: '/Admin/SaveReportImages',
                                     data: {
                                         images: imageStrings,
                                         rep_date: repDate,
                                         rep_proj_id: repProjId
-                                    },
-                                    success: function (response) {
-                                        alert('Data has been saved successfully!');
-                                        location.reload();
-                                    },
-                                    error: function (xhr, status, error) {
-                                        alert('Error Saving Data');
                                     }
+                                }));
+
+                                // Add the AJAX request for saving data
+                                requests.push($.ajax({
+                                    type: "POST",
+                                    url: "/Admin/SaveData",
+                                    data: JSON.stringify({ data: data, man_proj_id: repProjId, man_date: repDate }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json"
+                                }));
+
+                                // Add the AJAX request for saving the report
+                                requests.push($.ajax({
+                                    type: "POST",
+                                    url: "/Admin/SaveReport",
+                                    data: {
+                                        rep_scope: scopes,
+                                        rep_date: repDate,
+                                        rep_stats: status,
+                                        rep_proj_id: repProjId,
+                                        rep_description: description
+                                    }
+                                }));
+
+                                // Execute all AJAX requests simultaneously and wait for them to complete
+                                $.when.apply($, requests).done(function () {
+                                    alert('Data has been saved successfully!');
+                                    location.reload();
+                                }).fail(function () {
+                                    alert('Error Saving Data');
                                 });
                             }
                         </script>
@@ -971,7 +1128,7 @@
         <div class="prop-edit-container" id="prop-edit-container">
             <div class="prop-main">
                 <div class="prop-title">
-                    <input name="prop_status" id="prop_status" value="@ViewBag.ProposalStats" class="status approve decline" readonly/>
+                    <input name="prop_status" id="prop_status" value="@ViewBag.ProposalStats" class="status approve decline" readonly />
                     <input name="prop_status" id="prop_statuses" value="Pending" class="status approve decline" hidden />
                     <center> <input type="text" id="prop_description" value="@ViewBag.ProposalDescription" readonly /> </center>
                 </div>
@@ -988,7 +1145,7 @@
                     </div>
 
                     <div class="prop-main-input">
-                        <textarea name="" id="proj_subject1"  value="@ViewBag.ProposalSubject" readonly>@ViewBag.ProposalSubject</textarea>
+                        <textarea name="" id="proj_subject1" value="@ViewBag.ProposalSubject" readonly>@ViewBag.ProposalSubject</textarea>
                         <input type="text" id="project_id" value="@ViewBag.ProjectID" hidden />
                     </div>
 
@@ -1009,7 +1166,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td @*contenteditable="true"*@ ><i class="las la-dot-circle"></i><b>@ViewBag.ProposalMan</b></td>
+                                                            <td @*contenteditable="true"*@><i class="las la-dot-circle"></i><b>@ViewBag.ProposalMan</b></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -1023,13 +1180,13 @@
 
                 </div>
 
-                
-                    <center>
-                        <button id="saveButton" onclick="UpdateProp()" @if (ViewBag.ProposalStats != null && ViewBag.ProposalStats.ToString().Trim() == "Approved") { <text> style="display: none;" </text> }>Save</button>
-                        <button onclick="closeInputEditPropForm()">Cancel</button>
-                       
-                    </center>
-</div>
+
+                <center>
+                    <button id="saveButton" onclick="UpdateProp()" @if (ViewBag.ProposalStats != null && ViewBag.ProposalStats.ToString().Trim() == "Approved") { <text> style="display: none;" </text> }>Save</button>
+                    <button onclick="closeInputEditPropForm()">Cancel</button>
+
+                </center>
+            </div>
         </div>
 
         @* END *@
@@ -1055,17 +1212,63 @@
     </main>
 </div>
 @*<div class="footer">
-    <center>
-        <div class="footer-con">
-            <img src="../../images/codepheuse.png" alt="">
-            <h4>CodePheus | 2022</h4>
-        </div>
-    </center>
-</div>*@
+        <center>
+            <div class="footer-con">
+                <img src="../../images/codepheuse.png" alt="">
+                <h4>CodePheus | 2022</h4>
+            </div>
+        </center>
+    </div>*@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-@*<script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>*@
+@*<script>
+
+    function SaveData1() {
+        var data = [];
+
+        // Loop through each row of the table
+        $("#outputTable tbody tr").each(function () {
+            var row = {};
+
+            // Extract data from the columns of the current row
+            row.man_name = $(this).find("td:eq(0)").text();
+            row.man_position = $(this).find("td:eq(1)").text();
+            row.atte_timein = $(this).find("td:eq(2)").text();
+            row.atte_timeout = $(this).find("td:eq(3)").text();
+
+            // Add the row data to the array
+            data.push(row);
+        });
+
+        // Get the value of the rep_proj_id input
+        var projectId = $("#rep_proj_id").val();
+        var projectDate = $("#rep_date").val();
+
+        if (projectDate === null) {
+            alert('Please fill out all required fields');
+            return;
+        }
+
+        // Send an AJAX request to the server to save the data
+        $.ajax({
+            type: "POST",
+            url: "/Admin/SaveData",
+            data: JSON.stringify({ data: data, man_proj_id: projectId, man_date: projectDate }), // Include the projectId in the data
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                // Handle the response from the server
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                // Handle the error
+                console.log(xhr.responseText);
+            }
+        });
+    }
+</script>*@
+
 <script>
     $(document).ready(function () {
         var proposalStatus = $('#prop_status').val();
@@ -1351,7 +1554,7 @@ $(document).ready(function () {
     });
 </script>
 
-<script>
+@*<script>
     function saveReport() {
         var scopeList = document.getElementById("scope-list");
         var scopes = "";
@@ -1388,7 +1591,7 @@ $(document).ready(function () {
             }
         });
     }
-</script>
+</script>*@
 
 
 
@@ -1536,7 +1739,7 @@ $.ajax({
 </script>
 
 <script>
-
+@*
     function SaveData1() {
         var data = [];
 
@@ -1594,55 +1797,55 @@ $.ajax({
             var time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             row.cells[3].textContent = time;
         });
-    }
+    }*@
 </script>
 
 
 
 <script>
-        const myTable = document.querySelector('#inputTable');
-        const tbody = myTable.querySelector('tbody');
+    const myTable = document.querySelector('#inputTable');
+    const tbody = myTable.querySelector('tbody');
 
-        // Listen for 'keydown' events on the table row
-        tbody.addEventListener('keydown', (event) => {
-            // Check if the 'Enter' key was pressed
-            if (event.key === 'Enter') {
-                // Prevent default behavior (creating a new line)
-                event.preventDefault();
+    // Listen for 'keydown' events on the table row
+    tbody.addEventListener('keydown', (event) => {
+        // Check if the 'Enter' key was pressed
+        if (event.key === 'Enter') {
+            // Prevent default behavior (creating a new line)
+            event.preventDefault();
 
-                // Create a new table row
-                const newRow = document.createElement('tr');
+            // Create a new table row
+            const newRow = document.createElement('tr');
 
-                // Create the first table cell with blank contenteditable attribute for Manpower
-                const nameCell = document.createElement('td');
-                nameCell.setAttribute('contenteditable', 'true');
-                newRow.appendChild(nameCell);
+            // Create the first table cell with blank contenteditable attribute for Manpower
+            const nameCell = document.createElement('td');
+            nameCell.setAttribute('contenteditable', 'true');
+            newRow.appendChild(nameCell);
 
-                // Create the second table cell with blank contenteditable attribute for Position
-                const positionCell = document.createElement('td');
-                positionCell.setAttribute('contenteditable', 'true');
-                newRow.appendChild(positionCell);
+            // Create the second table cell with blank contenteditable attribute for Position
+            const positionCell = document.createElement('td');
+            positionCell.setAttribute('contenteditable', 'true');
+            newRow.appendChild(positionCell);
 
-                // Create the third table cell with 'CLOCK IN' button
-                const inCell = document.createElement('td');
-                const inButton = document.createElement('button');
-                inButton.classList.add('in');
-                inButton.textContent = 'CLOCK IN';
-                inCell.appendChild(inButton);
-                newRow.appendChild(inCell);
+            // Create the third table cell with 'CLOCK IN' button
+            const inCell = document.createElement('td');
+            const inButton = document.createElement('button');
+            inButton.classList.add('in');
+            inButton.textContent = 'CLOCK IN';
+            inCell.appendChild(inButton);
+            newRow.appendChild(inCell);
 
-                // Create the fourth table cell with 'CLOCK OUT' button
-                const outCell = document.createElement('td');
-                const outButton = document.createElement('button');
-                outButton.textContent = 'CLOCK OUT';
-                outCell.appendChild(outButton);
-                newRow.appendChild(outCell);
+            // Create the fourth table cell with 'CLOCK OUT' button
+            const outCell = document.createElement('td');
+            const outButton = document.createElement('button');
+            outButton.textContent = 'CLOCK OUT';
+            outCell.appendChild(outButton);
+            newRow.appendChild(outCell);
 
-                // Add the new row to the table body
-                tbody.appendChild(newRow);
-            }
-        });
-    </script>
+            // Add the new row to the table body
+            tbody.appendChild(newRow);
+        }
+    });
+</script>
 
 
 <script>
@@ -1813,6 +2016,14 @@ $.ajax({
                 myDropdown.classList.remove('user-sort-show');
             }
         }
+    }
+
+    function openMostContainer() {
+        document.getElementById("most-container").style.display = "block";
+    }
+
+    function closeMostContainer() {
+        document.getElementById("most-container").style.display = "none";
     }
 
     let canpopup = document.getElementById("can-popup");

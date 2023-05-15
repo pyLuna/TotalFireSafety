@@ -527,6 +527,10 @@ namespace TotalFireSafety.Controllers
             var lead = db.Employees.FirstOrDefault(e => e.emp_no == project.proj_emp_no);
             var report = db.NewReports.FirstOrDefault(r => r.rep_no == id);
             var newProposal = db.NewProposals.FirstOrDefault(p => p.prop_type_id == project.proj_type_id);
+            var Request = db.Requests.FirstOrDefault(q => q.request_proj_id == project.proj_type_id);
+            ViewBag.Requests = db.Requests.Where(q => q.request_proj_id == project.proj_type_id).ToList();
+            
+            
 
             var viewModel = new ProjectReportViewModel
             {
@@ -1297,10 +1301,11 @@ namespace TotalFireSafety.Controllers
             return Json(employees, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public JsonResult SaveData(List<Dictionary<string, string>> data, int man_proj_id, string man_date)
+       /* [HttpPost]
+        public ActionResult SaveDataAndReports(List<Dictionary<string, string>> data, List<string> images, string rep_scope, string rep_date, string rep_stats, int rep_proj_id, string rep_description)
         {
             nwTFSEntity db = new nwTFSEntity();
+
             foreach (var row in data)
             {
                 // Create a new NewManpower object
@@ -1309,8 +1314,8 @@ namespace TotalFireSafety.Controllers
                 manpower.man_id = Guid.NewGuid();
                 manpower.man_name = row["man_name"];
                 manpower.man_postition = row["man_position"];
-                manpower.man_proj_id = man_proj_id; // Set the man_proj_id property to the provided value
-                manpower.man_date = DateTime.Parse(man_date);
+                manpower.man_proj_id = rep_proj_id; // Set the man_proj_id property to the provided value
+                manpower.man_date = DateTime.Parse(rep_date);
 
                 // Save the NewManpower object to the database
                 db.NewManpowers.Add(manpower);
@@ -1319,7 +1324,7 @@ namespace TotalFireSafety.Controllers
                 // Create a new Attendance object
                 var attendance = new Attendance();
                 attendance.atte_id = Guid.NewGuid();
-                attendance.atte_proj_id = man_proj_id;
+                attendance.atte_proj_id = rep_proj_id;
                 attendance.atte_timein = DateTime.Parse(row["atte_timein"].ToString());
                 attendance.atte_timeout = attendance.atte_timeout;
                 attendance.NewManpower = manpower;
@@ -1329,8 +1334,69 @@ namespace TotalFireSafety.Controllers
                 db.SaveChanges();
             }
 
-            return Json(new { success = true });
+            foreach (var image in images)
+            {
+                var reportImage = new ReportImage
+                {
+                    img_id = Guid.NewGuid(),
+                    img_proj_id = rep_proj_id,
+                    img_date = DateTime.Parse(rep_date)
+                };
+
+                // get the filename from the base64 string
+                var base64Data = Regex.Match(image, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+                var fileName = $"{reportImage.img_id}.jpg";
+                var filePath = Path.Combine(Server.MapPath("~/ReportImg"), fileName);
+
+                // convert base64 string to byte array and save to server
+                var imageData = Convert.FromBase64String(base64Data);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    stream.Write(imageData, 0, imageData.Length);
+                }
+
+                // assign filename to img_image property and save to database
+                reportImage.img_image = fileName;
+                db.ReportImages.Add(reportImage);
+                db.SaveChanges();
             }
+
+            // convert string values to their corresponding data types
+            DateTime date = DateTime.Parse(rep_date);
+
+            // create a new report object
+            NewReport report = new NewReport
+            {
+                rep_id = Guid.NewGuid(),
+                rep_emp_no = (int)Session["emp_no"],
+                rep_proj_id = rep_proj_id,
+                rep_scope = rep_scope,
+                rep_stats = rep_stats,
+                rep_date = date,
+                rep_description = rep_description
+            };
+
+            try
+            {
+                using (var context = new nwTFSEntity())
+                {
+                    context.NewReports.Add(report);
+                    context.SaveChanges();
+                }
+                return Json(new { success = true });
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                    }
+                }
+                return Json(new { success = false, message = "Validation failed." });
+            }
+        }*/
 
         [HttpPost]
         public JsonResult SaveProject(List<NewProject> projectList)
@@ -1439,6 +1505,41 @@ namespace TotalFireSafety.Controllers
                 // assign filename to img_image property and save to database
                 reportImage.img_image = fileName;
                 db.ReportImages.Add(reportImage);
+                db.SaveChanges();
+            }
+
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
+        public JsonResult SaveData(List<Dictionary<string, string>> data, int man_proj_id, string man_date)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            foreach (var row in data)
+            {
+                // Create a new NewManpower object
+                var manpower = new NewManpower();
+                manpower.man_emp_no = (int?)Session["emp_no"];
+                manpower.man_id = Guid.NewGuid();
+                manpower.man_name = row["man_name"];
+                manpower.man_postition = row["man_position"];
+                manpower.man_proj_id = man_proj_id; // Set the man_proj_id property to the provided value
+                manpower.man_date = DateTime.Parse(man_date);
+
+                // Save the NewManpower object to the database
+                db.NewManpowers.Add(manpower);
+                db.SaveChanges();
+
+                // Create a new Attendance object
+                var attendance = new Attendance();
+                attendance.atte_id = Guid.NewGuid();
+                attendance.atte_proj_id = man_proj_id;
+                attendance.atte_timein = DateTime.Parse(row["atte_timein"].ToString());
+                attendance.atte_timeout = attendance.atte_timeout;
+                attendance.NewManpower = manpower;
+
+                // Save the Attendance object to the database
+                db.Attendances.Add(attendance);
                 db.SaveChanges();
             }
 

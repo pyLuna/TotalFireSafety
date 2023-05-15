@@ -8459,24 +8459,23 @@ acc-form-table .view-request-form-table-style table thead td {
     border-bottom: 2px solid #000;
 }
 
-.proj-incharge-container .incharge .incharge-header a {
-    font-size: 1rem;
-}
-
-.proj-incharge-container .incharge .incharge-header a:hover {
-    cursor: pointer;
-    text-decoration: underline;
-    color: blue;
-}
-
-    .proj-incharge-container .incharge .date {
-        margin-top: 10px;
+    .proj-incharge-container .incharge .incharge-header a {
+        font-size: 1rem;
     }
 
-    
+        .proj-incharge-container .incharge .incharge-header a:hover {
+            cursor: pointer;
+            text-decoration: underline;
+            color: blue;
+        }
+
+.proj-incharge-container .incharge .date {
+    margin-top: 10px;
+}
 
     .proj-incharge-container .incharge .date label {
         font-weight: 600;
+        overflow: hidden;
     }
 
 .proj-incharge-container .incharge .status {
@@ -8499,27 +8498,27 @@ acc-form-table .view-request-form-table-style table thead td {
         padding: 0;
     }
 
-    .proj-incharge-container .incharge .date input {
-        border: 1px solid #B2B2B2;
-        border-radius: 5px;
-        font-size: .9rem;
-        width: 150px;
-        height: 30px;
-        font-weight: 600;
-        margin-left: 10px;
-    }
+.proj-incharge-container .incharge .date input {
+    border: 1px solid #B2B2B2;
+    border-radius: 5px;
+    font-size: .9rem;
+    width: 150px;
+    height: 30px;
+    font-weight: 600;
+    margin-left: 10px;
+}
 
-        .proj-incharge-container .incharge .status select .on-going {
-            color: #09AF10;
-        }
+.proj-incharge-container .incharge .status select .on-going {
+    color: #09AF10;
+}
 
-        .proj-incharge-container .incharge .status select .upcoming {
-            color: #FF932F;
-        }
+.proj-incharge-container .incharge .status select .upcoming {
+    color: #FF932F;
+}
 
-        .proj-incharge-container .incharge .status select .cancelled {
-            color: #FF0000;
-        }
+.proj-incharge-container .incharge .status select .cancelled {
+    color: #FF0000;
+}
 
 
 
@@ -8536,7 +8535,7 @@ acc-form-table .view-request-form-table-style table thead td {
     margin-left: 20px;
     margin-right: 20px;
 }
-   
+
 .proj-main-content .proj-main-container .proj-right-container .proj-mems-container .mems-main .mems-header {
     justify-content: space-between;
     display: flex;
@@ -8563,34 +8562,34 @@ acc-form-table .view-request-form-table-style table thead td {
     font-size: .8rem;
 }
 
-.proj-right-container .proj-mems-container .mems-main .mems-header button:hover {
-    color: #fff;
-    border: 1px solid var(--text-color-black);
-    background-color: #16215B;
-}
-
-        .proj-mems-container .mems-main .mems-title h3 a {
-            font-size: 1.5rem;
-            color: #000;
-        }
-
-            .proj-mems-container .mems-main .mems-title h3 a:hover {
-                cursor: pointer;
-                color: blue;
-            }
-
-    .proj-mems-container .mems-main .mems-list {
-        margin-top: 20px;
+    .proj-right-container .proj-mems-container .mems-main .mems-header button:hover {
+        color: #fff;
+        border: 1px solid var(--text-color-black);
+        background-color: #16215B;
     }
 
-        .proj-mems-container .mems-main .mems-list h5 {
-            margin-top: 10px;
-            font-size: .8rem;
-        }
+.proj-mems-container .mems-main .mems-title h3 a {
+    font-size: 1.5rem;
+    color: #000;
+}
 
-        .proj-mems-container .mems-main .mems-list label {
-            font-size: .8rem;
-        }
+    .proj-mems-container .mems-main .mems-title h3 a:hover {
+        cursor: pointer;
+        color: blue;
+    }
+
+.proj-mems-container .mems-main .mems-list {
+    margin-top: 20px;
+}
+
+    .proj-mems-container .mems-main .mems-list h5 {
+        margin-top: 10px;
+        font-size: .8rem;
+    }
+
+    .proj-mems-container .mems-main .mems-list label {
+        font-size: .8rem;
+    }
 
 .mems {
     border-top: 3px solid #000;
@@ -8631,6 +8630,116 @@ acc-form-table .view-request-form-table-style table thead td {
      background-color: #F0EBE3;
 }
 
+/* MOST REQUESTED ITEM FORM STYLE */
+
+.most-container {
+    display: none;
+    width: 70%;
+    height: 700px;
+    position: fixed;
+    top: 10%;
+    left: 20%;
+    background-color: #f1f5f9;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border-radius: 10px;
+    z-index: 100;
+    position: fixed;
+    overflow: hidden;
+}
+
+    .most-container .most-header h3 {
+        font-size: 1.2rem;
+        margin-top: -28px;
+    }
+
+    .most-container .most-header h3 i {
+        font-size: 1.8rem;
+    }
+
+    .most-container .most-header span {
+        margin-top: 20px;
+        margin-left: 20px;
+        font-size: 2rem;
+        color: #000;
+    }
+
+        .most-container .most-header span:hover {
+            cursor: pointer;
+            color: blue;
+        }
+
+    .most-container .most-main {
+        width: 100%;
+        height: 650px;
+        display: flex;
+        padding-bottom: 25px;
+        overflow: auto;
+    }
+
+.most-req {
+    margin-top: 20px;
+    margin-left: 2%;
+    margin-right: 2%;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    border: 1px solid #B2B2B2;
+}
+
+.most-req .most-req-header {
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.most-req-table {
+    padding: 1%;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+    .most-req-table .most-req-table-style {
+        padding-bottom: 10px;
+        overflow: auto;
+        width: 100%;
+    }
+
+        .most-req-table .most-req-table-style table thead {
+            background-color: #DDDDDD;
+        }
+
+.most-req-table-style table thead td {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+
+.most-req-table-style table tbody td label {
+    color: #000;
+    font-size: .9rem;
+}
+
+.most-req-table-style table tbody td .view-action-style a {
+    color: blue;
+}
+
+.most-req-table-style table tbody td .most-req-style a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.most-req-table .most-req-table-style table thead td {
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+/* END */
+
+
+
+/* END */
 
 /* PROPOSAL REQUEST */
 

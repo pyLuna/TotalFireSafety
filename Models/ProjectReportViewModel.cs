@@ -8,6 +8,10 @@ namespace TotalFireSafety.Models
     using System.Collections.Generic;
     public class ProjectReportViewModel
     {
+        public Role role { get; set; }
+        public Employee employee { get; set; }
+        public Inventory Inventory { get; set; }
+        public Request Request { get; set; }
         public NewProject Project { get; set; }
 
         public NewReport SelectedReport { get; set; }

@@ -158,7 +158,7 @@
                     </a>
 
                     <select id="status" required>
-                        <option disabled selected>Project Status</option>
+                        <option  disabled selected>Project Status</option>
                         <option value="All">All</option>
                         <option value="On-Going">On-Going</option>
                         <option value="In-Line">Upcoming</option>
@@ -166,16 +166,16 @@
                     </select>
 
                     <select id="select-leads" required>
-                        <option disabled selected>Project Lead</option>
+                        <option  disabled selected>Project Lead</option>
                         <option value="All">All</option>
 
                     </select>
 
                     <!--NEW UPDATE -->
 
-                    <a href="@Url.Action("ProjectProposal","Admin")">
+                    @*<a href="@Url.Action("ProjectProposal","Admin")">
                         <button class="add-btn" title="ADD NEW ITEM" href="">MANPOWER</button>
-                    </a>
+                    </a>*@
 
                     <!-- END -->
 
@@ -464,62 +464,42 @@ $(document).ready(function () {
     row.find('.progress-column').append(progressBar);
     tableBody.append(row);
   });
-
-  // Add search filtering functionality
-  $('.search-wrapper input').on('keyup', function () {
-    var searchText = $(this).val().toLowerCase();
-
-    tableBody.find('tr').each(function () {
-      var name = $(this).find('td:first-child a').text().toLowerCase();
-      var lead = $(this).find('td:nth-child(2)').text().toLowerCase();
-      var status = $(this).find('.status-column').text().toLowerCase();
-
-      if (name.indexOf(searchText) === -1 && lead.indexOf(searchText) === -1 && status.indexOf(searchText) === -1) {
-        $(this).hide();
-      } else {
-        $(this).show();
-      }
+    // Add search filtering functionality
+    $('.search-wrapper input').on('keyup', function () {
+        filterTable();
     });
-  });
 
     $('#select-leads').on('change', function () {
-        var selectedLead = $(this).find('option:selected').text().toLowerCase();
-
-        if (selectedLead === 'all') {
-            selectedLead = ''; // Set the selectedLead to an empty string or any other value you desire
-        }
-
-        // Loop through each row in the table and show/hide based on selected lead
-        tableBody.find('tr').each(function () {
-            var lead = $(this).find('td:nth-child(2)').text().toLowerCase();
-
-            if (selectedLead && lead !== selectedLead) {
-                $(this).hide();
-            } else {
-                $(this).show();
-            }
-        });
+        filterTable();
     });
-   
+
     // Filter table by project status
     $('#status').on('change', function () {
-        var selectedstats = $(this).find('option:selected').text().toLowerCase();
+        filterTable();
+    });
 
-        if (selectedstats === 'all') {
-            selectedstats = ''; // Set the selectedLead to an empty string or any other value you desire
-        }
+    function filterTable() {
+        var searchText = $('.search-wrapper input').val().toLowerCase();
+        var selectedLead = $('#select-leads').find('option:selected').text().toLowerCase();
+        var selectedStatus = $('#status').find('option:selected').text().toLowerCase();
 
-        // Loop through each row in the table and show/hide based on selected lead
         tableBody.find('tr').each(function () {
-            var stats = $(this).find('td:nth-child(4)').text().toLowerCase();
+            var name = $(this).find('td:first-child a').text().toLowerCase();
+            var lead = $(this).find('td:nth-child(2)').text().toLowerCase();
+            var status = $(this).find('.status-column').text().toLowerCase();
 
-            if (selectedstats && stats !== selectedstats) {
-                $(this).hide();
-            } else {
+            var nameMatch = name.indexOf(searchText) !== -1;
+            var leadMatch = selectedLead === 'all' || lead === selectedLead;
+            var statusMatch = selectedStatus === 'all' || status === selectedStatus;
+
+            if (nameMatch && leadMatch && statusMatch) {
                 $(this).show();
+            } else {
+                $(this).hide();
             }
         });
-    });
+    }
+
 });
     </script>
 
@@ -705,14 +685,10 @@ $(document).ready(function () {
 
             // Validate start date and baseline finish date
             if (projStartDate === projEndDate) {
-                alert("Start date cannot be same date to baseline finish date.");
+                alert("Start date cannot be the same as the baseline finish date.");
                 $("#save-button").prop("disabled", false); // Enable the button
                 return;
             }
-           /* if (new Date(projEndDate) < new Date(projStartDate)) {
-                alert("End date cannot be earlier than the start date.");
-                $("#save-button").prop("disabled", false); // Enable the button
-                return;*/
 
             // Create a Project object with the form data
             var project = {
@@ -737,9 +713,7 @@ $(document).ready(function () {
                         // Project saved successfully
                         alert(response.message);
 
-                        // Close the add-new container and refresh the project list
-                        closeAddNewContainer();
-                        loadProjects();
+                        // Reload the page
                         location.reload();
                     } else {
                         // An error occurred while saving the project
@@ -758,7 +732,6 @@ $(document).ready(function () {
                 }
             });
         }
-
     </script>
 
 

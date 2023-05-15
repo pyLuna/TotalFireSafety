@@ -278,6 +278,9 @@
     <Compile Include="Models\Inventory.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Inv_Limits.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Inv_Update.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>

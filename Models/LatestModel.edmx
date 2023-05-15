@@ -44,6 +44,16 @@
           <Property Name="emp_lname" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="emp_name" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Inv_Limits">
+          <Key>
+            <PropertyRef Name="in_code" />
+          </Key>
+          <Property Name="in_code" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="maximum" Type="int" Nullable="false" />
+          <Property Name="minimum" Type="int" Nullable="false" />
+          <Property Name="reorder" Type="int" Nullable="false" />
+          <Property Name="running" Type="int" />
+        </EntityType>
         <EntityType Name="Inv_Update">
           <Key>
             <PropertyRef Name="update_id" />
@@ -172,6 +182,7 @@
           <Property Name="request_status" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="request_type_id" Type="int" Nullable="false" />
           <Property Name="request_type_status" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="request_proj_id" Type="int" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -222,6 +233,18 @@
             </Principal>
             <Dependent Role="Credentials">
               <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Inv_Limits_Inventories">
+          <End Role="Inventories" Type="Self.Inventories" Multiplicity="1" />
+          <End Role="Inv_Limits" Type="Self.Inv_Limits" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Inventories">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Inv_Limits">
+              <PropertyRef Name="in_code" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -374,6 +397,7 @@
           <EntitySet Name="Basecount" EntityType="Self.Basecount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Credentials" EntityType="Self.Credentials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inv_Limits" EntityType="Self.Inv_Limits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inv_Update" EntityType="Self.Inv_Update" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Inventories" EntityType="Self.Inventories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NewManpowers" EntityType="Self.NewManpowers" Schema="dbo" store:Type="Tables" />
@@ -397,6 +421,10 @@
           <AssociationSet Name="FK_Credentials_Employee" Association="Self.FK_Credentials_Employee">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Credentials" EntitySet="Credentials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Inv_Limits_Inventories" Association="Self.FK_Inv_Limits_Inventories">
+            <End Role="Inventories" EntitySet="Inventories" />
+            <End Role="Inv_Limits" EntitySet="Inv_Limits" />
           </AssociationSet>
           <AssociationSet Name="FK_Inv_Update_Inventory1" Association="Self.FK_Inv_Update_Inventory1">
             <End Role="Inventories" EntitySet="Inventories" />
@@ -532,6 +560,11 @@
             <End Role="NewProject" EntitySet="NewProjects" />
             <End Role="Proposal" EntitySet="Proposals" />
           </AssociationSet>
+          <EntitySet Name="Inv_Limits" EntityType="db_a97f85_totalfiresafetyModel.Inv_Limits" />
+          <AssociationSet Name="FK_Inv_Limits_Inventories" Association="db_a97f85_totalfiresafetyModel.FK_Inv_Limits_Inventories">
+            <End Role="Inventory" EntitySet="Inventories" />
+            <End Role="Inv_Limits" EntitySet="Inv_Limits" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Attendance">
           <Key>
@@ -611,6 +644,7 @@
           <NavigationProperty Name="Basecounts" Relationship="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1" FromRole="Inventory" ToRole="Basecount" />
           <NavigationProperty Name="Inv_Update" Relationship="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1" FromRole="Inventory" ToRole="Inv_Update" />
           <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Inventory" ToRole="Request" />
+          <NavigationProperty Name="Inv_Limits" Relationship="db_a97f85_totalfiresafetyModel.FK_Inv_Limits_Inventories" FromRole="Inventory" ToRole="Inv_Limits" />
         </EntityType>
         <EntityType Name="NewManpower">
           <Key>
@@ -702,6 +736,7 @@
           <Property Name="request_type_status" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Request" ToRole="Employee" />
           <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" FromRole="Request" ToRole="Inventory" />
+          <Property Name="request_proj_id" Type="Int32" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -939,6 +974,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Inv_Limits">
+          <Key>
+            <PropertyRef Name="in_code" />
+          </Key>
+          <Property Name="in_code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="maximum" Type="Int32" Nullable="false" />
+          <Property Name="minimum" Type="Int32" Nullable="false" />
+          <Property Name="reorder" Type="Int32" Nullable="false" />
+          <Property Name="running" Type="Int32" />
+          <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Inv_Limits_Inventories" FromRole="Inv_Limits" ToRole="Inventory" />
+        </EntityType>
+        <Association Name="FK_Inv_Limits_Inventories">
+          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Inv_Limits" Role="Inv_Limits" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Inventory">
+              <PropertyRef Name="in_code" />
+            </Principal>
+            <Dependent Role="Inv_Limits">
+              <PropertyRef Name="in_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1089,6 +1147,7 @@
           <EntitySetMapping Name="Requests">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Request">
               <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="request_proj_id" ColumnName="request_proj_id" />
                 <ScalarProperty Name="request_type_status" ColumnName="request_type_status" />
                 <ScalarProperty Name="request_type_id" ColumnName="request_type_id" />
                 <ScalarProperty Name="request_status" ColumnName="request_status" />
@@ -1142,6 +1201,17 @@
                 <ScalarProperty Name="prop_manpower" ColumnName="prop_manpower" />
                 <ScalarProperty Name="prop_type_id" ColumnName="prop_type_id" />
                 <ScalarProperty Name="prop_id" ColumnName="prop_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inv_Limits">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Inv_Limits">
+              <MappingFragment StoreEntitySet="Inv_Limits">
+                <ScalarProperty Name="running" ColumnName="running" />
+                <ScalarProperty Name="reorder" ColumnName="reorder" />
+                <ScalarProperty Name="minimum" ColumnName="minimum" />
+                <ScalarProperty Name="maximum" ColumnName="maximum" />
+                <ScalarProperty Name="in_code" ColumnName="in_code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -63,7 +63,6 @@ $(document).ready(function () {
             },
             inpSizeQuant: {
                 required: true,
-                max: 200
             },
             sizequant: {
                 required: true
@@ -92,7 +91,6 @@ $(document).ready(function () {
             },
             inpSizeQuant: {
                 required: "Quantity is required",
-                max: "Quantity must not exceed 200"
             },
             sizequant: {
                 required: ""

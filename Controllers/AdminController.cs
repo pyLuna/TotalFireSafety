@@ -1496,7 +1496,7 @@ namespace TotalFireSafety.Controllers
                 }
                 var json = JsonConvert.DeserializeObject(response);
                 JsonResult result = Json("Ok", JsonRequestBehavior.AllowGet); // return the value as JSON and allow Get Method
-                //await SendNotif(Session["emp_no"].ToString());
+                await SendNotif("notification");
                 //await SendNotif("notification");
                 return result;
             }
@@ -1535,6 +1535,96 @@ namespace TotalFireSafety.Controllers
             Response.ContentType = "application/json"; // Set the Content-Type header
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return result;
+        }
+
+        private async void QuantityUpdate(string code, int quant, string unit)
+        {
+                using (var _context = new nwTFSEntity())
+                {
+                var item = _context.Inventories.Where(x => x.in_code == code).SingleOrDefault();
+                        var newGuid = Guid.NewGuid();
+
+                        Inv_Update update = new Inv_Update()
+                        {
+                            update_id = newGuid,
+                            update_date = DateTime.Now,
+                            update_item_id = item.in_code,
+                            update_quantity = quant.ToString() + " " + unit,
+                            update_type = "quantity"
+                        };
+                        _context.Inv_Update.Add(update);
+                        await _context.SaveChangesAsync();
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> AllUpdates([System.Web.Http.FromUri] string code)
+        {
+            using(var _context = new nwTFSEntity())
+            {
+                var updates = _context.Inv_Update.Where(x => x.update_item_id == code).ToList();
+
+                if(updates == null)
+                {
+                    var response = new
+                    {
+                        message = "no data"
+                    };
+                    byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(response);
+                    var jsonString = Encoding.UTF8.GetString(jsonBytes);
+                    return Content(jsonString, "application/json");
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    var writer = new Utf8JsonWriter(stream);
+                    writer.WriteStartArray();
+
+                    foreach (var item in updates)
+                    {
+                        writer.WriteStartObject();
+                        //writer.WriteString("in_guid", item.in_guid);
+                        writer.WriteString("code", item.update_item_id);
+                        writer.WriteString("date", item.update_date?.ToString("MMMM dd, yyyy"));
+                        writer.WriteString("quantity", item.update_quantity);
+                        writer.WriteString("name", item.Inventory.in_name);
+                        // add more properties as needed
+                        writer.WriteEndObject();
+                    }
+
+                    writer.WriteEndArray();
+                    writer.Flush();
+                    var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                    var _jsonDeserialized = JsonConvert.DeserializeObject(jsonString);
+                    return Content(jsonString);
+                }
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddQuantity([System.Web.Http.FromUri] string code, [System.Web.Http.FromUri] int quantity)
+        {
+
+            using(var _context = new nwTFSEntity())
+            {
+                var cd = code.ToString();
+                var item = _context.Inventories.Where(x => x.in_code == code).SingleOrDefault();
+                var quant = int.Parse(item.in_quantity.Split(' ')[0]) + quantity;
+                item.in_quantity = quant + " " + item.in_quantity.Split(' ')[1];
+                _context.Entry(item);
+                await _context.SaveChangesAsync();
+                QuantityUpdate(code,quantity, item.in_quantity.Split(' ')[1]);
+            }
+
+            var response = new
+            {
+                message = "okay"
+            };
+            byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(response);
+
+            var jsonString = Encoding.UTF8.GetString(jsonBytes);
+            Session["added"] = "Item quantity added successfully";
+            return Content(jsonString, "application/json");
         }
 
         [HttpPost]
@@ -1658,7 +1748,7 @@ namespace TotalFireSafety.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
-            //await SendNotif(Session["emp_no"].ToString());
+            await SendNotif("notification");
             //await SendMessage("notification");
             return Json("Item Deleted");
         }
@@ -1689,15 +1779,15 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public async Task<ActionResult> Inventory(Inventory items, string type)
         {
-            var role = int.Parse(Session["system_role"].ToString());
-            if (role == 3)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
             }
             var serializedModel = JsonConvert.SerializeObject(items);
             var userToken = Session["access_token"].ToString();
@@ -1735,15 +1825,15 @@ namespace TotalFireSafety.Controllers
         //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvArchive()
         {
-            var role = int.Parse(Session["system_role"].ToString());
-            if (role == 3)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
@@ -1775,15 +1865,15 @@ namespace TotalFireSafety.Controllers
         //[System.Web.Http.Authorize(Roles = "admin")]
         public async Task<ActionResult> Users()
         {
-            var role = int.Parse(Session["system_role"].ToString());
-            if (role != 1)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role != 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
             }
             //Session["editUser"] = null;
             ViewBag.ProfilePath = GetPath(int.Parse(empId));

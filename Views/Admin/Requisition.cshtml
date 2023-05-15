@@ -287,7 +287,7 @@
                                                             <td>Category</td>
                                                             <td>Type</td>
                                                             <td>Size</td>
-                                                            <td>Quantity</td>
+                                                            <td>On-hand Quantity</td>
                                                             <td>Request Quantity</td>
                                                             <td>Status</td>
                                                             <td style="display:none" id="actCol">Action</td>
@@ -333,7 +333,7 @@
                                                             <td>Category</td>
                                                             <td>Type</td>
                                                             <td>Size</td>
-                                                            <td>Quantity</td>
+                                                            <td>On-hand Quantity</td>
                                                             <td>Request Quantity</td>
                                                             <td>Status</td>
                                                             <td style="display:none" id="actCol1">Action</td>
@@ -529,7 +529,7 @@
                                                             <td>Category</td>
                                                             <td>Type</td>
                                                             <td>Size</td>
-                                                            <td>Remarks</td>
+                                                            <td>On-hand Quantity</td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -840,15 +840,29 @@
         document.getElementById("input-popup").style.display = "block";
         document.getElementById('hiddenCode').value = itemCode;
     }
+
+    function findItem(code) {
+        for (var i = 0; i < itemInv.length; i++) {
+            if (itemInv[i].in_code == code) {
+                return itemInv[i];
+            }
+        }
+    }
+
     document.getElementById('conf').addEventListener("click", function () {
         var quant = document.getElementById('quantVal').value;
         var code = document.getElementById('hiddenCode').value;
-        if (quant === '' || quant === null || isNaN(quant)) {
+        var result = findItem(code);
+
+        if (extractNum(result.in_quantity).num < Number(quant)) {
+            $(".emErr").html("Quantity must not exceed the on hand quantity");
+        }
+        else if (quant === '' || quant === null || isNaN(quant)) {
             $(".emErr").html("Please input quantity.");
         }
-        else if (quant > 200) {
-            $(".emErr").html("Quantity must not exceed 200");
-        }
+        //else if (quant > 200) {
+        //    $(".emErr").html("Quantity must not exceed 200");
+        //}
         else {
             DataToAdd(quant, code);
             closeInputQTYForm();

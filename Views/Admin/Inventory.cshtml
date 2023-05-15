@@ -103,6 +103,7 @@
                                                 <label>item id</label>
                                                 <input type="text" id="in_code" name="in_code" placeholder="ABC-DEF-GHI-000" readonly>
                                             </div>
+
                                             <div class="input-field">
                                                 <label>item name</label>
                                                 <input type="text" id="in_name" name="in_name" placeholder="Enter item name" required>
@@ -147,6 +148,18 @@
                                                 <label id="inpSizeQuant-error" class="error manual-error" for="inpSizeQuant"></label>
                                                 <label id="sizeQuant-error" class="error manual-error" for="sizeQuant"></label>
                                             </div>
+                                            <div class="input-field">
+                                                <label>Max Quantity</label>
+                                                <input type="text" id="Inv_Limitsmaximum" name="Inv_Limits.maximum" placeholder="000">
+                                            </div>
+                                            <div class="input-field">
+                                                <label>Min Quantity</label>
+                                                <input type="text" id="Inv_Limitsminimum" name="Inv_Limits.minimum" placeholder="000">
+                                            </div>
+                                            <div class="input-field">
+                                                <label>Reorder</label>
+                                                <input type="text" id="Inv_Limitsreorder" name="Inv_Limits.reorder" placeholder="000">
+                                            </div>
                                             <input type="text" id="in_quantity" name="in_quantity" style="display:none!important;" required>
                                             <input type="text" id="in_remarks" name="in_remarks" style="display:none;" required>
                                             <div class="input-field">
@@ -163,7 +176,8 @@
                                 </div>
 
                                 <div class="form-add-btns">
-                                    <button class="save" onclick="SetHiddenValues()">
+		
+                                    <button class="save" onclick="checkForm() + SetHiddenValues()">
                                         @*infoOpenPopup('addForm')*@
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>
@@ -196,13 +210,15 @@
                                         <div class="add-qty-header">
                                             <div class="search-wrapper add-search">
                                                 <span class="las la-search"></span>
-                                                <input type="text" placeholder="Search here">
+                                                <input type="text" placeholder="Search here" list="codeList">
+                                                <datalist id="codeList">
+                                                </datalist>
                                             </div>
 
 
                                             <div class="add-qty">
                                                 <label>Quantity:</label>
-                                                <input type="number" max="999"/>
+                                                <input type="number" max="999" />
                                             </div>
                                         </div>
 
@@ -212,14 +228,26 @@
                                             </div>
 
                                             <div class="text-area">
-                                                <textarea></textarea>
+                                                @*<textarea id="dataTextarea" rows="10" cols="30" onkeydown="handleKeyDown(event)"></textarea>*@
+                                                <div class="code-card">
+                                                    <label>IMP-FXRT-FXRT</label>
+                                                    <i class="las la-times-circle"></i>
+                                                </div>
+                                                <div class="code-card">
+                                                    <label>IMP-FXRT-FXRT</label>
+                                                    <i class="las la-times-circle"></i>
+                                                </div>
+                                                <div class="code-card">
+                                                    <label>IMP-FXRT-FXRT</label>
+                                                    <i class="las la-times-circle"></i>
+                                                </div>
                                             </div>
 
                                         </div>
-                                       
-                                            
-                                            
-                                        
+
+
+
+
 
                                         @*<div class="fields">
                                             <div class="input-field">
@@ -295,13 +323,14 @@
                                     </button>
 
                                     <button class="cancel">
-                                        <span class="btnText" onclick="checkForm_Add_Quan() + canOpenPopup()">Cancel</span>
+                                        <span class="btnText" onclick="canOpenPopup()">Cancel</span>
                                         <i class="las la-window-close"></i>
                                     </button>
                                 </div>
 
                             </form>
                         </div>
+
                     </div>
                 </div>
 
@@ -363,8 +392,8 @@
                                             <div class="input-field">
                                                 <label>Quantity</label>
                                                 <div class="input-field-quantity">
-                                                    <input type="number" id="inpQuant2" name="inpQuant2" placeholder="000" required>
-                                                    <select id="inpQuant2A" name="inpQuant2A" required>
+                                                    <input type="number" id="inpQuant2" name="inpQuant2" placeholder="000" readonly>
+                                                    <select id="inpQuant2A" name="inpQuant2A" disabled>
                                                         <option disabled selected>Measurement</option>
                                                     </select>
                                                 </div>
@@ -389,9 +418,9 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="form-add-btns">
-                                    <button class="save" onclick="setHiddensEdit()">
+                                    <button class="save" onclick="checkForm_Edit_Itm() + setHiddensEdit()">
                                         @*infoOpenPopup('editForm')*@
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>
@@ -408,6 +437,22 @@
                     </div>
                 </div>
             }
+
+            <!-- INPUT POPUP -->
+
+            <div class="inv-input-popup" id="inv-input-popup">
+                <h3>INPUT QUANTITY</h3>
+                <input type="number" id="quantVal" name="quantVal" required>
+                <br />
+                <p class="emErr" id="errMess" style="margin-top: 5px; color: red;"></p>
+                <br>
+                <br>
+                <button id="conf">confirm</button>
+                <button onclick="closeInvInputQTYForm()">cancel</button>
+            </div>
+
+            @* END *@
+
             <div class="inventory-projects" id="printable">
                 <div class="inventory">
                     <div class="inventory-body">
@@ -415,25 +460,26 @@
                             <table width="100%" id="myTable" class="myTable">
                                 <thead>
                                     <tr>
+                                        <td>Date Added</td>
                                         <td><a onclick="Sort(this,'in_code')">Code<i class="las la-sort-down"></i></a></td>
                                         <td><a onclick="Sort(this,'in_name')">Name<i class="las la-sort-down"></i></a></td>
                                         <td>Category</td>
                                         <td>Type</td>
                                         <td>Size</td>
                                         <td>On-hand Quantity</td>
-                                        <td>Minimum</td>
-                                        <td>Maximum</td>
-                                        <td>Re-order</td>
+                                        <td>Maximum<span title="This column shows the minimum quantity of the item"><i class="las la-info-circle"></i></span></td>
+                                        <td>Minimum<span title="This column shows the maximum quantity of the item"><i class="las la-info-circle"></i></span></td>
+                                        <td>Re-order<span title="This column shows the reorder point"><i class="las la-info-circle"></i></span></td>
 
                                         @*<td>Remarks<span title="Quantity &#10; Over 100 = Overstocked &#10; 50 to 99 = Standard &#10; 49 t0 30 = Average &#10; 29 to 10 = Reorder &#10; Below 9 = Critical"><i class="las la-info-circle"></i></span></td>*@
-                                        
+
                                         <td><a onclick="Sort(this,'in_class')">Class<i class="las la-sort-down"></i></a></td>
-                                        <td>Running Quantity</td>
+                                        <td>Outgoing Quantity</td>
                                         @if (Int32.Parse(Session["system_role"].ToString()) == 2)
                                         {
                                             <td id="hideAction">Action</td>
                                         }
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -444,6 +490,59 @@
                 </div>
             </div>
         </div>
+
+
+        @* MOST REQUESTED FORM *@
+
+        <div class="his-container" id="his-container">
+
+            <div class="his-header">
+
+                <button type="reset" style="border: none;">
+                    <span class="las la-long-arrow-alt-left" onclick="closeHisForm()"></span>
+                </button>
+                <center>
+                    <h3>ITEM HISTORY @*<i class="las la-rocket"></i>*@</h3>
+                </center>
+
+            </div>
+
+            <div class="his-main">
+
+                <div class="his-req">
+                    
+                    <div class="his-req-contents">
+                        <div class="his-req-table">
+                            <div class="his-req-table-style">
+                                <div class="table-responsive" style="overflow-x: auto;">
+                                    <table width="100%" id="hisTable">
+                                        <thead>
+                                            <tr>
+                                                <td>Date Added</td>
+                                                <td>Item Code</td>
+                                                <td>Item Name</td>
+                                                <td>Quantity Added</td>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>q
+
+        </div>
+
+        @* END *@
+
 
         <div class="info-pop-container" id="info-popup">
             <img src="@Url.Content("~/images/information.png")">
@@ -500,7 +599,7 @@
 
         @* POPUP FOR OVERSTACKED AND CRITICAL *@
 
-        <div class="over-pop-container" id="over-popup">
+        @*<div class="over-pop-container" id="over-popup">
             <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
             <p>This item will be marked as Overstacked. Are you sure?</p>
@@ -530,7 +629,7 @@
             <p>This item will be marked as Critical. Are you sure?</p>
             <button type="submit" id="qtyCritConf">Yes</button>
             <button type="button" onclick="closeCritPopup()">Cancel</button>
-        </div>
+        </div>*@
 
         @* END *@
 
@@ -548,13 +647,23 @@
     function checkForm() {
         var bool = $('#addForm').valid();
         if (bool) {
+            var input = document.getElementById("inpSizeQuant").value;
+            var max = document.getElementById("Inv_Limitsmaximum").value;
+            var min = document.getElementById("Inv_Limitsminimum").value;
+            var err = document.getElementById("inpSizeQuant-error");
+            if (Number(input) > Number(max)) {
+                err.innerText = "Quantity must not exceed maximum";
+                err.style.display = "block";
+                return;
+            }
+            else if (Number(input) < Number(min)) {
+                err.innerText = "Quantity must not be lower than minimum";
+                err.style.display = "block";
+                return;
+            }
             infoOpenPopup('addForm');
-            closeOverPopup();
-            closeAddOverPopup();
         }
     }
-
-
 
     /*ADD QUANTITY ITEM CHECKFORM VALIDATION*/
     function checkForm_Add_Quan() {
@@ -569,11 +678,60 @@
         var bool = $('#editForm').valid();
         if (bool) {
             infoOpenPopup('editForm');
-            closeExtraOverPopup();
-            closeCritPopup();
         }
     }
 
+    function validateQuantity(code,value) {
+        let arr = [];
+        for (let j = 0; j < fixedArray.length; j++) {
+            if (fixedArray[j].in_code.toLowerCase() == code.toLowerCase()) {
+                arr.push(fixedArray[j]);
+            }
+        }
+        var num = extractNum(arr[0].in_quantity).num;
+        var result = Number(num) + Number(value);
+        var bool = false;
+        var message = "";
+        if (result > arr[0].Limits.maximum) {
+            message = "Quantity has exceeded the maximum amount";
+        }
+        else if (result < arr[0].Limits.minimum) {
+            message = "Quantity reached the minimum amount";
+        }
+        else {
+            bool = true;
+        }
+        return { bool, message };
+    }
+
+    document.getElementById("conf").addEventListener("click", function () {
+        var code = localStorage.getItem("itemCode");
+        var val = document.getElementById("quantVal").value;
+        var result = validateQuantity(code, val);
+        console.log(result);
+        if (!result.bool) {
+            var err = document.getElementById("errMess");
+            err.innerText = result.message;
+            return;
+        }
+        fetch('/Admin/AddQuantity?code=' + code +'&quantity=' + val, {
+            method: "POST"
+        })
+        .then(res => {
+            if (res.ok) {
+                    // API request was successful
+                return;
+            } else {
+                console.log(res.statusText);
+            }
+        })
+        .then(data => {
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    });
 
     let codeToDelete = "";
     //window.onload = function () {
@@ -583,11 +741,13 @@
         if (mssg != "") {
             saveOpenPopup();
             document.getElementById("updatemess").innerHTML = mssg;
+            @{
+                Session["added"] = "";
+             }
         }
         if (removed == "success") {
             rempopup.classList.add("rem-popup-show");
             localStorage.setItem("removed", "pending");
-            localStorage.clear();
         }
         GetAll();
     }
@@ -643,10 +803,10 @@
     let addoverpopup = document.getElementById("add-over-popup");
     function openAddOverPopup() {
         addoverpopup.classList.add("over-popup-show")
-        var button = document.getElementById("addCritConf");
-        button.addEventListener("click", function () {
-            checkForm();
-        });
+        //var button = document.getElementById("addCritConf");
+        //button.addEventListener("click", function () {
+        //    checkForm();
+        //});
     }
 
     function closeAddOverPopup() {
@@ -656,10 +816,10 @@
     let overpopup = document.getElementById("over-popup");
     function openOverPopup() {
         overpopup.classList.add("over-popup-show")
-        var button = document.getElementById("addOverConf");
-        button.addEventListener("click", function () {
-            checkForm();
-        });
+        //var button = document.getElementById("addOverConf");
+        //button.addEventListener("click", function () {
+        //    checkForm();
+        //});
     }
 
     function closeOverPopup() {
@@ -669,10 +829,10 @@
     let critpopup = document.getElementById("crit-popup");
     function openCritPopup() {
         critpopup.classList.add("crit-popup-show")
-        var button = document.getElementById("qtyCritConf");
-        button.addEventListener("click", function () {
-            checkForm_Edit_Itm();
-        });
+        //var button = document.getElementById("qtyCritConf");
+        //button.addEventListener("click", function () {
+        //    checkForm_Edit_Itm();
+        //});
     }
 
     function closeCritPopup() {
@@ -734,7 +894,7 @@
 
     let savepopup = document.getElementById("save-popup");
     function saveOpenPopup() {
-        savepopup.classList.add("save-pop-container-show");
+        savepopup.classList.add("save-pop-show");
     }
 
     function saveClosePopup() {
@@ -782,6 +942,28 @@
 
     function expoClosePopup() {
         expopopup.classList.remove("expo-popup-show")
+    }
+
+    function openInvInputQTYForm(val) {
+        document.getElementById("inv-input-popup").style.display = "block";
+        localStorage.setItem("itemCode", val);
+    }
+
+    function closeInvInputQTYForm() {
+        var val = document.getElementById("quantVal").value;
+        var err = document.getElementById("errMess");
+        val = "";
+        err.innerText = "";
+        document.getElementById("inv-input-popup").style.display = "none";
+    }
+
+    //HISTORY POPUP
+    function openHisForm() {
+        document.getElementById("his-container").style.display = "block";
+    }
+
+    function closeHisForm() {
+        document.getElementById("his-container").style.display = "none";
     }
 
 </script>

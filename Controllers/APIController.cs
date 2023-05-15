@@ -1005,7 +1005,10 @@ namespace TotalFireSafety.Controllers
             {
                 using (var _context = new nwTFSEntity())
                 {
-                    var items = _context.Inventories.Where(x => x.in_status.Trim() != "archived").ToList();
+                    var items = _context.Inventories
+                                .Include("Inv_Limits")
+                                .Where(x => x.in_status.Trim() != "archived")
+                                .ToList();
                     using (var stream = new MemoryStream())
                     {
                         var writer = new Utf8JsonWriter(stream);
@@ -1022,9 +1025,25 @@ namespace TotalFireSafety.Controllers
                             writer.WriteString("in_category", item.in_category);
                             writer.WriteString("in_type", item.in_type);
                             writer.WriteString("in_size", item.in_size);
-                            writer.WriteString("in_type", item.in_status);
+                            writer.WriteString("in_status", item.in_status);
                             writer.WriteString("in_remarks", item.in_remarks.Trim());
                             writer.WriteString("in_class", item.in_class);
+                            writer.WriteStartObject("Limits");
+                            if(item.Inv_Limits != null)
+                            {
+                                writer.WriteNumber("maximum", item.Inv_Limits.maximum);
+                                writer.WriteNumber("minimum", item.Inv_Limits.minimum);
+                                writer.WriteNumber("reorder", item.Inv_Limits.reorder);
+                                writer.WriteNumber("running", item.Inv_Limits.running ?? 0);
+                            }
+                            else
+                            {
+                                writer.WriteNull("maximum");
+                                writer.WriteNull("minimum");
+                                writer.WriteNull("reorder");
+                                writer.WriteNull("running");
+                            }
+                            writer.WriteEndObject();
                             // add more properties as needed
                             writer.WriteEndObject();
                         }
@@ -1450,6 +1469,7 @@ namespace TotalFireSafety.Controllers
                         };
                         _context.Requests.Add(newReqs);
                         _context.SaveChanges();
+                        
                     }
                     return Ok("Requests Added Successfully!");
                 }
@@ -1477,6 +1497,7 @@ namespace TotalFireSafety.Controllers
                         {
                             return BadRequest("Request Not Found");
                         }
+                        // duplicate supply as deployment
                         if (item.request_status.Trim().ToLower() == "approved" && item.request_type.Trim().ToLower() == "supply")
                         {
                             var newGuid = Validate("requests");
@@ -1492,9 +1513,41 @@ namespace TotalFireSafety.Controllers
                                 request_type_id = maxId + 1,
                                 request_type_status = "Active"
                             };
+                           
                             _context.Requests.Add(newReq);
                             await _context.SaveChangesAsync();
                         }
+
+                        if(item.request_status.Trim().ToLower() == "approved" && item.request_type.Trim().ToLower() == "deployment")
+                        {
+                            var _item = _context.Inventories.Where(x => x.in_code == item.request_item).SingleOrDefault();
+
+                            var itemQuant = int.Parse(_item.in_quantity.Split(' ')[0]);
+                            var reqQuant = int.Parse(item.request_item_quantity.Split(' ')[0]);
+                            var unit = item.request_item_quantity.Split(' ')[1];
+
+                            _item.in_quantity = (itemQuant - reqQuant) + " " + unit;
+                            //_item.Inv_Limits.running = _item.Inv_Limits.running - reqQuant;
+
+                            //var inv = _context.Inventories.Where(x => item.request_item == x.in_code).SingleOrDefault();
+                            var runn = _item.Inv_Limits?.running;
+                            var quant = int.Parse(item.request_item_quantity.Split(' ')[0]);
+
+                            var result = 0;
+                            if (runn == null)
+                            {
+                                result = int.Parse(item.request_item_quantity.Split(' ')[0]);
+                            }
+                            else
+                            {
+                                result = runn + quant ?? 0;
+                            }
+                            _item.Inv_Limits.running = result;
+
+                            _context.Entry(_item);
+                            await _context.SaveChangesAsync();
+                        }
+
                         request.request_status = item.request_status;
                         request.request_type = item.request_type;
                         request.request_item = item.request_item;

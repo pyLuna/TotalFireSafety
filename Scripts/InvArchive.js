@@ -139,7 +139,7 @@ function RestoreItem(value) {
         })
         .then(data => {
             console.log(data);
-            //window.location.reload();
+            window.location.reload();
             localStorage.setItem("reload", "true");
         })
         .catch(error => {

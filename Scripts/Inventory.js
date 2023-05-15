@@ -3,6 +3,7 @@ let filtered = [];
 let itemCategories = [];
 let newArray = [];
 let fixedArray = [];
+let updates = [];
 let formsId = ['#qtyForm', '#addForm', '#editForm'];
 let sliced = "";
 let prevVal = "";
@@ -71,6 +72,100 @@ QtyFormBtns.forEach((btns) => {
 });
 qtyCode.addEventListener("keydown",Scan)
 //#endregion
+
+//let formattedArray = [];
+//function handleKeyDown(event) {
+//	if (event.key === "Enter") {
+//		event.preventDefault(); // Prevent the newline character from being inserted
+//		formatData();
+//	}
+//}
+//function formatData() {
+//	var textarea = document.getElementById("dataTextarea");
+//	var input = textarea.value;
+//	var rows = input.split("\n");
+//	var numColumns = Math.ceil(rows.length / 10);
+
+//	var formattedData = "";
+//	var array = []
+//	for (var i = 0; i < 10; i++) {
+//		for (var j = 0; j < numColumns; j++) {
+//			var index = i + j * 10;
+
+//			if (index < rows.length) {
+//				formattedData += rows[index] + "\t";
+//			} else {
+//				formattedData += "\t";
+//			}
+//		}
+//		formattedData += "\n";
+//	}
+
+//	for (var i = 0; i < numColumns; i++) {
+//		array[i] = [];
+//		for (var j = 0; j < 10; j++) {
+//			var rowIndex = i * 10 + j;
+//			if (rowIndex < rows.length) {
+//				array[i].push(rows[rowIndex]);
+//			}
+//		}
+//	}
+
+//	console.log(array);
+
+//	textarea.value = formattedData;
+//}
+
+// for date added
+function GetDateUpdates(code) {
+		fetch('/Admin/AllUpdates?code=' + code)
+		.then(res => {
+			if (res.ok) {
+				// API request was successful
+				return res.json();
+			} else {
+				// Handle error if unsuccessful
+				let table = document.querySelector('#myTable tbody');
+				// clear table
+				table.innerHTML = " ";
+				// table style
+				let errorMessageRow = document.createElement('tr');
+				errorMessageRow.style.textAlign = "center";
+				errorMessageRow.style.fontStyle = "italic";
+				errorMessageRow.innerHTML = '<td colspan="9">Loading Error<td>';
+				table.appendChild(errorMessageRow);
+			}
+		})
+			.then(data => {
+				updates.length = 0;
+				updates.push(data);
+				openHisForm();
+				let hisTable = document.querySelector('#hisTable tbody');
+					hisTable.innerHTML = " ";
+				if (updates.length == 0) {
+					let errorMessageRow = document.createElement('tr');
+					errorMessageRow.style.textAlign = "center";
+					errorMessageRow.style.fontStyle = "italic";
+					errorMessageRow.innerHTML = "<td colspan='4'>No Data<td>";
+					//console.log(res.statusText);
+					hisTable.appendChild(errorMessageRow);
+				}
+				for (var i = 0; i < updates[0].length; i++) {
+					let row = "";
+					row += `<tr>`;
+					row += `<td>${updates[0][i].date}</td>`;
+					row += `<td>${updates[0][i].code}</td>`;
+					row += `<td>${updates[0][i].name}</td>`;
+					row += `<td>${updates[0][i].quantity}</td>`;
+					row += `</tr>`;
+					hisTable.innerHTML += row;
+				}
+			})
+			.catch(error => {
+				//window.location.replace('/Error/InternalServerError');
+				console.error(error);
+			});
+}
 
 function GetAll() {
 	fetch('/Admin/FindDataOf?requestType=inventory')
@@ -215,19 +310,29 @@ function setTable(array) {
 			 * stat-average
 			 * stat-re-order
 			 */
+			var runn = "";
+			if (array[i].Limits.running != 0) {
+				runn = array[i].Limits.running;
+			}
+
 			let row = `<tr>`; /*onclick = "canOpenPopup()"*/
+			row += `<td >${array[i].in_dateAdded}<i class="las la-expand-arrows-alt" onclick="GetDateUpdates('${array[i].in_code}')"></i></td>`;
 			row += `<td id="in_code"><label>${array[i].in_code}</label></td>`;
 			row += `<td name="in_name"><label>${array[i].in_name}</label></td>`;
-			row += `<td name ="in_category"> <label>${array[i].in_category}</label></td>`;
+			row += `<td name ="in_category"><label>${array[i].in_category}</label></td>`;
 			row += `<td name="in_type"><label>${array[i].in_type}</label></td>`;
 			row += `<td name="in_size"><label>${array[i].in_size}</label></td>`;
 			row += `<td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
-			row += `<td name="in_remarks"><label class="${remclass}" title="${tooltip}">${remarks}</label></td>`;
+			row += `<td><label>${array[i].Limits.maximum}</label></td>`;
+			row += `<td><label>${array[i].Limits.minimum}</label></td>`;
+			row += `<td><label>${array[i].Limits.reorder}</label></td>`;
 			row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
+			row += `<td><label>${runn}</label></td>`;
 			if (sessionId == 2) {
 			row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
-			row += `<button class="edit-btn" title="EDIT SELECTED ITEM" onclick="OpenEdit('${array[i].in_code}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
-			row += `<button class="del-btn" title="DELETE SELECTED ITEM" onclick = "delOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
+				row += `<button class="add-btn" title="Add Quantity" onclick="openInvInputQTYForm('${array[i].in_code}')"> <a href="#"><span class="las la-plus"></span></a></button>`;
+			row += `<button class="edit-btn" title="Edit Item" onclick="OpenEdit('${array[i].in_code}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+			row += `<button class="del-btn" title="Delete Item" onclick = "delOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
 			row += `</div></td>`;
 			}
 			row += `</tr>`;
@@ -245,6 +350,7 @@ function setTable(array) {
 		table.appendChild(errorMessageRow);
 	}
 }
+
 
 function extractNum(value) {
 	let num = 0;
@@ -342,6 +448,15 @@ function filterArray(value) {
 	filtered.length = 0;
 	for (let j = 0; j < fixedArray.length; j++) {
 		if (JSON.stringify(fixedArray[j]).toLowerCase().includes(value)) {
+			filtered.push(fixedArray[j]);
+		}
+	}
+}
+
+function filterArray1(value) {
+	filtered.length = 0;
+	for (let j = 0; j < fixedArray.length; j++) {
+		if (fixedArray[j].in_code.toLowerCase() == value) {
 			filtered.push(fixedArray[j]);
 		}
 	}
@@ -541,16 +656,6 @@ function SetHiddenValues() {
 	in_size.value = inpSizeSel.value + ' ' + sizeSel.options[sizeSel.selectedIndex].value;
 	in_quantity.value = inpSizeQuant.value + ' ' + sizeQuant.options[sizeQuant.selectedIndex].value;
 
-	if (inpSizeQuant.value >= 100) {
-		openOverPopup();
-	}
-	else if (inpSizeQuant.value <= 10) {
-		openAddOverPopup();
-	}
-	else {
-		checkForm();
-	}
-
 	if (inpSizeSel > 60) {
 		in_remarks.value = 'standard';
 	}
@@ -584,16 +689,6 @@ function setHiddensEdit() {
 	ty1.value = typesel.options[typesel.selectedIndex].value;
 	qt1.value = newqt + ' ' + inpQuant2A.options[inpQuant2A.selectedIndex].value;
 	sz1.value = inpSize2.value + ' ' + inpSize2A.options[inpSize2A.selectedIndex].value;
-
-	if (inpQuant2.value >= 100) {
-		openExtraOverPopup();
-	}
-	else if (inpQuant2.value <= 10) {
-		openCritPopup();
-	}
-	else {
-		checkForm_Edit_Itm();
-	}
 
 	if (newqt < 40) {
 		rm1.value = 'critical';
@@ -674,7 +769,7 @@ function Scan(event) {
 
 //#region set fields on form
 function SetField(codeToProcess, input, select,type) {
-	filterArray(codeToProcess.toLowerCase());
+	filterArray1(codeToProcess.toLowerCase());
 	var input = document.querySelectorAll(input);
 	var select = document.querySelectorAll(select);
 

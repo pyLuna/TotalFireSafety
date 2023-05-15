@@ -213,7 +213,7 @@ function InvsetTable(array) {
 		row += `<td><label>${array[i].in_category}</label></td>`;
 		row += `<td><label>${array[i].in_type}</label></td>`;
 		row += `<td><label>${array[i].in_size}</label></td>`;
-		row += `<td><label class="${remclass}" style="font-weight:bold;">${remarks}</label></td>`;
+		row += `<td><label>${array[i].in_quantity}</label></td>`;
 		row += `</tr>`;
 		invTable.innerHTML += row;
 	}
@@ -648,6 +648,9 @@ function SortByCategory(element, value) {
 //#region request details
 function MaxRequestId() {
 	const requestTypeIds = viewData.map(request => request.request_type_id);
+	if (requestTypeIds.length == 0) {
+		return 100;
+    }
 	const maxRequestTypeId = Math.max(...requestTypeIds);
 	return maxRequestTypeId;
 }

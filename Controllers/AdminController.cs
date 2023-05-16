@@ -528,7 +528,10 @@ namespace TotalFireSafety.Controllers
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
 
-
+            // Retrieve the session user's emp_no and position
+            var sessionEmpNo = int.Parse(empId);
+            var sessionUser = db.Employees.FirstOrDefault(e => e.emp_no == sessionEmpNo);
+            var sessionUserPosition = sessionUser?.emp_position;
 
             var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == id);
             var lead = db.Employees.FirstOrDefault(e => e.emp_no == project.proj_emp_no);
@@ -536,6 +539,7 @@ namespace TotalFireSafety.Controllers
             var newProposal = db.NewProposals.FirstOrDefault(p => p.prop_type_id == project.proj_type_id);
             var Request = db.Requests.FirstOrDefault(q => q.request_proj_id == project.proj_type_id);
             ViewBag.Requests = db.Requests.Where(q => q.request_proj_id == project.proj_type_id).ToList();
+
             
             
 
@@ -561,6 +565,8 @@ namespace TotalFireSafety.Controllers
             ViewBag.Startdate = project.proj_strDate?.ToString("MM/dd/yyyy");
             ViewBag.Enddate = project.proj_endDate?.ToString("MM/dd/yyyy");
             ViewBag.ProjectLead = $"{lead.emp_fname} {lead.emp_lname}";
+            ViewBag.ProjectLeads = project.proj_lead;
+            ViewBag.SessionUserPosition = sessionUserPosition;
 
             ViewBag.ReportDescription = report?.rep_description;
             ViewBag.ReportStats = report?.rep_stats;
@@ -585,7 +591,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProposalSubject = newProposal?.prop_subject;
             ViewBag.NewProposal = newProposal;
 
-
+           
 
             return View(viewModel);
         }
@@ -1326,7 +1332,8 @@ ViewBag.AttendanceList = attendanceList;
                         emp_lname = e.emp_lname,
                         proj_strDate = p.proj_strDate,
                         proj_endDate = p.proj_endDate,
-                        proj_status = p.proj_status
+                        proj_status = p.proj_status,
+                        project_leads = p.proj_lead
                     }
                 ).ToList();
                 var jsonProjects = projects.Select(p => new
@@ -1336,9 +1343,19 @@ ViewBag.AttendanceList = attendanceList;
                     proj_lead = p.emp_fname + ' ' + p.emp_lname,
                     proj_strDate = p.proj_strDate.HasValue ? p.proj_strDate.Value.ToString("yyyy-MM-dd") : "",
                     proj_endDate = p.proj_endDate.HasValue ? p.proj_endDate.Value.ToString("yyyy-MM-dd") : "",
-                    proj_status = p.proj_status
+                    proj_status = p.proj_status,
+                    project_leads = p.project_leads
+                  
                 });
                 var serialize = JsonConvert.SerializeObject(jsonProjects);
+
+                // Retrieve the session user's emp_no and position
+                var sessionEmpNo = int.Parse(empId);
+                var sessionUser = db.Employees.FirstOrDefault(e => e.emp_no == sessionEmpNo);
+                var sessionUserPosition = sessionUser?.emp_position;
+                ViewBag.SessionUserPosition = sessionUserPosition;
+
+
                 ViewBag.Projects = new HtmlString(serialize);
             }
             return View();

@@ -33,9 +33,18 @@
                         <h2>Accomplistments</h2>
                         <div class="right-container">
 
-                            <a onclick="openReportNewForm()">
-                                <span class="lar la-plus-square"></span>Add Report
-                            </a>
+                            @{
+                                var sessionID = Session["emp_no"]?.ToString();
+                                var projectLeads = ViewBag.ProjectLeads?.ToString();
+                            }
+
+                            @if (sessionID != null && projectLeads != null && sessionID == projectLeads)
+                            {
+                                <a onclick="openReportNewForm()">
+                                    <input type="text" value="@projectLeads" hidden />
+                                    <span class="lar la-plus-square"></span>Add Report
+                                </a>
+                            }
 
                         </div>
                     </div>
@@ -65,17 +74,18 @@
                                                             <td>@report.rep_no</td>
                                                             <td>@Html.Raw(report.rep_description.Length > 20 ? report.rep_description.Substring(0, 20) + "..." : report.rep_description)<i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
                                                             <td>@report.rep_stats</td>
-                                                            <td><a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })" target="_blank">
-                                                                Export
+                                                            <td>
+                                                                <a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })" target="_blank">
+                                                                    Export
                                                                 </a>
                                                             </td>
                                                         </tr>
                                                     }
                                                 </tbody>
                                             </table>
-                                            </div>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -87,8 +97,15 @@
                             <div class="incharge-header">
 
                                 <h2>DESCRIPTION</h2>
+                                @{ var sessionUserPosition = ViewBag.SessionUserPosition; }
 
-                                <a onclick="openAddNewContainer()">edit</a>
+                                <input type="text" value="@sessionUserPosition" hidden />
+
+
+                                @if (sessionUserPosition != "Project Lead")
+                                {
+                                    <a onclick="openAddNewContainer()">edit</a>
+                                }
 
                             </div>
 
@@ -397,7 +414,7 @@
                     <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
                 </button>
                 <center>
-                    <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
+                    <h3>EDIT PROJECT <i class="las la-rocket"></i></h3>
                 </center>
 
             </div>
@@ -430,7 +447,7 @@
                             <br>
                             <select name="proj_lead" required>
                                 <option disabled>Select Lead</option>
-                                <option value="@Model.Project.proj_lead" selected>@Model.Project.proj_lead</option>
+                                <option value="@Model.Project.proj_lead" selected>@ViewBag.ProjectLead</option>
                             </select>
                         </div>
                         <div class="input-fields right">
@@ -842,7 +859,7 @@
                         </div>
                         <div class="mid">
 
-                            <div class="mid-content" onclick="openInputManForm1()">
+                            <div class="mid-content @((Session["emp_no"]?.ToString() != ViewBag.ProjectLeads) ? "disabled" : "")" onclick="@((Session["emp_no"]?.ToString() != ViewBag.ProjectLeads) ? "" : "openInputManForm1()")">
                                 <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
                             </div>
 
@@ -1226,7 +1243,8 @@
     </div>*@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 @*<script>
 
         function SaveData1() {
@@ -1524,41 +1542,41 @@ $(document).ready(function () {
 </script>
 
 <script>
-        const propTable = document.querySelector('#propInput');
-        const tbody1 = propTable.querySelector('tbody');
+    const propTable = document.querySelector('#propInput');
+    const tbody1 = propTable.querySelector('tbody');
 
-        // Listen for 'keydown' events on the table row
-        tbody1.addEventListener('keydown', (event) => {
-            // Check if the 'Enter' key was pressed
-            if (event.key === 'Enter') {
-                // Prevent default behavior (creating a new line)
-                event.preventDefault();
+    // Listen for 'keydown' events on the table row
+    tbody1.addEventListener('keydown', (event) => {
+        // Check if the 'Enter' key was pressed
+        if (event.key === 'Enter') {
+            // Prevent default behavior (creating a new line)
+            event.preventDefault();
 
-                // Create a new table row
-                const newRow = document.createElement('tr');
+            // Create a new table row
+            const newRow = document.createElement('tr');
 
-                // Create the first table cell with blank contenteditable attribute for Manpower
-                const nameCell = document.createElement('td');
-                nameCell.setAttribute('contenteditable', 'true');
+            // Create the first table cell with blank contenteditable attribute for Manpower
+            const nameCell = document.createElement('td');
+            nameCell.setAttribute('contenteditable', 'true');
 
-                // Create the icon element and add it to the table cell
-                const icon = document.createElement('i');
-                icon.classList.add('las', 'la-dot-circle');
-                nameCell.appendChild(icon);
+            // Create the icon element and add it to the table cell
+            const icon = document.createElement('i');
+            icon.classList.add('las', 'la-dot-circle');
+            nameCell.appendChild(icon);
 
-                newRow.appendChild(nameCell);
+            newRow.appendChild(nameCell);
 
-                // Add the new row to the table body
-                tbody1.appendChild(newRow);
-            } else if (event.key === 'Backspace' && event.target.innerHTML.trim() === '') {
-                // Check if the 'Backspace' key was pressed and the cell is empty
-                // Remove the new row from the table
-                const currentRow = event.target.parentNode;
-                const previousRow = currentRow.previousSibling;
-                currentRow.parentNode.removeChild(currentRow);
-                previousRow.lastChild.focus(); // Set focus to the last cell of the previous row
-            }
-        });
+            // Add the new row to the table body
+            tbody1.appendChild(newRow);
+        } else if (event.key === 'Backspace' && event.target.innerHTML.trim() === '') {
+            // Check if the 'Backspace' key was pressed and the cell is empty
+            // Remove the new row from the table
+            const currentRow = event.target.parentNode;
+            const previousRow = currentRow.previousSibling;
+            currentRow.parentNode.removeChild(currentRow);
+            previousRow.lastChild.focus(); // Set focus to the last cell of the previous row
+        }
+    });
 </script>
 
 <script>
@@ -1995,14 +2013,17 @@ $.ajax({
 
 
 
-                $.get('/Admin/GetReportImages', { rep_date: isoDate }, function (images) {
-                    var container = $('#image-container');
-                    container.empty(); // clear the container first
-                    $.each(images, function (index, path) {
-                        var img = $('<img>').attr('src', '/ReportImg/' + path).addClass('report-img');
-                        container.append(img);
+                $.get('/Admin/GetReportImages', { rep_date: isoDate })
+                    .done(function (images) {
+                        var container = $('#image-container');
+                        container.empty(); // Clear the container first
+                        $.each(images, function (index, path) {
+                            var img = $('<img>').attr('src', '/ReportImg/' + path).addClass('report-img');
+                            var link = $('<a>').attr('href', '/ReportImg/' + path).addClass('fancybox').append(img);
+                            container.append(link);
+                        });
+                        $('.fancybox').fancybox();
                     });
-                });
             },
             error: function (xhr, status, error) {
                 console.log(xhr.responseText);

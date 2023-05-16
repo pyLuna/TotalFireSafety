@@ -152,29 +152,37 @@
                 <div class="proj-buttons-style">
 
                     <!--NEW UPDATE -->
+                    @{ var sessionUserPosition = ViewBag.SessionUserPosition; }
 
-                    <a onclick="openAddNewContainer()">
-                        <button class="add-btn" title="ADD NEW ITEM">NEW PROJECT</button>
-                    </a>
+                    <input type="text" value="@sessionUserPosition" hidden />
+
+
+                    @if (sessionUserPosition != "Project Lead")
+                    {
+                        <a onclick="openAddNewContainer()">
+                            <button class="add-btn" title="ADD NEW ITEM">NEW PROJECT</button>
+                        </a>
+                    }
+
+
+                        <select id="select-leads" required>
+                            <option value="All" disabled selected>Project Lead</option>
+                            <option value="All">All</option>
+
+                        </select>
+                    
 
                     <select id="status" required>
-                        <option disabled selected>Project Status</option>
+                        <option value="All" disabled selected>Project Status</option>
                         <option value="All">All</option>
                         <option value="On-Going">On-Going</option>
                         <option value="In-Line">Upcoming</option>
                         <option value="Cancelled">Cancelled</option>
                     </select>
-
-                    <select id="select-leads" required>
-                        <option disabled selected>Project Lead</option>
-                        <option value="All">All</option>
-
-                    </select>
-
                     <!--NEW UPDATE -->
                     @*<a href="@Url.Action("ProjectProposal","Admin")">
-                            <button class="add-btn" title="ADD NEW ITEM" href="">MANPOWER</button>
-                        </a>*@
+            <button class="add-btn" title="ADD NEW ITEM" href="">MANPOWER</button>
+        </a>*@
 
                     <!-- END -->
 
@@ -412,8 +420,8 @@
         }*/
 $(document).ready(function () {
   var projects = JSON.parse('@Html.Raw(ViewBag.Projects)');
-  var tableBody = $('#projectTable tbody');
-
+    var tableBody = $('#projectTable tbody');
+     
   // Loop through each project and create a new row in the table
   projects.forEach(function (project) {
      var row = $('<tr>');
@@ -425,17 +433,23 @@ $(document).ready(function () {
       row.append($('<td>').text(project.proj_strDate));
     row.append($('<td>').addClass('status-column').text(project.proj_status));
     row.append($('<td>').addClass('progress-column'));
+      // Calculate the percentage completion of the project
+      var startDate = new Date(project.proj_strDate);
+      var endDate = new Date(project.proj_endDate);
+      var now = new Date();
+      var percentage = 0; // Default to 0%
 
-    // Calculate the percentage completion of the project
-    var startDate = new Date(project.proj_strDate);
-    var endDate = new Date(project.proj_endDate);
-    var now = new Date();
-    var percentage = ((now - startDate) / (endDate - startDate)) * 100;
-
-    // Set the progress bar fill to 100% if the project status is "Cancelled"
-    if (project.proj_status === 'Cancelled') {
-      percentage = 100;
-    }
+      // Set the progress bar fill to 100% if the project status is "Cancelled"
+      if (project.proj_status === 'Cancelled') {
+          percentage = 100;
+      }
+      // Check if the current date matches the start date
+      else if (now.getTime() === startDate.getTime()) {
+          percentage = 100;
+      }
+      else if (now > startDate && now < endDate) {
+          percentage = ((now - startDate) / (endDate - startDate)) * 100;
+      }
 
       var progressBar = $('<div>').addClass('progress-bar');
       var progressBarFill = $('<div>').addClass('progress-halfhalf');
@@ -493,7 +507,7 @@ $(document).ready(function () {
 
             var nameMatch = name.indexOf(searchText) !== -1;
             var leadMatch = selectedLead === 'all' || lead === selectedLead;
-            var statusMatch = selectedStatus === 'all' || status === selectedStatus;
+            var statusMatch = selectedStatus === 'all' || status.startsWith(selectedStatus.toLowerCase()); // Check if status starts with selectedStatus
 
             if (nameMatch && leadMatch && statusMatch) {
                 $(this).show();

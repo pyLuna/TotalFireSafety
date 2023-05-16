@@ -63,7 +63,7 @@ $(document).ready(function () {
 				maxlength: 30
 			},
 			emp_name: {
-				required: true,
+				//required: true,
 				minlength: 3,
 				maxlength: 30
 			},
@@ -102,7 +102,7 @@ $(document).ready(function () {
 				maxlength: "Maximum length of name is 30 characters only."
 			},
 			emp_name: {
-				required: "Middle name is required.",
+				//required: "Middle name is required.",
 				minlength: "Middle name must be at least 3 characters long.",
 				maxlength: "Maximum length of name is 30 characters only."
 			},

@@ -805,19 +805,44 @@ namespace TotalFireSafety.Controllers
                             emp.emp_position = _emp.emp_position;
                             roles.emp_no = _emp.emp_no;
                             roles.role1 = _emp.Role.role1;
-                            status.emp_no = _emp.emp_no;
-                            status.IsActive = _emp.Status.IsActive;
-                            status.IsLocked = _emp.Status.IsLocked;
-                            status.IsUser = _emp.Status.IsUser;
-                            creds.emp_no = _emp.emp_no;
-                            creds.username = _emp.Credential.username;
-                            creds.password = _emp.Credential.password;
-
+                            if (status == null)
+                            {
+                                Status stats = new Status()
+                                {
+                                    emp_no = _emp.emp_no,
+                                    IsActive = _emp.Status.IsActive,
+                                    IsLocked = _emp.Status.IsLocked,
+                                    IsUser = _emp.Status.IsUser
+                                };
+                                _context.Status.Add(stats);
+                                await _context.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                status.emp_no = _emp.emp_no;
+                                status.IsActive = _emp.Status.IsActive;
+                                status.IsLocked = _emp.Status.IsLocked;
+                                status.IsUser = _emp.Status.IsUser;
+                                _context.Entry(status);
+                            }
+                            if (creds == null)
+                            {
+                                Credential cr = new Credential()
+                                {
+                                    emp_no = _emp.emp_no,
+                                    username = _emp.Credential.username,
+                                    password = _emp.Credential.password
+                                };
+                            }
+                            else { 
+                                creds.emp_no = _emp.emp_no;
+                                creds.username = _emp.Credential.username;
+                                creds.password = _emp.Credential.password;
+                                _context.Entry(creds);
+                            }
                             _context.Entry(_emp);
                             _context.Entry(roles);
-                            _context.Entry(status);
-                            _context.Entry(creds);
-                            _context.SaveChanges();
+                            await _context.SaveChangesAsync();
                             return Ok("Employee Updated Successfully");
                         }
                     }

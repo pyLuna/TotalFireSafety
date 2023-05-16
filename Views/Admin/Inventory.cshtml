@@ -150,15 +150,15 @@
                                             </div>
                                             <div class="input-field">
                                                 <label>Max Quantity</label>
-                                                <input type="text" id="Inv_Limitsmaximum" name="Inv_Limits.maximum" placeholder="000">
+                                                <input type="number" id="Inv_Limitsmaximum" name="Inv_Limits.maximum" placeholder="000">
                                             </div>
                                             <div class="input-field">
                                                 <label>Min Quantity</label>
-                                                <input type="text" id="Inv_Limitsminimum" name="Inv_Limits.minimum" placeholder="000">
+                                                <input type="number" id="Inv_Limitsminimum" name="Inv_Limits.minimum" placeholder="000">
                                             </div>
                                             <div class="input-field">
                                                 <label>Reorder</label>
-                                                <input type="text" id="Inv_Limitsreorder" name="Inv_Limits.reorder" placeholder="000">
+                                                <input type="number" id="Inv_Limitsreorder" name="Inv_Limits.reorder" placeholder="000">
                                             </div>
                                             <input type="text" id="in_quantity" name="in_quantity" style="display:none!important;" required>
                                             <input type="text" id="in_remarks" name="in_remarks" style="display:none;" required>
@@ -344,7 +344,6 @@
                                 <div class="details-personal">
                                     <div class="inventory-form-header">
                                         EDIT ITEM
-
                                     </div>
                                     <div class="inventory-form-contents">
                                         <div class="fields">
@@ -355,14 +354,16 @@
 
                                             <div class="input-field">
                                                 <label>Item Name</label>
-                                                <input type="text" id="in_name2" name="in_name" placeholder="Enter item name" required>
+                                                <input type="text" id="in_name2" name="in_name" placeholder="Enter item name" readonly>
                                             </div>
 
                                             <div class="input-field">
                                                 <label>Category</label>
-                                                <select id="selcat2" name="selcat2" required>
+                                                <input type="text" id="in_category2" name="in_category" list="catOpt" placeholder="Enter item Category" required>
+                                                <datalist id="catOpt"></datalist>
+                                                @*<select id="selcat2" name="selcat2" required>
                                                     <option disabled selected>Select Category</option>
-                                                </select>
+                                                </select>*@
                                             </div>
 
                                             <div class="input-field">
@@ -374,9 +375,11 @@
 
                                             <div class="input-field">
                                                 <label>Type</label>
-                                                <select id="seltype2" name="seltype2">
+                                                <input type="text" id="in_type2" list="typeOpt" name="in_type" placeholder="Enter item type">
+                                                <datalist id="typeOpt"></datalist>
+                                                @*<select id="seltype2" name="seltype2">
                                                     <option disabled selected>Select Category</option>
-                                                </select>
+                                                </select>*@
                                             </div>
 
                                             <div class="input-field">
@@ -408,7 +411,7 @@
                                             <input type="text" id="in_remarks2" name="in_remarks" style="display:none;">
                                             <div class="input-field">
                                                 <label>Date Added</label>
-                                                <input type="text" id="inpDate2" name="in_dateAdded" placeholder="00/00/00" readonly>
+                                                <input type="text" id="inpDate2" name="in_dateAdded" placeholder="00/00/00">
                                             </div>
                                             <div class="input-field">
                                                 <div class="img-bar-grp" id="image-container">
@@ -420,7 +423,7 @@
                                 </div>
                                 
                                 <div class="form-add-btns">
-                                    <button class="save" onclick="checkForm_Edit_Itm() + setHiddensEdit()">
+                                    <button class="save" onclick="setHiddensEdit() + checkForm_Edit_Itm()">
                                         @*infoOpenPopup('editForm')*@
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>

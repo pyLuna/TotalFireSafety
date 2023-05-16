@@ -808,21 +808,21 @@ namespace TotalFireSafety.Controllers
                             status.emp_no = _emp.emp_no;
                             status.IsActive = _emp.Status.IsActive;
                             status.IsLocked = _emp.Status.IsLocked;
+                            status.IsUser = _emp.Status.IsUser;
                             creds.emp_no = _emp.emp_no;
                             creds.username = _emp.Credential.username;
                             creds.password = _emp.Credential.password;
 
-                            _context.Entry(creds);
-                            _context.Entry(status);
+                            _context.Entry(_emp);
                             _context.Entry(roles);
-                            _context.Entry(emp);
+                            _context.Entry(status);
+                            _context.Entry(creds);
                             _context.SaveChanges();
-                            return Ok("Employee Added");
+                            return Ok("Employee Updated Successfully");
                         }
-                        return BadRequest("tite");
                     }
                 }
-                return BadRequest("tite11");
+                return BadRequest("Error");
             }
             catch (Exception ex)
             {
@@ -833,7 +833,6 @@ namespace TotalFireSafety.Controllers
         #endregion
 
         #region Inventory
-
         private async Task<IHttpActionResult> UpdateNewItem(Inventory item)
         {
             using (var _context = new nwTFSEntity())
@@ -1222,27 +1221,12 @@ namespace TotalFireSafety.Controllers
                             }
 
                             //  Convert _item into itemDB
-                            itemDB.in_name = _item.in_name;
                             itemDB.in_category = _item.in_category;
+                            itemDB.in_class = _item.in_class;
                             itemDB.in_type = _item.in_type;
                             itemDB.in_size = _item.in_size;
-                            itemDB.in_quantity = _item.in_quantity;
-                            await UpdateNewItem(itemDB);
-                            //if(_item.formType != null)
-                            //{
-                            //    itemDB.in_code = _item.in_code;
-                            //    foreach (var item in ups)
-                            //    {
-                            //        item.update_item_id = _item.in_code;
-                            //    }
-                            //    foreach (var item in reqs)
-                            //    {
-                            //        item.request_item = _item.in_code;
-                            //    }
-                            //}
+                            //await UpdateNewItem(itemDB);
                             _context.Entry(itemDB);
-                            //_context.Entry(reqs);
-                            //_context.Entry(ups);
                             await _context.SaveChangesAsync();     //  Save to Database
 
 

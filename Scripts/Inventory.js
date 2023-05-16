@@ -21,6 +21,7 @@ let itemCode = document.getElementById('in_code');
 let dateAdded = document.getElementById('dateAdded');
 let add = document.querySelectorAll('#addForm');
 let addForm = document.querySelectorAll('#addForm datalist');
+let editForm = document.querySelectorAll('#editForm datalist');
 let addFormSel = document.querySelectorAll('#addForm select');
 let formBtns = document.querySelectorAll('#addForm .form-add-btns button');
 //#endregion
@@ -331,7 +332,7 @@ function setTable(array) {
 			if (sessionId == 2) {
 			row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
 				row += `<button class="add-btn" title="Add Quantity" onclick="openInvInputQTYForm('${array[i].in_code}')"> <a href="#"><span class="las la-plus"></span></a></button>`;
-			row += `<button class="edit-btn" title="Edit Item" onclick="OpenEdit('${array[i].in_code}')"> <a href="#"><span class="lar la-edit"></span></a></button>`;
+			row += `<button class="edit-btn" title="Edit Item" onclick="OpenEdit('${array[i].in_code}') + setDatalist1()"> <a href="#"><span class="lar la-edit"></span></a></button>`;
 			row += `<button class="del-btn" title="Delete Item" onclick = "delOpenPopup('${array[i].in_code}')"> <a href="#"><span class="lar la-trash-alt"></span></a></button>`;
 			row += `</div></td>`;
 			}
@@ -387,6 +388,31 @@ function resetForm() {
 	});
 }
 //#endregion
+
+function setDatalist1() {
+	editForm.forEach((datalist) => {
+		newArray.length = 0;
+		var id = datalist.id;
+		var sel = document.getElementById(id) === null ? undefined : document.getElementById(id);
+
+		fixedArray.forEach((item) => {
+			if (datalist.id == 'catOpt') {
+				newArray.push(item.in_category);
+			}
+			else if (datalist.id == 'typeOpt') {
+				newArray.push(item.in_type);
+			}
+		});
+
+		var uniques = new Set(newArray);
+		datalist.innerHTML = "";
+		uniques.forEach((item) => {
+			let option = document.createElement('option');
+			option.value = item;
+			sel.appendChild(option);
+		});
+	});
+}
 
 //#region Sort By Column
 // sort function start
@@ -499,10 +525,10 @@ function setDatalist() {
 		var sel = document.getElementById(id) === null ? undefined : document.getElementById(id);
 
 		fixedArray.forEach((item) => {
-			if (datalist.id == 'catList') {
+			if (datalist.id == 'catlist') {
 				newArray.push(item.in_category);
 			}
-			else {
+			else if (datalist.id == 'typelist') {
 				newArray.push(item.in_type);
 			}
 		});
@@ -669,8 +695,8 @@ function SetHiddenValues() {
 
 //for edit form
 function setHiddensEdit() {
-	var catsel = document.getElementById('selcat2');
-	var typesel = document.getElementById('seltype2');
+	//var catsel = document.getElementById('selcat2');
+	//var typesel = document.getElementById('seltype2');
 	var classsel = document.getElementById('selclass2');
 	var inpSize2A = document.getElementById('inpSize2A');
 	var inpQuant2A = document.getElementById('inpQuant2A');
@@ -684,9 +710,9 @@ function setHiddensEdit() {
 	var rm1 = document.getElementById('in_remarks2');
 	//var oldqt = extractNum(filtered[0].in_quantity);
 	var newqt = /*Number(oldqt.num) + */Number(inpQuant2.value);
-	cat1.value = catsel.options[catsel.selectedIndex].value;
+	//cat1.value = catsel.options[catsel.selectedIndex].value;
 	cl1.value = classsel.options[classsel.selectedIndex].value;
-	ty1.value = typesel.options[typesel.selectedIndex].value;
+	//ty1.value = typesel.options[typesel.selectedIndex].value;
 	qt1.value = newqt + ' ' + inpQuant2A.options[inpQuant2A.selectedIndex].value;
 	sz1.value = inpSize2.value + ' ' + inpSize2A.options[inpSize2A.selectedIndex].value;
 
@@ -700,7 +726,6 @@ function setHiddensEdit() {
 		rm1.value = 'average';
 	}
 
-	console.log(`${cat1.value}	${cl1.value}	${ty1.value}	${qt1.value}	${sz1.value}`);
 }
 
 //for add qty form
@@ -784,6 +809,12 @@ function SetField(codeToProcess, input, select,type) {
 				}
 				if (input.id == 'in_name1' || input.id == 'in_name2') {
 					input.value = item.in_name;
+				}
+				if (input.id == 'in_category2') {
+					input.value = item.in_category;
+				}
+				if (input.id == 'in_type2') {
+					input.value = item.in_type;
 				}
 				if (input.id == 'inpQuant1' || input.id == 'inpQuant2') {
 					if (type != 'add') {

@@ -45,16 +45,23 @@ namespace TotalFireSafety.Controllers
             updateTimer = new Timer(async state =>
             {
                 await AddItemsToBaseCount();
+                await ResetRunningQuantity();
             }, null, dueTime, TimeSpan.FromDays(1));
+        }
 
-            //using (var _context = new nwTFSEntity())
-            //{
-            //    bcItems = _context.Basecounts
-            //             .Select(x => x)
-            //             .Include("Inventory")
-            //             .ToList();
-            //}
+        private async Task ResetRunningQuantity()
+        {
+            using(var _context = new nwTFSEntity())
+            {
+                var allLimits = _context.Inv_Limits.ToList();
 
+                foreach (var item in allLimits)
+                {
+                    item.running = 0;
+                }
+                _context.Entry(allLimits);
+                await _context.SaveChangesAsync();
+            }
         }
 
         private async Task AddItemsToBaseCount()
@@ -474,17 +481,17 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));    
             ViewBag.EmpId = empId;
             return View();*/
+            nwTFSEntity db = new nwTFSEntity();
+            var empId = Session["emp_no"].ToString();
+            if (Session["emp_no"] == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
             var role = int.Parse(Session["system_role"].ToString());
             if (role == 3)
             {
                 return RedirectToAction("Unauthorize", "Error");
             }
-            nwTFSEntity db = new nwTFSEntity();
-            if (Session["emp_no"] == null)
-            {
-                return RedirectToAction("Login", "Base");
-            }
-            var empId = Session["emp_no"].ToString();
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             var data = db.Employees.Where(d => d.emp_no == id).ToList();
             ViewBag.Name = data.FirstOrDefault()?.emp_fname + " " + data.FirstOrDefault()?.emp_lname;
@@ -1637,7 +1644,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return result;
         }
-
+        // add quantity update (Inv_update)
         private async void QuantityUpdate(string code, int quant, string unit)
         {
                 using (var _context = new nwTFSEntity())
@@ -1667,13 +1674,7 @@ namespace TotalFireSafety.Controllers
 
                 if(updates == null)
                 {
-                    var response = new
-                    {
-                        message = "no data"
-                    };
-                    byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(response);
-                    var jsonString = Encoding.UTF8.GetString(jsonBytes);
-                    return Content(jsonString, "application/json");
+                    return Json(new { message = "no data" });
                 }
 
                 using (var stream = new MemoryStream())
@@ -1717,29 +1718,22 @@ namespace TotalFireSafety.Controllers
                 QuantityUpdate(code,quantity, item.in_quantity.Split(' ')[1]);
             }
 
-            var response = new
-            {
-                message = "okay"
-            };
-            byte[] jsonBytes = Utf8Json.JsonSerializer.Serialize(response);
-
-            var jsonString = Encoding.UTF8.GetString(jsonBytes);
             Session["added"] = "Item quantity added successfully";
-            return Content(jsonString, "application/json");
+            return Json(new { message = "okay"});
         }
 
         [HttpPost]
         public async Task<ActionResult> AddItem2(Inventory item)
         {
-            var role = int.Parse(Session["system_role"].ToString());
-            if (role == 3)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
             }
             var serializedModel = JsonConvert.SerializeObject(item);
             var userToken = Session["access_token"].ToString();
@@ -1983,15 +1977,15 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public async Task<ActionResult> Users(Employee employee)
         {
-            var role = int.Parse(Session["system_role"].ToString());
-            if (role != 1)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role != 1)
+            {
+                return RedirectToAction("Unauthorize", "Error");
             }
             var serializedModel = JsonConvert.SerializeObject(employee);
             var userToken = Session["access_token"].ToString();
@@ -2098,6 +2092,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+
         [HttpPost]
         public async Task<ActionResult> Requisition([System.Web.Http.FromBody] Request[] jsonData, [System.Web.Http.FromUri] string formType)
         {

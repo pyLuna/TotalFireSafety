@@ -165,12 +165,12 @@
                     }
 
 
-                        <select id="select-leads" required>
-                            <option value="All" disabled selected>Project Lead</option>
-                            <option value="All">All</option>
+                    <select id="select-leads" required>
+                        <option value="All" disabled selected>Project Lead</option>
+                        <option value="All">All</option>
 
-                        </select>
-                    
+                    </select>
+
 
                     <select id="status" required>
                         <option value="All" disabled selected>Project Status</option>
@@ -181,8 +181,8 @@
                     </select>
                     <!--NEW UPDATE -->
                     @*<a href="@Url.Action("ProjectProposal","Admin")">
-            <button class="add-btn" title="ADD NEW ITEM" href="">MANPOWER</button>
-        </a>*@
+                            <button class="add-btn" title="ADD NEW ITEM" href="">MANPOWER</button>
+                        </a>*@
 
                     <!-- END -->
 
@@ -197,8 +197,10 @@
                                 <thead>
                                     <tr>
                                         <td>Project Name</td>
+                                        <td>Engineer</td>
                                         <td>Project Lead</td>
                                         <td>Start Date</td>
+                                        <td>Baseline Finish</td>
                                         <td>Status</td>
                                         <td>Tracker</td>
                                     </tr>
@@ -259,6 +261,29 @@
 
                         </div>
                         <div class="input-fields right">
+                            <label for="">Engineer</label>
+                            <br>
+                            <select id="select-engineer" name="projEngineer" required>
+                                <option disabled selected>Select Engineer</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="grp date">
+                        <div class="input-fields left">
+                            <Label>Start Date</Label>
+                            <br>
+                            <input type="date" id="projStartDate" name="projStartDate" required>
+                        </div>
+                        <div class="input-fields mid">
+                            <Label>Baseline Finish</Label>
+                            <br>
+                            <input type="date" id="projEndDate" name="projEndDate" required>
+                        </div>
+
+                        <div class="input-fields right">
                             <Label>Status</Label>
                             <br>
                             <select name="projStatus" required>
@@ -267,19 +292,6 @@
                                 <option>Upcoming</option>
                                 <option>Cancelled</option>
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <Label>Start Date</Label>
-                            <br>
-                            <input type="date" id="projStartDate" name="projStartDate" required>
-                        </div>
-                        <div class="input-fields right">
-                            <Label>Baseline Finish</Label>
-                            <br>
-                            <input type="date" id="projEndDate" name="projEndDate" required>
                         </div>
                     </div>
                     <p class="emErrP" style="margin-top: 5px; color: red; font-weight: bold;"></p>
@@ -420,19 +432,25 @@
         }*/
 $(document).ready(function () {
   var projects = JSON.parse('@Html.Raw(ViewBag.Projects)');
-    var tableBody = $('#projectTable tbody');
-     
+  var tableBody = $('#projectTable tbody');
+  var sessionEmpNo = @Session["emp_no"];
+
   // Loop through each project and create a new row in the table
-  projects.forEach(function (project) {
-     var row = $('<tr>');
-    var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
-    var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
-    link.text(projectName);
-    row.append($('<td>').append(link));
-    row.append($('<td>').text(project.proj_lead));
+    projects.forEach(function (project) {
+        var isEngineerOrLead = sessionEmpNo === project.proj_engineer_id || sessionEmpNo === project.proj_lead;
+        var isNotEngineerOrLead = sessionEmpNo !== project.proj_engineer_id && sessionEmpNo !== project.proj_lead;
+        if (isEngineerOrLead) {
+      var row = $('<tr>');
+      var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+      var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
+      link.text(projectName);
+      row.append($('<td>').append(link));
+      row.append($('<td>').text(project.proj_engineer_no).addClass('hidden').attr('data-proj-engineer-id', project.proj_engineer_id));
+      row.append($('<td>').text(project.proj_lead));
       row.append($('<td>').text(project.proj_strDate));
-    row.append($('<td>').addClass('status-column').text(project.proj_status));
-    row.append($('<td>').addClass('progress-column'));
+      row.append($('<td>').text(project.proj_endDate));
+      row.append($('<td>').addClass('status-column').text(project.proj_status));
+      row.append($('<td>').addClass('progress-column'));
       // Calculate the percentage completion of the project
       var startDate = new Date(project.proj_strDate);
       var endDate = new Date(project.proj_endDate);
@@ -441,14 +459,14 @@ $(document).ready(function () {
 
       // Set the progress bar fill to 100% if the project status is "Cancelled"
       if (project.proj_status === 'Cancelled') {
-          percentage = 100;
+        percentage = 100;
       }
       // Check if the current date matches the start date
       else if (now.getTime() === startDate.getTime()) {
-          percentage = 100;
+        percentage = 100;
       }
       else if (now > startDate && now < endDate) {
-          percentage = ((now - startDate) / (endDate - startDate)) * 100;
+        percentage = ((now - startDate) / (endDate - startDate)) * 100;
       }
 
       var progressBar = $('<div>').addClass('progress-bar');
@@ -462,25 +480,89 @@ $(document).ready(function () {
       progressBar.append(progressBarFill);
       progressBar.append(progressBarText);
 
+      // Set the background color of the progress bar fill based on the project status
+      if (project.proj_status === 'Upcoming') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF6700');
+      } else if (project.proj_status === 'On-Going') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#09AF10');
+      } else if (project.proj_status === 'Cancelled') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF0000');
+      } else {
+        row.find('.progress-column').addClass('stat-appr');
+      }
 
+      row.find('.progress-column').append(progressBar);
 
-    // Set the background color of the progress bar fill based on the project status
-    if (project.proj_status === 'Upcoming') {
-      row.find('.progress-column').addClass('stat-appr');
-      progressBarFill.css('background-color', '#FF6700');
-    } else if (project.proj_status === 'On-Going') {
-      row.find('.progress-column').addClass('stat-appr');
-      progressBarFill.css('background-color', '#09AF10');
-    } else if (project.proj_status === 'Cancelled') {
-      row.find('.progress-column').addClass('stat-appr');
-      progressBarFill.css('background-color', '#FF0000');
-    } else {
-      row.find('.progress-column').addClass('stat-appr');
+      tableBody.append(row);
+        }
+
+        else if (isNotEngineerOrLead) {
+      // Display all other projects when neither proj_engineer_id nor proj_lead matches sessionEmpNo
+
+      var row = $('<tr>');
+      var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+      var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
+      link.text(projectName);
+      row.append($('<td>').append(link));
+      row.append($('<td>').text(project.proj_engineer_no).addClass('hidden').attr('data-proj-engineer-id', project.proj_engineer_id));
+      row.append($('<td>').text(project.proj_lead));
+      row.append($('<td>').text(project.proj_strDate));
+      row.append($('<td>').text(project.proj_endDate));
+      row.append($('<td>').addClass('status-column').text(project.proj_status));
+      row.append($('<td>').addClass('progress-column'));
+        // Calculate the percentage completion of the project
+        var startDate = new Date(project.proj_strDate);
+        var endDate = new Date(project.proj_endDate);
+        var now = new Date();
+        var percentage = 0; // Default to 0%
+
+        // Set the progress bar fill to 100% if the project status is "Cancelled"
+        if (project.proj_status === 'Cancelled') {
+            percentage = 100;
+        }
+        // Check if the current date matches the start date
+        else if (now.getTime() === startDate.getTime()) {
+            percentage = 100;
+        }
+        else if (now > startDate && now < endDate) {
+            percentage = ((now - startDate) / (endDate - startDate)) * 100;
+        }
+
+        var progressBar = $('<div>').addClass('progress-bar');
+        var progressBarFill = $('<div>').addClass('progress-halfhalf');
+        var progressBarText = $('<span>').addClass('progress-text').text(Math.round(percentage) + '%');
+        progressBarFill.attr('role', 'progressbar');
+        progressBarFill.attr('aria-valuenow', percentage);
+        progressBarFill.attr('aria-valuemin', 0);
+        progressBarFill.attr('aria-valuemax', 100);
+        progressBarFill.css('width', percentage + '%');
+        progressBar.append(progressBarFill);
+        progressBar.append(progressBarText);
+
+        // Set the background color of the progress bar fill based on the project status
+        if (project.proj_status === 'Upcoming') {
+            row.find('.progress-column').addClass('stat-appr');
+            progressBarFill.css('background-color', '#FF6700');
+        } else if (project.proj_status === 'On-Going') {
+            row.find('.progress-column').addClass('stat-appr');
+            progressBarFill.css('background-color', '#09AF10');
+        } else if (project.proj_status === 'Cancelled') {
+            row.find('.progress-column').addClass('stat-appr');
+            progressBarFill.css('background-color', '#FF0000');
+        } else {
+            row.find('.progress-column').addClass('stat-appr');
+        }
+
+        row.find('.progress-column').append(progressBar);
+
+        tableBody.append(row);
     }
-
-    row.find('.progress-column').append(progressBar);
-    tableBody.append(row);
   });
+  
+
     // Add search filtering functionality
     $('.search-wrapper input').on('keyup', function () {
         filterTable();
@@ -502,12 +584,12 @@ $(document).ready(function () {
 
         tableBody.find('tr').each(function () {
             var name = $(this).find('td:first-child a').text().toLowerCase();
-            var lead = $(this).find('td:nth-child(2)').text().toLowerCase();
+            var lead = $(this).find('td:nth-child(3)').text().toLowerCase();
             var status = $(this).find('.status-column').text().toLowerCase();
 
             var nameMatch = name.indexOf(searchText) !== -1;
-            var leadMatch = selectedLead === 'all' || lead === selectedLead;
-            var statusMatch = selectedStatus === 'all' || status.startsWith(selectedStatus.toLowerCase()); // Check if status starts with selectedStatus
+            var leadMatch = selectedLead === 'all' || selectedLead === 'project lead' || lead === selectedLead;
+            var statusMatch = selectedStatus === 'all' || selectedStatus === 'project status' || status.startsWith(selectedStatus.toLowerCase()); // Check if status starts with selectedStatus
 
             if (nameMatch && leadMatch && statusMatch) {
                 $(this).show();
@@ -696,6 +778,7 @@ $(document).ready(function () {
             var projClient = $("input[name=projClient]").val();
             var projLocation = $("input[name=projLocation]").val();
             var projLead = $("#select-lead").val();
+            var projEngineer = $("#select-engineer").val();
             var projStatus = $("select[name=projStatus]").val();
             var projStartDate = $("input[name=projStartDate]").val();
             var projEndDate = $("input[name=projEndDate]").val();
@@ -714,6 +797,7 @@ $(document).ready(function () {
                 proj_client: projClient,
                 proj_location: projLocation,
                 proj_lead: projLead,
+                proj_engineer_no: projEngineer,
                 proj_status: projStatus,
                 proj_strDate: projStartDate,
                 proj_endDate: projEndDate
@@ -777,6 +861,45 @@ $(document).ready(function () {
                     option.text = `${employee.emp_fname} ${employee.emp_lname}`;
                     selectLead.appendChild(option);
                 });
+            })
+            .catch(error => console.error(error));
+    </script>
+
+    <script>
+        // Get the select element
+        const selectEngineer = document.querySelector("#select-engineer");
+
+        // Add event listener to select element
+        selectEngineer.addEventListener("change", function () {
+            const selectedValue = selectEngineer.value;
+            // Update the value of proj_emp_no for each project in projectList
+            projectList.forEach(project => {
+                project.proj_engineer_no = parseInt(selectedValue);
+            });
+        });
+
+        // Fetch the employees from the server
+        fetch(`/Admin/GetEngineer`)
+            .then(response => response.json())
+            .then(employees => {
+                // Iterate over the employees and add an option for each one
+                employees.forEach(employee => {
+                    const option = document.createElement("option");
+                    option.value = employee.emp_no;
+                    option.text = `${employee.emp_fname} ${employee.emp_lname}`;
+
+                    // Set the option as selected if it matches the session emp_no
+                    if (employee.selected) {
+                        option.selected = true;
+                    }
+
+                    selectEngineer.appendChild(option);
+                });
+
+                // Disable the select element if a matching engineer is selected
+                if (employees.some(employee => employee.selected)) {
+                    selectEngineer.disabled = true;
+                }
             })
             .catch(error => console.error(error));
     </script>

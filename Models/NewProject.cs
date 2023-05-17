@@ -34,6 +34,7 @@ namespace TotalFireSafety.Models
         public string proj_status { get; set; }
         public Nullable<System.DateTime> proj_strDate { get; set; }
         public Nullable<System.DateTime> proj_endDate { get; set; }
+        public Nullable<int> proj_engineer_no { get; set; }
     
         public virtual Employee Employee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

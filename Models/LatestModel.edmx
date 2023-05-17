@@ -107,6 +107,7 @@
           <Property Name="proj_status" Type="varchar" MaxLength="10" />
           <Property Name="proj_strDate" Type="datetime" />
           <Property Name="proj_endDate" Type="datetime" />
+          <Property Name="proj_engineer_no" Type="int" />
         </EntityType>
         <EntityType Name="NewProposal">
           <Key>
@@ -680,6 +681,7 @@
           <NavigationProperty Name="ReportImages" Relationship="db_a97f85_totalfiresafetyModel.FK_ReportImage_NewProject" FromRole="NewProject" ToRole="ReportImage" />
           <NavigationProperty Name="NewProposal" Relationship="db_a97f85_totalfiresafetyModel.FK_NewProposal_NewProjects" FromRole="NewProject" ToRole="NewProposal" />
           <NavigationProperty Name="Proposals" Relationship="db_a97f85_totalfiresafetyModel.FK_Proposal_NewProjects" FromRole="NewProject" ToRole="Proposal" />
+          <Property Name="proj_engineer_no" Type="Int32" />
         </EntityType>
         <EntityType Name="NewReport">
           <Key>
@@ -1090,6 +1092,7 @@
           <EntitySetMapping Name="NewProjects">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.NewProject">
               <MappingFragment StoreEntitySet="NewProjects">
+                <ScalarProperty Name="proj_engineer_no" ColumnName="proj_engineer_no" />
                 <ScalarProperty Name="proj_endDate" ColumnName="proj_endDate" />
                 <ScalarProperty Name="proj_strDate" ColumnName="proj_strDate" />
                 <ScalarProperty Name="proj_status" ColumnName="proj_status" />

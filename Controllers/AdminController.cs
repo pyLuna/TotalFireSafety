@@ -1322,31 +1322,39 @@ ViewBag.AttendanceList = attendanceList;
             {
 
                 var projects = (
-                    from p in db.NewProjects
-                    join e in db.Employees on p.proj_emp_no equals e.emp_no
-                    select new
-                    {
-                        proj_type_id = p.proj_type_id,
-                        proj_name = p.proj_name,
-                        emp_fname = e.emp_fname,
-                        emp_lname = e.emp_lname,
-                        proj_strDate = p.proj_strDate,
-                        proj_endDate = p.proj_endDate,
-                        proj_status = p.proj_status,
-                        project_leads = p.proj_lead
-                    }
-                ).ToList();
+       from p in db.NewProjects
+       join e1 in db.Employees on p.proj_emp_no equals e1.emp_no
+       join e2 in db.Employees on p.proj_engineer_no equals e2.emp_no
+       select new
+       {
+           proj_type_id = p.proj_type_id,
+           proj_name = p.proj_name,
+           emp_fname_lead = e1.emp_fname,
+           emp_lname_lead = e1.emp_lname,
+           emp_fname_engineer = e2.emp_fname,
+           emp_lname_engineer = e2.emp_lname,
+           proj_strDate = p.proj_strDate,
+           proj_endDate = p.proj_endDate,
+           proj_status = p.proj_status,
+           proj_lead = p.proj_lead,
+           proj_engineer_no = p.proj_engineer_no,
+            proj_engineer_id = p.proj_engineer_no
+       }
+   ).ToList();
+
                 var jsonProjects = projects.Select(p => new
                 {
                     proj_type_id = p.proj_type_id,
                     proj_name = p.proj_name,
-                    proj_lead = p.emp_fname + ' ' + p.emp_lname,
+                    proj_lead = p.emp_fname_lead + ' ' + p.emp_lname_lead,
                     proj_strDate = p.proj_strDate.HasValue ? p.proj_strDate.Value.ToString("yyyy-MM-dd") : "",
                     proj_endDate = p.proj_endDate.HasValue ? p.proj_endDate.Value.ToString("yyyy-MM-dd") : "",
                     proj_status = p.proj_status,
-                    project_leads = p.project_leads
-                  
+                    project_leads = p.emp_fname_lead + ' ' + p.emp_lname_lead,
+                    proj_engineer_no = p.emp_fname_engineer + ' ' + p.emp_lname_engineer,
+                    proj_engineer_id = p.proj_engineer_no
                 });
+
                 var serialize = JsonConvert.SerializeObject(jsonProjects);
 
                 // Retrieve the session user's emp_no and position
@@ -1370,6 +1378,26 @@ ViewBag.AttendanceList = attendanceList;
             var employees = db.Employees
                 .Where(e => e.emp_position == "Project Lead")
                 .Select(e => new { e.emp_no, e.emp_fname, e.emp_lname })
+                .ToList();
+
+            return Json(employees, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetEngineer()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+
+            // Get the session emp_no value
+            int sessionEmpNo = (int)Session["emp_no"]; // Replace with the actual session emp_no value
+
+            var employees = db.Employees
+                .Where(e => e.emp_position == "Engineer")
+                .Select(e => new {
+                    e.emp_no,
+                    e.emp_fname,
+                    e.emp_lname,
+                    selected = (e.emp_no == sessionEmpNo) // Add the "selected" property
+        })
                 .ToList();
 
             return Json(employees, JsonRequestBehavior.AllowGet);

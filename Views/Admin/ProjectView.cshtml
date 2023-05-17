@@ -30,7 +30,7 @@
             <div class="proj-main-container">
                 <div class="proj-task-list">
                     <div class="task-header">
-                        <h2>Accomplistments</h2>
+                        <h2>Accomplishtments</h2>
                         <div class="right-container">
 
                             @{
@@ -63,7 +63,7 @@
                                                         <td>Report No.</td>
                                                         <td>Description</td>
                                                         <td>Remarks</td>
-                                                        <td></td>
+                                                        <td>Action</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -122,9 +122,13 @@
                             </div>
 
                             <div class="date">
-                                <label>Project Lead: @ViewBag.ProjectLead</label>
+                                <label>Engineer: @ViewBag.ProjectLead</label>
                             </div>
 
+                            <div class="date">
+                                <label>Project Lead: @ViewBag.ProjectLead</label>
+                            </div>
+                          
                             <div class="status">
                                 <label class="title">Status:</label>
                                 <select required>
@@ -2013,7 +2017,7 @@ $.ajax({
 
 
 
-                $.get('/Admin/GetReportImages', { rep_date: isoDate })
+                $.get('/Admin/GetReportImages', { rep_date: isoDate, proj_type_id: projectId, rep_no: selectedRepNo })
                     .done(function (images) {
                         var container = $('#image-container');
                         container.empty(); // Clear the container first

@@ -8450,7 +8450,7 @@ acc-form-table .view-request-form-table-style table thead td {
     font-size: .9rem;
     margin-left: 20px;
     margin-right: 20px;
-    height: 300px;
+    height: 330px;
     margin-bottom: 0;
 }
 
@@ -8529,7 +8529,7 @@ acc-form-table .view-request-form-table-style table thead td {
     border: 2px solid #AEAEAE;
     box-shadow: 5px 5px 3px #B2B2B2;
     width: auto;
-    height: 385px;
+    height: 350px;
     border-radius: 5px;
 }
 
@@ -10589,14 +10589,18 @@ acc-form-table .view-request-form-table-style table thead td {
     display: flex;
 }
 
-.add-new-main .add-new-left .left {
+.add-new-main .add-new-left .grp .left {
     padding-right: 5px;
     width: 50%;
 }
 
-.add-new-main .add-new-left .right {
+.add-new-main .add-new-left .grp .right {
     padding-left: 5px;
     width: 50%;
+}
+
+.add-new-main .add-new-left .grp .right input {
+    margin-top: 8px;
 }
 
 .add-new-main .add-new-left .grp .input-fields select {
@@ -10609,6 +10613,26 @@ acc-form-table .view-request-form-table-style table thead td {
     padding: 0 15px;
     height: 42px;
     width: 100%;
+}
+
+.add-new-main .add-new-left .date {
+    display: flex;
+}
+
+.add-new-main .add-new-left .date .left {
+    width: 33%;
+}
+
+.add-new-main .add-new-left .date .mid {
+    width: 33%;
+}
+
+.add-new-main .add-new-left .date .right {
+    width: 33%;
+}
+
+.add-new-main .add-new-left .date .right select {
+    margin: 0;
 }
 
 .add-new-container .add-new-main .add-new-right {

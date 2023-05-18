@@ -53,6 +53,29 @@ let QtyFormBtns = document.querySelectorAll('#qtyForm .form-add-btns button');
 let sessionId = localStorage.getItem("emp_role");
 
 //#region Listener area
+//add items on div batch add quantity
+let srchBar = document.getElementById("srchcode");
+srchBar.addEventListener("change", function (event) {
+	let quantField = document.getElementById("batchQuant");
+	if (this.value == "") {
+		return;
+    }
+	var container = document.getElementById("codeArea");
+	let div = ``;
+	div += `<div class="code-card" >`;
+	div += `<label>${this.value}</label>`;
+	div += `<i class="las la-times-circle"></i>`;
+	div += `</div>`;
+	container.innerHTML += div;
+
+	let removeButtons = container.getElementsByClassName("las la-times-circle");
+	for (let i = 0; i < removeButtons.length; i++) {
+		removeButtons[i].addEventListener("click", function () {
+			this.parentNode.remove();
+		});
+	}
+	this.value = "";
+});
 class1.addEventListener("change", SetItemCode);
 category.addEventListener("input", SetItemCode);
 name.addEventListener("input", SetItemCode);
@@ -71,7 +94,7 @@ QtyFormBtns.forEach((btns) => {
 		event.preventDefault();
 	});
 });
-qtyCode.addEventListener("keydown",Scan)
+//qtyCode.addEventListener("keydown",Scan)
 //#endregion
 
 //let formattedArray = [];
@@ -896,4 +919,15 @@ function OpenEdit(invCode) {
 	var inputs = document.querySelector('#editForm').elements;
 	AppendOption(editFormSel);
 	SetField(invCode, '#editForm input', '#editForm select', 'edit');
+}
+
+function PopulateDataList() {
+	var dl = document.getElementById("codeList");
+	for (var i = 0; i < fixedArray.length; i++) {
+		let option = document.createElement('option');
+		option.value = fixedArray[i].in_code;
+		option.text = fixedArray[i].in_name + " | " + fixedArray[i].in_size;
+		dl.appendChild(option);
+	}
+
 }

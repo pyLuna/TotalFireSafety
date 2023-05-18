@@ -333,6 +333,7 @@ input::-webkit-inner-spin-button {
     visibility: visible;
     top: 50%;
     transform: translate(-50%,-50%) scale(1);
+    z-index:200;
 }
 
 .over-pop-container img {
@@ -484,6 +485,7 @@ input::-webkit-inner-spin-button {
     visibility: visible;
     top: 50%;
     transform: translate(-50%,-50%) scale(1);
+    z-index:200;
 }
 
 .info-pop-container img {
@@ -2348,6 +2350,63 @@ input[type="month"] {
     padding-left: 5px;
 }
 
+/* REPORT */
+
+
+.add-report-popup-inv {
+    height: auto;
+    width: 60%;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.1);
+    color: #fff;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+    z-index: 0;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.add-report-popup-inv-show {
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+.inventory-form-contents .add-report-header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.inventory-form-contents .add-report-header .add-report {
+    display: flex;
+    margin-right: 10px;
+}
+
+    .inventory-form-contents .add-report-header .add-report label {
+        color: #000;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-top: 10px;
+    }
+
+    .inventory-form-contents .add-report-header .add-report input {
+        height: 40px;
+        width: 200px;
+        display: flex;
+        align-items: center;
+        overflow-x: hidden;
+        border: 1px solid #B2B2B2;
+        border-radius: 5px;
+        box-shadow: 4px 4px 3px #B2B2B2;
+        padding-left: 5px;
+    }
+
+
+
 .inventory-form-contents .item {
     display: block;
     margin-top: 20px;
@@ -2368,6 +2427,9 @@ input[type="month"] {
         height: 250px;
         background-color:white;
         display:flex;
+        flex-wrap: wrap;
+        align-content:flex-start;
+        overflow-x:auto;
     }
     .inventory-form-contents .item .text-area .code-card {
         padding:10px;

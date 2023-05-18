@@ -482,8 +482,8 @@ namespace TotalFireSafety.Controllers
             ViewBag.EmpId = empId;
             return View();*/
             nwTFSEntity db = new nwTFSEntity();
-            var empId = Session["emp_no"].ToString();
-            if (Session["emp_no"] == null)
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
@@ -503,15 +503,15 @@ namespace TotalFireSafety.Controllers
         //[System.Web.Mvc.Authorize(Roles = "admin,warehouse")]
         public async Task<ActionResult> InvReorder()
         {
-            var role = int.Parse(Session["system_role"].ToString());
-            if (role == 3)
-            {
-                return RedirectToAction("Unauthorize", "Error");
-            }
             var empId = Session["emp_no"]?.ToString();
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
+            }
+            var role = int.Parse(Session["system_role"].ToString());
+            if (role == 3)
+            {
+                return RedirectToAction("Unauthorize", "Error");
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
@@ -1732,7 +1732,9 @@ ViewBag.AttendanceList = attendanceList;
         {
             using(var _context = new nwTFSEntity())
             {
-                var updates = _context.Inv_Update.Where(x => x.update_item_id == code).ToList();
+                var updates = _context.Inv_Update.Where(x => x.update_item_id == code)
+                            .OrderByDescending(x => x.update_date)
+                            .ToList();
 
                 if(updates == null)
                 {
@@ -1763,6 +1765,29 @@ ViewBag.AttendanceList = attendanceList;
                     return Content(jsonString);
                 }
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> BatchQuantity([System.Web.Http.FromBody] string[] itemCodes, [System.Web.Http.FromUri] string quantity)
+        {
+            using(var _context = new nwTFSEntity())
+            {
+                int quant = int.Parse(quantity);
+
+                foreach (var code in itemCodes)
+                {
+                    var item = _context.Inventories.Where(x => x.in_code == code).SingleOrDefault();
+                    var unit = item.in_quantity.Split(' ')[1];
+                    QuantityUpdate(code, quant, unit);
+                    var nwQuant = int.Parse(item.in_quantity.Split(' ')[0]) + quant;
+                    item.in_quantity = nwQuant + " " + unit;
+                    _context.Entry(item);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            await SendNotif("notificaton");
+            Session["added"] = "Item quantity added successfully";
+            return Json(new { message = "okay"});
         }
 
         [HttpPost]

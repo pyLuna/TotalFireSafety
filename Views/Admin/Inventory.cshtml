@@ -51,22 +51,19 @@
                 <div class="inventory-buttons-style" id="hideBtn">
 
                     @*<button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + setAttrib() + setDatalist()">ADD NEW ITEM</button>
-                    <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
+                <button class="expo-btn" title="EXPORT REPORT" onclick="expoOpenPopup() + exportToPdf()">*@
                     @if (Int32.Parse(Session["system_role"].ToString()) == 2)
                     {
                         <button class="add-btn" title="ADD NEW ITEM" onclick="addOpenPopupInv() + AppendOption(addFormSel) + setDatalist();">ADD NEW ITEM</button>
                         @*<button class="add-btn" id="add_new_itm" title="ADD NEW ITEM">ADD NEW ITEM</button>*@
-                        <button class="qty-add-btn" title="ADD QUANTIY" onclick="qtyOpenPopupInv() + AppendOption(qtyFormSel)">ADD QUANTITY</button>
+                        //+AppendOption(qtyFormSel)
 
+
+                        <button class="qty-add-btn" title="ADD QUANTIY" onclick="qtyOpenPopupInv() + PopulateDataList()">ADD QUANTITY</button>
                         @*<button class="qty-add-btn" id="add_quan11" onclick="AppendOption(qtyFormSel)" title="ADD QUANTIY">ADD QUANTITY</button>*@
                     }
-
-                    <button class="notif-btn" title="ADD NEW ITEM" onclick="">
-                        <a href="@Url.Action("InvReorder","Admin")">
-                            RE-ORDER
-                            <label class="notif-badge">5</label>
-                        </a>
-                    </button>
+                    @* ADD REPORT *@
+                    <button class="report-add-btn" title="ADD REPORT" onclick="reportOpenPopupInv() + PopulateDataList()">RE-ORDER</button>
 
                     <button class="expo-btn" id="expBtn" title="EXPORT REPORT">
                         @*+ expoOpenPopup()*@
@@ -76,13 +73,13 @@
                         </a>
                     </button>
 
-                    <select id="filter" onchange="SortByCategory(this,this.value)">
+                    @*<select id="filter" onchange="SortByCategory(this,this.value)">
                         <option disabled selected>FILTER</option>
                         <option value="standard">Standard</option>
                         <option value="average">Average</option>
                         <option value="critical">Critical</option>
                         <option value="">Clear</option>
-                    </select>
+                    </select>*@
                 </div>
             </div>
             @if (Int32.Parse(Session["system_role"].ToString()) == 2)
@@ -100,33 +97,33 @@
                                     <div class="inventory-form-contents">
                                         <div class="fields">
                                             <div class="input-field">
-                                                <label>item id</label>
+                                                <label>Item ID</label>
                                                 <input type="text" id="in_code" name="in_code" placeholder="ABC-DEF-GHI-000" readonly>
                                             </div>
 
                                             <div class="input-field">
-                                                <label>item name</label>
+                                                <label>Item Name</label>
                                                 <input type="text" id="in_name" name="in_name" placeholder="Enter item name" required>
                                             </div>
                                             <div class="input-field">
-                                                <label>category</label>
+                                                <label>Category</label>
                                                 <input type="text" id="in_category" name="in_category" list="catlist" placeholder="Enter item Category" required>
                                                 <datalist id="catlist"></datalist>
                                             </div>
                                             <div class="input-field">
-                                                <label>class</label>
+                                                <label>Class</label>
                                                 <select id="class" name="class" required>
                                                     <option value="" selected>Select Class</option>
                                                 </select>
                                             </div>
                                             <input type="text" id="in_class" name="in_class" style="display:none;">
                                             <div class="input-field">
-                                                <label>type</label>
+                                                <label>Type</label>
                                                 <input type="text" id="in_type" list="typelist" name="in_type" placeholder="Enter item type">
                                                 <datalist id="typelist"></datalist>
                                             </div>
                                             <div class="input-field">
-                                                <label>size</label>
+                                                <label>Size</label>
                                                 <div class="input-field-size">
                                                     <input type="number" id="inpSizeSel" name="inpSizeSel" placeholder="00000">
                                                     <select id="sizeSel" name="sizeSel">
@@ -138,7 +135,7 @@
                                             </div>
                                             <input type="text" id="in_size" name="in_size" style="display:none;" required>
                                             <div class="input-field">
-                                                <label>quantity</label>
+                                                <label>Quantity</label>
                                                 <div class="input-field-quantity">
                                                     <input type="number" id="inpSizeQuant" name="inpSizeQuant" placeholder="000" required>
                                                     <select id="sizeQuant" name="sizeQuant" required>
@@ -176,7 +173,7 @@
                                 </div>
 
                                 <div class="form-add-btns">
-		
+
                                     <button class="save" onclick="checkForm() + SetHiddenValues()">
                                         @*infoOpenPopup('addForm')*@
                                         <span class="btnText">Save</span>
@@ -200,7 +197,7 @@
                         <!-- Inventory Add Quantity -->
 
                         <div class="inventory-form-container">
-                            <form action="/Admin/AddItem1?type=edit" id="qtyForm" method="post">
+                            <form action="#" id="qtyForm" method="post">
                                 <div class="details-personal">
                                     <div class="inventory-form-header">
                                         ADD QUANTITY
@@ -210,37 +207,38 @@
                                         <div class="add-qty-header">
                                             <div class="search-wrapper add-search">
                                                 <span class="las la-search"></span>
-                                                <input type="text" placeholder="Search here" list="codeList">
+                                                <input type="text" placeholder="Search here" list="codeList" id="srchcode">
                                                 <datalist id="codeList">
                                                 </datalist>
                                             </div>
 
-
                                             <div class="add-qty">
                                                 <label>Quantity:</label>
-                                                <input type="number" max="999" />
+                                                <input type="number" id="batchQuant" />
                                             </div>
                                         </div>
+                                        <br />
+                                        <label id="batchQuant-error" class="error manual-error" for="batchQuant"></label>
 
                                         <div class="item">
                                             <div class="item-header">
                                                 <label>Item Codes:</label>
                                             </div>
 
-                                            <div class="text-area">
+                                            <div class="text-area" id="codeArea">
                                                 @*<textarea id="dataTextarea" rows="10" cols="30" onkeydown="handleKeyDown(event)"></textarea>*@
-                                                <div class="code-card">
-                                                    <label>IMP-FXRT-FXRT</label>
-                                                    <i class="las la-times-circle"></i>
-                                                </div>
-                                                <div class="code-card">
-                                                    <label>IMP-FXRT-FXRT</label>
-                                                    <i class="las la-times-circle"></i>
-                                                </div>
-                                                <div class="code-card">
-                                                    <label>IMP-FXRT-FXRT</label>
-                                                    <i class="las la-times-circle"></i>
-                                                </div>
+                                                @*<div class="code-card">
+                    <label>IMP-FXRT-FXRT</label>
+                    <i class="las la-times-circle"></i>
+                </div>
+                <div class="code-card">
+                    <label>IMP-FXRT-FXRT</label>
+                    <i class="las la-times-circle"></i>
+                </div>
+                <div class="code-card">
+                    <label>IMP-FXRT-FXRT</label>
+                    <i class="las la-times-circle"></i>
+                </div>*@
                                             </div>
 
                                         </div>
@@ -250,73 +248,74 @@
 
 
                                         @*<div class="fields">
-                                            <div class="input-field">
-                                                <label>Item ID</label>
-                                                <input type="text" id="in_code1" name="in_code" placeholder="ABCD-EFG-HIJ" required>
-                                            </div>
-                                            <div class="input-field">
-                                                <label>Item Name</label>
-                                                <input type="text" id="in_name1" name="in_name" placeholder="Enter item name" readonly>
-                                            </div>
-                                            <div class="input-field">
-                                                <label>Category</label>
-                                                <select id="selcat1" disabled>
-                                                    <option disabled selected>Select Category</option>
-                                                </select>
-                                            </div>
-                                            <div class="input-field">
-                                                <label>Class</label>
-                                                <select id="selclass" disabled>
-                                                    <option disabled selected>Select Class</option>
-                                                </select>
-                                            </div>
-                                            <div class="input-field">
-                                                <label>Type</label>
-                                                <select id="seltype" disabled>
-                                                    <option disabled selected>Select Type</option>
-                                                </select>
-                                            </div>
-                                            <div class="input-field">
-                                                <label>Size</label>
-                                                <div class="input-field-size">
-                                                    <input type="number" id="inpSize1" name="inpSize1" placeholder="00000" readonly>
-                                                    <select id="inpSize" disabled>
-                                                        <option disabled selected>Unit</option>
-                                                    </select>
-                                                </div>
+            <div class="input-field">
+                <label>Item ID</label>
+                <input type="text" id="in_code1" name="in_code" placeholder="ABCD-EFG-HIJ" required>
+            </div>
+            <div class="input-field">
+                <label>Item Name</label>
+                <input type="text" id="in_name1" name="in_name" placeholder="Enter item name" readonly>
+            </div>
+            <div class="input-field">
+                <label>Category</label>
+                <select id="selcat1" disabled>
+                    <option disabled selected>Select Category</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <label>Class</label>
+                <select id="selclass" disabled>
+                    <option disabled selected>Select Class</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <label>Type</label>
+                <select id="seltype" disabled>
+                    <option disabled selected>Select Type</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <label>Size</label>
+                <div class="input-field-size">
+                    <input type="number" id="inpSize1" name="inpSize1" placeholder="00000" readonly>
+                    <select id="inpSize" disabled>
+                        <option disabled selected>Unit</option>
+                    </select>
+                </div>
 
-                                            </div>
-                                            <div class="input-field">
-                                                <label>Quantity</label>
-                                                <div class="input-field-quantity">
-                                                    <input type="number" id="inpQuant1" name="inpQuant1" placeholder="000" required>
-                                                    <select id="inpQuant" name="inpQuant">
-                                                        <option value="" disabled selected>Unit</option>
-                                                    </select>
-                                                </div>
-                                                <label id="inpQuant1-error" class="error manual-error" for="inpQuant1"></label>
-                                            </div>
-                                            <input type="text" id="in_category1" name="in_category" style="display:none;">
-                                            <input type="text" id="in_class1" name="in_class" style="display:none;">
-                                            <input type="text" id="in_type1" name="in_type" style="display:none;">
-                                            <input type="text" id="in_size1" name="in_size" style="display:none;">
-                                            <input type="text" id="in_quantity1" name="in_quantity" style="display:none;">
-                                            <input type="text" id="in_remarks1" name="in_remarks" style="display:none;">
-                                            <div class="input-field">
-                                                <label>Date Added</label>
-                                                <input type="text" id="inpDate" name="in_dateAdded" placeholder="00/00/00" readonly>
-                                            </div>
-                                            <div class="input-field">
-                                                <div class="img-bar-grp" id="image-container">
+            </div>
+            <div class="input-field">
+                <label>Quantity</label>
+                <div class="input-field-quantity">
+                    <input type="number" id="inpQuant1" name="inpQuant1" placeholder="000" required>
+                    <select id="inpQuant" name="inpQuant">
+                        <option value="" disabled selected>Unit</option>
+                    </select>
+                </div>
+                <label id="inpQuant1-error" class="error manual-error" for="inpQuant1"></label>
+            </div>
+            <input type="text" id="in_category1" name="in_category" style="display:none;">
+            <input type="text" id="in_class1" name="in_class" style="display:none;">
+            <input type="text" id="in_type1" name="in_type" style="display:none;">
+            <input type="text" id="in_size1" name="in_size" style="display:none;">
+            <input type="text" id="in_quantity1" name="in_quantity" style="display:none;">
+            <input type="text" id="in_remarks1" name="in_remarks" style="display:none;">
+            <div class="input-field">
+                <label>Date Added</label>
+                <input type="text" id="inpDate" name="in_dateAdded" placeholder="00/00/00" readonly>
+            </div>
+            <div class="input-field">
+                <div class="img-bar-grp" id="image-container">
 
-                                                </div>
-                                            </div>
-                                        </div>*@
+                </div>
+            </div>
+        </div>*@
                                     </div>
                                 </div>
 
                                 <div class="form-add-btns">
-                                    <button class="save" onclick="setHiddens()">
+                                    <button class="save" onclick="validateBatchQuantity()">
+                                        @*onclick="setHiddens()"*@
                                         @*infoOpenPopup('qtyForm')*@
                                         <span class="btnText">Save</span>
                                         <i class="las la-check-square"></i>
@@ -333,6 +332,70 @@
 
                     </div>
                 </div>
+
+
+                <!-- ADD REPORT -->
+
+                <div class="add-report-popup-inv" id="add-report-popup-inv">
+                    <div class="inventory-add-container">
+
+                        <!-- Inventory Add REPORT -->
+
+                        <div class="inventory-form-container">
+                            <form action="#" id="reportForm">
+                                <div class="details-personal">
+                                    <div class="inventory-form-header">
+                                        ADD REPORT
+                                    </div>
+                                    <div class="inventory-form-contents">
+
+                                        <div class="add-report-header">
+                                            <div class="search-wrapper add-search">
+                                                <span class="las la-search"></span>
+                                                <input type="text" placeholder="Search here" list="codeList" id="srchcode">
+                                                <datalist id="codeList">
+                                                </datalist>
+                                            </div>
+
+                                            <div class="add-report">
+                                                <label>Quantity:</label>
+                                                <input type="number" max="999" id="batchQuant" />
+                                            </div>
+                                        </div>
+
+                                        <div class="item">
+                                            <div class="item-header">
+                                                <label>Item Codes:</label>
+                                            </div>
+
+                                            <div class="text-area" id="codeArea">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-add-btns">
+                                    <button class="save">
+                                        @*onclick="setHiddens()"*@
+                                        @*infoOpenPopup('qtyForm')*@
+                                        <span class="btnText">Save</span>
+                                        <i class="las la-check-square"></i>
+                                    </button>
+
+                                    <button class="cancel">
+                                        <span class="btnText" onclick="canOpenPopup()">Cancel</span>
+                                        <i class="las la-window-close"></i>
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- END OF REPORT -->
 
                 <div class="edit-item-popup-inv" id="edit-item-popup-inv">
                     <div class="inventory-add-container">
@@ -362,8 +425,8 @@
                                                 <input type="text" id="in_category2" name="in_category" list="catOpt" placeholder="Enter item Category" required>
                                                 <datalist id="catOpt"></datalist>
                                                 @*<select id="selcat2" name="selcat2" required>
-                                                    <option disabled selected>Select Category</option>
-                                                </select>*@
+                                                <option disabled selected>Select Category</option>
+                                            </select>*@
                                             </div>
 
                                             <div class="input-field">
@@ -378,8 +441,8 @@
                                                 <input type="text" id="in_type2" list="typeOpt" name="in_type" placeholder="Enter item type">
                                                 <datalist id="typeOpt"></datalist>
                                                 @*<select id="seltype2" name="seltype2">
-                                                    <option disabled selected>Select Category</option>
-                                                </select>*@
+                                                <option disabled selected>Select Category</option>
+                                            </select>*@
                                             </div>
 
                                             <div class="input-field">
@@ -421,7 +484,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="form-add-btns">
                                     <button class="save" onclick="setHiddensEdit() + checkForm_Edit_Itm()">
                                         @*infoOpenPopup('editForm')*@
@@ -477,7 +540,7 @@
                                         @*<td>Remarks<span title="Quantity &#10; Over 100 = Overstocked &#10; 50 to 99 = Standard &#10; 49 t0 30 = Average &#10; 29 to 10 = Reorder &#10; Below 9 = Critical"><i class="las la-info-circle"></i></span></td>*@
 
                                         <td><a onclick="Sort(this,'in_class')">Class<i class="las la-sort-down"></i></a></td>
-                                        <td>Outgoing Quantity</td>
+                                        <td>Running Quantity</td>
                                         @if (Int32.Parse(Session["system_role"].ToString()) == 2)
                                         {
                                             <td id="hideAction">Action</td>
@@ -513,7 +576,7 @@
             <div class="his-main">
 
                 <div class="his-req">
-                    
+
                     <div class="his-req-contents">
                         <div class="his-req-table">
                             <div class="his-req-table-style">
@@ -530,7 +593,6 @@
 
                                         <tbody>
                                             <tr>
-
                                             </tr>
                                         </tbody>
                                     </table>
@@ -571,6 +633,14 @@
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
+        <div class="can-pop-container" id="can-popup">
+            <img src="@Url.Content("~/images/warning.png")">
+            <h2>System Warning!</h2>
+            <p>Are you sure you want to cancel?</p>
+            <button type="button" onclick="canClosePopup() + addClosePopupInv() + reportClosePopupInv() + editClosePopupInv() + resetForm()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
+
         <div class="rem-pop-container" id="rem-popup">
             <img src="@Url.Content("~/images/remove.png")">
             <h2>Deleted!</h2>
@@ -602,11 +672,12 @@
 
         @* POPUP FOR OVERSTACKED AND CRITICAL *@
 
-        @*<div class="over-pop-container" id="over-popup">
+        @*for add*@
+        <div class="over-pop-container" id="over-popup">
             <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
-            <p>This item will be marked as Overstacked. Are you sure?</p>
-            <button type="submit" id="addOverConf">Yes</button>
+            <p>This item will be Overstacked. Do you want to proceed?</p>
+            <button type="submit" id="addOverConf" onclick="infoOpenPopup('addForm') + closeOverPopup()">Yes</button>
             <button type="button" onclick="closeOverPopup()">Cancel</button>
         </div>
 
@@ -614,15 +685,17 @@
             <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
             <p>This item will be marked as Critical. Are you sure?</p>
-            <button type="submit" id="addCritConf">Yes</button>
+            <button type="submit" id="addCritConf" onclick="infoOpenPopup('addForm') + closeAddOverPopup()">Yes</button>
             <button type="button" onclick="closeAddOverPopup()">Cancel</button>
         </div>
+        @*end add*@
 
+        @*for quant*@
         <div class="over-pop-container" id="extra-over-popup">
             <img src="@Url.Content("~/images/information.png")">
             <h2>System Warning!</h2>
             <p>This item will be marked as Overstacked. Are you sure?</p>
-            <button type="submit" id="qtyOverConf">Yes</button>
+            <button type="submit" id="qtyOverConf" onclick="infoOpenPopup('qtyForm') + closeExtraOverPopup()">Yes</button>
             <button type="button" onclick="closeExtraOverPopup()">Cancel</button>
         </div>
 
@@ -632,7 +705,44 @@
             <p>This item will be marked as Critical. Are you sure?</p>
             <button type="submit" id="qtyCritConf">Yes</button>
             <button type="button" onclick="closeCritPopup()">Cancel</button>
-        </div>*@
+        </div>
+        @*end quant*@
+
+        @*for report*@
+        <div class="over-pop-container" id="extra-over-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>This item will be marked as Overstacked. Are you sure?</p>
+            <button type="submit" id="qtyOverConf" onclick="infoOpenPopup('reportForm') + closeExtraOverPopup()">Yes</button>
+            <button type="button" onclick="closeExtraOverPopup()">Cancel</button>
+        </div>
+
+        <div class="crit-pop-container" id="crit-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>This item will be marked as Critical. Are you sure?</p>
+            <button type="submit" id="qtyCritConf">Yes</button>
+            <button type="button" onclick="closeCritPopup()">Cancel</button>
+        </div>
+        @*end report*@
+
+        @*for edit*@
+        <div class="over-pop-container" id="edit-over-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>This item will be marked as Overstacked. Are you sure?</p>
+            <button type="submit" id="EditOverConf" onclick="infoOpenPopup('editForm') + closeExtraOverPopup()">Yes</button>
+            <button type="button" onclick="closeExtraOverPopupEdit()">Cancel</button>
+        </div>
+
+        <div class="crit-pop-container" id="edit-crit-popup">
+            <img src="@Url.Content("~/images/information.png")">
+            <h2>System Warning!</h2>
+            <p>This item will be marked as Critical. Are you sure?</p>
+            <button type="submit" id="EditCritConf">Yes</button>
+            <button type="button" onclick="closeCritPopupEdit()">Cancel</button>
+        </div>
+        @*end edit*@
 
         @* END *@
 
@@ -655,13 +765,11 @@
             var min = document.getElementById("Inv_Limitsminimum").value;
             var err = document.getElementById("inpSizeQuant-error");
             if (Number(input) > Number(max)) {
-                err.innerText = "Quantity must not exceed maximum";
-                err.style.display = "block";
+                openOverPopup();
                 return;
             }
             else if (Number(input) < Number(min)) {
-                err.innerText = "Quantity must not be lower than minimum";
-                err.style.display = "block";
+                openCritPopup();
                 return;
             }
             infoOpenPopup('addForm');
@@ -676,6 +784,13 @@
         }
     }
 
+    /*ADD REPORT ITEM CHECKFORM VALIDATION*/
+    function checkForm_Add_Quan() {
+        var bool = $('#reportForm').valid();
+        if (bool) {
+            infoOpenPopup('reportForm');
+        }
+    }
     /*EDIT ITEM CHECKFORM VALIDATION*/
     function checkForm_Edit_Itm() {
         var bool = $('#editForm').valid();
@@ -683,23 +798,131 @@
             infoOpenPopup('editForm');
         }
     }
-
-    function validateQuantity(code,value) {
-        let arr = [];
-        for (let j = 0; j < fixedArray.length; j++) {
-            if (fixedArray[j].in_code.toLowerCase() == code.toLowerCase()) {
-                arr.push(fixedArray[j]);
+    // display quantity promopt
+    function DisplayMessage(remarks, type) {
+        if (remarks == "max") {
+            if (type == "quant") {
+                openExtraOverPopup();
+            }
+            if (type == "new") {
+                openOverPopup();
             }
         }
-        var num = extractNum(arr[0].in_quantity).num;
+        else if (remarks == "min") {
+            if (type == "quant") {
+                openAddOverPopup();
+            }
+        }
+
+    }
+
+    function SendItemCodes() {
+        var container = document.getElementById("codeArea");
+        var divs = container.querySelectorAll(".code-card label");
+        var batchQuant = document.getElementById("batchQuant");
+        var arr = [];
+        divs.forEach((div) => {
+            arr.push(div.innerHTML)
+        });
+
+        fetch("/Admin/BatchQuantity?quantity=" + batchQuant.value, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(arr)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                let message = data;
+                if (message.message == "okay") {
+                    window.location.reload();
+                }
+                console.log('Response from server:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+    }
+
+    function validateBatchQuantity() {
+        var container = document.getElementById("codeArea");
+        var batchQuant = document.getElementById("batchQuant");
+        var errMess = document.getElementById("batchQuant-error");
+        var divs = container.querySelectorAll(".code-card label");
+        var arr = [];
+        var bool = false;
+
+        if (divs.length == 0) {
+            errMess.innerText = `Please Add an item codes`;
+            errMess.style.display = "block";
+            return;
+        }
+
+        divs.forEach((div) => {
+            arr = findItem(div.innerHTML);
+            let quant = extractNum(arr.in_quantity).num;
+            let res = Number(quant) + Number(batchQuant.value);
+
+            if (res > arr.Limits.maximum) {
+                errMess.innerText = `Item Code : ${arr.in_code} has reached its maximum limit(${arr.Limits.maximum}) and will be Overstock`;
+                errMess.style.display = "block";
+                bool = false;
+                return;
+            }
+            else if (res < arr.Limits.minimum) {
+                errMess.innerText = `Item Code : ${arr.in_code} is below its minimum limit(${arr.Limits.minimum}) and will be Critical`;
+                errMess.style.display = "block";
+                bool = false;
+                return;
+            }
+            else {
+                errMess.innerText = ``;
+                errMess.style.display = "none";
+                bool = true;
+                return;
+            }
+        });
+        if (batchQuant.value.length == 0) {
+            errMess.innerText = `Quantity field is required`;
+            errMess.style.display = "block";
+            return;
+        }
+        if (bool) {
+            infoOpenPopup("batchQuant");
+        }
+    }
+
+    function findItem(code) {
+        for (let j = 0; j < fixedArray.length; j++) {
+            if (fixedArray[j].in_code.toLowerCase() == code.toLowerCase()) {
+                return fixedArray[j];
+            }
+        }
+    }
+
+    function validateQuantity(code, value, type) {
+        let arr = findItem(code);
+
+        var num = extractNum(arr.in_quantity).num;
         var result = Number(num) + Number(value);
         var bool = false;
         var message = "";
-        if (result > arr[0].Limits.maximum) {
-            message = "Quantity has exceeded the maximum amount";
+        if (result > arr.Limits.maximum) {
+            //message = "Quantity has exceeded the maximum amount";
+            DisplayMessage("max", type);
         }
-        else if (result < arr[0].Limits.minimum) {
-            message = "Quantity reached the minimum amount";
+        else if (result < arr.Limits.minimum) {
+            //message = "Quantity reached the minimum amount";
+            DisplayMessage("min", type);
         }
         else {
             bool = true;
@@ -707,33 +930,37 @@
         return { bool, message };
     }
 
+    function AddQuantity(code,val) {
+        fetch('/Admin/AddQuantity?code=' + code + '&quantity=' + val, {
+            method: "POST"
+        })
+            .then(res => {
+                if (res.ok) {
+                    // API request was successful
+                    return;
+                } else {
+                    console.log(res.statusText);
+                }
+            })
+            .then(data => {
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
     document.getElementById("conf").addEventListener("click", function () {
         var code = localStorage.getItem("itemCode");
         var val = document.getElementById("quantVal").value;
-        var result = validateQuantity(code, val);
-        console.log(result);
+        var result = validateQuantity(code, val, "quant");
+        //console.log(result);
         if (!result.bool) {
-            var err = document.getElementById("errMess");
-            err.innerText = result.message;
+        //    var err = document.getElementById("errMess");
+        //    err.innerText = result.message;
             return;
         }
-        fetch('/Admin/AddQuantity?code=' + code +'&quantity=' + val, {
-            method: "POST"
-        })
-        .then(res => {
-            if (res.ok) {
-                    // API request was successful
-                return;
-            } else {
-                console.log(res.statusText);
-            }
-        })
-        .then(data => {
-            window.location.reload();
-        })
-        .catch(error => {
-            console.error(error);
-        });
+        AddQuantity(code, val);
     });
 
     let codeToDelete = "";
@@ -793,10 +1020,10 @@
     let extraoverpopup = document.getElementById("extra-over-popup");
     function openExtraOverPopup() {
         extraoverpopup.classList.add("over-popup-show");
-        var button = document.getElementById("qtyOverConf");
-        button.addEventListener("click", function () {
-            checkForm_Edit_Itm();
-        });
+        //var button = document.getElementById("qtyOverConf");
+        //button.addEventListener("click", function () {
+        //    checkForm_Edit_Itm();
+        //});
     }
 
     function closeExtraOverPopup() {
@@ -806,10 +1033,6 @@
     let addoverpopup = document.getElementById("add-over-popup");
     function openAddOverPopup() {
         addoverpopup.classList.add("over-popup-show")
-        //var button = document.getElementById("addCritConf");
-        //button.addEventListener("click", function () {
-        //    checkForm();
-        //});
     }
 
     function closeAddOverPopup() {
@@ -819,10 +1042,6 @@
     let overpopup = document.getElementById("over-popup");
     function openOverPopup() {
         overpopup.classList.add("over-popup-show")
-        //var button = document.getElementById("addOverConf");
-        //button.addEventListener("click", function () {
-        //    checkForm();
-        //});
     }
 
     function closeOverPopup() {
@@ -832,16 +1051,30 @@
     let critpopup = document.getElementById("crit-popup");
     function openCritPopup() {
         critpopup.classList.add("crit-popup-show")
-        //var button = document.getElementById("qtyCritConf");
-        //button.addEventListener("click", function () {
-        //    checkForm_Edit_Itm();
-        //});
     }
 
     function closeCritPopup() {
         critpopup.classList.remove("crit-popup-show")
     }
+    //for edit ito celis naglagay try lang hahaha 
+    let overpopup1 = document.getElementById("edit-over-popup");
+    function openOverPopupEdit() {
+        overpopup1.classList.add("over-popup-show")
+    }
 
+    function closeOverPopupEdit() {
+        overpopup1.classList.remove("over-popup-show")
+    }
+
+    let critpopup1 = document.getElementById("edit-crit-popup");
+    function openCritPopupEdit() {
+        critpopup1.classList.add("crit-popup-show")
+    }
+
+    function closeCritPopupEdit() {
+        critpopup1.classList.remove("crit-popup-show")
+    }
+    //end 
     let popup = document.getElementById("popup");
     function openPopup() {
         popup.classList.add("open-popup-show")
@@ -853,10 +1086,32 @@
     let infopopup = document.getElementById("info-popup");
     let saveForm = document.getElementById("saveForm");
 
+    //function infoOpenPopup(formType) {
+    //    infopopup.classList.add("info-popup-show")
+    //    if (formType == "qtyForm") {
+    //        var code = localStorage.getItem("itemCode");
+    //        var val = document.getElementById("quantVal").value;
+    //        saveForm.setAttribute("onclick", `AddQuantity("${code}", "${val}")`);
+    //        return;
+    //    }
+    //    saveForm.setAttribute('form', formType);
+    //}
+
     function infoOpenPopup(formType) {
         infopopup.classList.add("info-popup-show")
+        if (formType == "reportForm") {
+            var code = localStorage.getItem("itemCode");
+            var val = document.getElementById("quantVal").value;
+            saveForm.setAttribute("onclick", `AddQuantity("${code}", "${val}")`);
+            return;
+        }
+        if (formType == "batchQuant") {
+            saveForm.setAttribute("onclick", `SendItemCodes()`);
+            return;
+        }
         saveForm.setAttribute('form', formType);
     }
+
     function infoClosePopup() {
         infopopup.classList.remove("info-popup-show")
     }
@@ -867,6 +1122,16 @@
     }
     function qtyClosePopupInv() {
         qtypopupinv.classList.remove("add-qty-popup-inv-show")
+    }
+
+    @* ADD REPORT *@
+
+    let reportpopupinv = document.getElementById("add-report-popup-inv");
+    function reportOpenPopupInv() {
+        reportpopupinv.classList.add("add-report-popup-inv-show")
+    }
+    function reportClosePopupInv() {
+        reportpopupinv.classList.remove("add-report-popup-inv-show")
     }
 
     let editpopupinv = document.getElementById("edit-item-popup-inv");
@@ -908,7 +1173,8 @@
     function canOpenPopup() {
         canpopup.classList.add("can-popup-show");
         $('#addForm').validate().resetForm();
-        $('#qtyForm').validate().resetForm();
+        $('#qtyForm').validate().resetForm
+        $('#reportForm').validate().resetForm();
         $('#editForm').validate().resetForm();
 
     }

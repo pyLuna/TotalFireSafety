@@ -519,13 +519,14 @@ namespace TotalFireSafety.Controllers
         //[System.Web.Mvc.Authorize(Roles = "admin,office")]
         public async Task<ActionResult> ProjectView(int? id, int? rep_no)
         {
-
             nwTFSEntity db = new nwTFSEntity();
             var empId = Session["emp_no"]?.ToString();
+
             if (empId == null)
             {
                 return RedirectToAction("Login", "Base");
             }
+
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
 
             // Retrieve the session user's emp_no and position
@@ -535,13 +536,16 @@ namespace TotalFireSafety.Controllers
 
             var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == id);
             var lead = db.Employees.FirstOrDefault(e => e.emp_no == project.proj_emp_no);
-            var report = db.NewReports.FirstOrDefault(r => r.rep_no == id);
+            var Engineer = db.Employees.FirstOrDefault(e => e.emp_no == project.proj_engineer_no);
+
+            // Check if rep_no is null, then use a default value or fallback behavior
+            var reports = rep_no != null
+                ? db.NewReports.FirstOrDefault(r => r.rep_no == rep_no)
+                : db.NewReports.FirstOrDefault(r => r.rep_proj_id == id);
+
             var newProposal = db.NewProposals.FirstOrDefault(p => p.prop_type_id == project.proj_type_id);
             var Request = db.Requests.FirstOrDefault(q => q.request_proj_id == project.proj_type_id);
             ViewBag.Requests = db.Requests.Where(q => q.request_proj_id == project.proj_type_id).ToList();
-
-            
-            
 
             var viewModel = new ProjectReportViewModel
             {
@@ -550,7 +554,6 @@ namespace TotalFireSafety.Controllers
                 Manpowers = db.NewManpowers.Where(r => r.man_proj_id == id).ToList(),
                 Attendances = db.Attendances.Where(r => r.atte_proj_id == id).ToList(),
                 ReportImage = db.ReportImages.Where(r => r.img_proj_id == id).ToList(),
-
 
                 // Initialize SelectedReport to the first report in the list
                 SelectedReport = db.NewReports.FirstOrDefault(r => r.rep_proj_id == id)
@@ -565,18 +568,20 @@ namespace TotalFireSafety.Controllers
             ViewBag.Startdate = project.proj_strDate?.ToString("MM/dd/yyyy");
             ViewBag.Enddate = project.proj_endDate?.ToString("MM/dd/yyyy");
             ViewBag.ProjectLead = $"{lead.emp_fname} {lead.emp_lname}";
+            ViewBag.ProjectEngineer = $"{Engineer.emp_fname} {Engineer.emp_lname}";
             ViewBag.ProjectLeads = project.proj_lead;
             ViewBag.SessionUserPosition = sessionUserPosition;
 
-            ViewBag.ReportDescription = report?.rep_description;
-            ViewBag.ReportStats = report?.rep_stats;
-            ViewBag.ReportDate = report?.rep_date.ToString("MM/dd/yyyy");
-            ViewBag.ReportScope = report?.rep_scope;
-            ViewBag.ReportNo = report?.rep_no;
+            ViewBag.ReportDescription = reports?.rep_description;
+            ViewBag.ReportStats = reports?.rep_stats;
+            ViewBag.ReportDate = reports?.rep_date.ToString("MM/dd/yyyy");
+            ViewBag.ReportScope = reports?.rep_scope;
+            ViewBag.ReportNo = reports?.rep_no;
 
             ViewBag.ProposalStats = newProposal?.prop_status;
             ViewBag.ProposalStatus = newProposal?.prop_status;
             ViewBag.ProposalDescription = newProposal?.prop_description;
+
             // Retrieve the Employee object using the prop_emp_no value
             Employee engineer = null;
             if (newProposal != null && newProposal.prop_emp_no != null)
@@ -599,14 +604,17 @@ namespace TotalFireSafety.Controllers
         [HttpPost]
         public ActionResult UpdateProjectStatus(int projTypeId, string status)
         {
-            nwTFSEntity db = new nwTFSEntity();
-            // Retrieve the project and update the status based on proj_type_id
-            var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == projTypeId);
-            if (project != null)
+            if (status != "Cancelled")
             {
-                project.proj_status = status;
-                db.SaveChanges();
-                return Json(new { success = true });
+                nwTFSEntity db = new nwTFSEntity();
+                // Retrieve the project and update the status based on proj_type_id
+                var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == projTypeId);
+                if (project != null)
+                {
+                    project.proj_status = status;
+                    db.SaveChanges();
+                    return Json(new { success = true });
+                }
             }
 
             return Json(new { success = false });
@@ -1337,6 +1345,7 @@ ViewBag.AttendanceList = attendanceList;
            proj_endDate = p.proj_endDate,
            proj_status = p.proj_status,
            proj_lead = p.proj_lead,
+           proj_lead_id = p.proj_emp_no,
            proj_engineer_no = p.proj_engineer_no,
             proj_engineer_id = p.proj_engineer_no
        }
@@ -1351,6 +1360,7 @@ ViewBag.AttendanceList = attendanceList;
                     proj_endDate = p.proj_endDate.HasValue ? p.proj_endDate.Value.ToString("yyyy-MM-dd") : "",
                     proj_status = p.proj_status,
                     project_leads = p.emp_fname_lead + ' ' + p.emp_lname_lead,
+                    proj_lead_id = p.proj_lead_id,
                     proj_engineer_no = p.emp_fname_engineer + ' ' + p.emp_lname_engineer,
                     proj_engineer_id = p.proj_engineer_no
                 });
@@ -1377,7 +1387,13 @@ ViewBag.AttendanceList = attendanceList;
 
             var employees = db.Employees
                 .Where(e => e.emp_position == "Project Lead")
-                .Select(e => new { e.emp_no, e.emp_fname, e.emp_lname })
+                .Select(e => new
+                {
+                    e.emp_no,
+                    e.emp_fname,
+                    e.emp_lname,
+                    projectCount = e.NewProjects.Count(p => p.proj_status == "On-Going") // Count of ongoing projects
+        })
                 .ToList();
 
             return Json(employees, JsonRequestBehavior.AllowGet);
@@ -1398,6 +1414,26 @@ ViewBag.AttendanceList = attendanceList;
                     e.emp_lname,
                     selected = (e.emp_no == sessionEmpNo) // Add the "selected" property
         })
+                .ToList();
+
+            return Json(employees, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetEngineers()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+
+            // Get the session emp_no value
+            int sessionEmpNo = (int)Session["emp_no"]; // Replace with the actual session emp_no value
+
+            var employees = db.Employees
+                .Where(e => e.emp_position == "Engineer")
+                .Select(e => new {
+                    e.emp_no,
+                    e.emp_fname,
+                    e.emp_lname,
+                    selected = (e.emp_no == sessionEmpNo) // Add the "selected" property
+                })
                 .ToList();
 
             return Json(employees, JsonRequestBehavior.AllowGet);

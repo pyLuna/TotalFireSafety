@@ -72,7 +72,7 @@
                                                         <tr>
                                                             <td>@report.rep_date</td>
                                                             <td>@report.rep_no</td>
-                                                            <td>@Html.Raw(report.rep_description.Length > 20 ? report.rep_description.Substring(0, 20) + "..." : report.rep_description)<i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no');"></i></td>
+                                                            <td>@Html.Raw(report.rep_description.Length > 20 ? report.rep_description.Substring(0, 20) + "..." : report.rep_description)<i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no', '@report.rep_proj_id');"></i></td>
                                                             <td>@report.rep_stats</td>
                                                             <td>
                                                                 <a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })" target="_blank">
@@ -122,7 +122,7 @@
                             </div>
 
                             <div class="date">
-                                <label>Engineer: @ViewBag.ProjectLead</label>
+                                <label>Engineer: @ViewBag.ProjectEngineer</label>
                             </div>
 
                             <div class="date">
@@ -162,25 +162,28 @@
                             <div class="mems-header">
 
                                 <h2>Item Requested</h2>
+                                @if (sessionUserPosition != "Engineer" && sessionUserPosition != "Admin" && sessionUserPosition != "Owner")
+                                {
+                                    <button class="create-req-btn" title="CREATE ORDER" onclick="createrequestOpenPopupPur() + SetLabels() + HideApprovedItems()">
+                                        <a id="projectPageLink" href="@Url.Action("Requisition", "Admin", new { projectId = ViewBag.ProjectID })">
+                                            create request
+                                            <span class="las la-file-alt"></span>
+                                        </a>
+                                 
 
-                                <button class="create-req-btn" title="CREATE ORDER" onclick="createrequestOpenPopupPur() + SetLabels() + HideApprovedItems()">
-                                    <a id="projectPageLink" href="@Url.Action("Requisition", "Admin", new { projectId = ViewBag.ProjectID })">
-                                        create request
-                                        <span class="las la-file-alt"></span>
-                                    </a>
-
-                                </button>
-                                <script>
-                                    document.getElementById("projectPageLink").addEventListener("click", function (event) {
-                                        event.preventDefault(); // prevent the default behavior of the link
-                                        window.open(this.href, "requestPage"); // open the request page in a new window or tab
-                                        setTimeout(function () {
-                                            var requestPage = window.open('', "requestPage"); // get a reference to the request page
-                                            requestPage.postMessage("autoClickLink", "*"); // send a message to the request page
-                                        }, 1000); // wait for 1 second before sending the message
-                                    });
-                                </script>
-                            </div>
+                                    </button>
+                                }
+                                    <script>
+                                        document.getElementById("projectPageLink").addEventListener("click", function (event) {
+                                            event.preventDefault(); // prevent the default behavior of the link
+                                            window.open(this.href, "requestPage"); // open the request page in a new window or tab
+                                            setTimeout(function () {
+                                                var requestPage = window.open('', "requestPage"); // get a reference to the request page
+                                                requestPage.postMessage("autoClickLink", "*"); // send a message to the request page
+                                            }, 1000); // wait for 1 second before sending the message
+                                        });
+                                    </script>
+                                </div>
 
                             <div class="mems-list">
                                 <div class="mems-grid">
@@ -840,6 +843,7 @@
                             <div class="upper-content">
                                 <div class="label-container">
                                     <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
+                                    
                                 </div>
 
                                 <div class="label-container">
@@ -875,16 +879,18 @@
                                         <div class="low">
                                             <div class="low-body">
                                                 <div class="table-responsive" style="overflow-x: auto;">
+                                                   
+
                                                     <table width="100%" id="Clockoutput">
                                                         <thead>
                                                             <tr>
                                                                 <td>MANPOWER</td>
-                                                                <td>POSITION</td>
                                                                 <td>Time-In</td>
                                                                 <td>Time-Out</td>
                                                             </tr>
                                                         </thead>
                                                         <tbody id="table-body">
+                                                           
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -899,13 +905,13 @@
                     <div class="mid">
                         <div class="mid-content">
                             <div class="upper">
-                                <label name="rep_no">REPORT ID </label>
+                                <label id="rep_no">REPORT ID </label>
                             </div>
                             <div class="mid main-mid">
                                 <div class="mid-container">
                                     <div class="input">
 
-                                        <input type="text" name="rep_description" id="rep_description1" readonly>
+                                        <input type="text" name="rep_description" id="rep_description1"  readonly>
 
                                     </div>
                                     <div class="attach">
@@ -926,10 +932,11 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="text" id="rep_date1" name="rep_date1" readonly>
+                                    <input type="text" id="rep_date1" name="rep_date1"  readonly>
                                 </div>
                                 <div class="date">
                                     <input type="text" name="rep_stats" id="rep_stats" readonly>
+                                    <input type="text" name="ProjectID" value="@ViewBag.ProjectID" hidden>
                                 </div>
                             </div>
                             <div class="mid">
@@ -1056,13 +1063,12 @@
                                             <tbody>
                                                 @foreach (var manpower in Model.Manpowers)
                                                 {
-                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id);
+                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id && a.NewManpower.man_proj_id == Model.Project.proj_type_id);
 
                                                     if (attendance?.atte_timein != null) // Check if attendance time in is not null
                                                     {
                                                         <tr>
                                                             <td contenteditable="true"><b>@manpower.man_name</b></td>
-                                                            <td contenteditable="true"><b>@manpower.man_postition</b></td>
                                                             <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
                                                             <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
                                                             <td><button class="out" onclick="updateAttendance('@attendance.atte_id')">CLOCK OUT</button></td>
@@ -1296,29 +1302,35 @@
         }
     </script>*@
 <script>
-  $(window).on('load', function() {
-    // Function to update the project status
-    function updateProjectStatus(projTypeId) {
-        // Check if the table has any rows
-        if ($('#reportTableContainer table tbody tr').length > 0) {
-            // Make an AJAX call to update the project status
-            $.ajax({
-                url: '@Url.Action("UpdateProjectStatus", "Admin")',
-                type: 'POST',
-                data: { projTypeId: projTypeId, status: 'On-going' }, // Pass the proj_type_id and status values
-                success: function(result) {
-                    console.log('Project status updated successfully');
-                },
-                error: function() {
-                    console.log('Error occurred while updating project status');
-                }
-            });
+$(window).on('load', function() {
+  // Function to update the project status
+  function updateProjectStatus(projTypeId) {
+    // Check if the table has any rows
+    if ($('#reportTableContainer table tbody tr').length > 0) {
+      // Make an AJAX call to update the project status
+      $.ajax({
+        url: '@Url.Action("UpdateProjectStatus", "Admin")',
+        type: 'POST',
+        data: { projTypeId: projTypeId, status: 'On-going' }, // Pass the proj_type_id and status values
+        success: function(result) {
+          console.log('Project status updated successfully');
+        },
+        error: function() {
+          console.log('Error occurred while updating project status');
         }
+      });
     }
+  }
 
-    // Get the proj_type_id from the ViewBag or any other source and pass it to the updateProjectStatus function
-    var projTypeId = @ViewBag.ProjectID;
+  // Get the proj_type_id from the ViewBag or any other source
+  var projTypeId = @ViewBag.ProjectID;
+  // Get the current status from the ViewBag or any other source
+  var status = '@ViewBag.Status';
+
+  // Check if the status is not "Cancelled" before updating the project status
+  if (status !== 'Cancelled') {
     updateProjectStatus(projTypeId);
+  }
 });
 </script>
 <script>
@@ -1936,16 +1948,38 @@ $.ajax({
 </script>
 
 <script>
+    // Get the repno parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const repno = urlParams.get('repno');
 
-    function openReportEditForm(selectedRepNo) {
+    // Update the label with the repno value
+    document.getElementById('rep_no_value').innerText = repno;
+</script>
+
+<script>
+
+    function openReportEditForm(selectedRepNo, repID) {
+        var currentUrl = window.location.href;
+        var url = currentUrl + "&repno=" + selectedRepNo;
+        history.pushState(null, null, url);
+
+        // Access the URL parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var repNoParam = urlParams.get("repno");
+        var idParam = urlParams.get("Id");
+
+        // Update the model based on the parameters
+      
 
         document.getElementById('report-edit-container').style.display = 'block';
+
+        var projectId = $('input[name="ProjectID"]').val();
 
         $.ajax({
             url: '/Admin/GetReportDatas',
             type: 'GET',
             dataType: 'json',
-            data: { rep_no: selectedRepNo },
+            data: { rep_no: repNoParam, id: idParam, proj_type_id: projectId }, // Add proj_type_id parameter
             success: function (data) {
                 // Populate input fields with report data
                 $("#rep_description1").val(data.rep_description);
@@ -1964,6 +1998,7 @@ $.ajax({
                     tableBody.append(row);
                 }
 
+
                 var dateParts = data.rep_date.split('-');
                 var repDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
                 var isoDate = new Date(Date.UTC(repDate.getFullYear(), repDate.getMonth(), repDate.getDate())).toISOString().split('T')[0];
@@ -1972,7 +2007,7 @@ $.ajax({
                     url: '/Admin/GetAttendanceData',
                     type: 'GET',
                     dataType: 'json',
-                    data: { date: isoDate },
+                    data: { date: isoDate, id: idParam, proj_type_id: projectId }, // Add proj_type_id parameter
                     success: function (attendanceData) {
                         var tableBody = $('#table-body');
                         tableBody.empty();
@@ -1989,7 +2024,7 @@ $.ajax({
                                 if (isoTimeIn.split('T')[0] === isoDate) {
                                     var tr = $('<tr>').appendTo(tableBody);
                                     $('<td>').text(item.Manpower).appendTo(tr);
-                                    $('<td>').text(item.Position).appendTo(tr);
+
 
                                     // Format time in 12-hour format
                                     var formattedTimeIn = new Date(isoTimeIn).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
@@ -2017,16 +2052,31 @@ $.ajax({
 
 
 
-                $.get('/Admin/GetReportImages', { rep_date: isoDate, proj_type_id: projectId, rep_no: selectedRepNo })
+                $.get('/Admin/GetReportImages', { rep_date: isoDate, rep_no: selectedRepNo, id: idParam, proj_type_id: projectId })
                     .done(function (images) {
                         var container = $('#image-container');
                         container.empty(); // Clear the container first
                         $.each(images, function (index, path) {
                             var img = $('<img>').attr('src', '/ReportImg/' + path).addClass('report-img');
                             var link = $('<a>').attr('href', '/ReportImg/' + path).addClass('fancybox').append(img);
+
+                            // Create a div to hold the img_date and append it to the link
+                            var dateDiv = $('<div>').addClass('img-date').text('img_date'); // Replace 'img_date' with the actual value
+                            link.append(dateDiv);
+
                             container.append(link);
                         });
                         $('.fancybox').fancybox();
+
+                        // Add hover effect to the img_date
+                        $('.report-img').hover(
+                            function () {
+                                $(this).siblings('.img-date').fadeIn();
+                            },
+                            function () {
+                                $(this).siblings('.img-date').fadeOut();
+                            }
+                        );
                     });
             },
             error: function (xhr, status, error) {
@@ -2037,6 +2087,17 @@ $.ajax({
 
 
     function closeReportEditForm() {
+        
+
+        var currentUrl = new URL(window.location.href);
+        var searchParams = new URLSearchParams(currentUrl.search);
+
+        // Remove the 'repno' parameter from the URL
+        searchParams.delete('repno');
+
+        // Update the URL without the 'repno' parameter
+        history.pushState(null, null, currentUrl.origin + currentUrl.pathname + '?' + searchParams.toString());
+
         document.getElementById("report-edit-container").style.display = "none";
     }
 
@@ -2103,9 +2164,9 @@ $.ajax({
 
 
 
-    function closeReportEditForm() {
+   @* function closeReportEditForm() {
         document.getElementById("report-edit-container").style.display = "none";
-    }
+    }*@
 
     function openAddNewContainer() {
         document.getElementById("add-new-container").style.display = "block";

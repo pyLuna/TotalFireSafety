@@ -462,8 +462,8 @@
                             <br>
                             <select name="proj_status" required>
                                 <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
-                                <option>On-Going</option>
-                                <option>In-Line</option>
+                                <option>On-going</option>
+                                <option>Upcomming</option>
                                 <option>Cancelled</option>
                             </select>
                         </div>
@@ -677,7 +677,7 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="date" id="rep_date">
+                                    <input type="date" id="rep_date" readonly>
                                 </div>
                                 <div class="status">
                                     <select id="rep_status" required>
@@ -1301,6 +1301,17 @@
             });
         }
     </script>*@
+
+<script>
+    // Get the current date
+    var currentDate = new Date();
+
+    // Format the date as YYYY-MM-DD
+    var formattedDate = currentDate.toISOString().split('T')[0];
+
+    // Set the value of the input field
+    document.getElementById('rep_date').value = formattedDate;
+</script>
 <script>
 $(window).on('load', function() {
   // Function to update the project status
@@ -2061,22 +2072,13 @@ $.ajax({
                             var link = $('<a>').attr('href', '/ReportImg/' + path).addClass('fancybox').append(img);
 
                             // Create a div to hold the img_date and append it to the link
-                            var dateDiv = $('<div>').addClass('img-date').text('img_date'); // Replace 'img_date' with the actual value
-                            link.append(dateDiv);
+                          
 
                             container.append(link);
                         });
                         $('.fancybox').fancybox();
 
-                        // Add hover effect to the img_date
-                        $('.report-img').hover(
-                            function () {
-                                $(this).siblings('.img-date').fadeIn();
-                            },
-                            function () {
-                                $(this).siblings('.img-date').fadeOut();
-                            }
-                        );
+                       
                     });
             },
             error: function (xhr, status, error) {

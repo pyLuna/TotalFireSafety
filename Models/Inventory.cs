@@ -37,11 +37,11 @@ namespace TotalFireSafety.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Basecount> Basecounts { get; set; }
+        public virtual Inv_Limits Inv_Limits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inv_Update> Inv_Update { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
-        public virtual Inv_Limits Inv_Limits { get; set; }
         public string formType { get; set; }
         public string FormattedDate
         {

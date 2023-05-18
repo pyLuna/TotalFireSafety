@@ -7757,6 +7757,455 @@ acc-form-table .view-request-form-table-style table thead td {
 /********************* 11 - PROJECT STYLES **************************/
 
 
+
+/* START OF REPORT SUMMARY */
+
+
+.report-main-content {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+    .report-main-content .report-back-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+
+        .report-main-content .report-back-container .right label a {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .ongoing {
+            color: green;
+        }
+
+        .outgoing {
+            color: darkred;
+        }
+
+        .report-main-content .report-back-container .right label span {
+            font-size: 1.3rem;
+            border: 1px solid #16215B;
+            background-color: #fff;
+            color: blue;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+            .report-main-content .report-back-container .right label span:hover {
+                cursor: pointer;
+                color: blue;
+            }
+
+        .report-main-content .report-back-container a {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #000;
+        }
+
+            .report-main-content .report-back-container a:hover {
+                cursor: pointer;
+                color: blue;
+                text-decoration: underline;
+            }
+
+            .report-main-content .report-back-container a span {
+                font-size: 1.2rem;
+            }
+
+    /* DATE PICKER */
+
+    .report-main-content .report-sum-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .report-main-content .report-sum-header .datepick-container {
+            height: 40px;
+            width: 350px;
+            background-color: #fff;
+            box-shadow: 4px 4px 3px #B2B2B2;
+            border: 1px solid #B2B2B2;
+            border-radius: 5px;
+            display: flex;
+            position: none;
+        }
+
+    .report-main-content .datepick-container span {
+        margin-top: 8px;
+        margin-left: 10px;
+        font-size: 1.5rem;
+    }
+
+    .report-main-content .datepick-container .date-grp {
+        margin-left: 10px;
+        margin-top: 8px;
+    }
+
+        .report-main-content .datepick-container .date-grp input {
+            border: none;
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+
+        .report-main-content .datepick-container .date-grp label {
+            font-weight: 800;
+        }
+
+        .report-main-content .datepick-container .date-grp input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+    /* END */
+
+    .report-main-content .report-main-container {
+        height: auto; /* Adjust the height as needed */
+        overflow-y: hidden; /* Remove the overflow property */
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: 100%;
+    }
+
+        .report-main-content .report-main-container .report-task-list {
+            background-color: #fff;
+            border: 2px solid #AEAEAE;
+            box-shadow: 5px 5px 3px #B2B2B2;
+            width: auto;
+            height: auto;
+            margin: 20px;
+            border-radius: 5px;
+        }
+
+            .report-main-content .report-main-container .report-task-list .task-header {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+            }
+
+                .report-main-content .report-main-container .report-task-list .task-header h2 {
+                    margin-left: -1px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: black;
+                }
+
+
+                .report-main-content .report-main-container .report-task-list .task-header .right-container a {
+                    cursor: pointer;
+                    color: #000;
+                    font-weight: 600;
+                    font-size: .8rem;
+                }
+
+                    .report-main-content .report-main-container .report-task-list .task-header .right-container a:hover {
+                        color: blue;
+                        text-decoration: underline;
+                    }
+
+                    .report-main-content .report-main-container .report-task-list .task-header .right-container a span {
+                        font-size: 1.1rem;
+                    }
+
+    .report-main-content .task {
+        margin-top: 10px;
+        max-height: 400px;
+        width: auto;
+        margin: 10px;
+        overflow: auto;
+    }
+
+    .report-main-content .task-projects {
+        margin: 0;
+        display: grid;
+        grid-gap: 2rem;
+        grid-template-columns: 100% auto;
+        border-spacing: 1px;
+    }
+
+    .report-main-content .task-header {
+        margin-left: 40px;
+        margin-top: 50px;
+        margin-right: 40px;
+    }
+
+        .report-main-content .task-header h3 {
+            font-size: 1.2rem;
+            color: #000;
+            margin-bottom: -20px;
+        }
+
+    .report-main-content .task-body table thead {
+        background-color: #DDDDDD;
+    }
+
+        .report-main-content .task-body table thead td {
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+    .report-main-content .task-body table td {
+        font-weight: 400;
+        font-size: .8rem;
+    }
+
+        .report-main-content .task-body table td label {
+            color: #000;
+            font-size: .8rem;
+            font-weight: 400;
+        }
+
+    .report-main-content .task-body table tbody tr td i:hover {
+        cursor: pointer;
+        color: blue;
+        font-size: 1.1rem;
+    }
+
+    .report-main-content .task-body table tbody tr td a:hover {
+        cursor: pointer;
+        color: blue;
+        text-decoration: underline;
+    }
+
+    .report-main-content .task-body table tbody tr:hover {
+        background-color: #707070;
+        color: #fff;
+    }
+
+    .report-main-content .task-body table td .on-going {
+        color: #09AF10;
+    }
+
+    .report-main-content .task-body table td .in-line {
+        color: #FF932F;
+    }
+
+    .report-main-content .task-body table td .delayed {
+        color: #FF0000;
+    }
+
+    .report-main-content .report-right-container .report-incharge-container .incharge {
+        height: 180px;
+        font-size: .9rem;
+        margin-left: 20px;
+    }
+
+
+    .report-main-content .incharge-report .incharge-header-report label {
+        color: blue;
+        font-size: .8;
+    }
+
+    .report-main-content .incharge-report .date {
+        margin-top: 20px;
+    }
+
+        .report-main-content .incharge-report .date label input {
+            border: 1px solid #B2B2B2;
+            border-radius: 5px;
+            width: 150px;
+            height: 30px;
+            font-size: .9rem;
+        }
+
+        .report-main-content .incharge-report .date label .start {
+            margin-left: 5px;
+        }
+
+        .report-main-content .incharge-report .date .title {
+            font-weight: 600;
+        }
+
+    .report-main-content .incharge-report .status {
+        margin-top: 5px;
+        margin-bottom: -10px;
+    }
+
+        .report-main-content .incharge-report .status .title {
+            font-weight: 600;
+        }
+
+        .report-main-content .incharge-report .status select {
+            border: 1px solid #B2B2B2;
+            border-radius: 5px;
+            font-size: .9rem;
+            width: 150px;
+            height: 30px;
+            font-weight: 600;
+            margin-left: 30px;
+        }
+
+            .report-main-content .incharge-report .status select .on-going {
+                color: #09AF10;
+            }
+
+            .report-main-content .incharge-report .status select .upcoming {
+                color: #FF932F;
+            }
+
+            .report-main-content .incharge-report .status select .cancelled {
+                color: #FF0000;
+            }
+
+    .report-main-content .report-main-content .proj-main-container .report-right-container {
+        width: auto;
+        height: auto;
+        margin: 20px;
+        border-radius: 5px;
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+        .report-main-content .report-main-content .proj-main-container .report-right-container .report-incharge-container {
+            background-color: #fff;
+            border: 2px solid #AEAEAE;
+            box-shadow: 5px 5px 3px #B2B2B2;
+            width: auto;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+    .report-main-content .report-main-content .report-main-container .report-right-container .proj-des-container {
+        background-color: #fff;
+        border: 2px solid #AEAEAE;
+        box-shadow: 5px 5px 3px #B2B2B2;
+        width: auto;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .report-main-content .report-main-container .report-right-container .proj-mems-container {
+        background-color: #fff;
+        border: 2px solid #AEAEAE;
+        box-shadow: 5px 5px 3px #B2B2B2;
+        width: auto;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .report-main-content .container {
+        display: flex;
+    }
+
+    .report-main-content .proj-progress-main {
+        flex: 0 0 auto;
+        margin-left: -900px; /* Adjust the spacing between the sections as needed */
+        margin-top: 10px;
+    }
+
+    .report-main-content .table-container {
+        flex: 1 1 auto;
+    }
+
+/* PROGRESS BAR FOR REPORT */
+
+.report-summary-bar {
+    margin-top: 20px;
+    margin-left: -120px;
+}
+
+    .report-summary-bar .progress-bar {
+        width: 880px;
+        height: 15px;
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        margin: 20px 0;
+        padding: 0;
+    }
+
+    .report-summary-bar .progress-complete {
+        width: 100%;
+        height: 100%;
+        background-color: #4caf50;
+        border-radius: 10px;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .report-summary-bar .progress-upcoming {
+        width: 0;
+        height: 100%;
+        background-color: #FF6700;
+        border-radius: 10px;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .report-summary-bar .progress-half {
+        width: 50%;
+        height: 100%;
+        background-color: #FFA500;
+        border-radius: 10px;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .report-summary-bar .progress-halfhalf {
+        width: 75%;
+        height: 100%;
+        background-color: #4caf50;
+        border-radius: 10px;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .report-summary-bar .progress-nothalf {
+        width: 25%;
+        height: 100%;
+        background-color: #FF5252;
+        border-radius: 10px;
+        transition: width 0.3s ease-in-out;
+    }
+
+
+/* END OF PROGRESS BAR FOR REPORT */
+
+.align-container {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.Black_Line {
+    text-align: center;
+}
+
+    .Black_Line hr {
+        border: none;
+        border-top: 1px solid black;
+        margin: 10px 0;
+    }
+
+.align-item {
+    margin-right: 10px; /* Adjust the spacing between the items */
+    padding-right: 100px;
+}
+
+.align-images {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.align-image {
+    margin-right: 10px; /* Adjust the spacing between the items */
+}
+
+    .align-image:last-child {
+        margin-right: 0; /* Remove the margin for the last item */
+    }
+
+.small-image {
+    width: 100px; /* Adjust the width as needed */
+    height: 70px; /* Maintain the aspect ratio */
+}
+
+
+
+/* END OF REPORT SUMMARY */
+
 .proj {
     background-color: #fff;
     border-radius: 2px;

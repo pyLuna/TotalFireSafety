@@ -516,6 +516,57 @@ namespace TotalFireSafety.Controllers
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
             return View();
         }
+
+        public async Task<ActionResult> ProjectsReport(int? id, int? rep_no)
+        {
+
+            nwTFSEntity db = new nwTFSEntity();
+            var empId = Session["emp_no"]?.ToString();
+            if (empId == null)
+            {
+                return RedirectToAction("Login", "Base");
+            }
+            ViewBag.ProfilePath = GetPath(int.Parse(empId));
+
+            var report = db.NewReports.FirstOrDefault(r => r.rep_proj_id == id);
+
+
+
+            ViewBag.ReportDescription = report?.rep_description;
+            ViewBag.ReportStats = report?.rep_stats;
+            ViewBag.ReportDate = report?.rep_date.ToString("MM/dd/yyyy");
+            ViewBag.ReportScope = report?.rep_scope;
+            ViewBag.ReportNo = report?.rep_no;
+
+
+            ViewBag.ProjectName = report?.NewProject.proj_name;
+            ViewBag.ProjectSubject = report?.NewProject.proj_subject;
+            ViewBag.ProjectClient = report?.NewProject.proj_client;
+            ViewBag.ProjectLead = report?.NewProject.proj_lead;
+            ViewBag.ProjectLocation = report?.NewProject.proj_location;
+            ViewBag.StartDate = report?.NewProject.proj_strDate;
+            ViewBag.EndDate = report?.NewProject.proj_endDate;
+            ViewBag.Status = report?.NewProject.proj_status;
+            ViewBag.Engineer = report?.NewProject.proj_engineer_no;
+
+            var reportImages = db.ReportImages
+      .Where(r => !string.IsNullOrEmpty(r.img_image) && r.img_date == report.rep_date)
+      .Select(r => r.img_image)
+      .ToList();
+            ViewBag.ImagePaths = reportImages;
+            // Get multiple reports
+            var reports = db.NewReports.ToList(); // Example: Fetch all reports from the database
+
+            ViewBag.Reports = reports; // Pass the reports to ViewBag
+            ViewBag.ReportId = id;
+
+
+
+
+            return View();
+        }
+
+
         //[System.Web.Mvc.Authorize(Roles = "admin,office")]
         public async Task<ActionResult> ProjectView(int? id, int? rep_no)
         {
@@ -1392,7 +1443,7 @@ ViewBag.AttendanceList = attendanceList;
                     e.emp_no,
                     e.emp_fname,
                     e.emp_lname,
-                    projectCount = e.NewProjects.Count(p => p.proj_status == "On-Going") // Count of ongoing projects
+                    projectCount = e.NewProjects.Count(p => p.proj_status == "On-going") // Count of ongoing projects
         })
                 .ToList();
 

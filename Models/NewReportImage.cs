@@ -12,15 +12,14 @@ namespace TotalFireSafety.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ReportImage
+    public partial class NewReportImage
     {
         public System.Guid img_id { get; set; }
         public Nullable<int> img_proj_id { get; set; }
         public string img_image { get; set; }
         public Nullable<System.DateTime> img_date { get; set; }
-        public Nullable<int> img_rep_no { get; set; }
+        public int img_rep_no1 { get; set; }
     
         public virtual NewProject NewProject { get; set; }
-        public virtual NewReport NewReport { get; set; }
     }
 }

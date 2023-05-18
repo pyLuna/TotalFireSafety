@@ -212,6 +212,7 @@
                                         <td>Baseline Finish</td>
                                         <td>Status</td>
                                         <td>Tracker</td>
+                                        <td></td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -424,7 +425,7 @@
 
     </main>
     @*<script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>*@
-    <script>
+<script>
         /*savePro()*/
        /* function submitFormVali() {
             var bool = CreateProjectValidation();
@@ -452,6 +453,12 @@ $(document).ready(function () {
       // Create row and append data
       var row = $('<tr>');
       var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+      var linkIcon = $('<i>').addClass('fas fa-link');
+      var linkElement = $('<a>').addClass('icon-link').append(linkIcon) .attr('href', '@Url.Action("ProjectsReport", "Admin")?Id=' + project.proj_type_id );
+        linkElement.on('click', function (e) {
+            e.stopPropagation(); // Stop event propagation to prevent triggering the parent link's click event
+            window.location.href = $(this).attr('href');
+        });
       var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
       link.text(projectName);
       row.append($('<td>').append(link));
@@ -461,170 +468,191 @@ $(document).ready(function () {
       row.append($('<td>').text(project.proj_endDate));
       row.append($('<td>').addClass('status-column').text(project.proj_status));
       row.append($('<td>').addClass('progress-column'));
+      row.append($('<td>').addClass('icon-column').append(linkElement))
 
+      // Calculate the percentage completion of the project
+      var startDate = new Date(project.proj_strDate);
+      var endDate = new Date(project.proj_endDate);
+      var now = new Date();
+      var percentage = 0; // Default to 0%
 
-            // Calculate the percentage completion of the project
-            var startDate = new Date(project.proj_strDate);
-            var endDate = new Date(project.proj_endDate);
-            var now = new Date();
-            var percentage = 0; // Default to 0%
+      // Set the progress bar fill to 100% if the project status is "Cancelled"
+      if (project.proj_status === 'Cancelled') {
+        percentage = 100;
+      }
+      // Set the progress bar fill to 0% if the project status is "Upcoming"
+      else if (project.proj_status === 'Upcoming') {
+        percentage = 0;
+      }
+      // Check if the current date matches the start date
+      else if (now.getTime() === startDate.getTime()) {
+        percentage = 100;
+      }
+      else if (now > startDate && now < endDate) {
+        percentage = ((now - startDate) / (endDate - startDate)) * 100;
+      }
 
-            // Set the progress bar fill to 100% if the project status is "Cancelled"
-            if (project.proj_status === 'Cancelled') {
-                percentage = 100;
-            }
-            // Check if the current date matches the start date
-            else if (now.getTime() === startDate.getTime()) {
-                percentage = 100;
-            }
-            else if (now > startDate && now < endDate) {
-                percentage = ((now - startDate) / (endDate - startDate)) * 100;
-            }
+      var progressBar = $('<div>').addClass('progress-bar');
+      var progressBarFill = $('<div>').addClass('progress-halfhalf');
+      var progressBarText = $('<span>').addClass('progress-text').text(Math.round(percentage) + '%');
+      progressBarFill.attr('role', 'progressbar');
+      progressBarFill.attr('aria-valuenow', percentage);
+      progressBarFill.attr('aria-valuemin', 0);
+      progressBarFill.attr('aria-valuemax', 100);
+      progressBarFill.css('width', percentage + '%');
+      progressBar.append(progressBarFill);
+      progressBar.append(progressBarText);
 
-            var progressBar = $('<div>').addClass('progress-bar');
-            var progressBarFill = $('<div>').addClass('progress-halfhalf');
-            var progressBarText = $('<span>').addClass('progress-text').text(Math.round(percentage) + '%');
-            progressBarFill.attr('role', 'progressbar');
-            progressBarFill.attr('aria-valuenow', percentage);
-            progressBarFill.attr('aria-valuemin', 0);
-            progressBarFill.attr('aria-valuemax', 100);
-            progressBarFill.css('width', percentage + '%');
-            progressBar.append(progressBarFill);
-            progressBar.append(progressBarText);
+      // Set the background color of the progress bar fill based on the project status
+      if (project.proj_status === 'Upcoming') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF6700');
+      } else if (project.proj_status === 'On-Going') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#09AF10');
+      } else if (project.proj_status === 'Cancelled') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF0000');
+      } else {
+        row.find('.progress-column').addClass('stat-appr');
+      }
 
-            // Set the background color of the progress bar fill based on the project status
-            if (project.proj_status === 'Upcoming') {
-                row.find('.progress-column').addClass('stat-appr');
-                progressBarFill.css('background-color', '#FF6700');
-            } else if (project.proj_status === 'On-Going') {
-                row.find('.progress-column').addClass('stat-appr');
-                progressBarFill.css('background-color', '#09AF10');
-            } else if (project.proj_status === 'Cancelled') {
-                row.find('.progress-column').addClass('stat-appr');
-                progressBarFill.css('background-color', '#FF0000');
-            } else {
-                row.find('.progress-column').addClass('stat-appr');
-            }
+      row.find('.progress-column').append(progressBar);
 
-            row.find('.progress-column').append(progressBar);
+      tableBody.append(row);
+    }
+  });
 
-            tableBody.append(row);
-        }
+  if (tableBody.children().length === 0) {
+    projects.forEach(function (project) {
+
+    var row = $('<tr>');
+var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+var linkIcon = $('<i>').addClass('fas fa-link');
+var linkElement = $('<a>').addClass('icon-link').append(linkIcon) .attr('href', '@Url.Action("ProjectsReport", "Admin")?Id=' + project.proj_type_id );
+linkElement.on('click', function (e) {
+e.stopPropagation(); // Stop event propagation to prevent triggering the parent link's click event
+window.location.href = $(this).attr('href');
+});
+var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
+link.text(projectName);
+row.append($('<td>').append(link));
+row.append($('<td>').text(project.proj_engineer_no).addClass('hidden').attr('data-proj-engineer-id', project.proj_engineer_id));
+row.append($('<td>').text(project.proj_lead).addClass('hidden').attr('data-proj-lead-id', project.proj_lead_id));
+row.append($('<td>').text(project.proj_strDate));
+row.append($('<td>').text(project.proj_endDate));
+row.append($('<td>').addClass('status-column').text(project.proj_status));
+row.append($('<td>').addClass('progress-column'));
+row.append($('<td>').addClass('icon-column').append(linkElement))
+
+      // Calculate the percentage completion of the project
+      var startDate = new Date(project.proj_strDate);
+      var endDate = new Date(project.proj_endDate);
+      var now = new Date();
+      var percentage = 0; // Default to 0%
+
+      // Set the progress bar fill to 100% if the project status is "Cancelled"
+      if (project.proj_status === 'Cancelled') {
+        percentage = 100;
+      }
+      // Set the progress bar fill to 0% if the project status is "Upcoming"
+      else if (project.proj_status === 'Upcoming') {
+        percentage = 0;
+      }
+      // Check if the current date matches the start date
+      else if (now.getTime() === startDate.getTime()) {
+        percentage = 100;
+      }
+      else if (now > startDate && now < endDate) {
+        percentage = ((now - startDate) / (endDate - startDate)) * 100;
+      }
+
+      var progressBar = $('<div>').addClass('progress-bar');
+      var progressBarFill = $('<div>').addClass('progress-halfhalf');
+      var progressBarText = $('<span>').addClass('progress-text').text(Math.round(percentage) + '%');
+      progressBarFill.attr('role', 'progressbar');
+      progressBarFill.attr('aria-valuenow', percentage);
+      progressBarFill.attr('aria-valuemin', 0);
+      progressBarFill.attr('aria-valuemax', 100);
+      progressBarFill.css('width', percentage + '%');
+      progressBar.append(progressBarFill);
+      progressBar.append(progressBarText);
+
+      // Set the background color of the progress bar fill based on the project status
+      if (project.proj_status === 'Upcoming') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF6700');
+      } else if (project.proj_status === 'On-Going') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#09AF10');
+      } else if (project.proj_status === 'Cancelled') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF0000');
+      } else {
+        row.find('.progress-column').addClass('stat-appr');
+      }
+
+      row.find('.progress-column').append(progressBar);
+
+      tableBody.append(row);
+
     });
-
-    if (tableBody.children().length === 0) {
-        projects.forEach(function (project) {
-
-            var row = $('<tr>');
-            var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
-            var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
-            link.text(projectName);
-            row.append($('<td>').append(link));
-            row.append($('<td>').text(project.proj_engineer_no).addClass('hidden').attr('data-proj-engineer-id', project.proj_engineer_id));
-            row.append($('<td>').text(project.proj_lead).addClass('hidden').attr('data-proj-lead-id', project.proj_lead_id));
-            row.append($('<td>').text(project.proj_strDate));
-            row.append($('<td>').text(project.proj_endDate));
-            row.append($('<td>').addClass('status-column').text(project.proj_status));
-            row.append($('<td>').addClass('progress-column'));
-            // Calculate the percentage completion of the project
-            var startDate = new Date(project.proj_strDate);
-            var endDate = new Date(project.proj_endDate);
-            var now = new Date();
-            var percentage = 0; // Default to 0%
-
-            // Set the progress bar fill to 100% if the project status is "Cancelled"
-            if (project.proj_status === 'Cancelled') {
-                percentage = 100;
-            }
-            // Check if the current date matches the start date
-            else if (now.getTime() === startDate.getTime()) {
-                percentage = 100;
-            }
-            else if (now > startDate && now < endDate) {
-                percentage = ((now - startDate) / (endDate - startDate)) * 100;
-            }
-
-            var progressBar = $('<div>').addClass('progress-bar');
-            var progressBarFill = $('<div>').addClass('progress-halfhalf');
-            var progressBarText = $('<span>').addClass('progress-text').text(Math.round(percentage) + '%');
-            progressBarFill.attr('role', 'progressbar');
-            progressBarFill.attr('aria-valuenow', percentage);
-            progressBarFill.attr('aria-valuemin', 0);
-            progressBarFill.attr('aria-valuemax', 100);
-            progressBarFill.css('width', percentage + '%');
-            progressBar.append(progressBarFill);
-            progressBar.append(progressBarText);
-
-            // Set the background color of the progress bar fill based on the project status
-            if (project.proj_status === 'Upcoming') {
-                row.find('.progress-column').addClass('stat-appr');
-                progressBarFill.css('background-color', '#FF6700');
-            } else if (project.proj_status === 'On-Going') {
-                row.find('.progress-column').addClass('stat-appr');
-                progressBarFill.css('background-color', '#09AF10');
-            } else if (project.proj_status === 'Cancelled') {
-                row.find('.progress-column').addClass('stat-appr');
-                progressBarFill.css('background-color', '#FF0000');
-            } else {
-                row.find('.progress-column').addClass('stat-appr');
-            }
-
-            row.find('.progress-column').append(progressBar);
-
-            tableBody.append(row);
-
-      });
   }
 
+  // Add search filtering functionality
+  $('.search-wrapper input').on('keyup', function () {
+    filterTable();
+  });
 
-    // Add search filtering functionality
-    $('.search-wrapper input').on('keyup', function () {
-        filterTable();
+  $('#select-leads').on('change', function () {
+    filterTable();
+  });
+
+  // Only attach change event to #select-engineers if it is visible
+  if ($('#select-engineers').is(':visible')) {
+    $('#select-engineers').on('change', function () {
+      filterTable();
     });
+  }
 
-    $('#select-leads').on('change', function () {
-        filterTable();
+  // Filter table by project status
+  $('#status').on('change', function () {
+    filterTable();
+  });
+
+  function filterTable() {
+    var searchText = $('.search-wrapper input').val().toLowerCase();
+    var selectedLead = $('#select-leads').find('option:selected').text().toLowerCase();
+    var selectedEngineer = $('#select-engineers').find('option:selected').text().toLowerCase();
+    var selectedStatus = $('#status').find('option:selected').text().toLowerCase();
+
+    tableBody.find('tr').each(function () {
+      var name = $(this).find('td:first-child a').text().toLowerCase();
+      var lead = $(this).find('td:nth-child(3)').text().toLowerCase();
+      var engineer = $(this).find('td:nth-child(2)').text().toLowerCase();
+      var status = $(this).find('.status-column').text().toLowerCase();
+
+      var nameMatch = name.indexOf(searchText) !== -1;
+      var leadMatch = selectedLead === 'all' || selectedLead === 'project lead' || lead === selectedLead;
+      var engineerMatch = selectedEngineer === 'all' || selectedEngineer === 'engineer' || engineer === selectedEngineer;
+      var statusMatch = selectedStatus === 'all' || selectedStatus === 'project status' || status.startsWith(selectedStatus.toLowerCase());
+
+      if ((searchText === '' || nameMatch) && (selectedLead === 'all' || selectedLead === 'project lead' || leadMatch) && ((!$('#select-engineers').is(':visible')) || (selectedEngineer === 'all' || engineerMatch)) && (selectedStatus === 'all' || selectedStatus === 'project status' || statusMatch)) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
     });
+  }
 
-    // Only attach change event to #select-engineers if it is visible
-    if ($('#select-engineers').is(':visible')) {
-        $('#select-engineers').on('change', function () {
-            filterTable();
-        });
-    }
-
-    // Filter table by project status
-    $('#status').on('change', function () {
-        filterTable();
-    });
-
-    function filterTable() {
-        var searchText = $('.search-wrapper input').val().toLowerCase();
-        var selectedLead = $('#select-leads').find('option:selected').text().toLowerCase();
-        var selectedEngineer = $('#select-engineers').find('option:selected').text().toLowerCase();
-        var selectedStatus = $('#status').find('option:selected').text().toLowerCase();
-
-        tableBody.find('tr').each(function () {
-            var name = $(this).find('td:first-child a').text().toLowerCase();
-            var lead = $(this).find('td:nth-child(3)').text().toLowerCase();
-            var engineer = $(this).find('td:nth-child(2)').text().toLowerCase();
-            var status = $(this).find('.status-column').text().toLowerCase();
-
-            var nameMatch = name.indexOf(searchText) !== -1;
-            var leadMatch = selectedLead === 'all' || selectedLead === 'project lead' || lead === selectedLead;
-            var engineerMatch = selectedEngineer === 'all' || selectedEngineer === 'engineer' || engineer === selectedEngineer;
-            var statusMatch = selectedStatus === 'all' || selectedStatus === 'project status' || status.startsWith(selectedStatus.toLowerCase());
-
-            if ((searchText === '' || nameMatch) && (selectedLead === 'all' || selectedLead === 'project lead' || leadMatch) && ((!$('#select-engineers').is(':visible')) || (selectedEngineer === 'all' || engineerMatch)) && (selectedStatus === 'all' || selectedStatus === 'project status' || statusMatch)) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-    }
+  // Handle click event on icon links
+  $('.icon-link').on('click', function (e) {
+    e.preventDefault();
+    // Perform desired action
+  });
 
 });
-    </script>
+</script>
 
     <script>
         $.ajax({
@@ -863,6 +891,9 @@ $(document).ready(function () {
 
     <script>
         // Get the select element
+        const projectList = []; // Define projectList as an empty array
+
+        // Get the select element
         const selectLead = document.querySelector("#select-lead");
 
         // Add event listener to select element
@@ -875,18 +906,19 @@ $(document).ready(function () {
         });
 
         // Fetch the employees from the server
-        // Fetch the employees from the server
         fetch(`/Admin/GetEmployees`)
             .then(response => response.json())
             .then(employees => {
-                // Iterate over the employees and add an option for each one
                 employees.forEach(employee => {
                     const option = document.createElement("option");
                     option.value = employee.emp_no;
                     option.text = `${employee.emp_fname} ${employee.emp_lname}`;
 
-                    // Check if the employee has three ongoing projects
-                    if (employee.projectCount >= 3 && employee.proj_status === 'On-Going') {
+                    console.log('projectCount:', employee.projectCount);
+                    console.log('proj_status:', employee.proj_status);
+
+                    // Check if the employee has three or more ongoing projects
+                    if (employee.projectCount >= 3 && employee.proj_status === 'On-going') {
                         option.disabled = true;
                     }
 

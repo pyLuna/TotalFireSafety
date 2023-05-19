@@ -1843,14 +1843,14 @@ ViewBag.AttendanceList = attendanceList;
         {
                 using (var _context = new nwTFSEntity())
                 {
-                var item = _context.Inventories.Where(x => x.in_code == code).SingleOrDefault();
+                //var item = _context.Inventories.Where(x => x.in_code == code).SingleOrDefault();
                         var newGuid = Guid.NewGuid();
 
                         Inv_Update update = new Inv_Update()
                         {
                             update_id = newGuid,
                             update_date = DateTime.Now,
-                            update_item_id = item.in_code,
+                            update_item_id = code,
                             update_quantity = quant.ToString() + " " + unit,
                             update_type = "quantity"
                         };

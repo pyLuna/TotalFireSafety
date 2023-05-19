@@ -8,16 +8,18 @@ let form = document.getElementById("formId");
 let credsid = document.getElementById("credsid");
 let hidRole = document.getElementById('emp_role');
 
-selroles.addEventListener("change", function () {
-
+function SetHiddenRoles() {
     if (selroles.selectedIndex != 0) {
         hidRole.value = selroles.selectedIndex;
     }
     else {
         hidRole.value = 0;
     }
+}
+selroles.addEventListener("change", function () {
+    SetHiddenRoles();
 });
-selstats.addEventListener("change", function () {
+function SetHiddenStatus() {
     let hidAct = document.getElementById('emp_act');
     let hidLock = document.getElementById('emp_lock');
 
@@ -33,7 +35,9 @@ selstats.addEventListener("change", function () {
         hidAct.value = 0;
         hidLock.value = 1;
     }
-
+}
+selstats.addEventListener("change", function () {
+    SetHiddenStatus();
 });
 
 function GetAllEmployeeInfo() {
@@ -81,17 +85,6 @@ function setTable(array) {
     table.innerHTML = '';
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
-
-            //let stats = "";
-            //if (array[i].Status?.IsActive === 1) {
-            //    stats = "Active";
-            //    if (array[i].Status?.IsLocked === 1) {
-            //        stats = "Locked";
-            //    }
-            //}
-            //else {
-            //    stats = "Inactive";
-            //}
 
             let stats = "";
             let role = "";

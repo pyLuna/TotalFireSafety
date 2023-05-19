@@ -174,8 +174,8 @@
                                         <select name="sel_roles" id="sel_roles">
                                             <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
-                                            <option>Office Manager</option>
                                             <option>Warehouse Manager</option>
+                                            <option>Office Manager</option>
                                         </select>
                                         <input type="text" style="display:none;" id="emp_role" name="Role.role1">
                                     </div>
@@ -203,7 +203,7 @@
                         </div>
                         <center>
                             <div class="form-add-btns">
-                                <button class="save" id="saveBtn" onclick="checkForm()">
+                                <button class="save" id="saveBtn" onclick="checkForm() + SetHiddenRoles() + SetHiddenStatus()">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>

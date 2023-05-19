@@ -824,6 +824,7 @@ namespace TotalFireSafety.Controllers
                                 status.IsLocked = _emp.Status.IsLocked;
                                 status.IsUser = _emp.Status.IsUser;
                                 _context.Entry(status);
+                                await _context.SaveChangesAsync();
                             }
                             if (creds == null)
                             {
@@ -833,12 +834,16 @@ namespace TotalFireSafety.Controllers
                                     username = _emp.Credential.username,
                                     password = _emp.Credential.password
                                 };
+                                _context.Credentials.Add(cr);
+                                await _context.SaveChangesAsync();
+
                             }
                             else { 
                                 creds.emp_no = _emp.emp_no;
                                 creds.username = _emp.Credential.username;
                                 creds.password = _emp.Credential.password;
                                 _context.Entry(creds);
+                                await _context.SaveChangesAsync();
                             }
                             _context.Entry(_emp);
                             _context.Entry(roles);

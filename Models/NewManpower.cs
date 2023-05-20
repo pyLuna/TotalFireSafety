@@ -20,10 +20,9 @@ namespace TotalFireSafety.Models
         public string man_postition { get; set; }
         public Nullable<int> man_proj_id { get; set; }
         public Nullable<System.DateTime> man_date { get; set; }
-         public Nullable<int> man_rep_no { get; set; }
+        public Nullable<int> man_rep_no { get; set; }
     
         public virtual Attendance Attendance { get; set; }
         public virtual NewProject NewProject { get; set; }
-        public virtual NewReport NewReport { get; set; }
     }
 }

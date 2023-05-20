@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -652,6 +653,28 @@ namespace TotalFireSafety.Controllers
             return View(viewModel);
         }
 
+        public ActionResult GetManpowerAndAttendanceData(int repno)
+        {
+            using (var context = new nwTFSEntity())
+            {
+                var query = from manpower in context.NewManpowers
+                            join attendance in context.Attendances on manpower.man_id equals attendance.atte_id
+                            join report in context.NewReports on manpower.man_rep_no equals report.rep_no
+                            where report.rep_no == repno
+                            select new
+                            {
+                                manpower.man_name,
+                                attendance.atte_timein,
+                                attendance.atte_timeout
+                            };
+
+                var data = query.ToList();
+
+                return Content(JsonConvert.SerializeObject(data), "application/json");
+            }
+        }
+
+
         [HttpPost]
         public ActionResult UpdateProjectStatus(int projTypeId, string status)
         {
@@ -702,7 +725,7 @@ namespace TotalFireSafety.Controllers
             ViewBag.Status = report?.NewProject.proj_status;
 
             var reportImages = db.ReportImages
-         .Where(r => !string.IsNullOrEmpty(r.img_image) && r.img_date == report.rep_date) // Filter out null or empty image paths and match the image date with the report date
+         .Where(r => !string.IsNullOrEmpty(r.img_image) && r.img_date == report.rep_date && r.img_rep_no == report.rep_no) // Filter out null or empty image paths and match the image date with the report date
          .Select(r => r.img_image)
          .ToList();
 
@@ -712,7 +735,7 @@ namespace TotalFireSafety.Controllers
     .Include(a => a.NewManpower)
     .Where(a => a.NewManpower.man_proj_id == report.rep_proj_id && 
            (a.atte_timein != null || a.atte_timein == null) && 
-           a.NewManpower.man_date == report.rep_date)
+           a.NewManpower.man_date == report.rep_date && a.NewManpower.man_rep_no == report.rep_no)
     .ToList();
 
 ViewBag.AttendanceList = attendanceList;
@@ -788,11 +811,12 @@ ViewBag.AttendanceList = attendanceList;
             return Json(attendance, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetAttendanceData()
+        public ActionResult GetAttendanceData(int rep_no)
         {
             nwTFSEntity db = new nwTFSEntity();
             var data = db.Attendances
                 .Join(db.NewManpowers, a => a.atte_id, m => m.man_id, (a, m) => new { Attendance = a, Manpower = m })
+               .Where(a => a.Manpower.man_rep_no == rep_no)
                 .Select(a => new
                 {
                     Manpower = a.Manpower.man_name,
@@ -806,11 +830,12 @@ ViewBag.AttendanceList = attendanceList;
         }
 
 
-        public ActionResult GetAttendanceDatas()
+        public ActionResult GetAttendanceDatas(int rep_no)
         {
             nwTFSEntity db = new nwTFSEntity();
             var data = db.Attendances
                 .Join(db.NewManpowers, a => a.atte_id, m => m.man_id, (a, m) => new { Attendance = a, Manpower = m })
+                .Where(a => a.Manpower.man_rep_no == rep_no) // Filter by rep_no
                 .Select(a => new
                 {
                     Manpower = a.Manpower.man_name,
@@ -860,12 +885,13 @@ ViewBag.AttendanceList = attendanceList;
             return Json(reportData, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetReportImages(DateTime rep_date, int? proj_type_id)
+        public JsonResult GetReportImages(DateTime rep_date, int? proj_type_id, int? rep_no)
         {
             nwTFSEntity db = new nwTFSEntity();
             var images = db.ReportImages
                 .Where(i => i.img_date.HasValue && DbFunctions.TruncateTime(i.img_date) == rep_date.Date
-                    && (!proj_type_id.HasValue || i.img_proj_id == proj_type_id.Value))
+                    && (!proj_type_id.HasValue || i.img_proj_id == proj_type_id.Value)
+                    && (!rep_no.HasValue || i.img_rep_no == rep_no.Value)) // Filter by rep_no
                 .Select(i => i.img_image)
                 .ToList();
             return Json(images, JsonRequestBehavior.AllowGet);
@@ -1638,12 +1664,15 @@ ViewBag.AttendanceList = attendanceList;
             return Json(engineers, JsonRequestBehavior.AllowGet);
         }
 
+
+
         [HttpPost]
         public ActionResult SaveReport(string rep_scope, string rep_date, string rep_stats, string rep_proj_id, string rep_description)
         {
             // convert string values to their corresponding data types
             DateTime date = DateTime.Parse(rep_date);
             int projectId = int.Parse(rep_proj_id);
+
             // create a new report object
             NewReport report = new NewReport
             {
@@ -1655,6 +1684,7 @@ ViewBag.AttendanceList = attendanceList;
                 rep_date = date,
                 rep_description = rep_description
             };
+
             try
             {
                 using (var context = new nwTFSEntity())
@@ -1662,7 +1692,11 @@ ViewBag.AttendanceList = attendanceList;
                     context.NewReports.Add(report);
                     context.SaveChanges();
                 }
-                return Json(new { success = true });
+
+                // Generate rep_no for the result
+                int rep_no = report.rep_no;
+
+                return Json(new { success = true, rep_no = rep_no });
             }
             catch (DbEntityValidationException ex)
             {
@@ -1678,7 +1712,7 @@ ViewBag.AttendanceList = attendanceList;
         }
 
         [HttpPost]
-        public ActionResult SaveReportImages(List<string> images, string rep_date, int rep_proj_id)
+        public ActionResult SaveReportImages(List<string> images, string rep_date, int rep_proj_id, int rep_no)
         {
             nwTFSEntity db = new nwTFSEntity();
 
@@ -1688,7 +1722,8 @@ ViewBag.AttendanceList = attendanceList;
                 {
                     img_id = Guid.NewGuid(),
                     img_proj_id = rep_proj_id,
-                    img_date = DateTime.Parse(rep_date)
+                    img_date = DateTime.Parse(rep_date),
+                    img_rep_no = rep_no // Assign rep_no to img_rep_no property
                 };
 
                 // get the filename from the base64 string
@@ -1703,7 +1738,7 @@ ViewBag.AttendanceList = attendanceList;
                     stream.Write(imageData, 0, imageData.Length);
                 }
 
-                // assign filename to img_image property and save to database
+                // assign filename to img_image property and save to the database
                 reportImage.img_image = fileName;
                 db.ReportImages.Add(reportImage);
                 db.SaveChanges();
@@ -1713,7 +1748,7 @@ ViewBag.AttendanceList = attendanceList;
         }
 
         [HttpPost]
-        public JsonResult SaveData(List<Dictionary<string, string>> data, int man_proj_id, string man_date)
+        public ActionResult SaveData(List<Dictionary<string, string>> data, int man_proj_id, string man_date, int rep_no)
         {
             nwTFSEntity db = new nwTFSEntity();
             foreach (var row in data)
@@ -1723,9 +1758,10 @@ ViewBag.AttendanceList = attendanceList;
                 manpower.man_emp_no = (int?)Session["emp_no"];
                 manpower.man_id = Guid.NewGuid();
                 manpower.man_name = row["man_name"];
-                manpower.man_postition = row["man_position"];
+                manpower.man_postition = row["man_position"]; // Fixed typo in property name
                 manpower.man_proj_id = man_proj_id; // Set the man_proj_id property to the provided value
                 manpower.man_date = DateTime.Parse(man_date);
+                manpower.man_rep_no = rep_no; // Set the man_rep_no property to the provided rep_no value
 
                 // Save the NewManpower object to the database
                 db.NewManpowers.Add(manpower);

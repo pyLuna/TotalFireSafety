@@ -128,7 +128,7 @@
                             <div class="date">
                                 <label>Project Lead: @ViewBag.ProjectLead</label>
                             </div>
-                          
+
                             <div class="status">
                                 <label class="title">Status:</label>
                                 <select required>
@@ -169,21 +169,21 @@
                                             create request
                                             <span class="las la-file-alt"></span>
                                         </a>
-                                 
+
 
                                     </button>
                                 }
-                                    <script>
-                                        document.getElementById("projectPageLink").addEventListener("click", function (event) {
-                                            event.preventDefault(); // prevent the default behavior of the link
-                                            window.open(this.href, "requestPage"); // open the request page in a new window or tab
-                                            setTimeout(function () {
-                                                var requestPage = window.open('', "requestPage"); // get a reference to the request page
-                                                requestPage.postMessage("autoClickLink", "*"); // send a message to the request page
-                                            }, 1000); // wait for 1 second before sending the message
-                                        });
-                                    </script>
-                                </div>
+                                <script>
+                                    document.getElementById("projectPageLink").addEventListener("click", function (event) {
+                                        event.preventDefault(); // prevent the default behavior of the link
+                                        window.open(this.href, "requestPage"); // open the request page in a new window or tab
+                                        setTimeout(function () {
+                                            var requestPage = window.open('', "requestPage"); // get a reference to the request page
+                                            requestPage.postMessage("autoClickLink", "*"); // send a message to the request page
+                                        }, 1000); // wait for 1 second before sending the message
+                                    });
+                                </script>
+                            </div>
 
                             <div class="mems-list">
                                 <div class="mems-grid">
@@ -757,7 +757,7 @@
                                 var description = document.getElementById("rep_description").value;
                                 var status = document.getElementById("rep_status").value;
 
-                                if (repDate === null || images === null || images.length === 0 || data.length === 0 || status === null || description.trim() === '') {
+                                if (repDate === '' || images === null || images.length === 0 || data.length === 0 || status === '' || description.trim() === '') {
                                     alert('Please fill out all required fields and select at least one image');
                                     return;
                                 }
@@ -775,26 +775,6 @@
                                 // Create an array to store the AJAX requests
                                 var requests = [];
 
-                                // Add the AJAX request for saving report images
-                                requests.push($.ajax({
-                                    type: 'POST',
-                                    url: '/Admin/SaveReportImages',
-                                    data: {
-                                        images: imageStrings,
-                                        rep_date: repDate,
-                                        rep_proj_id: repProjId
-                                    }
-                                }));
-
-                                // Add the AJAX request for saving data
-                                requests.push($.ajax({
-                                    type: "POST",
-                                    url: "/Admin/SaveData",
-                                    data: JSON.stringify({ data: data, man_proj_id: repProjId, man_date: repDate }),
-                                    contentType: "application/json; charset=utf-8",
-                                    dataType: "json"
-                                }));
-
                                 // Add the AJAX request for saving the report
                                 requests.push($.ajax({
                                     type: "POST",
@@ -805,6 +785,31 @@
                                         rep_stats: status,
                                         rep_proj_id: repProjId,
                                         rep_description: description
+                                    },
+                                    success: function (response) {
+                                        // Get the rep_no value from the response
+                                        var rep_no = response.rep_no;
+
+                                        // Add the AJAX request for saving report images
+                                        requests.push($.ajax({
+                                            type: 'POST',
+                                            url: '/Admin/SaveReportImages',
+                                            data: {
+                                                images: imageStrings,
+                                                rep_date: repDate,
+                                                rep_proj_id: repProjId,
+                                                rep_no: rep_no // Pass the rep_no value
+                                            }
+                                        }));
+
+                                        // Add the AJAX request for saving data
+                                        requests.push($.ajax({
+                                            type: "POST",
+                                            url: "/Admin/SaveData",
+                                            data: JSON.stringify({ data: data, man_proj_id: repProjId, man_date: repDate, rep_no: rep_no }), // Include the rep_no value
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json"
+                                        }));
                                     }
                                 }));
 
@@ -843,7 +848,7 @@
                             <div class="upper-content">
                                 <div class="label-container">
                                     <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
-                                    
+
                                 </div>
 
                                 <div class="label-container">
@@ -879,7 +884,7 @@
                                         <div class="low">
                                             <div class="low-body">
                                                 <div class="table-responsive" style="overflow-x: auto;">
-                                                   
+
 
                                                     <table width="100%" id="Clockoutput">
                                                         <thead>
@@ -890,7 +895,6 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody id="table-body">
-                                                           
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -911,7 +915,7 @@
                                 <div class="mid-container">
                                     <div class="input">
 
-                                        <input type="text" name="rep_description" id="rep_description1"  readonly>
+                                        <input type="text" name="rep_description" id="rep_description1" readonly>
 
                                     </div>
                                     <div class="attach">
@@ -932,11 +936,13 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="text" id="rep_date1" name="rep_date1"  readonly>
+                                    <input type="text" id="rep_date1" name="rep_date1" readonly>
                                 </div>
                                 <div class="date">
                                     <input type="text" name="rep_stats" id="rep_stats" readonly>
                                     <input type="text" name="ProjectID" value="@ViewBag.ProjectID" hidden>
+                                    <input type="text" name="" value="" hidden>
+
                                 </div>
                             </div>
                             <div class="mid">
@@ -1255,6 +1261,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
 @*<script>
 
         function SaveData1() {
@@ -1980,7 +1989,7 @@ $.ajax({
         var idParam = urlParams.get("Id");
 
         // Update the model based on the parameters
-      
+
 
         document.getElementById('report-edit-container').style.display = 'block';
 
@@ -2014,11 +2023,11 @@ $.ajax({
                 var repDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
                 var isoDate = new Date(Date.UTC(repDate.getFullYear(), repDate.getMonth(), repDate.getDate())).toISOString().split('T')[0];
 
-                $.ajax({
+              $.ajax({
                     url: '/Admin/GetAttendanceData',
                     type: 'GET',
                     dataType: 'json',
-                    data: { date: isoDate, id: idParam, proj_type_id: projectId }, // Add proj_type_id parameter
+                    data: { date: isoDate , rep_no: repNoParam}, // Add rep_no par   ameter
                     success: function (attendanceData) {
                         var tableBody = $('#table-body');
                         tableBody.empty();
@@ -2035,7 +2044,6 @@ $.ajax({
                                 if (isoTimeIn.split('T')[0] === isoDate) {
                                     var tr = $('<tr>').appendTo(tableBody);
                                     $('<td>').text(item.Manpower).appendTo(tr);
-
 
                                     // Format time in 12-hour format
                                     var formattedTimeIn = new Date(isoTimeIn).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
@@ -2072,13 +2080,13 @@ $.ajax({
                             var link = $('<a>').attr('href', '/ReportImg/' + path).addClass('fancybox').append(img);
 
                             // Create a div to hold the img_date and append it to the link
-                          
+
 
                             container.append(link);
                         });
                         $('.fancybox').fancybox();
 
-                       
+
                     });
             },
             error: function (xhr, status, error) {
@@ -2089,7 +2097,7 @@ $.ajax({
 
 
     function closeReportEditForm() {
-        
+
 
         var currentUrl = new URL(window.location.href);
         var searchParams = new URLSearchParams(currentUrl.search);

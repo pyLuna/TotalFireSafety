@@ -275,18 +275,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_NewManpowers_NewReport">
-          <End Role="NewReport" Type="Self.NewReport" Multiplicity="0..1" />
-          <End Role="NewManpowers" Type="Self.NewManpowers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NewReport">
-              <PropertyRef Name="rep_no" />
-            </Principal>
-            <Dependent Role="NewManpowers">
-              <PropertyRef Name="man_rep_no" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_NewProjects_Employees">
           <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
           <End Role="NewProjects" Type="Self.NewProjects" Multiplicity="*" />
@@ -461,10 +449,6 @@
             <End Role="NewProjects" EntitySet="NewProjects" />
             <End Role="NewManpowers" EntitySet="NewManpowers" />
           </AssociationSet>
-          <AssociationSet Name="FK_NewManpowers_NewReport" Association="Self.FK_NewManpowers_NewReport">
-            <End Role="NewReport" EntitySet="NewReport" />
-            <End Role="NewManpowers" EntitySet="NewManpowers" />
-          </AssociationSet>
           <AssociationSet Name="FK_NewProjects_Employees" Association="Self.FK_NewProjects_Employees">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="NewProjects" EntitySet="NewProjects" />
@@ -578,10 +562,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_NewManpowers_NewProject" Association="db_a97f85_totalfiresafetyModel.FK_NewManpowers_NewProject">
             <End Role="NewProject" EntitySet="NewProjects" />
-            <End Role="NewManpower" EntitySet="NewManpowers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_NewManpowers_NewReport" Association="db_a97f85_totalfiresafetyModel.FK_NewManpowers_NewReport">
-            <End Role="NewReport" EntitySet="NewReports" />
             <End Role="NewManpower" EntitySet="NewManpowers" />
           </AssociationSet>
           <AssociationSet Name="FK_NewProposal_NewProjects" Association="db_a97f85_totalfiresafetyModel.FK_NewProposal_NewProjects">
@@ -709,7 +689,6 @@
           <Property Name="man_rep_no" Type="Int32" />
           <NavigationProperty Name="Attendance" Relationship="db_a97f85_totalfiresafetyModel.FK_Attendance_NewManpowers" FromRole="NewManpower" ToRole="Attendance" />
           <NavigationProperty Name="NewProject" Relationship="db_a97f85_totalfiresafetyModel.FK_NewManpowers_NewProject" FromRole="NewManpower" ToRole="NewProject" />
-          <NavigationProperty Name="NewReport" Relationship="db_a97f85_totalfiresafetyModel.FK_NewManpowers_NewReport" FromRole="NewManpower" ToRole="NewReport" />
         </EntityType>
         <EntityType Name="NewProject">
           <Key>
@@ -760,7 +739,6 @@
           <Property Name="rep_img" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="rep_emp_no" Type="Int32" Nullable="false" />
           <Property Name="rep_description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="NewManpowers" Relationship="db_a97f85_totalfiresafetyModel.FK_NewManpowers_NewReport" FromRole="NewReport" ToRole="NewManpower" />
           <NavigationProperty Name="NewProject" Relationship="db_a97f85_totalfiresafetyModel.FK_NewReport_NewProject" FromRole="NewReport" ToRole="NewProject" />
           <NavigationProperty Name="ReportImages" Relationship="db_a97f85_totalfiresafetyModel.FK_ReportImage_ReportImage" FromRole="NewReport" ToRole="ReportImage" />
         </EntityType>
@@ -980,18 +958,6 @@
             </Principal>
             <Dependent Role="NewManpower">
               <PropertyRef Name="man_proj_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_NewManpowers_NewReport">
-          <End Type="db_a97f85_totalfiresafetyModel.NewReport" Role="NewReport" Multiplicity="0..1" />
-          <End Type="db_a97f85_totalfiresafetyModel.NewManpower" Role="NewManpower" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NewReport">
-              <PropertyRef Name="rep_no" />
-            </Principal>
-            <Dependent Role="NewManpower">
-              <PropertyRef Name="man_rep_no" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

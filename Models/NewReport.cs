@@ -17,7 +17,6 @@ namespace TotalFireSafety.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public NewReport()
         {
-            this.NewManpowers = new HashSet<NewManpower>();
             this.ReportImages = new HashSet<ReportImage>();
         }
     
@@ -31,8 +30,6 @@ namespace TotalFireSafety.Models
         public int rep_emp_no { get; set; }
         public string rep_description { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NewManpower> NewManpowers { get; set; }
         public virtual NewProject NewProject { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReportImage> ReportImages { get; set; }

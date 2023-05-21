@@ -588,6 +588,8 @@
                                                 <td>Item Code</td>
                                                 <td>Item Name</td>
                                                 <td>Quantity Added</td>
+                                                <td>On-hand Quantity</td>
+                                                <td>Total Quantity</td>
                                             </tr>
                                         </thead>
 
@@ -762,13 +764,17 @@
         if (bool) {
             var input = document.getElementById("inpSizeQuant").value;
             var max = document.getElementById("Inv_Limitsmaximum").value;
-            var min = document.getElementById("Inv_Limitsminimum").value;
+            var min = document.getElementById("Inv_Limitsreorder").value;
             var err = document.getElementById("inpSizeQuant-error");
             if (Number(input) > Number(max)) {
-                openOverPopup();
+                err.innerText = "Quantity must not exceed maximum";
+                err.style.display = "block";
+                //openOverPopup();
                 return;
             }
             else if (Number(input) < Number(min)) {
+                //err.innerText = "Quantity must not be lower than minimum";
+                //err.style.display = "block";
                 openCritPopup();
                 return;
             }
@@ -917,12 +923,12 @@
         var bool = false;
         var message = "";
         if (result > arr.Limits.maximum) {
-            //message = "Quantity has exceeded the maximum amount";
-            DisplayMessage("max", type);
+            message = "Quantity has exceeded the maximum amount";
+            //DisplayMessage("max", type);
         }
         else if (result < arr.Limits.minimum) {
-            //message = "Quantity reached the minimum amount";
-            DisplayMessage("min", type);
+            message = "Quantity reached the minimum amount";
+            //DisplayMessage("min", type);
         }
         else {
             bool = true;
@@ -956,8 +962,8 @@
         var result = validateQuantity(code, val, "quant");
         //console.log(result);
         if (!result.bool) {
-        //    var err = document.getElementById("errMess");
-        //    err.innerText = result.message;
+            var err = document.getElementById("errMess");
+            err.innerText = result.message;
             return;
         }
         AddQuantity(code, val);
@@ -1099,16 +1105,16 @@
 
     function infoOpenPopup(formType) {
         infopopup.classList.add("info-popup-show")
-        if (formType == "reportForm") {
-            var code = localStorage.getItem("itemCode");
-            var val = document.getElementById("quantVal").value;
-            saveForm.setAttribute("onclick", `AddQuantity("${code}", "${val}")`);
-            return;
-        }
-        if (formType == "batchQuant") {
-            saveForm.setAttribute("onclick", `SendItemCodes()`);
-            return;
-        }
+        //if (formType == "reportForm") {
+        //    var code = localStorage.getItem("itemCode");
+        //    var val = document.getElementById("quantVal").value;
+        //    saveForm.setAttribute("onclick", `AddQuantity("${code}", "${val}")`);
+        //    return;
+        //}
+        //if (formType == "batchQuant") {
+        //    saveForm.setAttribute("onclick", `SendItemCodes()`);
+        //    return;
+        //}
         saveForm.setAttribute('form', formType);
     }
 

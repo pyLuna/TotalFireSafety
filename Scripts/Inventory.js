@@ -181,6 +181,8 @@ function GetDateUpdates(code) {
 					row += `<td>${updates[0][i].code}</td>`;
 					row += `<td>${updates[0][i].name}</td>`;
 					row += `<td>${updates[0][i].quantity}</td>`;
+					row += `<td>${updates[0][i].base == null ? "" : updates[0][i].base}</td>`;
+					row += `<td>${updates[0][i].total == null ? "" : updates[0][i].total}</td>`;
 					row += `</tr>`;
 					hisTable.innerHTML += row;
 				}
@@ -286,6 +288,17 @@ function fixArray() {
 	}
 }
 
+function getRange(num1, num2) {
+	var start = Math.min(num1, num2);
+	var end = Math.max(num1, num2);
+
+	if (start === end) {
+		return "Numbers are equal.";
+	} else {
+		return (start + 1) + " - " + end;
+	}
+}
+
 function setTable(array) {
 	table.innerHTML = '';
 	if (array.length != 0) {
@@ -339,6 +352,9 @@ function setTable(array) {
 				runn = array[i].Limits.running;
 			}
 
+			var max = getRange(array[i].Limits.maximum, array[i].Limits.reorder);
+			var reord = getRange(array[i].Limits.reorder, array[i].Limits.minimum);
+
 			let row = `<tr>`; /*onclick = "canOpenPopup()"*/
 			row += `<td >${array[i].in_dateAdded}<i class="las la-expand-arrows-alt" onclick="GetDateUpdates('${array[i].in_code}')"></i></td>`;
 			row += `<td id="in_code"><label>${array[i].in_code}</label></td>`;
@@ -347,9 +363,9 @@ function setTable(array) {
 			row += `<td name="in_type"><label>${array[i].in_type}</label></td>`;
 			row += `<td name="in_size"><label>${array[i].in_size}</label></td>`;
 			row += `<td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
-			row += `<td><label>${array[i].Limits.maximum}</label></td>`;
-			row += `<td><label>${array[i].Limits.minimum}</label></td>`;
-			row += `<td><label>${array[i].Limits.reorder}</label></td>`;
+			row += `<td><label>${max}</label></td>`;
+			row += `<td><label>1 - ${array[i].Limits.minimum}</label></td>`;
+			row += `<td><label>${reord}</label></td>`;
 			row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
 			row += `<td><label>${runn}</label></td>`;
 			if (sessionId == 2) {

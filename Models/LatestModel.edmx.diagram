@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Credential" Width="1.5" PointX="3" PointY="6.125" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Employee" Width="1.5" PointX="0.75" PointY="14.875" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inv_Limits" Width="1.5" PointX="3" PointY="32.75" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inv_Update" Width="1.5" PointX="3" PointY="29.875" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inv_Update" PointX="3" PointY="29.75" Width="1.5" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inventory" Width="1.5" PointX="0.75" PointY="19.75" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewManpower" Width="1.5" PointX="7.5" PointY="25" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewProject" Width="1.5" PointX="3" PointY="24.25" />

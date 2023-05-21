@@ -63,6 +63,8 @@
           <Property Name="update_quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="update_date" Type="datetime" />
           <Property Name="update_type" Type="varchar" MaxLength="100" />
+          <Property Name="update_base" Type="nvarchar" MaxLength="50" />
+          <Property Name="update_total" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Inventories">
           <Key>
@@ -275,18 +277,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_NewManpowers_NewReport">
-          <End Role="NewReport" Type="Self.NewReport" Multiplicity="0..1" />
-          <End Role="NewManpowers" Type="Self.NewManpowers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="NewReport">
-              <PropertyRef Name="rep_no" />
-            </Principal>
-            <Dependent Role="NewManpowers">
-              <PropertyRef Name="man_rep_no" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_NewProjects_Employees">
           <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
           <End Role="NewProjects" Type="Self.NewProjects" Multiplicity="*" />
@@ -461,10 +451,6 @@
             <End Role="NewProjects" EntitySet="NewProjects" />
             <End Role="NewManpowers" EntitySet="NewManpowers" />
           </AssociationSet>
-          <AssociationSet Name="FK_NewManpowers_NewReport" Association="Self.FK_NewManpowers_NewReport">
-            <End Role="NewReport" EntitySet="NewReport" />
-            <End Role="NewManpowers" EntitySet="NewManpowers" />
-          </AssociationSet>
           <AssociationSet Name="FK_NewProjects_Employees" Association="Self.FK_NewProjects_Employees">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="NewProjects" EntitySet="NewProjects" />
@@ -569,8 +555,8 @@
             <End Role="Inv_Limits" EntitySet="Inv_Limits" />
           </AssociationSet>
           <AssociationSet Name="FK_Inv_Update_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1">
-            <End Role="Inventory" EntitySet="Inventories" />
-            <End Role="Inv_Update" EntitySet="Inv_Update" />
+            <End EntitySet="Inventories" Role="Inventory" />
+            <End EntitySet="Inv_Update" Role="Inv_Update" />
           </AssociationSet>
           <AssociationSet Name="FK_Requests_Inventory1" Association="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1">
             <End Role="Inventory" EntitySet="Inventories" />
@@ -668,12 +654,14 @@
           <Key>
             <PropertyRef Name="update_id" />
           </Key>
-          <Property Name="update_id" Type="Guid" Nullable="false" />
-          <Property Name="update_item_id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="update_quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="update_date" Type="DateTime" Precision="3" />
-          <Property Name="update_type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="update_id" Nullable="false" Type="Guid" />
+          <Property Name="update_item_id" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="update_quantity" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="update_date" Precision="3" Type="DateTime" />
+          <Property Name="update_type" MaxLength="100" FixedLength="false" Unicode="false" Type="String" />
           <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1" FromRole="Inv_Update" ToRole="Inventory" />
+          <Property Name="update_base" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="update_total" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Inventory">
           <Key>
@@ -948,8 +936,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Inv_Update_Inventory1">
-          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Role="Inventory" Multiplicity="1" />
-          <End Type="db_a97f85_totalfiresafetyModel.Inv_Update" Role="Inv_Update" Multiplicity="*" />
+          <End Type="db_a97f85_totalfiresafetyModel.Inventory" Multiplicity="1" Role="Inventory" />
+          <End Type="db_a97f85_totalfiresafetyModel.Inv_Update" Multiplicity="*" Role="Inv_Update" />
           <ReferentialConstraint>
             <Principal Role="Inventory">
               <PropertyRef Name="in_code" />
@@ -1118,6 +1106,8 @@
           <EntitySetMapping Name="Inv_Update">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Inv_Update">
               <MappingFragment StoreEntitySet="Inv_Update">
+                <ScalarProperty Name="update_total" ColumnName="update_total" />
+                <ScalarProperty Name="update_base" ColumnName="update_base" />
                 <ScalarProperty Name="update_type" ColumnName="update_type" />
                 <ScalarProperty Name="update_date" ColumnName="update_date" />
                 <ScalarProperty Name="update_quantity" ColumnName="update_quantity" />

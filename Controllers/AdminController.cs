@@ -1843,19 +1843,21 @@ ViewBag.AttendanceList = attendanceList;
         {
                 using (var _context = new nwTFSEntity())
                 {
-                //var item = _context.Inventories.Where(x => x.in_code == code).SingleOrDefault();
-                        var newGuid = Guid.NewGuid();
+                var item = _context.Inventories.Where(x => x.in_code == code).SingleOrDefault();
+                var newGuid = Guid.NewGuid();
 
-                        Inv_Update update = new Inv_Update()
-                        {
-                            update_id = newGuid,
-                            update_date = DateTime.Now,
-                            update_item_id = code,
-                            update_quantity = quant.ToString() + " " + unit,
-                            update_type = "quantity"
-                        };
-                        _context.Inv_Update.Add(update);
-                        await _context.SaveChangesAsync();
+                Inv_Update update = new Inv_Update()
+                {
+                    update_id = newGuid,
+                    update_date = DateTime.Now,
+                    update_item_id = code,
+                    update_quantity = quant.ToString() + " " + unit,
+                    update_type = "quantity",
+                    update_base = int.Parse(item.in_quantity.Split(' ')[0]) - quant + unit,
+                    update_total = item.in_quantity
+                };
+                _context.Inv_Update.Add(update);
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -1886,6 +1888,8 @@ ViewBag.AttendanceList = attendanceList;
                         writer.WriteString("date", item.update_date?.ToString("MMMM dd, yyyy"));
                         writer.WriteString("quantity", item.update_quantity);
                         writer.WriteString("name", item.Inventory.in_name);
+                        writer.WriteString("base", item.update_base);
+                        writer.WriteString("total", item.update_total);
                         // add more properties as needed
                         writer.WriteEndObject();
                     }
@@ -1910,11 +1914,11 @@ ViewBag.AttendanceList = attendanceList;
                 {
                     var item = _context.Inventories.Where(x => x.in_code == code).SingleOrDefault();
                     var unit = item.in_quantity.Split(' ')[1];
-                    QuantityUpdate(code, quant, unit);
                     var nwQuant = int.Parse(item.in_quantity.Split(' ')[0]) + quant;
                     item.in_quantity = nwQuant + " " + unit;
                     _context.Entry(item);
                     await _context.SaveChangesAsync();
+                    QuantityUpdate(code, quant, unit);
                 }
             }
             await SendNotif("notificaton");

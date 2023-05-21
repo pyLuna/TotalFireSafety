@@ -8962,7 +8962,10 @@ acc-form-table .view-request-form-table-style table thead td {
     font-weight: 600;
     padding: 0;
     margin-top: 0;
-    color: #09AF10;
+}
+
+.proj-task-list .proj-task-left .task-list-container .task-list-header select option {
+    border-radius: 5px;
 }
 
 .proj-task-list .proj-task-left .task-list-container .list {
@@ -8983,6 +8986,12 @@ acc-form-table .view-request-form-table-style table thead td {
 
 .proj-task-list .proj-task-left .task-list-container .task-list-body table {
     margin: 0;
+}
+
+.proj-task-list .proj-task-left .task-list-container .task-list-body table tbody tr:hover {
+    background-color: #707070;
+    color: #fff;
+    cursor: pointer;
 }
 
 .proj-task-list .proj-task-left .task-list-container .task-list-body table thead td {
@@ -9212,10 +9221,13 @@ acc-form-table .view-request-form-table-style table thead td {
   font-size: 1rem;
 }
 
+.proj-task-list .proj-task-right .subtask .bottom {
+    margin-top: -30px;
+}
+
 .proj-task-list .proj-task-right .subtask .bottom .task-header {
     display: flex;
     justify-content: space-between;
-    margin-top: -50px;
 }
 
 .proj-task-list .proj-task-right .subtask .bottom .task-header h2 {
@@ -9244,9 +9256,8 @@ acc-form-table .view-request-form-table-style table thead td {
 
 .proj-task-list .proj-task-right .subtask .bottom .task {
     margin-top: 10px;
-    max-height: 400px;
+    height: 150px;
     width: 100%;
-    margin: 10px;
     overflow: auto;
 }
 
@@ -9316,6 +9327,128 @@ acc-form-table .view-request-form-table-style table thead td {
 .proj-task-list .proj-task-right .subtask .bottom .task-body table td .delayed {
     color: #FF0000;
 }
+
+/* FLOATING BUTTON FOR MANPOWER */
+
+.float-manpower {
+    display: block;
+    position: fixed;
+    right: 3%;
+    bottom: 5%;
+    width: 200px;
+    height: 40px;
+    background-color: #16215B;
+    border: 2px solid #000;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    color: #fff;
+}
+
+.float-manpower:hover {
+    cursor: pointer;
+    background-color: #fff;
+    color: #16215B;
+}
+
+.float-manpower .float-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.float-manpower .float-container i {
+    font-size: 1.5rem;
+}
+
+.float-manpower .float-container h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* END */
+
+/* ASSIGNEE FOR FOREMAN POPUP */
+
+.assign-popup {
+    display: none;
+    position: fixed;
+    top: 25%;
+    left: 45%;
+    width: 400px;
+    height: 500px;
+    background-color: #fff;
+    border: 2px solid #B2B2B2;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.assign-popup .assign-container {
+    display: block;
+    margin: 20px;
+}
+
+.assign-popup .assign-container .list {
+    display: block;
+    margin-top: 20px;
+    height: 350px;
+    overflow: auto;
+}
+
+.assign-popup .assign-container .list h1 {
+    font-size: 1.2rem;
+    border-bottom: 1px solid #B2B2B2;
+}
+
+.assign-popup .assign-container .list ul {
+    margin-top: 10px;
+}
+
+.assign-popup .assign-container .list ul li {
+    margin-top: 5px;
+    color: #000;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 10px;
+}
+
+.assign-popup .assign-container .list ul li:hover {
+    color: #fff;
+    background-color: #8f8f8f;
+    cursor: pointer;
+}
+
+.assign-popup .assign-container .footer {
+    background-color: transparent;
+}
+
+.assign-popup .assign-container .footer button {
+}
+
+.assign-popup .assign-container .footer button {
+    width: 50px;
+    height: 40px;
+    position: absolute;
+    right: 45%;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #B2B2B2;
+    box-shadow: 4px 3px 3px #B2B2B2;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.assign-popup .assign-container .footer button:hover {
+    color: #fff;
+    border: 1px solid #fff;
+    background-color: #16215B;
+    box-shadow: none;
+ }
+
+/* END */
 
 /* MOST REQUESTED ITEM FORM STYLE */
 
@@ -9725,9 +9858,26 @@ acc-form-table .view-request-form-table-style table thead td {
         padding: 50px;
     }
 
+    .input-mem-container .input-mems-main .input-mems-title {
+        display: flex;
+        justify-content: space-between
+    }
+
         .input-mem-container .input-mems-main .input-mems-title h3 {
             font-size: 1rem;
         }
+
+    .input-mem-container .input-mems-main .input-mems-title input {
+         width: 200px;
+         height: 35px;
+         box-shadow: 4px 4px 3px #B2B2B2;
+         border: 1px solid #B2B2B2;
+         border-radius: 10px;
+         font-size: 1rem;
+         font-weight: 600;
+         margin-top: -10px;
+    }
+
 
 .input-mems {
     margin-top: 10px;

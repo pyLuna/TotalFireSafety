@@ -1758,7 +1758,7 @@ ViewBag.AttendanceList = attendanceList;
                 manpower.man_emp_no = (int?)Session["emp_no"];
                 manpower.man_id = Guid.NewGuid();
                 manpower.man_name = row["man_name"];
-                manpower.man_postition = row["man_position"]; // Fixed typo in property name
+               
                 manpower.man_proj_id = man_proj_id; // Set the man_proj_id property to the provided value
                 manpower.man_date = DateTime.Parse(man_date);
                 manpower.man_rep_no = rep_no; // Set the man_rep_no property to the provided rep_no value

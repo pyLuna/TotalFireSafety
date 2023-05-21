@@ -28,68 +28,6 @@
             </div>
 
             <div class="proj-main-container">
-                <div class="proj-task-list">
-                    <div class="task-header">
-                        <h2>Accomplishtments</h2>
-                        <div class="right-container">
-
-                            @{
-                                var sessionID = Session["emp_no"]?.ToString();
-                                var projectLeads = ViewBag.ProjectLeads?.ToString();
-                            }
-
-                            @if (sessionID != null && projectLeads != null && sessionID == projectLeads)
-                            {
-                                <a onclick="openReportNewForm()">
-                                    <input type="text" value="@projectLeads" hidden />
-                                    <span class="lar la-plus-square"></span>Add Report
-                                </a>
-                            }
-
-                        </div>
-                    </div>
-
-                    <div class="task-grid">
-
-                        <div class="task-projects">
-                            <div class="task">
-                                <div class="task-body">
-                                    <div class="table-responsive" style="overflow-x: auto;">
-                                        <div id="reportTableContainer">
-                                            <table width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <td>Date Submitted</td>
-                                                        <td>Report No.</td>
-                                                        <td>Description</td>
-                                                        <td>Remarks</td>
-                                                        <td>Action</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var report in Model.Reports)
-                                                    {
-                                                        <tr>
-                                                            <td>@report.rep_date</td>
-                                                            <td>@report.rep_no</td>
-                                                            <td>@Html.Raw(report.rep_description.Length > 20 ? report.rep_description.Substring(0, 20) + "..." : report.rep_description)<i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no', '@report.rep_proj_id');"></i></td>
-                                                            <td>@report.rep_stats</td>
-                                                            <td>
-                                                                <a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })" target="_blank">
-                                                                    Export
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="proj-right-container">
                     <div class="proj-incharge-container">
@@ -109,46 +47,153 @@
 
                             </div>
 
-                            <div class="date">
-                                <label>Project Name: @ViewBag.ProjectName</label>
-                            </div>
+                            <div class="details-group">
 
-                            <div class="date">
-                                <label>Subject: @ViewBag.Subject</label>
-                            </div>
+                                <div class="details-left">
 
-                            <div class="date">
-                                <label>Client: @ViewBag.Client</label>
-                            </div>
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Project Name:</label>
+                                        </div>
 
-                            <div class="date">
-                                <label>Engineer: @ViewBag.ProjectEngineer</label>
-                            </div>
+                                        <div class="label">
+                                            <label>@ViewBag.ProjectName</label>
+                                        </div>
+                                    </div>
 
-                            <div class="date">
-                                <label>Project Lead: @ViewBag.ProjectLead</label>
-                            </div>
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Subject:</label>
+                                        </div>
 
-                            <div class="status">
-                                <label class="title">Status:</label>
-                                <select required>
-                                    <option selected value="@ViewBag.Status">@ViewBag.Status</option>
-                                </select>
-                                @*<label>@ViewBag.ProjectStats</label>*@
-                            </div>
+                                        <div class="label">
+                                            <label>@ViewBag.Subject</label>
+                                        </div>
+                                    </div>
 
-                            <div class="date">
-                                <label class="title">Start Date: </label>
-                                &nbsp; <input type="text" value="@ViewBag.Startdate" readonly />
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Client:</label>
+                                        </div>
 
-                                @*<label>@ViewBag.Startdate</label>*@
-                            </div>
+                                        <div class="label">
+                                            <label>@ViewBag.Client</label>
+                                        </div>
+                                    </div>
 
-                            <div class="date">
-                                <label class="title">Finish Date: </label>
-                                &nbsp; <input type="text" value="@ViewBag.Enddate" readonly />
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Engineer:</label>
+                                        </div>
 
-                                @*<label> @ViewBag.Enddate</label>*@
+                                        <div class="label">
+                                            <label>@ViewBag.ProjectEngineer</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Project Lead:</label>
+                                        </div>
+
+                                        <div class="label">
+                                            <label>@ViewBag.ProjectLead</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Status:</label>
+                                        </div>
+
+                                        <div class="label">
+                                            <select required>
+                                                <option selected value="@ViewBag.Status">@ViewBag.Status</option>
+                                                <option class="orange" value="Upcoming">Upcoming</option>
+                                                <option class="green" value="On-going">On-going</option>                                                
+                                                <option class="red" value="Cancelled">Cancelled</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <script>
+                                        const statusSelect = document.getElementById('statusSelect');
+
+                                        statusSelect.addEventListener('change', function () {
+                                            const selectedValue = this.value;
+                                            let selectedColor = '';
+
+                                            if (selectedValue === 'Upcoming') {
+                                                selectedColor = '#09AF10';
+                                            } else if (selectedValue === 'On-going') {
+                                                selectedColor = '#FF932F';
+                                            } else if (selectedValue === 'cancelled') {
+                                                selectedColor = 'red';
+                                            }
+
+                                            this.style.color = selectedColor;
+                                        });
+
+
+                                    </script>
+
+                                </div>
+
+                                <div class="details-right">
+
+                                    
+
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Start Date:</label>
+                                        </div>
+
+                                        <div class="label">
+                                            <input type="text" value="@ViewBag.Startdate" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Baseline Finish:</label>
+                                        </div>
+
+                                        <div class="label">
+                                            <input type="text" value="@ViewBag.Enddate" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Actual Start Date:</label>
+                                        </div>
+
+                                        <div class="label">
+                                            <input type="date" value="" />
+                                        </div>
+                                    </div>
+
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Actual Finish Date:</label>
+                                        </div>
+
+                                        <div class="label">
+                                            <input type="date" value="" />
+                                        </div>
+                                    </div>
+
+                                    <div class="details-text-container">
+                                        <div class="title">
+                                            <label>Start Date:</label>
+                                        </div>
+
+                                        <div class="label">
+                                            <input type="text" value="Completed" readonly class="green"/>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
 
@@ -224,6 +269,302 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="proj-task-list">
+
+                    <div class="proj-task-left">
+
+                        <div class="task-list-container">
+
+                            <div class="task-list-header">
+
+                                <div class="header-left">
+                                    <h2> Task List </h2>
+
+                                    <div class="input-container">
+                                        <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
+                                        <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="header-right">
+                                    <select required>
+                                        <option class="green" value="">Completed</option>
+                                        <option class="orange" value="">213123</option>
+                                        <option class="red" value="">232132</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="task-list-main">
+
+                                <div class="task-list-grid">
+                                    <div class="task-list-projects">
+                                        <div class="list">
+                                            <div class="task-list-body">
+                                                <div class="table-responsive" style="overflow: auto;">
+                                                    <div id="reportTableContainer">
+                                                        <table width="100%" height="100px">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td>Duration</td>
+                                                                    <td>Tracker</td>
+                                                                    <td>Remarks</td>
+                                                                    <td>Assignee</td>
+                                                                    <td>Action</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                <tr>
+                                                                    <td>Transformer 1</td>
+                                                                    <td>3 Days</td>
+                                                                    <td>
+                                                                        <div class="progress-bar">
+                                                                            <div class="progress-halfhalf">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>Achieved</td>
+                                                                    <td>Clarisse Vasquez</td>
+                                                                    <td><a>export</a></td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Transformer 1</td>
+                                                                    <td>3 Days</td>
+                                                                    <td>
+                                                                        <div class="progress-bar">
+                                                                            <div class="progress-halfhalf">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>Achieved</td>
+                                                                    <td>Clarisse Vasquez</td>
+                                                                    <td><a>export</a></td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Transformer 1</td>
+                                                                    <td>3 Days</td>
+                                                                    <td>
+                                                                        <div class="progress-bar">
+                                                                            <div class="progress-halfhalf">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>Achieved</td>
+                                                                    <td>Clarisse Vasquez</td>
+                                                                    <td><a>export</a></td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td>Transformer 1</td>
+                                                                    <td>3 Days</td>
+                                                                    <td>
+                                                                        <div class="progress-bar">
+                                                                            <div class="progress-halfhalf">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>Achieved</td>
+                                                                    <td>Clarisse Vasquez</td>
+                                                                    <td><a>export</a></td>
+                                                                </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                       
+
+                    </div>
+
+                    <div class="proj-task-right">
+
+                        <div class="subtask">
+                            <div class="upper">
+                                <div class="subtask-header">
+                                    <div class="header-left">
+                                        <h2> Task List </h2>
+
+                                        
+                                    </div>
+
+                                    <div class="header-right">
+                                        <div class="date-picker-container">
+                                            <input type="date">                                            
+                                        </div>
+
+                                        <select required>
+                                            <option class="green" value="">Completed</option>
+                                            <option class="orange" value="">213123</option>
+                                            <option class="red" value="">232132</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="subtask-container">
+
+                                    <div class="header">
+                                        <h2>Checklist</h2>
+                                        <div class="input-container">
+                                            <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
+                                            <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="main">
+                                        <div class="main-list">
+                                            <ul class="checkbox-list">
+                                                <li>
+                                                    <input type="checkbox" id="item1">
+                                                    <label for="item1">Mobilization and Initial Site Preparation</label>
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="item2">
+                                                    <label for="item2">Support installation Transformer 1</label>
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" id="item3">
+                                                    <label for="item3">Installation of Delunge </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+
+                            <div class="bottom">
+                                <div class="task-header">
+                                    <h2>Submitted Reports</h2>
+                                    <div class="right-container">
+
+                                       
+                                            <a onclick="openReportNewForm()">
+                                                <input type="text" value="" hidden />
+                                                <span class="lar la-plus-square"></span>Add Report
+                                            </a>
+
+                                    </div>
+                                </div>
+
+                                <div class="task-grid">
+
+                                    <div class="task-projects">
+                                        <div class="task">
+                                            <div class="task-body">
+                                                <div class="table-responsive" style="overflow-x: auto;">
+                                                    <div id="reportTableContainer">
+                                                        <table width="100%" height="100px">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td>Date Submitted</td>
+                                                                    <td>Report No.</td>
+                                                                    <td>Description</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var report in Model.Reports)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@report.rep_date</td>
+                                                                        <td>@report.rep_no</td>
+                                                                        <td>@Html.Raw(report.rep_description.Length > 20 ? report.rep_description.Substring(0, 20) + "..." : report.rep_description)<i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no', '@report.rep_proj_id');"></i></td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                    </div>
+
+                    
+                     @*<div class="task-header">
+                            <h2>Accomplishtments</h2>
+                            <div class="right-container">
+
+                                @{
+                                    var sessionID = Session["emp_no"]?.ToString();
+                                    var projectLeads = ViewBag.ProjectLeads?.ToString();
+                                }
+
+                                @if (sessionID != null && projectLeads != null && sessionID == projectLeads)
+                                {
+                                    <a onclick="openReportNewForm()">
+                                        <input type="text" value="@projectLeads" hidden />
+                                        <span class="lar la-plus-square"></span>Add Report
+                                    </a>
+                                }
+
+                            </div>
+                        </div>*@
+
+                        @*<div class="task-grid">
+
+                            <div class="task-projects">
+                                <div class="task">
+                                    <div class="task-body">
+                                        <div class="table-responsive" style="overflow-x: auto;">
+                                            <div id="reportTableContainer">
+                                                <table width="100%" height="100px">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>Date Submitted</td>
+                                                            <td>Report No.</td>
+                                                            <td>Description</td>
+                                                            <td>Remarks</td>
+                                                            <td>Action</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var report in Model.Reports)
+                                                        {
+                                                            <tr>
+                                                                <td>@report.rep_date</td>
+                                                                <td>@report.rep_no</td>
+                                                                <td>@Html.Raw(report.rep_description.Length > 20 ? report.rep_description.Substring(0, 20) + "..." : report.rep_description)<i class="las la-expand-arrows-alt" onclick="openReportEditForm('@report.rep_no', '@report.rep_proj_id');"></i></td>
+                                                                <td>@report.rep_stats</td>
+                                                                <td>
+                                                                    <a href="@Url.Action("ProjectExport", "Admin", new { rep_no = report.rep_no })" target="_blank">
+                                                                        Export
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    
+                </div>
+
+
             </div>
         </div>
 
@@ -413,95 +754,95 @@
         </div>
 
         <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
-        <div class="add-new-container" id="add-new-container">
-            @*<form id="UpdateProForm">*@
-            <div class="add-new-header">
-                @*<span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>*@
-                <button type="reset" style="border: none;">
-                    <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
-                </button>
-                <center>
-                    <h3>EDIT PROJECT <i class="las la-rocket"></i></h3>
-                </center>
+                                        <div class="add-new-container" id="add-new-container">
+                                            @*<form id="UpdateProForm">*@
+                                            <div class="add-new-header">
+                                                @*<span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>*@
+                                                <button type="reset" style="border: none;">
+                                                    <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                                                </button>
+                                                <center>
+                                                    <h3>EDIT PROJECT <i class="las la-rocket"></i></h3>
+                                                </center>
 
-            </div>
+                                            </div>
 
-            <div class="add-new-main">
-                <div class="add-new-left">
-                    <div class="input-fields">
-                        <Label>Client</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client" required>
-                    </div>
-                    <div class="input-fields">
-                        <Label>Project Name</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name" required>
-                    </div>
-                    <div class="input-fields">
-                        <Label>Subject</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject" readonly>
-                    </div>
-                    <div class="input-fields">
-                        <Label>Location Site</Label>
-                        <br>
-                        <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location" required>
-                    </div>
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <Label>Project Lead</Label>
-                            <br>
-                            <select name="proj_lead" required>
-                                <option disabled>Select Lead</option>
-                                <option value="@Model.Project.proj_lead" selected>@ViewBag.ProjectLead</option>
-                            </select>
-                        </div>
-                        <div class="input-fields right">
-                            <Label>Status</Label>
-                            <br>
-                            <select name="proj_status" required>
-                                <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
-                                <option>On-going</option>
-                                <option>Upcomming</option>
-                                <option>Cancelled</option>
-                            </select>
-                        </div>
-                    </div>
+                                            <div class="add-new-main">
+                                                <div class="add-new-left">
+                                                    <div class="input-fields">
+                                                        <Label>Client</Label>
+                                                        <br>
+                                                        <input type="text" placeholder="Enter here.." name="proj_client" value="@Model.Project.proj_client" required>
+                                                    </div>
+                                                    <div class="input-fields">
+                                                        <Label>Project Name</Label>
+                                                        <br>
+                                                        <input type="text" placeholder="Enter here.." name="proj_name" value="@Model.Project.proj_name" required>
+                                                    </div>
+                                                    <div class="input-fields">
+                                                        <Label>Subject</Label>
+                                                        <br>
+                                                        <input type="text" placeholder="Enter here.." name="proj_subject" value="@Model.Project.proj_subject" readonly>
+                                                    </div>
+                                                    <div class="input-fields">
+                                                        <Label>Location Site</Label>
+                                                        <br>
+                                                        <input type="text" placeholder="Enter here.." name="proj_location" value="@Model.Project.proj_location" required>
+                                                    </div>
+                                                    <div class="grp">
+                                                        <div class="input-fields left">
+                                                            <Label>Project Lead</Label>
+                                                            <br>
+                                                            <select name="proj_lead" required>
+                                                                <option disabled>Select Lead</option>
+                                                                <option value="@Model.Project.proj_lead" selected>@ViewBag.ProjectLead</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-fields right">
+                                                            <Label>Status</Label>
+                                                            <br>
+                                                            <select name="proj_status" required>
+                                                                <option value="@Model.Project.proj_status" selected>@Model.Project.proj_status</option>
+                                                                <option>On-going</option>
+                                                                <option>Upcomming</option>
+                                                                <option>Cancelled</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
 
-                    <div class="grp">
-                        <div class="input-fields left">
-                            <Label>Start Date</Label>
-                            <br>
-                            <input type="text" id="proj_strDate" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
-                        </div>
-                        <div class="input-fields right">
-                            <Label>Baseline Finish</Label>
-                            <br>
-                            <input type="date" id="proj_endDate" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")" required>
-                        </div>
-                    </div>
-                    <script>
-                        // Disable past dates in proj_strDate
-                        var projStartDate = document.getElementById('proj_strDate');
-                        var today = new Date().toISOString().split('T')[0];
-                        projStartDate.setAttribute('min', today);
+                                                    <div class="grp">
+                                                        <div class="input-fields left">
+                                                            <Label>Start Date</Label>
+                                                            <br>
+                                                            <input type="text" id="proj_strDate" name="proj_strDate" value="@Model.Project.proj_strDate" readonly>
+                                                        </div>
+                                                        <div class="input-fields right">
+                                                            <Label>Baseline Finish</Label>
+                                                            <br>
+                                                            <input type="date" id="proj_endDate" name="proj_endDate" value="@Model.Project.proj_endDate?.ToString(" MM-dd-yyyy")" required>
+                                                        </div>
+                                                    </div>
+                                                    <script>
+                                                        // Disable past dates in proj_strDate
+                                                        var projStartDate = document.getElementById('proj_strDate');
+                                                        var today = new Date().toISOString().split('T')[0];
+                                                        projStartDate.setAttribute('min', today);
 
-                        // Disable today and past dates in proj_endDate
-                        var projEndDate = document.getElementById('proj_endDate');
-                        projEndDate.setAttribute('min', today);
-                    </script>
-                    @*<p class="emErrP" style="margin-top: 5px; color: red; font-weight: bold;"></p>*@
-
-
-                    <!--<button onclick="UpdateProjectValidation()">UPDATE PROJECT</button>-->
-                    @*updatedata()*@
-
-                    <button onclick="updatedata()">UPDATE PROJECT</button>
+                                                        // Disable today and past dates in proj_endDate
+                                                        var projEndDate = document.getElementById('proj_endDate');
+                                                        projEndDate.setAttribute('min', today);
+                                                    </script>
+                                                    @*<p class="emErrP" style="margin-top: 5px; color: red; font-weight: bold;"></p>*@
 
 
-                </div>
-                @*<div class="add-new-right">
+                                                    <!--<button onclick="UpdateProjectValidation()">UPDATE PROJECT</button>-->
+                                                    @*updatedata()*@
+
+                                                    <button onclick="updatedata()">UPDATE PROJECT</button>
+
+
+                                                </div>
+                                                @*<div class="add-new-right">
                         <div class="add-new-header">
                             <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
                         </div>
@@ -526,728 +867,728 @@
                         </div>
                     </div>*@
 
-            </div>
+                                            </div>
 
-            <button>UPDATE PROJECT</button>
+                                            <button>UPDATE PROJECT</button>
 
-        </div>
+                                        </div>
 
-        <div class="input-mem-container" id="input-mem-container">
-            <div class="input-mems-main">
-                <div class="input-mems-title">
-                    <h3>MANPOWER</h3>
+                                        <div class="input-mem-container" id="input-mem-container">
+                                            <div class="input-mems-main">
+                                                <div class="input-mems-title">
+                                                    <h3>MANPOWER</h3>
 
-                </div>
-                <div class="input-mems-list">
-                    <div class="input-mems-grid">
-                        <div class="input-mems-projects">
-                            <div class="input-mems">
-                                <div class="input-mems-body">
-                                    <div class="table-responsive" style="overflow-x: auto;">
-                                        <table id="" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <td>Name</td>
-                                                    <td>Position</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td contenteditable="true"></label></td>
-                                                </tr>
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <center>
-                    <button onclick="closeInputMemForm()">Save</button>
-                    <button onclick="closeInputMemForm()">Cancel</button>
-                </center>
-            </div>
-        </div>
-
-
-        <!-- END -->
-        <!-- ADD REPORT - NEW LAYOUT - 04-12 -->
-
-        <div class="report-new-container" id="report-new-container">
-
-            <div class="report-new-header">
-                <span class="las la-long-arrow-alt-left" onclick="closeReportNewForm()"></span>
-                <h3>REPORT</h3>
-            </div>
-
-            <div class="report-new-main">
-
-                <div class="border">
-                    <div class="left">
-                        <div class="upper">
-                            <div class="upper-content">
-                                <div class="label-container">
-                                    <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mid">
-
-                            <div class="mid-content-btn" onclick="openInputManForm()">
-                                <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
-                            </div>
-
-                        </div>
-
-                        <div class="lower">
-                            <div class="low-list">
-                                <div class="low-grid">
-                                    <div class="low-projects">
-                                        <div class="low">
-                                            <div class="low-body">
-                                                <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table id="outputTable" width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>MANPOWER</td>
-                                                                <td>POSITION</td>
-                                                                <td>Time-In</td>
-                                                                <td>Time-Out</td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
                                                 </div>
+                                                <div class="input-mems-list">
+                                                    <div class="input-mems-grid">
+                                                        <div class="input-mems-projects">
+                                                            <div class="input-mems">
+                                                                <div class="input-mems-body">
+                                                                    <div class="table-responsive" style="overflow-x: auto;">
+                                                                        <table id="" width="100%">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <td>Name</td>
+                                                                                    <td>Position</td>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td contenteditable="true"><b></b></td>
+                                                                                    <td contenteditable="true"></label></td>
+                                                                                </tr>
+
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <center>
+                                                    <button onclick="closeInputMemForm()">Save</button>
+                                                    <button onclick="closeInputMemForm()">Cancel</button>
+                                                </center>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="mid main-mid">
-                        <div class="mid-content">
-                            <div class="upper">
-                                <label>REPORT # <a> 01 </a> </label>
-                            </div>
-                            <div class="mid">
-                                <div class="mid-container">
-                                    <div class="input">
-                                        <textarea name="" id="rep_description" placeholder="Input here"></textarea>
-                                    </div>
-                                    <div class="attach">
-                                        <button id="attachBtn">
-                                            <i class="las la-paperclip"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="lower">
-                                <div class="img-list" id="img-list">
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                        <!-- END -->
+                                        <!-- ADD REPORT - NEW LAYOUT - 04-12 -->
 
-                    <div class="right">
-                        <div class="right-content">
-                            <div class="upper">
-                                <div class="date">
-                                    <input type="date" id="rep_date" readonly>
-                                </div>
-                                <div class="status">
-                                    <select id="rep_status" required>
-                                        <option>Select Status</option>
-                                        <option>Achieved</option>
-                                        <option>Not Achieved</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mid">
-                                <div class="mid-container">
-                                    <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
-                                    <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
-                                </div>
-                            </div>
-                            <div class="lower">
-                                <div class="low-list">
-                                    <div class="low-grid">
-                                        <div class="low-projects">
-                                            <div class="low">
-                                                <div class="low-body">
-                                                    <div class="table-responsive" style="overflow-x: auto;">
-                                                        <table width="100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td>SCOPE OF WORK</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="scope-list">
-                                                            </tbody>
-                                                        </table>
+                                        <div class="report-new-container" id="report-new-container">
+
+                                            <div class="report-new-header">
+                                                <span class="las la-long-arrow-alt-left" onclick="closeReportNewForm()"></span>
+                                                <h3>REPORT</h3>
+                                            </div>
+
+                                            <div class="report-new-main">
+
+                                                <div class="border">
+                                                    <div class="left">
+                                                        <div class="upper">
+                                                            <div class="upper-content">
+                                                                <div class="label-container">
+                                                                    <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
+                                                                </div>
+
+                                                                <div class="label-container">
+                                                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
+                                                                </div>
+
+                                                                <div class="label-container">
+                                                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
+                                                                </div>
+
+                                                                <div class="label-container">
+                                                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
+                                                                </div>
+
+                                                                <div class="label-container">
+                                                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mid">
+
+                                                            <div class="mid-content-btn" onclick="openInputManForm()">
+                                                                <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="lower">
+                                                            <div class="low-list">
+                                                                <div class="low-grid">
+                                                                    <div class="low-projects">
+                                                                        <div class="low">
+                                                                            <div class="low-body">
+                                                                                <div class="table-responsive" style="overflow-x: auto;">
+                                                                                    <table id="outputTable" width="100%">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <td>MANPOWER</td>
+                                                                                                <td>POSITION</td>
+                                                                                                <td>Time-In</td>
+                                                                                                <td>Time-Out</td>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mid main-mid">
+                                                        <div class="mid-content">
+                                                            <div class="upper">
+                                                                <label>REPORT # <a> 01 </a> </label>
+                                                            </div>
+                                                            <div class="mid">
+                                                                <div class="mid-container">
+                                                                    <div class="input">
+                                                                        <textarea name="" id="rep_description" placeholder="Input here"></textarea>
+                                                                    </div>
+                                                                    <div class="attach">
+                                                                        <button id="attachBtn">
+                                                                            <i class="las la-paperclip"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="lower">
+                                                                <div class="img-list" id="img-list">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="right">
+                                                        <div class="right-content">
+                                                            <div class="upper">
+                                                                <div class="date">
+                                                                    <input type="date" id="rep_date" readonly>
+                                                                </div>
+                                                                <div class="status">
+                                                                    <select id="rep_status" required>
+                                                                        <option>Select Status</option>
+                                                                        <option>Achieved</option>
+                                                                        <option>Not Achieved</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mid">
+                                                                <div class="mid-container">
+                                                                    <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
+                                                                    <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="lower">
+                                                                <div class="low-list">
+                                                                    <div class="low-grid">
+                                                                        <div class="low-projects">
+                                                                            <div class="low">
+                                                                                <div class="low-body">
+                                                                                    <div class="table-responsive" style="overflow-x: auto;">
+                                                                                        <table width="100%">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <td></td>
+                                                                                                    <td>SCOPE OF WORK</td>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody id="scope-list">
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="button">
+                                                            <button onclick="saveData()">SUBMIT</button>
+                                                        </div>
+
+                                                        <script>
+                                                            function saveData() {
+                                                                var repDate = document.getElementById('rep_date').value;
+                                                                var repProjId = document.getElementById('rep_proj_id').value;
+
+                                                                var images = document.querySelectorAll('#img-list img');
+                                                                var imageStrings = [];
+
+                                                                var data = [];
+
+                                                                // Loop through each row of the table
+                                                                $("#outputTable tbody tr").each(function () {
+                                                                    var row = {};
+
+                                                                    // Extract data from the columns of the current row
+                                                                    row.man_name = $(this).find("td:eq(0)").text();
+                                                                    row.man_position = $(this).find("td:eq(1)").text();
+                                                                    row.atte_timein = $(this).find("td:eq(2)").text();
+                                                                    row.atte_timeout = $(this).find("td:eq(3)").text();
+
+                                                                    // Add the row data to the array
+                                                                    data.push(row);
+                                                                });
+
+                                                                var scopeList = document.getElementById("scope-list");
+                                                                var scopes = "";
+                                                                for (var i = 0; i < scopeList.children.length; i++) {
+                                                                    var scope = scopeList.children[i].children[1].textContent;
+                                                                    scopes += scope + ", ";
+                                                                }
+
+                                                                var description = document.getElementById("rep_description").value;
+                                                                var status = document.getElementById("rep_status").value;
+
+                                                                if (repDate === '' || images === null || images.length === 0 || data.length === 0 || status === '' || description.trim() === '') {
+                                                                    alert('Please fill out all required fields and select at least one image');
+                                                                    return;
+                                                                }
+
+                                                                for (var i = 0; i < images.length; i++) {
+                                                                    var canvas = document.createElement('canvas');
+                                                                    var context = canvas.getContext('2d');
+                                                                    canvas.width = images[i].naturalWidth;
+                                                                    canvas.height = images[i].naturalHeight;
+                                                                    context.drawImage(images[i], 0, 0);
+                                                                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
+                                                                    imageStrings.push(base64);
+                                                                }
+
+                                                                // Create an array to store the AJAX requests
+                                                                var requests = [];
+
+                                                                // Add the AJAX request for saving the report
+                                                                requests.push($.ajax({
+                                                                    type: "POST",
+                                                                    url: "/Admin/SaveReport",
+                                                                    data: {
+                                                                        rep_scope: scopes,
+                                                                        rep_date: repDate,
+                                                                        rep_stats: status,
+                                                                        rep_proj_id: repProjId,
+                                                                        rep_description: description
+                                                                    },
+                                                                    success: function (response) {
+                                                                        // Get the rep_no value from the response
+                                                                        var rep_no = response.rep_no;
+
+                                                                        // Add the AJAX request for saving report images
+                                                                        requests.push($.ajax({
+                                                                            type: 'POST',
+                                                                            url: '/Admin/SaveReportImages',
+                                                                            data: {
+                                                                                images: imageStrings,
+                                                                                rep_date: repDate,
+                                                                                rep_proj_id: repProjId,
+                                                                                rep_no: rep_no // Pass the rep_no value
+                                                                            }
+                                                                        }));
+
+                                                                        // Add the AJAX request for saving data
+                                                                        requests.push($.ajax({
+                                                                            type: "POST",
+                                                                            url: "/Admin/SaveData",
+                                                                            data: JSON.stringify({ data: data, man_proj_id: repProjId, man_date: repDate, rep_no: rep_no }), // Include the rep_no value
+                                                                            contentType: "application/json; charset=utf-8",
+                                                                            dataType: "json"
+                                                                        }));
+                                                                    }
+                                                                }));
+
+                                                                // Execute all AJAX requests simultaneously and wait for them to complete
+                                                                $.when.apply($, requests).done(function () {
+                                                                    alert('Data has been saved successfully!');
+                                                                    location.reload();
+                                                                }).fail(function () {
+                                                                    alert('Error Saving Data');
+                                                                });
+                                                            }
+                                                        </script>
+
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="button">
-                            <button onclick="saveData()">SUBMIT</button>
-                        </div>
+                                        <!-- END -->
+                                        <!-- EDIT REPORT - NEW LAYOUT - 04-12 -->
 
-                        <script>
-                            function saveData() {
-                                var repDate = document.getElementById('rep_date').value;
-                                var repProjId = document.getElementById('rep_proj_id').value;
+                                        <div class="report-edit-container" id="report-edit-container">
 
-                                var images = document.querySelectorAll('#img-list img');
-                                var imageStrings = [];
-
-                                var data = [];
-
-                                // Loop through each row of the table
-                                $("#outputTable tbody tr").each(function () {
-                                    var row = {};
-
-                                    // Extract data from the columns of the current row
-                                    row.man_name = $(this).find("td:eq(0)").text();
-                                    row.man_position = $(this).find("td:eq(1)").text();
-                                    row.atte_timein = $(this).find("td:eq(2)").text();
-                                    row.atte_timeout = $(this).find("td:eq(3)").text();
-
-                                    // Add the row data to the array
-                                    data.push(row);
-                                });
-
-                                var scopeList = document.getElementById("scope-list");
-                                var scopes = "";
-                                for (var i = 0; i < scopeList.children.length; i++) {
-                                    var scope = scopeList.children[i].children[1].textContent;
-                                    scopes += scope + ", ";
-                                }
-
-                                var description = document.getElementById("rep_description").value;
-                                var status = document.getElementById("rep_status").value;
-
-                                if (repDate === '' || images === null || images.length === 0 || data.length === 0 || status === '' || description.trim() === '') {
-                                    alert('Please fill out all required fields and select at least one image');
-                                    return;
-                                }
-
-                                for (var i = 0; i < images.length; i++) {
-                                    var canvas = document.createElement('canvas');
-                                    var context = canvas.getContext('2d');
-                                    canvas.width = images[i].naturalWidth;
-                                    canvas.height = images[i].naturalHeight;
-                                    context.drawImage(images[i], 0, 0);
-                                    var base64 = canvas.toDataURL('image/jpeg', 0.8);
-                                    imageStrings.push(base64);
-                                }
-
-                                // Create an array to store the AJAX requests
-                                var requests = [];
-
-                                // Add the AJAX request for saving the report
-                                requests.push($.ajax({
-                                    type: "POST",
-                                    url: "/Admin/SaveReport",
-                                    data: {
-                                        rep_scope: scopes,
-                                        rep_date: repDate,
-                                        rep_stats: status,
-                                        rep_proj_id: repProjId,
-                                        rep_description: description
-                                    },
-                                    success: function (response) {
-                                        // Get the rep_no value from the response
-                                        var rep_no = response.rep_no;
-
-                                        // Add the AJAX request for saving report images
-                                        requests.push($.ajax({
-                                            type: 'POST',
-                                            url: '/Admin/SaveReportImages',
-                                            data: {
-                                                images: imageStrings,
-                                                rep_date: repDate,
-                                                rep_proj_id: repProjId,
-                                                rep_no: rep_no // Pass the rep_no value
-                                            }
-                                        }));
-
-                                        // Add the AJAX request for saving data
-                                        requests.push($.ajax({
-                                            type: "POST",
-                                            url: "/Admin/SaveData",
-                                            data: JSON.stringify({ data: data, man_proj_id: repProjId, man_date: repDate, rep_no: rep_no }), // Include the rep_no value
-                                            contentType: "application/json; charset=utf-8",
-                                            dataType: "json"
-                                        }));
-                                    }
-                                }));
-
-                                // Execute all AJAX requests simultaneously and wait for them to complete
-                                $.when.apply($, requests).done(function () {
-                                    alert('Data has been saved successfully!');
-                                    location.reload();
-                                }).fail(function () {
-                                    alert('Error Saving Data');
-                                });
-                            }
-                        </script>
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
-        <!-- END -->
-        <!-- EDIT REPORT - NEW LAYOUT - 04-12 -->
-
-        <div class="report-edit-container" id="report-edit-container">
-
-            <div class="report-edit-header">
-                <span class="las la-long-arrow-alt-left" onclick="closeReportEditForm()"></span>
-                <h3>EDIT REPORT</h3>
-            </div>
-
-            <div class="report-edit-main">
-
-                <div class="border">
-                    <div class="left">
-                        <div class="upper">
-                            <div class="upper-content">
-                                <div class="label-container">
-                                    <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
-
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
-                                </div>
-
-                                <div class="label-container">
-                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="mid">
-
-                            <div class="mid-content @((Session["emp_no"]?.ToString() != ViewBag.ProjectLeads) ? "disabled" : "")" onclick="@((Session["emp_no"]?.ToString() != ViewBag.ProjectLeads) ? "" : "openInputManForm1()")">
-                                <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
-                            </div>
-
-                        </div>
-                        <div class="lower">
-                            <div class="low-list">
-                                <div class="low-grid">
-                                    <div class="low-projects">
-                                        <div class="low">
-                                            <div class="low-body">
-                                                <div class="table-responsive" style="overflow-x: auto;">
-
-
-                                                    <table width="100%" id="Clockoutput">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>MANPOWER</td>
-                                                                <td>Time-In</td>
-                                                                <td>Time-Out</td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="table-body">
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                            <div class="report-edit-header">
+                                                <span class="las la-long-arrow-alt-left" onclick="closeReportEditForm()"></span>
+                                                <h3>EDIT REPORT</h3>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="mid">
-                        <div class="mid-content">
-                            <div class="upper">
-                                <label id="rep_no">REPORT ID </label>
-                            </div>
-                            <div class="mid main-mid">
-                                <div class="mid-container">
-                                    <div class="input">
+                                            <div class="report-edit-main">
 
-                                        <input type="text" name="rep_description" id="rep_description1" readonly>
+                                                <div class="border">
+                                                    <div class="left">
+                                                        <div class="upper">
+                                                            <div class="upper-content">
+                                                                <div class="label-container">
+                                                                    <label for="">Project Name: </label> &nbsp;<h3>@ViewBag.ProjectName</h3>
 
-                                    </div>
-                                    <div class="attach">
-                                        <i class="las la-paperclip"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="lower">
-                                <div class="img-list">
-                                    <div id="image-container"></div>
-                                </div>
+                                                                </div>
 
-                            </div>
-                        </div>
-                    </div>
+                                                                <div class="label-container">
+                                                                    <label for="">Subject: </label> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Subject</h3>
+                                                                </div>
 
-                    <div class="right">
-                        <div class="right-content">
-                            <div class="upper">
-                                <div class="date">
-                                    <input type="text" id="rep_date1" name="rep_date1" readonly>
-                                </div>
-                                <div class="date">
-                                    <input type="text" name="rep_stats" id="rep_stats" readonly>
-                                    <input type="text" name="ProjectID" value="@ViewBag.ProjectID" hidden>
-                                    <input type="text" name="" value="" hidden>
+                                                                <div class="label-container">
+                                                                    <label for="">Client: </label>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h3>@ViewBag.Client</h3>
+                                                                </div>
 
-                                </div>
-                            </div>
-                            <div class="mid">
-                                <div class="mid-container">
-                                    <i class="las la-project-diagram"></i> <input type="text" placeholder="Input here..." readonly><i class="las la-location-arrow enter"></i>
-                                </div>
-                            </div>
-                            <div class="lower">
-                                <div class="low-list">
-                                    <div class="low-grid">
-                                        <div class="low-projects">
-                                            <div class="low">
-                                                <div class="low-body">
-                                                    <div class="table-responsive" style="overflow-x: auto;">
-                                                        <table width="100%" id="ScopeTable">
-                                                            <thead>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td>SCOPE OF WORK</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <!-- Scope of work rows will be added dynamically here -->
-                                                            </tbody>
-                                                        </table>
+                                                                <div class="label-container">
+                                                                    <label for="">Location Site:</label>&nbsp;&nbsp;<h3>@ViewBag.LocationSite</h3>
+                                                                </div>
+
+                                                                <div class="label-container">
+                                                                    <label for="">Project Lead: </label>&nbsp;&nbsp;&nbsp;  <h3>@ViewBag.ProjectLead</h3>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="mid">
+
+                                                            <div class="mid-content @((Session["emp_no"]?.ToString() != ViewBag.ProjectLeads) ? "disabled" : "")" onclick="@((Session["emp_no"]?.ToString() != ViewBag.ProjectLeads) ? "" : "openInputManForm1()")">
+                                                                <i class="las la-list"></i> &nbsp; <h3>Attendance</h3>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="lower">
+                                                            <div class="low-list">
+                                                                <div class="low-grid">
+                                                                    <div class="low-projects">
+                                                                        <div class="low">
+                                                                            <div class="low-body">
+                                                                                <div class="table-responsive" style="overflow-x: auto;">
+
+
+                                                                                    <table width="100%" id="Clockoutput">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <td>MANPOWER</td>
+                                                                                                <td>Time-In</td>
+                                                                                                <td>Time-Out</td>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody id="table-body">
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @*<div class="button">
+
+                                                    <div class="mid">
+                                                        <div class="mid-content">
+                                                            <div class="upper">
+                                                                <label id="rep_no">REPORT ID </label>
+                                                            </div>
+                                                            <div class="mid main-mid">
+                                                                <div class="mid-container">
+                                                                    <div class="input">
+
+                                                                        <input type="text" name="rep_description" id="rep_description1" readonly>
+
+                                                                    </div>
+                                                                    <div class="attach">
+                                                                        <i class="las la-paperclip"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="lower">
+                                                                <div class="img-list">
+                                                                    <div id="image-container"></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="right">
+                                                        <div class="right-content">
+                                                            <div class="upper">
+                                                                <div class="date">
+                                                                    <input type="text" id="rep_date1" name="rep_date1" readonly>
+                                                                </div>
+                                                                <div class="date">
+                                                                    <input type="text" name="rep_stats" id="rep_stats" readonly>
+                                                                    <input type="text" name="ProjectID" value="@ViewBag.ProjectID" hidden>
+                                                                    <input type="text" name="" value="" hidden>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="mid">
+                                                                <div class="mid-container">
+                                                                    <i class="las la-project-diagram"></i> <input type="text" placeholder="Input here..." readonly><i class="las la-location-arrow enter"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="lower">
+                                                                <div class="low-list">
+                                                                    <div class="low-grid">
+                                                                        <div class="low-projects">
+                                                                            <div class="low">
+                                                                                <div class="low-body">
+                                                                                    <div class="table-responsive" style="overflow-x: auto;">
+                                                                                        <table width="100%" id="ScopeTable">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <td></td>
+                                                                                                    <td>SCOPE OF WORK</td>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <!-- Scope of work rows will be added dynamically here -->
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @*<div class="button">
                                 <button onclick="Edit()">EDIT</button>
                             </div>*@
-                    </div>
-                </div>
-            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
 
-        </div>
+                                        </div>
 
-        <!-- END -->
-        <!-- ATTENDANCE POPUP PAGE 04-19 -->
+                                        <!-- END -->
+                                        <!-- ATTENDANCE POPUP PAGE 04-19 -->
 
-        <div class="input-man-container" id="input-man-container">
-            <div class="input-man-main">
-                <div class="input-man-title">
-                    <div class="left">
-                        <i class="las la-braille"></i><h3>ATTENDANCE</h3>
-                    </div>
-                    <div class="right">
-                        <i class="lar la-check-circle"></i>
-                        <i class="las la-times-circle" onclick="closeInputManForm()"></i>
-                    </div>
+                                        <div class="input-man-container" id="input-man-container">
+                                            <div class="input-man-main">
+                                                <div class="input-man-title">
+                                                    <div class="left">
+                                                        <i class="las la-braille"></i><h3>ATTENDANCE</h3>
+                                                    </div>
+                                                    <div class="right">
+                                                        <i class="lar la-check-circle"></i>
+                                                        <i class="las la-times-circle" onclick="closeInputManForm()"></i>
+                                                    </div>
 
-                </div>
-                <div class="input-man-list">
-                    <div class="input-man-grid">
-                        <div class="input-man-projects">
-                            <div class="input-man">
-                                <div class="input-man-body">
-                                    <div class="table-responsive" style="overflow-x: auto;">
-                                        <table id="inputTable" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <td><b>MANPOWER</b></td>
-                                                    <td><b>POSITION</b></td>
-                                                    <td>Time - In</td>
-                                                    <td>Time - Out</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td contenteditable="true"><b></b></td>
-                                                    <td><button class="in">CLOCK IN</button></td>
-                                                    <td><button class="out">CLOCK OUT</button></td>
-                                                </tr>
+                                                </div>
+                                                <div class="input-man-list">
+                                                    <div class="input-man-grid">
+                                                        <div class="input-man-projects">
+                                                            <div class="input-man">
+                                                                <div class="input-man-body">
+                                                                    <div class="table-responsive" style="overflow-x: auto;">
+                                                                        <table id="inputTable" width="100%">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <td><b>MANPOWER</b></td>
+                                                                                    <td><b>POSITION</b></td>
+                                                                                    <td>Time - In</td>
+                                                                                    <td>Time - Out</td>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td contenteditable="true"><b></b></td>
+                                                                                    <td contenteditable="true"><b></b></td>
+                                                                                    <td><button class="in">CLOCK IN</button></td>
+                                                                                    <td><button class="out">CLOCK OUT</button></td>
+                                                                                </tr>
 
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- END -->
-        <!-- ATTENDANCE POPUP PAGE 04-19 for Edit-->
-        <div class="input-man-container" id="input-man-container-edit">
-            <div class="input-man-main">
-                <div class="input-man-title">
-                    <div class="left">
-                        <i class="las la-braille"></i><h3>ATTENDANCE</h3>
-                    </div>
-                    <div class="right">
-                        <i class="lar la-check-circle" onclick="updateAllAttendances()"></i>
-                        <i class="las la-times-circle" onclick="closeInputManForm1()"></i>
-                    </div>
-
-                </div>
-                <div class="input-man-list">
-                    <div class="input-man-grid">
-                        <div class="input-man-projects">
-                            <div class="input-man">
-                                <div class="input-man-body">
-                                    <div class="table-responsive" style="overflow-x: auto;">
-                                        <table id="inputTable" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <td><b>MANPOWER</b></td>
-                                                    <td><b>POSITION</b></td>
-                                                    <td>Time - In</td>
-                                                    <td>Time - Out</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var manpower in Model.Manpowers)
-                                                {
-                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id && a.NewManpower.man_proj_id == Model.Project.proj_type_id);
-
-                                                    if (attendance?.atte_timein != null) // Check if attendance time in is not null
-                                                    {
-                                                        <tr>
-                                                            <td contenteditable="true"><b>@manpower.man_name</b></td>
-                                                            <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
-                                                            <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
-                                                            <td><button class="out" onclick="updateAttendance('@attendance.atte_id')">CLOCK OUT</button></td>
-                                                        </tr>
-                                                    }
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @* NEW LAYOUT ADDITION - PROPOSAL REQUEST *@
-
-        <div class="prop-container" id="prop-container">
-            <form id="ManPropoForm">
-                <div class="prop-main">
-                    <div class="prop-title">
-                        <center> <input type="text" id="prop_description" value="@ViewBag.ProjectName - @ViewBag.Subject" readonly /> </center>
-                    </div>
-
-                    <div class="prop-input-container">
-
-                        <div class="prop-select">
-                            <h3>
-                                Proposal:
-                            </h3>
-                            <select id="Engineer" name="Engineer" required>
-                                <option value="">--Select Employee--</option>
-                            </select>
-
-                        </div>
-
-                        <div class="prop-main-input">
-                            <textarea name="" id="proj_subject" placeholder="Place your proposal messege here.." required></textarea>
-                            <input type="text" id="project_id" value="@ViewBag.ProjectID" hidden />
-                        </div>
-
-                        <div class="prop-list-input">
-                            <div class="input-prop-list">
-                                <div class="input-prop-grid">
-                                    <div class="input-prop-projects">
-                                        <div class="input-prop">
-                                            <div class="input-prop-body">
-                                                <div class="table-responsive" style="overflow-x: auto;">
-                                                    <table id="propInput" width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <td>
-                                                                    <b>Manpower List:</b>
-                                                                </td>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td contenteditable="true"><i class="las la-dot-circle"></i><b></b></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
+                                        <!-- END -->
+                                        <!-- ATTENDANCE POPUP PAGE 04-19 for Edit-->
+                                        <div class="input-man-container" id="input-man-container-edit">
+                                            <div class="input-man-main">
+                                                <div class="input-man-title">
+                                                    <div class="left">
+                                                        <i class="las la-braille"></i><h3>ATTENDANCE</h3>
+                                                    </div>
+                                                    <div class="right">
+                                                        <i class="lar la-check-circle" onclick="updateAllAttendances()"></i>
+                                                        <i class="las la-times-circle" onclick="closeInputManForm1()"></i>
+                                                    </div>
 
+                                                </div>
+                                                <div class="input-man-list">
+                                                    <div class="input-man-grid">
+                                                        <div class="input-man-projects">
+                                                            <div class="input-man">
+                                                                <div class="input-man-body">
+                                                                    <div class="table-responsive" style="overflow-x: auto;">
+                                                                        <table id="inputTable" width="100%">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <td><b>MANPOWER</b></td>
+                                                                                    <td><b>POSITION</b></td>
+                                                                                    <td>Time - In</td>
+                                                                                    <td>Time - Out</td>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @foreach (var manpower in Model.Manpowers)
+                                                                                {
+                                                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id && a.NewManpower.man_proj_id == Model.Project.proj_type_id);
 
-                    <center>
-                        <button id="saveButton" onclick="saveProposal()">Save</button>
-                        <button onclick="closeInputPropForm()">Cancel</button>
-                    </center>
-                </div>
-            </form>
-        </div>
-
-        @* END *@
-
-        <!-- END -->
-        @* NEW LAYOUT ADDITION - EDIT PROPOSAL REQUEST *@
-
-        <div class="prop-edit-container" id="prop-edit-container">
-            <div class="prop-main">
-                <div class="prop-title">
-                    <input name="prop_status" id="prop_status" value="@ViewBag.ProposalStats" class="status approve decline" readonly />
-                    <input name="prop_status" id="prop_statuses" value="Pending" class="status approve decline" hidden />
-                    <center> <input type="text" id="prop_description" value="@ViewBag.ProposalDescription" readonly /> </center>
-                </div>
-
-                <div class="prop-input-container">
-
-                    <div class="prop-select">
-                        <h3>
-                            Proposal:
-                        </h3>
-                        <select id="Engineer1">
-                            <option value="@ViewBag.ProposalEngineerID">@ViewBag.ProposalEngineer</option>
-                        </select>
-                    </div>
-
-                    <div class="prop-main-input">
-                        <textarea name="" id="proj_subject1" value="@ViewBag.ProposalSubject" readonly>@ViewBag.ProposalSubject</textarea>
-                        <input type="text" id="project_id" value="@ViewBag.ProjectID" hidden />
-                    </div>
-
-                    <div class="prop-list-input">
-                        <div class="input-prop-list">
-                            <div class="input-prop-grid">
-                                <div class="input-prop-projects">
-                                    <div class="input-prop">
-                                        <div class="input-prop-body">
-                                            <div class="table-responsive" style="overflow-x: auto;">
-                                                <table id="propInput1" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <td>
-                                                                <b>Manpower List:</b>
-                                                            </td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td @*contenteditable="true"*@><i class="las la-dot-circle"></i><b>@ViewBag.ProposalMan</b></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                                    if (attendance?.atte_timein != null) // Check if attendance time in is not null
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td contenteditable="true"><b>@manpower.man_name</b></td>
+                                                                                            <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
+                                                                                            <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
+                                                                                            <td><button class="out" onclick="updateAttendance('@attendance.atte_id')">CLOCK OUT</button></td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
+                                        @* NEW LAYOUT ADDITION - PROPOSAL REQUEST *@
+
+                                        <div class="prop-container" id="prop-container">
+                                            <form id="ManPropoForm">
+                                                <div class="prop-main">
+                                                    <div class="prop-title">
+                                                        <center> <input type="text" id="prop_description" value="@ViewBag.ProjectName - @ViewBag.Subject" readonly /> </center>
+                                                    </div>
+
+                                                    <div class="prop-input-container">
+
+                                                        <div class="prop-select">
+                                                            <h3>
+                                                                Proposal:
+                                                            </h3>
+                                                            <select id="Engineer" name="Engineer" required>
+                                                                <option value="">--Select Employee--</option>
+                                                            </select>
+
+                                                        </div>
+
+                                                        <div class="prop-main-input">
+                                                            <textarea name="" id="proj_subject" placeholder="Place your proposal messege here.." required></textarea>
+                                                            <input type="text" id="project_id" value="@ViewBag.ProjectID" hidden />
+                                                        </div>
+
+                                                        <div class="prop-list-input">
+                                                            <div class="input-prop-list">
+                                                                <div class="input-prop-grid">
+                                                                    <div class="input-prop-projects">
+                                                                        <div class="input-prop">
+                                                                            <div class="input-prop-body">
+                                                                                <div class="table-responsive" style="overflow-x: auto;">
+                                                                                    <table id="propInput" width="100%">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    <b>Manpower List:</b>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td contenteditable="true"><i class="las la-dot-circle"></i><b></b></td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
 
 
-                <center>
-                    <button id="saveButton" onclick="UpdateProp()" @if (ViewBag.ProposalStats != null && ViewBag.ProposalStats.ToString().Trim() == "Approved") { <text> style="display: none;" </text> }>Save</button>
-                    <button onclick="closeInputEditPropForm()">Cancel</button>
+                                                    <center>
+                                                        <button id="saveButton" onclick="saveProposal()">Save</button>
+                                                        <button onclick="closeInputPropForm()">Cancel</button>
+                                                    </center>
+                                                </div>
+                                            </form>
+                                        </div>
 
-                </center>
-            </div>
-        </div>
+                                        @* END *@
 
-        @* END *@
+                                        <!-- END -->
+                                        @* NEW LAYOUT ADDITION - EDIT PROPOSAL REQUEST *@
+
+                                        <div class="prop-edit-container" id="prop-edit-container">
+                                            <div class="prop-main">
+                                                <div class="prop-title">
+                                                    <input name="prop_status" id="prop_status" value="@ViewBag.ProposalStats" class="status approve decline" readonly />
+                                                    <input name="prop_status" id="prop_statuses" value="Pending" class="status approve decline" hidden />
+                                                    <center> <input type="text" id="prop_description" value="@ViewBag.ProposalDescription" readonly /> </center>
+                                                </div>
+
+                                                <div class="prop-input-container">
+
+                                                    <div class="prop-select">
+                                                        <h3>
+                                                            Proposal:
+                                                        </h3>
+                                                        <select id="Engineer1">
+                                                            <option value="@ViewBag.ProposalEngineerID">@ViewBag.ProposalEngineer</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="prop-main-input">
+                                                        <textarea name="" id="proj_subject1" value="@ViewBag.ProposalSubject" readonly>@ViewBag.ProposalSubject</textarea>
+                                                        <input type="text" id="project_id" value="@ViewBag.ProjectID" hidden />
+                                                    </div>
+
+                                                    <div class="prop-list-input">
+                                                        <div class="input-prop-list">
+                                                            <div class="input-prop-grid">
+                                                                <div class="input-prop-projects">
+                                                                    <div class="input-prop">
+                                                                        <div class="input-prop-body">
+                                                                            <div class="table-responsive" style="overflow-x: auto;">
+                                                                                <table id="propInput1" width="100%">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <b>Manpower List:</b>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td @*contenteditable="true"*@><i class="las la-dot-circle"></i><b>@ViewBag.ProposalMan</b></td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <center>
+                                                    <button id="saveButton" onclick="UpdateProp()" @if (ViewBag.ProposalStats != null && ViewBag.ProposalStats.ToString().Trim() == "Approved") { <text> style="display: none;" </text> }>Save</button>
+                                                    <button onclick="closeInputEditPropForm()">Cancel</button>
+
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        @* END *@
 
 
 
 
-        <div class="can-pop-container" id="can-popup">
-            <img src="../../images/warning.png">
-            <h2>System Warning!</h2>
-            <p>Do you want to remove the user on the list?</p>
-            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
-            <button type="button" onclick="canClosePopup()">Cancel</button>
-        </div>
+                                        <div class="can-pop-container" id="can-popup">
+                                            <img src="../../images/warning.png">
+                                            <h2>System Warning!</h2>
+                                            <p>Do you want to remove the user on the list?</p>
+                                            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+                                            <button type="button" onclick="canClosePopup()">Cancel</button>
+                                        </div>
 
-        <div class="rem-pop-container" id="rem-popup">
-            <img src="../../images/remove.png">
-            <h2>Deleted!</h2>
-            <p>User removed in the list successfully!</p>
-            <button type="button" onclick="remClosePopup()">OK</button>
-        </div>
+                                        <div class="rem-pop-container" id="rem-popup">
+                                            <img src="../../images/remove.png">
+                                            <h2>Deleted!</h2>
+                                            <p>User removed in the list successfully!</p>
+                                            <button type="button" onclick="remClosePopup()">OK</button>
+                                        </div>
 
-    </main>
+</main>
 </div>
 @*<div class="footer">
         <center>

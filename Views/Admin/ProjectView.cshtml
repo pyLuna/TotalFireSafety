@@ -619,9 +619,9 @@
         <div class="float-manpower" onclick="openInputMemForm()">
 
             <div class="float-container">
-                <i class="las la-plus"></i>
+              
 
-                <h1>MANPOWER</h1>
+                <h1>ATTENDANCE</h1>
             </div>
 
         </div>
@@ -974,14 +974,18 @@
 
                    
                     <script>
-                        $(function () {
-                            $('input[name="mems"]').daterangepicker({
-                                singleDatePicker: true,
-                                showDropdowns: true,
-                                minYear: 1901,
-                                maxYear: parseInt(moment().format('YYYY'), 10)
-                            });
-                        });
+                      $(function () {
+                    var startDate = new Date("@ViewBag.Startdate"); // Convert the ViewBag Startdate value to a Date object
+                     var endDate = new Date("@ViewBag.Enddate"); // Convert the ViewBag Enddate value to a Date object
+
+                     $('input[name="mems"]').daterangepicker({
+                       singleDatePicker: true,
+                        showDropdowns: true,
+                        minDate: startDate,
+                        maxDate: endDate,
+                        startDate: startDate // Set the selected date as the Startdate
+                       });
+                    });
 
                         function filterTable() {
                             var input = new Date(document.getElementsByName("mems")[0].value); // Get the value from the date-time picker and convert it to a Date object

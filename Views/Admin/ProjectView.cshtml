@@ -2959,6 +2959,7 @@ $.ajax({
                                         <div class="progress-bar">
                                             <div class="progress-halfhalf" style="width:${data[i].progress}% !important;">
                                             </div>
+                                            ${data[i].progress}%
                                         </div>
                                      </td>
                                      <td onclick=addCheckList('${data[i].task_id}')>${data[i].remarks}</td>
@@ -3009,8 +3010,9 @@ $.ajax({
     function updateIsDone(isDone, subtask_id) {
         var taskInp = document.getElementById("task_id").value;
         const data = {
-            task_id: subtask_id,
+            task_id: taskInp,
             isDone: isDone,
+            sub_id: subtask_id,
         };
 
         fetch('/Admin/IsDone', {

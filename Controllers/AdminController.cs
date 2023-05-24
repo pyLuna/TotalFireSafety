@@ -620,16 +620,26 @@ namespace TotalFireSafety.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> IsDone([System.Web.Http.FromBody] string task_id, [System.Web.Http.FromBody] string isDone)
+        public async Task<ActionResult> IsDone([System.Web.Http.FromBody] string task_id, [System.Web.Http.FromBody] string isDone, [System.Web.Http.FromBody] string sub_id)
         {
             try
             {
                 using (var _context = new nwTFSEntity())
                 {
                     var parse = Guid.Parse(task_id);
-                    var task = _context.Subtasks.Where(x => x.guid == parse).SingleOrDefault();
-                    task.isDone = int.Parse(isDone);
-                    //_context.TaskLists.Add(tl);
+                    var parse2 = Guid.Parse(sub_id);
+                    var subtask = _context.Subtasks.Where(x => x.guid == parse2).SingleOrDefault();
+                    var task = _context.TaskLists.Where(x => x.guid == parse).SingleOrDefault();
+                    subtask.isDone = int.Parse(isDone);
+                    _context.Entry(subtask);
+                    await _context.SaveChangesAsync();
+                    // Calculate progress
+                    var numSubtasks = _context.Subtasks.Count(x => x.task_id == parse);
+                    var numCompletedSubtasks = _context.Subtasks.Count(x => x.task_id == parse && x.isDone == 1);
+                    var progress = (numCompletedSubtasks / (double)numSubtasks) * 100;
+
+                    task.progress = (int)progress;
+                    
                     _context.Entry(task);
                     await _context.SaveChangesAsync();
                     await SendNotif("notification");

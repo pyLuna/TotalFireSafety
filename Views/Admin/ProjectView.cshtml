@@ -42,7 +42,7 @@
                                 <input type="text" value="@sessionUserPosition" hidden />
 
 
-                                @if (sessionUserPosition != "Project Lead")
+                                @if (sessionUserPosition != "Project Lead" && sessionUserPosition != "Foreman")
                                 {
                                     <a onclick="openAddNewContainer()">edit</a>
                                 }
@@ -209,7 +209,7 @@
                             <div class="mems-header">
 
                                 <h2>Item Requested</h2>
-                                @if (sessionUserPosition != "Engineer" && sessionUserPosition != "Admin" && sessionUserPosition != "Owner")
+                                @if (sessionUserPosition != "Engineer" && sessionUserPosition != "Admin" && sessionUserPosition != "Owner" && sessionUserPosition != "Foreman")
                                 {
                                     <button class="create-req-btn" title="CREATE ORDER" onclick="createrequestOpenPopupPur() + SetLabels() + HideApprovedItems()">
                                         <a id="projectPageLink" href="@Url.Action("Requisition", "Admin", new { projectId = ViewBag.ProjectID })">

@@ -468,7 +468,7 @@ $(document).ready(function () {
       row.append($('<td>').text(project.proj_endDate));
       row.append($('<td>').addClass('status-column').text(project.proj_status));
       row.append($('<td>').addClass('progress-column'));
-      row.append($('<td>').addClass('icon-column').append(linkElement))
+    
 
       // Calculate the percentage completion of the project
       var startDate = new Date(project.proj_strDate);
@@ -543,7 +543,7 @@ row.append($('<td>').text(project.proj_strDate));
 row.append($('<td>').text(project.proj_endDate));
 row.append($('<td>').addClass('status-column').text(project.proj_status));
 row.append($('<td>').addClass('progress-column'));
-row.append($('<td>').addClass('icon-column').append(linkElement))
+
 
       // Calculate the percentage completion of the project
       var startDate = new Date(project.proj_strDate);

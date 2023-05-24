@@ -289,206 +289,7 @@
                                     </div>
                                 </div>
 
-                                <script>
-                                    var allTasks = [];
-                                    var foremans = [];
-                                    // function for task list
-
-                                    function OnLoad() {
-                                        getAllTask();
-                                        getAllForeman();
-                                    }
-
-                                    function addCheckList(id) {
-                                        var container = document.querySelector("#checkList");
-                                        var checked = "";
-                                        container.innerHTML = "";
-                                        for (var i = 0; i < allTasks.length; i++) {
-                                            if (allTasks[0][i].task_id == id) {
-                                                for (var ii = 0; allTasks[0][i].Subtasks.length; ii++) {
-                                                    var row = "";
-                                                    if (allTasks[0][i].Subtasks[ii].isDone == 1) {
-                                                        checked = " checked";
-                                                    }
-                                                    else {
-                                                        checked = "";
-                                                    }
-                                                    row = `<li>
-                                                                   <input type="checkbox" id="${allTasks[0][i].Subtasks[ii].guid}"${checked}>
-                                                                   <label for="${allTasks[0][i].Subtasks[ii].guid}">${allTasks[0][i].Subtasks[ii].subtask}</label>
-                                                               </li>`
-                                                    container.innerHTML += row;
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    function setAssignee(emp_id) {
-                                        var guid = localStorage.getItem("taskGUID");
-                                        const data = {
-                                            guid: guid,
-                                            emp_id: emp_id
-                                        };
-                                        fetch('/Admin/SetAssignee', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json'
-                                            },
-                                            body: JSON.stringify(data)
-                                        })
-                                            .then(response => {
-                                                if (response.ok) {
-                                                    return response.json();
-                                                }
-                                                throw new Error('Network response was not ok.');
-                                            })
-                                            .then(data => {
-                                                console.log(data);
-                                            })
-                                            .catch(error => {
-                                                // Handle any errors
-                                                console.error('Error:', error);
-                                            });
-                                    }
-
-                                    function getAllForeman() {
-                                        fetch('/Admin/Foreman')
-                                            .then(res => {
-                                                if (res.ok) {
-                                                    // API request was successful
-                                                    return res.json();
-                                                } else {
-                                                    // Handle error if unsuccessful
-                                                    // clear table
-                                                    tableCont.innerHTML = " ";
-                                                    // table style
-                                                    let errorMessageRow = document.createElement('tr');
-                                                    errorMessageRow.style.textAlign = "center";
-                                                    errorMessageRow.style.fontStyle = "italic";
-                                                    errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
-                                                    tableCont.appendChild(errorMessageRow);
-                                                }
-                                            })
-                                            .then(data => {
-                                                foremans.length = 0;
-                                                foremans.push(data);
-                                                var ul = document.getElementById("foremanList");
-                                                for (var i = 0; i < data.length; i++) {
-                                                    var row = "";
-                                                    row = `<li id="${data[i].emp_id}" onclick="setAssignee('${data[i].emp_id}') + assignCloseForm()"><i class="las la-dot-circle"></i> &nbsp; ${data[i].fullname}</li>`;
-                                                    ul.innerHTML += row;
-                                                }
-
-                                                //console.log(data);
-                                            })
-                                            .catch(error => {
-                                                /*//window.location.replace('/Error/InternalServerError');*/
-                                                console.error(error);
-                                            });
-                                    }
-
-                                    function getAllTask() {
-                                        let id = document.getElementById("rep_proj_id").value;
-                                        let tableCont = document.querySelector("#reportTableContainer1 tbody");
-                                        fetch('/Admin/AllTask?id=' + id)
-                                            .then(res => {
-                                                if (res.ok) {
-                                                    // API request was successful
-                                                    return res.json();
-                                                } else {
-                                                    // Handle error if unsuccessful
-                                                    // clear table
-                                                    tableCont.innerHTML = " ";
-                                                    // table style
-                                                    let errorMessageRow = document.createElement('tr');
-                                                    errorMessageRow.style.textAlign = "center";
-                                                    errorMessageRow.style.fontStyle = "italic";
-                                                    errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
-                                                    tableCont.appendChild(errorMessageRow);
-                                                }
-                                            })
-                                            .then(data => {
-                                                allTasks.length = 0;
-                                                allTasks.push(data);
-                                                tableCont.innerHTML = "";
-                                                for (var i = 0; i < data.length; i++) {
-                                                    var row = `<tr id = ${data[i].task_id}>
-                                                                    <td onclick=addCheckList('${data[i].task_id}')>${data[i].task}</td>
-                                                                    <td onclick=addCheckList('${data[i].task_id}')>${data[i].duration} Days</td>
-                                                                    <td onclick=addCheckList('${data[i].task_id}')>
-                                                                        <div class="progress-bar">
-                                                                            <div class="progress-halfhalf" style="width:${data[i].progress}% !important;">
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td onclick=addCheckList('${data[i].task_id}')>${data[i].remarks}</td>
-                                                                    <td onclick="assignOpenForm('${data[i].task_id}')">${data[i].Employee.emp_name}</td>
-                                                                    <td><a>export</a></td>
-                                                         </tr>`;
-                                                    tableCont.innerHTML += row;
-                                                }
-                                                //console.log(data);
-                                            })
-                                            .catch(error => {
-                                                /*//window.location.replace('/Error/InternalServerError');*/
-                                                console.error(error);
-                                            });
-                                    }
-
-                                    function addNewTask(task_name) {
-                                        let id = document.getElementById("rep_proj_id").value;
-                                        const data = {
-                                            proj_id: id,
-                                            task_name: task_name,
-                                        };
-
-                                        fetch('/Admin/AddTask', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json'
-                                            },
-                                            body: JSON.stringify(data)
-                                        })
-                                            .then(response => {
-                                                if (response.ok) {
-                                                    return response.json();
-                                                }
-                                                throw new Error('Network response was not ok.');
-                                            })
-                                            .then(data => {
-                                                console.log(data);
-                                            })
-                                            .catch(error => {
-                                                // Handle any errors
-                                                console.error('Error:', error);
-                                            });
-                                    }
-
-                                        let taskInp = document.getElementById("rep_scope1");
-                                    taskInp.addEventListener("keyup", function (event) {
-                                        let tableCont = document.querySelector("#reportTableContainer1 tbody");
-                                        if (event.key === "Enter") {
-
-
-                                            addNewTask(this.value);
-                                            //var row = `<tr>
-                                            //                        <td>Transformer 1</td>
-                                            //                        <td>0 Days</td>
-                                            //                        <td>
-                                            //                            <div class="progress-bar">
-                                            //                                <div class="progress-halfhalf" style="width:0% !important;">
-                                            //                                </div>
-                                            //                            </div>
-                                            //                        </td>
-                                            //                        <td>Achieved</td>
-                                            //                        <td onclick="assignOpenForm()"></td>
-                                            //                        <td><a>export</a></td>
-                                            //             </tr>`;
-                                            //tableCont.innerHTML += row;
-                                            //console.log("enter key here" + taskInp.value)
-                                        }
-                                    });
-                                </script>
+                                
 
                                 <div class="header-right">
 
@@ -601,6 +402,9 @@
 
                                                 function cb(start, end) {
                                                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                                                    localStorage.setItem("start", start.format('MMMM D, YYYY'));
+                                                    localStorage.setItem("end", end.format('MMMM D, YYYY'));
+                                                    localStorage.setItem("diff", end.diff(start, 'days'));
                                                 }
 
                                                 $('#reportrange').daterangepicker({
@@ -608,16 +412,45 @@
                                                     endDate: end,
                                                     ranges: {
                                                         'Today': [moment(), moment()],
-                                                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                                                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                                                        'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                                        '7 Days': [moment().subtract(6, 'days'), moment()],
                                                     }
                                                 }, cb);
 
                                                 cb(start, end);
 
+                                                $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+                                                    var taskInp = document.getElementById("task_id").value;
+                                                    var start = localStorage.getItem("start");
+                                                    var end = localStorage.getItem("end");
+                                                    var diff = localStorage.getItem("diff");
+                                                    const data = {
+                                                        task_id: taskInp,
+                                                        start: start,
+                                                        end: end,
+                                                        diff: diff
+                                                    };
+
+                                                    fetch('/Admin/Dates', {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify(data)
+                                                    })
+                                                        .then(response => {
+                                                            if (response.ok) {
+                                                                return response.json();
+                                                            }
+                                                            throw new Error('Network response was not ok.');
+                                                        })
+                                                        .then(data => {
+                                                            //addCheckList(taskInp);
+                                                        })
+                                                        .catch(error => {
+                                                            // Handle any errors
+                                                            console.error('Error:', error);
+                                                        });
+                                                });
                                             });
                                         </script>
 
@@ -627,17 +460,47 @@
                                             <input type="date">
                                         </div>*@
 
-                                        <select required id="remarksSelect">
+                                        <select required id="remarksSelect1">
                                             <option class="orange" value="Completed">Completed</option>
                                             <option class="green" value="Delayed">Delayed</option>
                                             <option class="red" value="Unfinished">Unfinished</option>
                                         </select>
 
                                         <script>
-                                            const remarksSelect = document.getElementById('remarksSelect');
+                                            const remarksSelect1 = document.getElementById('remarksSelect1');
 
-                                            remarksSelect.addEventListener('change', function () {
+                                            function changeRemarks(remarks) {
+                                                var taskInp = document.getElementById("task_id").value;
+                                                const data = {
+                                                    task_id: taskInp,
+                                                    remarks: remarks,
+                                                };
+
+                                                fetch('/Admin/Remarks', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(data)
+                                                })
+                                                    .then(response => {
+                                                        if (response.ok) {
+                                                            return response.json();
+                                                        }
+                                                        throw new Error('Network response was not ok.');
+                                                    })
+                                                    .then(data => {
+                                                        //addCheckList(taskInp);
+                                                    })
+                                                    .catch(error => {
+                                                        // Handle any errors
+                                                        console.error('Error:', error);
+                                                    });
+                                            }
+
+                                            remarksSelect1.addEventListener('change', function () {
                                                 const selectedValue = this.value;
+
                                                 let selectedColor = '';
 
                                                 if (selectedValue === 'Completed') {
@@ -649,6 +512,7 @@
                                                 }
 
                                                 this.style.color = selectedColor;
+                                                changeRemarks(this.value);
                                             });
 
 
@@ -662,7 +526,8 @@
                                         <h2>Checklist</h2>
                                         <div class="input-container">
                                             <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
-                                            <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
+                                            <input type="text" id="task_id" hidden>
+                                            <i class="las la-project-diagram"></i> <input type="text" id="rep_scope2" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
                                         </div>
                                     </div>
 
@@ -2984,4 +2849,292 @@ $.ajax({
         const formattedDate = moment(date, "MM/DD/YYYY").format("YYYY-MM-DD");
         document.getElementById('rep_date').value = formattedDate;
     });
+</script>
+
+<script>
+    var allTasks = [];
+    var foremans = [];
+    // function for task list
+
+    function setAssignee(emp_id) {
+        var guid = localStorage.getItem("taskGUID");
+        const data = {
+            guid: guid,
+            emp_id: emp_id
+        };
+        fetch('/Admin/SetAssignee', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error('Error:', error);
+            });
+    }
+
+    function getAllForeman() {
+        fetch('/Admin/Foreman')
+            .then(res => {
+                if (res.ok) {
+                    // API request was successful
+                    return res.json();
+                } else {
+                    // Handle error if unsuccessful
+                    // clear table
+                    tableCont.innerHTML = " ";
+                    // table style
+                    let errorMessageRow = document.createElement('tr');
+                    errorMessageRow.style.textAlign = "center";
+                    errorMessageRow.style.fontStyle = "italic";
+                    errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
+                    tableCont.appendChild(errorMessageRow);
+                }
+            })
+            .then(data => {
+                foremans.length = 0;
+                foremans.push(data);
+                var ul = document.getElementById("foremanList");
+                for (var i = 0; i < data.length; i++) {
+                    var row = "";
+                    row = `<li id="${data[i].emp_id}" onclick="setAssignee('${data[i].emp_id}') + assignCloseForm()"><i class="las la-dot-circle"></i> &nbsp; ${data[i].fullname}</li>`;
+                    ul.innerHTML += row;
+                }
+
+                //console.log(data);
+            })
+            .catch(error => {
+                /*//window.location.replace('/Error/InternalServerError');*/
+                console.error(error);
+            });
+    }
+
+    async function getAllTask() {
+        let id = document.getElementById("rep_proj_id").value;
+        let tableCont = document.querySelector("#reportTableContainer1 tbody");
+        fetch('/Admin/AllTask?id=' + id)
+            .then(res => {
+                if (res.ok) {
+                    // API request was successful
+                    return res.json();
+                } else {
+                    // Handle error if unsuccessful
+                    // clear table
+                    tableCont.innerHTML = " ";
+                    // table style
+                    let errorMessageRow = document.createElement('tr');
+                    errorMessageRow.style.textAlign = "center";
+                    errorMessageRow.style.fontStyle = "italic";
+                    errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
+                    tableCont.appendChild(errorMessageRow);
+                }
+            })
+            .then(data => {
+                allTasks.length = 0;
+                allTasks.push(data);
+                var emp = "";
+                tableCont.innerHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].Employee.emp_name == null) {
+                        emp = ""
+                    }
+                    else {
+                        emp = data[i].Employee.emp_name;
+                    }
+                    var row = `<tr id = ${data[i].task_id}>
+                                    <td onclick=addCheckList('${data[i].task_id}')>${data[i].task}</td>
+                                    <td onclick=addCheckList('${data[i].task_id}')>${data[i].duration} Days</td>
+                                    <td onclick=addCheckList('${data[i].task_id}')>
+                                        <div class="progress-bar">
+                                            <div class="progress-halfhalf" style="width:${data[i].progress}% !important;">
+                                            </div>
+                                        </div>
+                                     </td>
+                                     <td onclick=addCheckList('${data[i].task_id}')>${data[i].remarks}</td>
+                                     <td onclick="assignOpenForm('${data[i].task_id}')">${emp}</td>
+                                     <td><a>export</a></td>
+                                </tr>`;
+                    tableCont.innerHTML += row;
+                }
+                var taskInp = document.getElementById("task_id").value;
+                if (taskInp != null) {
+                    addCheckList(taskInp);
+                }
+                //console.log(data);
+            })
+            .catch(error => {
+                /*//window.location.replace('/Error/InternalServerError');*/
+                console.error(error);
+            });
+    }
+
+    async function OnLoad() {
+        await getAllTask();
+        getAllForeman();
+    }
+
+    var container = document.querySelector("#checkList");
+    container.addEventListener('click', function (event) {
+        if (event.target.type === 'checkbox') {
+            var checkboxId = event.target.id;
+            var isChecked = event.target.checked;
+            var res = 0;
+            // Perform desired actions based on checkbox state
+            // For example, you can update the 'isDone' property of the corresponding subtask
+
+            // Find the subtask in the 'allTasks' array
+            for (var j = 0; j < allTasks.length; j++) {
+                for (var k = 0; k < allTasks[0][j].Subtasks.length; k++) {
+                    if (allTasks[0][j].Subtasks[k].guid === checkboxId) {
+                        res = allTasks[0][j].Subtasks[k].isDone = isChecked ? 1 : 0;
+                        updateIsDone(res, checkboxId);
+                        break;
+                    }
+                }
+            }
+        }
+    });
+
+    function updateIsDone(isDone, subtask_id) {
+        var taskInp = document.getElementById("task_id").value;
+        const data = {
+            task_id: subtask_id,
+            isDone: isDone,
+        };
+
+        fetch('/Admin/IsDone', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                //addCheckList(taskInp);
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error('Error:', error);
+            });
+    }
+
+    function addCheckList(id) {
+        var taskInp = document.getElementById("task_id");
+        const remarksSelect2 = document.getElementById('remarksSelect1');
+        taskInp.value = id;
+        var checked = "";
+        container.innerHTML = "";
+        for (var i = 0; i < allTasks.length; i++) {
+            if (allTasks[0][i].task_id == id) {
+                $('#reportrange span').html(allTasks[0][i].start + ' - ' + allTasks[0][i].end);
+                remarksSelect2.value = allTasks[0][i].remarks;
+                for (var ii = 0; ii < allTasks[0][i].Subtasks.length; ii++) {
+                    var row = "";
+                    if (allTasks[0][i].Subtasks[ii].isDone == 1) {
+                        checked = " checked";
+                    }
+                    else {
+                        checked = "";
+                    }
+                    row = `<li>
+                                <input type="checkbox" id="${allTasks[0][i].Subtasks[ii].guid}"${checked}>
+                                <label for="${allTasks[0][i].Subtasks[ii].guid}">${allTasks[0][i].Subtasks[ii].subtask}</label>
+                           </li>`
+                    container.innerHTML += row;
+                }
+            }
+        }
+    }
+
+    function addNewTask(task_name) {
+        let id = document.getElementById("rep_proj_id").value;
+        const data = {
+            proj_id: id,
+            task_name: task_name,
+        };
+
+        fetch('/Admin/AddTask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                //console.log(data);
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error('Error:', error);
+            });
+    }
+
+    function addNewSubTask(subtask) {
+        var taskInp = document.getElementById("task_id").value;
+        const data = {
+            task_id: taskInp,
+            subtask: subtask,
+        };
+
+        fetch('/Admin/AddSubTask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                //addCheckList(taskInp);
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error('Error:', error);
+            });
+    }
+
+    let taskInp = document.getElementById("rep_scope1");
+    taskInp.addEventListener("keyup", function (event) {
+        let tableCont = document.querySelector("#reportTableContainer1 tbody");
+        if (event.key === "Enter") {
+            addNewTask(this.value);
+        }
+    });
+
+    let chckList = document.getElementById("rep_scope2");
+    chckList.addEventListener("keyup", function (event) {
+        if (event.key == "Enter") {
+            addNewSubTask(this.value);
+            //console.log(taskInp.value);
+        }
+    });
+
 </script>

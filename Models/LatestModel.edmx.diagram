@@ -5,25 +5,25 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b9c3c7f4399a439bb80a712a1a1476a8" Name="Diagram1" ZoomLevel="73">
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Attendance" Width="1.5" PointX="7.5" PointY="18.5" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Basecount" Width="1.5" PointX="6" PointY="7.5" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Attendance" Width="1.5" PointX="7.5" PointY="30" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Basecount" Width="1.5" PointX="6" PointY="12.375" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Credential" Width="1.5" PointX="3" PointY="8.875" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Employee" Width="1.5" PointX="0.75" PointY="17" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inv_Limits" Width="1.5" PointX="6" PointY="10.25" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inv_Update" Width="1.5" PointX="6" PointY="33.125" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Employee" Width="1.5" PointX="0.75" PointY="18.875" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inv_Limits" Width="1.5" PointX="6" PointY="9.375" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inv_Update" Width="1.5" PointX="6" PointY="6.125" />
         <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Inventory" Width="1.5" PointX="3.75" PointY="0.75" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewManpower" Width="1.5" PointX="5.25" PointY="18.25" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewProject" Width="1.5" PointX="3" PointY="22.625" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewProposal" Width="1.5" PointX="5.25" PointY="28.875" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewReport" Width="1.5" PointX="5.25" PointY="21.75" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Notification" Width="1.5" PointX="3" PointY="32.25" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Proposal" Width="1.5" PointX="5.25" PointY="25.625" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.ReportImage" Width="1.5" PointX="7.5" PointY="23.25" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Request" Width="1.5" PointX="6" PointY="14.125" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Role" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Status" Width="1.5" PointX="3" PointY="15.5" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Subtask" Width="1.5" PointX="8" PointY="3.625" />
-        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.TaskList" Width="1.5" PointX="5.75" PointY="3.25" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewManpower" Width="1.5" PointX="5.25" PointY="29.75" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewProject" Width="1.5" PointX="3" PointY="23.625" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewProposal" Width="1.5" PointX="5.25" PointY="19.25" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.NewReport" Width="1.5" PointX="5.25" PointY="22.5" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Notification" Width="1.5" PointX="3" PointY="15.5" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Proposal" Width="1.5" PointX="5.25" PointY="26.375" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.ReportImage" Width="1.5" PointX="7.5" PointY="24.125" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Request" Width="1.5" PointX="6" PointY="15.125" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Role" Width="1.5" PointX="3" PointY="6.625" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Status" Width="1.5" PointX="3" PointY="37.125" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.Subtask" Width="1.5" PointX="5.25" PointY="33.75" />
+        <EntityTypeShape EntityType="db_a97f85_totalfiresafetyModel.TaskList" Width="1.5" PointX="3" PointY="33.25" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Attendance_NewManpowers" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Basecount_Inventory1" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Credentials_Employee" />
@@ -32,6 +32,7 @@
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Status_Employee" />
+        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_TaskList_Employee" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Inv_Limits_Inventories" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Requests_Inventory1" />
@@ -42,7 +43,6 @@
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_ReportImage_NewProject" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_ReportImage_ReportImage" />
         <AssociationConnector Association="db_a97f85_totalfiresafetyModel.FK_Subtask_TaskList" />
-        <AssociationConnector Association="db_a97f85_totalfiresafetyModel.TaskListEmployee" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

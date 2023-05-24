@@ -568,6 +568,104 @@ namespace TotalFireSafety.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult> AddSubTask([System.Web.Http.FromBody] string task_id, [System.Web.Http.FromBody] string subtask)
+        {
+            try
+            {
+                using (var _context = new nwTFSEntity())
+                {
+                    var parse = Guid.Parse(task_id);
+                    Subtask tl = new Subtask()
+                    {
+                        guid = Guid.NewGuid(),
+                        task_id = parse,
+                        subtask_name = subtask,
+                        isDone = 0
+                    };
+                    _context.Subtasks.Add(tl);
+                    await _context.SaveChangesAsync();
+                    await SendNotif("notification");
+                    return Json( new { message = "okay" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Dates([System.Web.Http.FromBody] string task_id, [System.Web.Http.FromBody] string start, [System.Web.Http.FromBody] string end, [System.Web.Http.FromBody] string diff)
+        {
+            try
+            {
+                using (var _context = new nwTFSEntity())
+                {
+                    var parse = Guid.Parse(task_id);
+                    var task = _context.TaskLists.Where(x => x.guid == parse).SingleOrDefault();
+                    task.start_date = DateTime.Parse(start);
+                    task.end_date = DateTime.Parse(end);
+                    task.duration = int.Parse(diff);
+                    //_context.TaskLists.Add(tl);
+                    _context.Entry(task);
+                    await _context.SaveChangesAsync();
+                    await SendNotif("notification");
+                    return Json(new { message = "okay" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> IsDone([System.Web.Http.FromBody] string task_id, [System.Web.Http.FromBody] string isDone)
+        {
+            try
+            {
+                using (var _context = new nwTFSEntity())
+                {
+                    var parse = Guid.Parse(task_id);
+                    var task = _context.Subtasks.Where(x => x.guid == parse).SingleOrDefault();
+                    task.isDone = int.Parse(isDone);
+                    //_context.TaskLists.Add(tl);
+                    _context.Entry(task);
+                    await _context.SaveChangesAsync();
+                    await SendNotif("notification");
+                    return Content("okay");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Remarks([System.Web.Http.FromBody] string task_id, [System.Web.Http.FromBody] string remarks)
+        {
+            try
+            {
+                using (var _context = new nwTFSEntity())
+                {
+                    var parse = Guid.Parse(task_id);
+                    var task = _context.TaskLists.Where(x => x.guid == parse).SingleOrDefault();
+                    task.remarks = remarks;
+                    //_context.TaskLists.Add(tl);
+                    _context.Entry(task);
+                    await _context.SaveChangesAsync();
+                    await SendNotif("notification");
+                    return Content("okay");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { error = ex });
+            }
+        }
+
+        [HttpPost]
         public async Task<ActionResult> AddTask([System.Web.Http.FromBody] string proj_id, [System.Web.Http.FromBody] string task_name)
         {
             try
@@ -667,13 +765,21 @@ namespace TotalFireSafety.Controllers
                         writer.WriteString("task", task.task_name);
                         writer.WriteString("start", task.start_date?.ToString("MMMM dd,yyyy"));
                         writer.WriteString("end", task.end_date?.ToString("MMMM dd,yyyy"));
-                        writer.WriteNumber("duration", task.duration == null ? task.duration.Value : 0);
+                        writer.WriteNumber("duration", task.duration == null ? 0 : task.duration.Value);
                         writer.WriteNumber("progress", task.progress);
                         writer.WriteString("remarks", task.remarks.Trim());
 
                         writer.WriteStartObject("Employee");
-                        writer.WriteNumber("emp_no", task.Employee.emp_no);
-                        writer.WriteString("emp_name", task.Employee.emp_fname + " " + task.Employee.emp_lname);
+                        if(task.Employee == null)
+                        {
+                            writer.WriteNull("emp_no");
+                            writer.WriteNull("emp_name");
+                        }
+                        else
+                        {
+                            writer.WriteNumber("emp_no", task.Employee.emp_no);
+                            writer.WriteString("emp_name", task.Employee.emp_fname + " " + task.Employee.emp_lname);
+                        }
                         writer.WriteEndObject();
 
                         writer.WriteStartArray("Subtasks"); // Move this outside the loop

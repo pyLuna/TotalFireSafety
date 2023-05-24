@@ -445,6 +445,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TaskList_Employee">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="TaskList" Type="Self.TaskList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="TaskList">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="db_a97f85_totalfiresafetyModelStoreContainer">
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Basecount" EntityType="Self.Basecount" Schema="dbo" store:Type="Tables" />
@@ -537,6 +549,10 @@
             <End Role="TaskList" EntitySet="TaskList" />
             <End Role="Subtask" EntitySet="Subtask" />
           </AssociationSet>
+          <AssociationSet Name="FK_TaskList_Employee" Association="Self.FK_TaskList_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="TaskList" EntitySet="TaskList" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -594,6 +610,10 @@
             <End Role="Employee" EntitySet="Employees" />
             <End Role="Status" EntitySet="Status" />
           </AssociationSet>
+          <AssociationSet Name="FK_TaskList_Employee" Association="db_a97f85_totalfiresafetyModel.FK_TaskList_Employee">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="TaskList" EntitySet="TaskLists" />
+          </AssociationSet>
           <AssociationSet Name="FK_Inv_Limits_Inventories" Association="db_a97f85_totalfiresafetyModel.FK_Inv_Limits_Inventories">
             <End Role="Inventory" EntitySet="Inventories" />
             <End Role="Inv_Limits" EntitySet="Inv_Limits" />
@@ -633,10 +653,6 @@
           <AssociationSet Name="FK_Subtask_TaskList" Association="db_a97f85_totalfiresafetyModel.FK_Subtask_TaskList">
             <End Role="TaskList" EntitySet="TaskLists" />
             <End Role="Subtask" EntitySet="Subtasks" />
-          </AssociationSet>
-          <AssociationSet Name="TaskListEmployee" Association="db_a97f85_totalfiresafetyModel.TaskListEmployee">
-            <End Role="TaskList" EntitySet="TaskLists" />
-            <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Attendance">
@@ -687,7 +703,7 @@
           <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
           <NavigationProperty Name="Role" Relationship="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="Status" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
-          <NavigationProperty Name="TaskLists" Relationship="db_a97f85_totalfiresafetyModel.TaskListEmployee" FromRole="Employee" ToRole="TaskList" />
+          <NavigationProperty Name="TaskLists" Relationship="db_a97f85_totalfiresafetyModel.FK_TaskList_Employee" FromRole="Employee" ToRole="TaskList" />
         </EntityType>
         <EntityType Name="Inv_Limits">
           <Key>
@@ -898,9 +914,8 @@
           <Property Name="progress" Type="Int32" Nullable="false" />
           <Property Name="remarks" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="emp_no" Type="Int32" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_TaskList_Employee" FromRole="TaskList" ToRole="Employee" />
           <NavigationProperty Name="Subtasks" Relationship="db_a97f85_totalfiresafetyModel.FK_Subtask_TaskList" FromRole="TaskList" ToRole="Subtask" />
-          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.TaskListEmployee" FromRole="TaskList" ToRole="Employee" />
-          <Property Name="Employee_emp_no" Nullable="true" Type="Int32" />
         </EntityType>
         <Association Name="FK_Attendance_NewManpowers">
           <End Type="db_a97f85_totalfiresafetyModel.NewManpower" Role="NewManpower" Multiplicity="1" />
@@ -994,6 +1009,18 @@
               <PropertyRef Name="emp_no" />
             </Principal>
             <Dependent Role="Status">
+              <PropertyRef Name="emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskList_Employee">
+          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="db_a97f85_totalfiresafetyModel.TaskList" Role="TaskList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="TaskList">
               <PropertyRef Name="emp_no" />
             </Dependent>
           </ReferentialConstraint>
@@ -1115,18 +1142,6 @@
             </Principal>
             <Dependent Role="Subtask">
               <PropertyRef Name="task_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="TaskListEmployee">
-          <End Type="db_a97f85_totalfiresafetyModel.TaskList" Role="TaskList" Multiplicity="*" />
-          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="emp_no" />
-            </Principal>
-            <Dependent Role="TaskList">
-              <PropertyRef Name="Employee_emp_no" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

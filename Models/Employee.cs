@@ -20,6 +20,7 @@ namespace TotalFireSafety.Models
             this.NewProjects = new HashSet<NewProject>();
             this.Notifications = new HashSet<Notification>();
             this.Requests = new HashSet<Request>();
+            this.TaskLists = new HashSet<TaskList>();
         }
     
         public int emp_no { get; set; }
@@ -40,6 +41,8 @@ namespace TotalFireSafety.Models
         public virtual ICollection<Request> Requests { get; set; }
         public virtual Role Role { get; set; }
         public virtual Status Status { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TaskList> TaskLists { get; set; }
         public string formType { get; set; }
         public string FormattedDate
         {

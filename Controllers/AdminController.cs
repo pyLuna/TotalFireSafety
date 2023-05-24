@@ -567,6 +567,141 @@ namespace TotalFireSafety.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddTask([System.Web.Http.FromBody] string proj_id, [System.Web.Http.FromBody] string task_name)
+        {
+            try
+            {
+                using (var _context = new nwTFSEntity())
+                {
+                    TaskList tl = new TaskList()
+                    {
+                        guid = Guid.NewGuid(),
+                        proj_type_id = int.Parse(proj_id),
+                        task_name = task_name,
+                        start_date = null,
+                        end_date = null,
+                        duration = 0,
+                        remarks = " ",
+                        emp_no = null
+                    };
+                    _context.TaskLists.Add(tl);
+                    await _context.SaveChangesAsync();
+                    await SendNotif("notification");
+                    return Content("okay");
+                }
+            }
+            catch(Exception ex) {
+                return Json(new { error = ex });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SetAssignee([System.Web.Http.FromBody] string guid, [System.Web.Http.FromBody] string emp_id)
+        {
+            try
+            {
+                using (var _context = new nwTFSEntity())
+                {
+                    var parsed = Guid.Parse(guid);
+                    var task = _context.TaskLists.Where(x => x.guid == parsed).SingleOrDefault();
+                    task.emp_no = int.Parse(emp_id);
+                    _context.Entry(task);
+                    await _context.SaveChangesAsync();
+                    await SendNotif("notification");
+                }
+                return Content("okay");
+            }
+            catch(Exception ex)
+            {
+                return Json(new { error = ex });
+            }
+        }
+        public async Task<ActionResult> Foreman()
+        {
+            using(var _context = new nwTFSEntity())
+            {
+                var foremans = _context.Employees.Where(x => x.emp_position.ToLower() == "foreman").ToList();
+
+                using(var stream = new MemoryStream())
+                {
+                    var writer = new Utf8JsonWriter(stream);
+
+                    writer.WriteStartArray();
+
+                    foreach (var emp in foremans)
+                    {
+                        writer.WriteStartObject();
+                        writer.WriteNumber("emp_id", emp.emp_no);
+                        writer.WriteString("fullname", emp.emp_fname + " " + emp.emp_lname);
+                        writer.WriteEndObject();
+                    }
+
+                    writer.WriteEndArray();
+                    await writer.FlushAsync();
+                    var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                    return Content(jsonString, "application/json");
+                }
+            }
+        }
+
+        public async Task<ActionResult> AllTask(int id)
+        {
+            using(var _context = new nwTFSEntity())
+            {
+                var allTasks = _context.TaskLists
+                    .Where(x => x.proj_type_id == id)
+                    .Include(x => x.Subtasks)
+                    .Include(x => x.Employee)
+                    .ToList();
+
+                using(var stream = new MemoryStream())
+                {
+                    var writer = new Utf8JsonWriter(stream);
+                    writer.WriteStartArray();
+                    foreach (var task in allTasks)
+                    {
+                        writer.WriteStartObject();
+                        writer.WriteString("task_id", task.guid);
+                        writer.WriteNumber("proj_id", task.proj_type_id);
+                        writer.WriteString("task", task.task_name);
+                        writer.WriteString("start", task.start_date?.ToString("MMMM dd,yyyy"));
+                        writer.WriteString("end", task.end_date?.ToString("MMMM dd,yyyy"));
+                        writer.WriteNumber("duration", task.duration == null ? task.duration.Value : 0);
+                        writer.WriteNumber("progress", task.progress);
+                        writer.WriteString("remarks", task.remarks.Trim());
+
+                        writer.WriteStartObject("Employee");
+                        writer.WriteNumber("emp_no", task.Employee.emp_no);
+                        writer.WriteString("emp_name", task.Employee.emp_fname + " " + task.Employee.emp_lname);
+                        writer.WriteEndObject();
+
+                        writer.WriteStartArray("Subtasks"); // Move this outside the loop
+
+                        if (task.Subtasks.Count != 0)
+                        {
+                            foreach (var subs in task.Subtasks)
+                            {
+                                writer.WriteStartObject();
+                                writer.WriteString("guid", subs.guid);
+                                writer.WriteString("subtask", subs.subtask_name);
+                                writer.WriteNumber("isDone", subs.isDone);
+                                writer.WriteEndObject();
+                            }
+                        }
+
+                        writer.WriteEndArray(); // Move this outside the loop
+
+                        writer.WriteEndObject();
+                    }
+
+                    writer.WriteEndArray();
+                    await writer.FlushAsync();
+                    var jsonString = Encoding.UTF8.GetString(stream.ToArray());
+                    return Content(jsonString, "application/json");
+                }
+            }
+        }
 
         //[System.Web.Mvc.Authorize(Roles = "admin,office")]
         public async Task<ActionResult> ProjectView(int? id, int? rep_no)

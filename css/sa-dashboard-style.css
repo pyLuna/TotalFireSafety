@@ -9118,17 +9118,17 @@ acc-form-table .view-request-form-table-style table thead td {
     color: #09AF10;
 }
 
-.proj-task-list .proj-task-right .subtask .upper .subtask-header input {
-    border: 1px solid #B2B2B2;
-    border-radius: 5px;
-    font-size: .9rem;
-    width: 150px;
-    height: 35px;
-    font-weight: 600;
-    padding: 0;
-    margin-top: 0;
-    margin-right: 5px;
-}
+    .proj-task-list .proj-task-right .subtask .upper .subtask-header .header-right .date-picker-container {
+        border: 1px solid #B2B2B2;
+        border-radius: 5px;
+        width: 250px;
+        height: 35px;
+        font-weight: 600;
+        font-size: .8rem;
+        padding: 5px;
+        margin-top: 0;
+        margin-right: 5px;
+    }
 
 .proj-task-list .proj-task-right .subtask .upper .subtask-container {
     display: block;

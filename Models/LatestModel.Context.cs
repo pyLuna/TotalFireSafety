@@ -42,5 +42,7 @@ namespace TotalFireSafety.Models
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Status> Status { get; set; }
+        public virtual DbSet<Subtask> Subtasks { get; set; }
+        public virtual DbSet<TaskList> TaskLists { get; set; }
     }
 }

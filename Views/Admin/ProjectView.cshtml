@@ -11,7 +11,7 @@
 }
 
 
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+@*<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />*@
 <div class="main-content">
     <header>
         <h2>
@@ -285,9 +285,210 @@
 
                                     <div class="input-container">
                                         <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
-                                        <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
+                                        <i class="las la-project-diagram"></i> <input type="text" id="rep_scope1" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
                                     </div>
                                 </div>
+
+                                <script>
+                                    var allTasks = [];
+                                    var foremans = [];
+                                    // function for task list
+
+                                    function OnLoad() {
+                                        getAllTask();
+                                        getAllForeman();
+                                    }
+
+                                    function addCheckList(id) {
+                                        var container = document.querySelector("#checkList");
+                                        var checked = "";
+                                        container.innerHTML = "";
+                                        for (var i = 0; i < allTasks.length; i++) {
+                                            if (allTasks[0][i].task_id == id) {
+                                                for (var ii = 0; allTasks[0][i].Subtasks.length; ii++) {
+                                                    var row = "";
+                                                    if (allTasks[0][i].Subtasks[ii].isDone == 1) {
+                                                        checked = " checked";
+                                                    }
+                                                    else {
+                                                        checked = "";
+                                                    }
+                                                    row = `<li>
+                                                                   <input type="checkbox" id="${allTasks[0][i].Subtasks[ii].guid}"${checked}>
+                                                                   <label for="${allTasks[0][i].Subtasks[ii].guid}">${allTasks[0][i].Subtasks[ii].subtask}</label>
+                                                               </li>`
+                                                    container.innerHTML += row;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    function setAssignee(emp_id) {
+                                        var guid = localStorage.getItem("taskGUID");
+                                        const data = {
+                                            guid: guid,
+                                            emp_id: emp_id
+                                        };
+                                        fetch('/Admin/SetAssignee', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify(data)
+                                        })
+                                            .then(response => {
+                                                if (response.ok) {
+                                                    return response.json();
+                                                }
+                                                throw new Error('Network response was not ok.');
+                                            })
+                                            .then(data => {
+                                                console.log(data);
+                                            })
+                                            .catch(error => {
+                                                // Handle any errors
+                                                console.error('Error:', error);
+                                            });
+                                    }
+
+                                    function getAllForeman() {
+                                        fetch('/Admin/Foreman')
+                                            .then(res => {
+                                                if (res.ok) {
+                                                    // API request was successful
+                                                    return res.json();
+                                                } else {
+                                                    // Handle error if unsuccessful
+                                                    // clear table
+                                                    tableCont.innerHTML = " ";
+                                                    // table style
+                                                    let errorMessageRow = document.createElement('tr');
+                                                    errorMessageRow.style.textAlign = "center";
+                                                    errorMessageRow.style.fontStyle = "italic";
+                                                    errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
+                                                    tableCont.appendChild(errorMessageRow);
+                                                }
+                                            })
+                                            .then(data => {
+                                                foremans.length = 0;
+                                                foremans.push(data);
+                                                var ul = document.getElementById("foremanList");
+                                                for (var i = 0; i < data.length; i++) {
+                                                    var row = "";
+                                                    row = `<li id="${data[i].emp_id}" onclick="setAssignee('${data[i].emp_id}') + assignCloseForm()"><i class="las la-dot-circle"></i> &nbsp; ${data[i].fullname}</li>`;
+                                                    ul.innerHTML += row;
+                                                }
+
+                                                //console.log(data);
+                                            })
+                                            .catch(error => {
+                                                /*//window.location.replace('/Error/InternalServerError');*/
+                                                console.error(error);
+                                            });
+                                    }
+
+                                    function getAllTask() {
+                                        let id = document.getElementById("rep_proj_id").value;
+                                        let tableCont = document.querySelector("#reportTableContainer1 tbody");
+                                        fetch('/Admin/AllTask?id=' + id)
+                                            .then(res => {
+                                                if (res.ok) {
+                                                    // API request was successful
+                                                    return res.json();
+                                                } else {
+                                                    // Handle error if unsuccessful
+                                                    // clear table
+                                                    tableCont.innerHTML = " ";
+                                                    // table style
+                                                    let errorMessageRow = document.createElement('tr');
+                                                    errorMessageRow.style.textAlign = "center";
+                                                    errorMessageRow.style.fontStyle = "italic";
+                                                    errorMessageRow.innerHTML = '<td colspan="6">Loading Error<td>';
+                                                    tableCont.appendChild(errorMessageRow);
+                                                }
+                                            })
+                                            .then(data => {
+                                                allTasks.length = 0;
+                                                allTasks.push(data);
+                                                tableCont.innerHTML = "";
+                                                for (var i = 0; i < data.length; i++) {
+                                                    var row = `<tr id = ${data[i].task_id}>
+                                                                    <td onclick=addCheckList('${data[i].task_id}')>${data[i].task}</td>
+                                                                    <td onclick=addCheckList('${data[i].task_id}')>${data[i].duration} Days</td>
+                                                                    <td onclick=addCheckList('${data[i].task_id}')>
+                                                                        <div class="progress-bar">
+                                                                            <div class="progress-halfhalf" style="width:${data[i].progress}% !important;">
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td onclick=addCheckList('${data[i].task_id}')>${data[i].remarks}</td>
+                                                                    <td onclick="assignOpenForm('${data[i].task_id}')">${data[i].Employee.emp_name}</td>
+                                                                    <td><a>export</a></td>
+                                                         </tr>`;
+                                                    tableCont.innerHTML += row;
+                                                }
+                                                //console.log(data);
+                                            })
+                                            .catch(error => {
+                                                /*//window.location.replace('/Error/InternalServerError');*/
+                                                console.error(error);
+                                            });
+                                    }
+
+                                    function addNewTask(task_name) {
+                                        let id = document.getElementById("rep_proj_id").value;
+                                        const data = {
+                                            proj_id: id,
+                                            task_name: task_name,
+                                        };
+
+                                        fetch('/Admin/AddTask', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify(data)
+                                        })
+                                            .then(response => {
+                                                if (response.ok) {
+                                                    return response.json();
+                                                }
+                                                throw new Error('Network response was not ok.');
+                                            })
+                                            .then(data => {
+                                                console.log(data);
+                                            })
+                                            .catch(error => {
+                                                // Handle any errors
+                                                console.error('Error:', error);
+                                            });
+                                    }
+
+                                        let taskInp = document.getElementById("rep_scope1");
+                                    taskInp.addEventListener("keyup", function (event) {
+                                        let tableCont = document.querySelector("#reportTableContainer1 tbody");
+                                        if (event.key === "Enter") {
+
+
+                                            addNewTask(this.value);
+                                            //var row = `<tr>
+                                            //                        <td>Transformer 1</td>
+                                            //                        <td>0 Days</td>
+                                            //                        <td>
+                                            //                            <div class="progress-bar">
+                                            //                                <div class="progress-halfhalf" style="width:0% !important;">
+                                            //                                </div>
+                                            //                            </div>
+                                            //                        </td>
+                                            //                        <td>Achieved</td>
+                                            //                        <td onclick="assignOpenForm()"></td>
+                                            //                        <td><a>export</a></td>
+                                            //             </tr>`;
+                                            //tableCont.innerHTML += row;
+                                            //console.log("enter key here" + taskInp.value)
+                                        }
+                                    });
+                                </script>
 
                                 <div class="header-right">
 
@@ -327,8 +528,8 @@
                                         <div class="list">
                                             <div class="task-list-body">
                                                 <div class="table-responsive" style="overflow: auto;">
-                                                    <div id="reportTableContainer">
-                                                        <table width="100%" height="100px">
+                                                    <div>
+                                                        <table width="100%" id="reportTableContainer1" height="100px">
                                                             <thead>
                                                                 <tr>
                                                                     <td></td>
@@ -341,7 +542,7 @@
                                                             </thead>
                                                             <tbody>
 
-                                                                <tr>
+                                                                @*<tr>
                                                                     <td>Transformer 1</td>
                                                                     <td>3 Days</td>
                                                                     <td>
@@ -353,49 +554,7 @@
                                                                     <td>Achieved</td>
                                                                     <td onclick="assignOpenForm()"></td>
                                                                     <td><a>export</a></td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Transformer 1</td>
-                                                                    <td>3 Days</td>
-                                                                    <td>
-                                                                        <div class="progress-bar">
-                                                                            <div class="progress-halfhalf">
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>Achieved</td>
-                                                                    <td onclick="assignOpenForm()">Clarisse Vasquez</td>
-                                                                    <td><a>export</a></td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Transformer 1</td>
-                                                                    <td>3 Days</td>
-                                                                    <td>
-                                                                        <div class="progress-bar">
-                                                                            <div class="progress-halfhalf">
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>Achieved</td>
-                                                                    <td onclick="assignOpenForm()">Clarisse Vasquez</td>
-                                                                    <td><a>export</a></td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>Transformer 1</td>
-                                                                    <td>3 Days</td>
-                                                                    <td>
-                                                                        <div class="progress-bar">
-                                                                            <div class="progress-halfhalf">
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>Achieved</td>
-                                                                    <td onclick="assignOpenForm()">Clarisse Vasquez</td>
-                                                                    <td><a>export</a></td>
-                                                                </tr>
+                                                                </tr>*@
 
                                                             </tbody>
                                                         </table>
@@ -426,9 +585,47 @@
                                     </div>
 
                                     <div class="header-right">
-                                        <div class="date-picker-container">
-                                            <input type="date">
+
+                                        <div class="date-picker-container" id="reportrange">
+                                            <i class="fa fa-calendar"></i>&nbsp;
+                                            <span></span> <i class="fa fa-caret-down"></i>
                                         </div>
+
+                                        @* SCRIPT FOR DATEPICKER *@
+
+                                        <script type="text/javascript">
+                                            $(function () {
+
+                                                var start = moment().subtract(29, 'days');
+                                                var end = moment();
+
+                                                function cb(start, end) {
+                                                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                                                }
+
+                                                $('#reportrange').daterangepicker({
+                                                    startDate: start,
+                                                    endDate: end,
+                                                    ranges: {
+                                                        'Today': [moment(), moment()],
+                                                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                                    }
+                                                }, cb);
+
+                                                cb(start, end);
+
+                                            });
+                                        </script>
+
+                                        @* END *@
+
+                                        @*<div class="date-picker-container">
+                                            <input type="date">
+                                        </div>*@
 
                                         <select required id="remarksSelect">
                                             <option class="orange" value="Completed">Completed</option>
@@ -471,8 +668,8 @@
 
                                     <div class="main">
                                         <div class="main-list">
-                                            <ul class="checkbox-list">
-                                                <li>
+                                            <ul class="checkbox-list" id="checkList">
+                                                @*<li>
                                                     <input type="checkbox" id="item1">
                                                     <label for="item1">Mobilization and Initial Site Preparation</label>
                                                 </li>
@@ -483,7 +680,7 @@
                                                 <li>
                                                     <input type="checkbox" id="item3">
                                                     <label for="item3">Installation of Delunge </label>
-                                                </li>
+                                                </li>*@
                                             </ul>
                                         </div>
                                     </div>
@@ -643,9 +840,9 @@
 
                     <h1>FOREMAN LIST</h1>
 
-                    <ul>
-                        <li><i class="las la-dot-circle"></i> &nbsp; Clarisse Vasquez</li>
-                        <li><i class="las la-dot-circle"></i> &nbsp; Clarisse Vasquez</li>
+                    <ul id="foremanList">
+                        @*<li><i class="las la-dot-circle"></i> &nbsp; Clarisse Vasquez</li>
+                        <li><i class="las la-dot-circle"></i> &nbsp; Clarisse Vasquez</li>*@
                     </ul>
                 </div>
 
@@ -1710,13 +1907,13 @@
         </center>
     </div>*@
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>*@
 
 
 
@@ -2771,8 +2968,9 @@ $.ajax({
         document.getElementById("prop-edit-container").style.display = "none";
     }
 
-    function assignOpenForm() {
+    function assignOpenForm(guid) {
         document.getElementById("assign-popup").style.display = "block";
+        localStorage.setItem("taskGUID", guid);
     }
 
     function assignCloseForm() {

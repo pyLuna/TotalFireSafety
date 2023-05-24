@@ -332,6 +332,12 @@
     <Compile Include="Models\Status.cs">
       <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Subtask.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaskList.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TokenCatcher.cs" />
     <Compile Include="MyHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

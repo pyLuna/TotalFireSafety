@@ -12,14 +12,13 @@ namespace TotalFireSafety.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Attendance
+    public partial class Subtask
     {
-        public System.Guid atte_id { get; set; }
-        public Nullable<int> atte_proj_id { get; set; }
-        public Nullable<System.DateTime> atte_timein { get; set; }
-        public Nullable<System.DateTime> atte_timeout { get; set; }
-        public Nullable<int> atte_rep_no { get; set; }
+        public System.Guid guid { get; set; }
+        public System.Guid task_id { get; set; }
+        public string subtask_name { get; set; }
+        public int isDone { get; set; }
     
-        public virtual NewManpower NewManpower { get; set; }
+        public virtual TaskList TaskList { get; set; }
     }
 }

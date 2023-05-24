@@ -13,6 +13,7 @@
           <Property Name="atte_proj_id" Type="int" />
           <Property Name="atte_timein" Type="datetime" />
           <Property Name="atte_timeout" Type="datetime" />
+          <Property Name="atte_rep_no" Type="int" />
         </EntityType>
         <EntityType Name="Basecount">
           <Key>
@@ -63,6 +64,8 @@
           <Property Name="update_quantity" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="update_date" Type="datetime" />
           <Property Name="update_type" Type="varchar" MaxLength="100" />
+          <Property Name="update_base" Type="nvarchar" MaxLength="50" />
+          <Property Name="update_total" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Inventories">
           <Key>
@@ -202,6 +205,29 @@
           <Property Name="IsActive" Type="int" Nullable="false" />
           <Property Name="IsLocked" Type="int" Nullable="false" />
           <Property Name="IsUser" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subtask">
+          <Key>
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="task_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="subtask_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="isDone" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TaskList">
+          <Key>
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="guid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="proj_type_id" Type="int" Nullable="false" />
+          <Property Name="task_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="start_date" Type="date" />
+          <Property Name="end_date" Type="date" />
+          <Property Name="duration" Type="int" />
+          <Property Name="progress" Type="int" Nullable="false" />
+          <Property Name="remarks" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="emp_no" Type="int" />
         </EntityType>
         <Association Name="FK_Attendance_NewManpowers">
           <End Role="NewManpowers" Type="Self.NewManpowers" Multiplicity="1" />
@@ -407,6 +433,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Subtask_TaskList">
+          <End Role="TaskList" Type="Self.TaskList" Multiplicity="1" />
+          <End Role="Subtask" Type="Self.Subtask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskList">
+              <PropertyRef Name="guid" />
+            </Principal>
+            <Dependent Role="Subtask">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="db_a97f85_totalfiresafetyModelStoreContainer">
           <EntitySet Name="Attendance" EntityType="Self.Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Basecount" EntityType="Self.Basecount" Schema="dbo" store:Type="Tables" />
@@ -425,6 +463,8 @@
           <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subtask" EntityType="Self.Subtask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskList" EntityType="Self.TaskList" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Attendance_NewManpowers" Association="Self.FK_Attendance_NewManpowers">
             <End Role="NewManpowers" EntitySet="NewManpowers" />
             <End Role="Attendance" EntitySet="Attendance" />
@@ -493,6 +533,10 @@
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Status" EntitySet="Status" />
           </AssociationSet>
+          <AssociationSet Name="FK_Subtask_TaskList" Association="Self.FK_Subtask_TaskList">
+            <End Role="TaskList" EntitySet="TaskList" />
+            <End Role="Subtask" EntitySet="Subtask" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -516,6 +560,8 @@
           <EntitySet Name="Requests" EntityType="db_a97f85_totalfiresafetyModel.Request" />
           <EntitySet Name="Roles" EntityType="db_a97f85_totalfiresafetyModel.Role" />
           <EntitySet Name="Status" EntityType="db_a97f85_totalfiresafetyModel.Status" />
+          <EntitySet Name="Subtasks" EntityType="db_a97f85_totalfiresafetyModel.Subtask" />
+          <EntitySet Name="TaskLists" EntityType="db_a97f85_totalfiresafetyModel.TaskList" />
           <AssociationSet Name="FK_Attendance_NewManpowers" Association="db_a97f85_totalfiresafetyModel.FK_Attendance_NewManpowers">
             <End Role="NewManpower" EntitySet="NewManpowers" />
             <End Role="Attendance" EntitySet="Attendances" />
@@ -584,6 +630,14 @@
             <End Role="NewReport" EntitySet="NewReports" />
             <End Role="ReportImage" EntitySet="ReportImages" />
           </AssociationSet>
+          <AssociationSet Name="FK_Subtask_TaskList" Association="db_a97f85_totalfiresafetyModel.FK_Subtask_TaskList">
+            <End Role="TaskList" EntitySet="TaskLists" />
+            <End Role="Subtask" EntitySet="Subtasks" />
+          </AssociationSet>
+          <AssociationSet Name="TaskListEmployee" Association="db_a97f85_totalfiresafetyModel.TaskListEmployee">
+            <End Role="TaskList" EntitySet="TaskLists" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Attendance">
           <Key>
@@ -593,6 +647,7 @@
           <Property Name="atte_proj_id" Type="Int32" />
           <Property Name="atte_timein" Type="DateTime" Precision="3" />
           <Property Name="atte_timeout" Type="DateTime" Precision="3" />
+          <Property Name="atte_rep_no" Type="Int32" />
           <NavigationProperty Name="NewManpower" Relationship="db_a97f85_totalfiresafetyModel.FK_Attendance_NewManpowers" FromRole="Attendance" ToRole="NewManpower" />
         </EntityType>
         <EntityType Name="Basecount">
@@ -632,6 +687,7 @@
           <NavigationProperty Name="Requests" Relationship="db_a97f85_totalfiresafetyModel.FK_Requests_Employee" FromRole="Employee" ToRole="Request" />
           <NavigationProperty Name="Role" Relationship="db_a97f85_totalfiresafetyModel.FK_Roles_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="Status" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Employee" ToRole="Status" />
+          <NavigationProperty Name="TaskLists" Relationship="db_a97f85_totalfiresafetyModel.TaskListEmployee" FromRole="Employee" ToRole="TaskList" />
         </EntityType>
         <EntityType Name="Inv_Limits">
           <Key>
@@ -653,6 +709,8 @@
           <Property Name="update_quantity" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="update_date" Type="DateTime" Precision="3" />
           <Property Name="update_type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="update_base" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="update_total" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Inventory" Relationship="db_a97f85_totalfiresafetyModel.FK_Inv_Update_Inventory1" FromRole="Inv_Update" ToRole="Inventory" />
         </EntityType>
         <EntityType Name="Inventory">
@@ -816,6 +874,33 @@
           <Property Name="IsLocked" Type="Int32" Nullable="false" />
           <Property Name="IsUser" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.FK_Status_Employee" FromRole="Status" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Subtask">
+          <Key>
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="guid" Type="Guid" Nullable="false" />
+          <Property Name="task_id" Type="Guid" Nullable="false" />
+          <Property Name="subtask_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isDone" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TaskList" Relationship="db_a97f85_totalfiresafetyModel.FK_Subtask_TaskList" FromRole="Subtask" ToRole="TaskList" />
+        </EntityType>
+        <EntityType Name="TaskList">
+          <Key>
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="guid" Type="Guid" Nullable="false" />
+          <Property Name="proj_type_id" Type="Int32" Nullable="false" />
+          <Property Name="task_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="start_date" Type="DateTime" Precision="0" />
+          <Property Name="end_date" Type="DateTime" Precision="0" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="progress" Type="Int32" Nullable="false" />
+          <Property Name="remarks" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="emp_no" Type="Int32" />
+          <NavigationProperty Name="Subtasks" Relationship="db_a97f85_totalfiresafetyModel.FK_Subtask_TaskList" FromRole="TaskList" ToRole="Subtask" />
+          <NavigationProperty Name="Employee" Relationship="db_a97f85_totalfiresafetyModel.TaskListEmployee" FromRole="TaskList" ToRole="Employee" />
+          <Property Name="Employee_emp_no" Nullable="true" Type="Int32" />
         </EntityType>
         <Association Name="FK_Attendance_NewManpowers">
           <End Type="db_a97f85_totalfiresafetyModel.NewManpower" Role="NewManpower" Multiplicity="1" />
@@ -1021,6 +1106,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Subtask_TaskList">
+          <End Type="db_a97f85_totalfiresafetyModel.TaskList" Role="TaskList" Multiplicity="1" />
+          <End Type="db_a97f85_totalfiresafetyModel.Subtask" Role="Subtask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskList">
+              <PropertyRef Name="guid" />
+            </Principal>
+            <Dependent Role="Subtask">
+              <PropertyRef Name="task_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TaskListEmployee">
+          <End Type="db_a97f85_totalfiresafetyModel.TaskList" Role="TaskList" Multiplicity="*" />
+          <End Type="db_a97f85_totalfiresafetyModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="emp_no" />
+            </Principal>
+            <Dependent Role="TaskList">
+              <PropertyRef Name="Employee_emp_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1030,6 +1139,7 @@
           <EntitySetMapping Name="Attendances">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Attendance">
               <MappingFragment StoreEntitySet="Attendance">
+                <ScalarProperty Name="atte_rep_no" ColumnName="atte_rep_no" />
                 <ScalarProperty Name="atte_timeout" ColumnName="atte_timeout" />
                 <ScalarProperty Name="atte_timein" ColumnName="atte_timein" />
                 <ScalarProperty Name="atte_proj_id" ColumnName="atte_proj_id" />
@@ -1084,6 +1194,8 @@
           <EntitySetMapping Name="Inv_Update">
             <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Inv_Update">
               <MappingFragment StoreEntitySet="Inv_Update">
+                <ScalarProperty Name="update_total" ColumnName="update_total" />
+                <ScalarProperty Name="update_base" ColumnName="update_base" />
                 <ScalarProperty Name="update_type" ColumnName="update_type" />
                 <ScalarProperty Name="update_date" ColumnName="update_date" />
                 <ScalarProperty Name="update_quantity" ColumnName="update_quantity" />
@@ -1239,6 +1351,31 @@
                 <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subtasks">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.Subtask">
+              <MappingFragment StoreEntitySet="Subtask">
+                <ScalarProperty Name="isDone" ColumnName="isDone" />
+                <ScalarProperty Name="subtask_name" ColumnName="subtask_name" />
+                <ScalarProperty Name="task_id" ColumnName="task_id" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskLists">
+            <EntityTypeMapping TypeName="db_a97f85_totalfiresafetyModel.TaskList">
+              <MappingFragment StoreEntitySet="TaskList">
+                <ScalarProperty Name="emp_no" ColumnName="emp_no" />
+                <ScalarProperty Name="remarks" ColumnName="remarks" />
+                <ScalarProperty Name="progress" ColumnName="progress" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="task_name" ColumnName="task_name" />
+                <ScalarProperty Name="proj_type_id" ColumnName="proj_type_id" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

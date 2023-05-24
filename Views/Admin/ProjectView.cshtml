@@ -1138,7 +1138,24 @@
                     <div class="mid main-mid">
                         <div class="mid-content">
                             <div class="upper">
-                                <label>REPORT # <a> 01 </a> </label>
+                                <div class="left">
+                                    <label>REPORT # <a> 01 </a> </label>
+                                </div>
+                                
+                                <div class="right">
+                                    <div class="date">
+                                        <input type="date" id="rep_date" readonly>
+                                    </div>
+                                    <div class="status">
+                                        <select id="rep_status" required>
+                                            <option>Select Status</option>
+                                            <option>Achieved</option>
+                                            <option>Not Achieved</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                
                             </div>
                             <div class="mid">
                                 <div class="mid-container">
@@ -1146,6 +1163,9 @@
                                         <textarea name="" id="rep_description" placeholder="Input here"></textarea>
                                     </div>
                                     <div class="attach">
+                                        <div>
+
+                                        </div>
                                         <button id="attachBtn">
                                             <i class="las la-paperclip"></i>
                                         </button>
@@ -1158,9 +1178,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="button">
+                            <button onclick="saveData()">SUBMIT</button>
+                        </div>
                     </div>
 
-                    <div class="right">
+                    <!--<div class="right">
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
@@ -1175,15 +1198,15 @@
                                 </div>
                             </div>
                             <div class="mid">
-                                <div class="mid-container">
-                                    <input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
-                                    <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>
-                                </div>
+                                <div class="mid-container">-->
+                                    @*<input type="text" id="rep_proj_id" value="@ViewBag.ProjectID" hidden>
+                                    <i class="las la-project-diagram"></i> <input type="text" id="rep_scope" placeholder="Input here..."><button id="add-scope"><i class="las la-location-arrow enter"></i></button>*@
+                                <!--</div>
                             </div>
                             <div class="lower">
                                 <div class="low-list">
-                                    <div class="low-grid">
-                                        <div class="low-projects">
+                                    <div class="low-grid">-->
+                                        @*<div class="low-projects">
                                             <div class="low">
                                                 <div class="low-body">
                                                     <div class="table-responsive" style="overflow-x: auto;">
@@ -1200,15 +1223,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div>*@
+                                    <!--</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="button">
-                            <button onclick="saveData()">SUBMIT</button>
-                        </div>
+                        
 
                         <script>
                             function saveData() {
@@ -1310,7 +1331,7 @@
                             }
                         </script>
 
-                    </div>
+                    </div>-->
                 </div>
             </div>
 

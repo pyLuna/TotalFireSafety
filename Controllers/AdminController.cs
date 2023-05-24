@@ -653,7 +653,47 @@ namespace TotalFireSafety.Controllers
             return View(viewModel);
         }
 
-        public ActionResult GetManpowerAndAttendanceData(int repno)
+
+        public ActionResult GetManpowers(int repno)
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // Retrieve the data for the dynamic table
+            var manpowers = db.NewManpowers.Include("Attendance").Where(manpower => manpower.man_rep_no == repno).ToList();
+
+            // Transform the data to the required format
+            var transformedManpowers = manpowers.Select(manpower => new
+            {
+                man_name = manpower.man_name,
+                atte_timein = manpower.Attendance?.atte_timein?.ToString("hh:mm tt"), // Format the time portion only
+                atte_timeout = manpower.Attendance?.atte_timeout?.ToString("hh:mm tt"), // Format the time portion only
+                atte_id = manpower.Attendance?.atte_id,
+            });
+
+            // Return the data as JSON
+            return Json(transformedManpowers, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPut]
+        public JsonResult UpdateAttendance(Guid atteId)
+        {
+            using (var db = new nwTFSEntity())
+            {
+                // Get the attendance record
+                var attendance = db.Attendances.FirstOrDefault(a => a.atte_id == atteId);
+                if (attendance != null)
+                {
+                    // Update atte_timeout to current datetime
+                    attendance.atte_timeout = DateTime.Now;
+                    db.SaveChanges();
+                    return Json(new { success = true });
+                }
+            }
+            return Json(new { success = false });
+        }
+    
+
+    public ActionResult GetManpowerAndAttendanceData(int repno)
         {
             using (var context = new nwTFSEntity())
             {
@@ -769,6 +809,37 @@ ViewBag.AttendanceList = attendanceList;
             }
         }
 
+        public ActionResult GetData()
+        {
+            nwTFSEntity db = new nwTFSEntity();
+            // Retrieve the data from the database
+            var data = db.NewManpowers
+                .Include(m => m.Attendance)
+                .Include(m => m.NewProject)
+                .ToList();
+
+            // Prepare the data to be sent as JSON
+            var jsonData = data.Select(manpower => new
+            {
+                manpower.man_id,
+                manpower.man_emp_no,
+                manpower.man_name,
+                manpower.man_postition,
+                manpower.man_proj_id,
+                manpower.man_date,
+                manpower.man_rep_no,
+                Attendance = new
+                {
+                    manpower.Attendance.atte_id,
+                    manpower.Attendance.atte_proj_id,
+                    atte_timein = manpower.Attendance.atte_timein?.ToString("hh:mm tt"),
+                    atte_timeout = manpower.Attendance.atte_timeout?.ToString("hh:mm tt")
+                }
+            });
+
+            return Json(jsonData);
+        }
+
         [HttpPost]
         public ActionResult UpdateProposal(NewProposal updatedProposal)
         {
@@ -810,23 +881,32 @@ ViewBag.AttendanceList = attendanceList;
             var attendance = db.Attendances.Where(a => a.atte_timein == rep_date).ToList();
             return Json(attendance, JsonRequestBehavior.AllowGet);
         }
-
         public ActionResult GetAttendanceData(int rep_no)
         {
-            nwTFSEntity db = new nwTFSEntity();
-            var data = db.Attendances
-                .Join(db.NewManpowers, a => a.atte_id, m => m.man_id, (a, m) => new { Attendance = a, Manpower = m })
-               .Where(a => a.Manpower.man_rep_no == rep_no)
-                .Select(a => new
-                {
-                    Manpower = a.Manpower.man_name,
-                    Position = a.Manpower.man_postition,
-                    TimeIn = a.Attendance.atte_timein,
-                    TimeOut = a.Attendance.atte_timeout
-                })
-                .ToList();
+            using (var db = new nwTFSEntity())
+            {
+                var data = db.Attendances
+                    .Join(db.NewManpowers, a => a.atte_id, m => m.man_id, (a, m) => new { Attendance = a, Manpower = m })
+                    .Where(a => a.Manpower.man_rep_no == rep_no)
+                    .Select(a => new
+                    {
+                        Manpower = a.Manpower.man_name,
+                        Position = a.Manpower.man_postition,
+                        TimeIn = a.Attendance.atte_timein,
+                        TimeOut = a.Attendance.atte_timeout
+                    })
+                    .ToList();
 
-            return Json(data, JsonRequestBehavior.AllowGet);
+                var transformedData = data.Select(a => new
+                {
+                    Manpower = a.Manpower,
+                    Position = a.Position,
+                    TimeIn = a.TimeIn.HasValue ? a.TimeIn.Value.ToString("hh:mm tt") : null,
+                    TimeOut = a.TimeOut.HasValue ? a.TimeOut.Value.ToString("hh:mm tt") : null
+                });
+
+                return Json(transformedData, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

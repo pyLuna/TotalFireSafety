@@ -504,7 +504,7 @@
                                                 <span class="lar la-plus-square"></span>Add Report
                                             </a>
                                         }
-                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="task-grid">
@@ -619,7 +619,7 @@
         <div class="float-manpower" onclick="openInputMemForm()">
 
             <div class="float-container">
-              
+
 
                 <h1>ATTENDANCE</h1>
             </div>
@@ -972,7 +972,7 @@
 
                     <input type="text" name="mems" value="" onchange="filterTable()" />
 
-                   
+
                     <script>
                       $(function () {
                     var startDate = new Date("@ViewBag.Startdate"); // Convert the ViewBag Startdate value to a Date object
@@ -1033,13 +1033,16 @@
 
                                                     if (attendance?.atte_timein != null) // Check if attendance time in is not null
                                                     {
-                                                <tr>
-                                                    <td contenteditable="false"><b>@manpower.man_name</b></td>
-                                                    <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
-                                                    <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
-                                                    <td contenteditable="false"><b>
-                                                    <script>document.write(new Date('@manpower.man_date').toLocaleDateString('en-US'));</script></b></td>
-                                                </tr>
+                                                        <tr>
+                                                            <td contenteditable="false"><b>@manpower.man_name</b></td>
+                                                            <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
+                                                            <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
+                                                            <td contenteditable="false">
+                                                                <b>
+                                                                    <script>document.write(new Date('@manpower.man_date').toLocaleDateString('en-US'));</script>
+                                                                </b>
+                                                            </td>
+                                                        </tr>
                                                     }
                                                 }
                                             </tbody>
@@ -1051,7 +1054,7 @@
                     </div>
                 </div>
                 <center>
-                   
+
                     <button onclick="closeInputMemForm()">Close</button>
                 </center>
             </div>
@@ -1393,7 +1396,7 @@
                     <div class="mid">
                         <div class="mid-content">
                             <div class="upper">
-                                <label id="rep_no">REPORT ID </label>
+                                <label id="rep_no">REPORT ID  <input type="text" name="rep_no" id="rep_no" hidden></label>
                             </div>
                             <div class="mid main-mid">
                                 <div class="mid-container">
@@ -1420,7 +1423,7 @@
                         <div class="right-content">
                             <div class="upper">
                                 <div class="date">
-                                    <input type="text" id="rep_date1" name="rep_date1" readonly>
+                                    <input type="text" id="rep_date1" name="rep_date1" onchange="filterByDate()" readonly>
                                 </div>
                                 <div class="date">
                                     <input type="text" name="rep_stats" id="rep_stats" readonly>
@@ -1471,6 +1474,7 @@
 
         </div>
 
+        </script>
         <!-- END -->
         <!-- ATTENDANCE POPUP PAGE 04-19 -->
 
@@ -1541,32 +1545,45 @@
                             <div class="input-man">
                                 <div class="input-man-body">
                                     <div class="table-responsive" style="overflow-x: auto;">
+
                                         <table id="inputTable" width="100%">
                                             <thead>
                                                 <tr>
                                                     <td><b>MANPOWER</b></td>
-                                                    <td><b>POSITION</b></td>
+
                                                     <td>Time - In</td>
                                                     <td>Time - Out</td>
+                                                    <td></td>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                @foreach (var manpower in Model.Manpowers)
-                                                {
-                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id && a.NewManpower.man_proj_id == Model.Project.proj_type_id);
+                                            <tbody id="tableBody">
+                                                @*
 
-                                                    if (attendance?.atte_timein != null) // Check if attendance time in is not null
-                                                    {
-                                                        <tr>
-                                                            <td contenteditable="true"><b>@manpower.man_name</b></td>
-                                                            <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
-                                                            <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
-                                                            <td><button class="out" onclick="updateAttendance('@attendance.atte_id')">CLOCK OUT</button></td>
-                                                        </tr>
-                                                    }
-                                                }
+
+                                                                @foreach (var manpower in Model.Manpowers)
+                                                                {
+                                                                    var attendance = Model.Attendances.FirstOrDefault(a => a.atte_id == manpower.man_id && a.NewManpower.man_proj_id == Model.Project.proj_type_id );
+
+                                                                    if (attendance?.atte_timein != null)
+                                                                    {
+                                                            <tr>
+                                                                <td><b>@manpower.man_name</b></td>
+                                                                <td>@(attendance.atte_timein.Value.ToString("hh:mm tt"))</td>
+                                                                <td>@(attendance.atte_timeout?.ToString("hh:mm tt") ?? "")</td>
+                                                                <td>
+                                                                    @if (attendance.atte_timeout == null)
+                                                                                {
+                                                                        <button class="out" onclick="updateAttendance('@attendance.atte_id')">CLOCK OUT</button>
+                                                                    }
+                                                                </td>
+                                                                <td><b>@manpower.man_date</b></td>
+                                                            </tr>
+                                                        }
+                                                    }*@
                                             </tbody>
                                         </table>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -1743,12 +1760,11 @@
     </div>*@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 
 <script>
@@ -2289,11 +2305,11 @@ $.ajax({
 
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
-    <td>${manpower}</td>
+            <td>${manpower}</td>
 
-    <td>${timeIn}</td>
-    <td></td>
-    `;
+            <td>${timeIn}</td>
+            <td></td>
+            `;
             console.log(newRow); // check if newRow contains the expected values
             outputTableBody.appendChild(newRow);
 
@@ -2324,9 +2340,9 @@ $.ajax({
         if (scope !== "") {
             const newRow = document.createElement("tr");
             newRow.innerHTML = `
-    <td><i class="las la-dot-circle"></i></td>
-    <td>${scope}</td>
-    `;
+            <td><i class="las la-dot-circle"></i></td>
+            <td>${scope}</td>
+            `;
             scopeList.appendChild(newRow);
             scopeInput.value = "";
         }
@@ -2505,14 +2521,6 @@ $.ajax({
     }
 </script>
 
-<script>
-    // Get the repno parameter from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const repno = urlParams.get('repno');
-
-    // Update the label with the repno value
-    document.getElementById('rep_no_value').innerText = repno;
-</script>
 
 <script>
 
@@ -2543,6 +2551,7 @@ $.ajax({
                 $("#rep_description1").val(data.rep_description);
                 $("#rep_date1").val(data.rep_date);
                 $("#rep_stats").val(data.rep_stats);
+                $("#rep_no").val(data.rep_no);
 
                 var tableBody = $("#ScopeTable tbody");
                 tableBody.empty(); // Clear the table body
@@ -2565,41 +2574,19 @@ $.ajax({
                     url: '/Admin/GetAttendanceData',
                     type: 'GET',
                     dataType: 'json',
-                    data: { date: isoDate, rep_no: repNoParam }, // Add rep_no par   ameter
+                    data: { rep_no: repNoParam },
                     success: function (attendanceData) {
                         var tableBody = $('#table-body');
                         tableBody.empty();
 
                         $.each(attendanceData, function (index, item) {
-                            // Filter by atte_timein
-                            var timeIn = item.TimeIn.match(/\/Date\((\d+)\)\//);
-                            var isoTimeIn = null;
-                            if (timeIn) {
-                                var timeInDate = new Date(parseInt(timeIn[1], 10));
-                                isoTimeIn = new Date(Date.UTC(timeInDate.getFullYear(), timeInDate.getMonth(), timeInDate.getDate(), timeInDate.getHours(), timeInDate.getMinutes())).toISOString();
+                            // Parse date and time values
 
-                                // Only add rows to the table if atte_timein matches isoDate
-                                if (isoTimeIn.split('T')[0] === isoDate) {
-                                    var tr = $('<tr>').appendTo(tableBody);
-                                    $('<td>').text(item.Manpower).appendTo(tr);
+                            var tr = $('<tr>').appendTo(tableBody);
+                            $('<td>').text(item.Manpower).appendTo(tr);
+                            $('<td>').text(item.TimeIn).appendTo(tr);
+                            $('<td>').text(item.TimeOut).appendTo(tr);
 
-                                    // Format time in 12-hour format
-                                    var formattedTimeIn = new Date(isoTimeIn).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-                                    $('<td>').text(formattedTimeIn).appendTo(tr);
-
-                                    // Convert atte_timeout to ISO format if defined
-                                    var timeOut = item.TimeOut.match(/\/Date\((\d+)\)\//);
-                                    var isoTimeOut = null;
-                                    if (timeOut) {
-                                        var timeOutDate = new Date(parseInt(timeOut[1], 10));
-                                        isoTimeOut = new Date(Date.UTC(timeOutDate.getFullYear(), timeOutDate.getMonth(), timeOutDate.getDate(), timeOutDate.getHours(), timeOutDate.getMinutes())).toISOString();
-                                        var formattedTimeOut = new Date(isoTimeOut).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-                                        $('<td>').text(formattedTimeOut).appendTo(tr);
-                                    } else {
-                                        $('<td>').text('').appendTo(tr);
-                                    }
-                                }
-                            }
                         });
                     },
                     error: function (xhr, status, error) {
@@ -2608,21 +2595,22 @@ $.ajax({
                 });
 
 
-
                 $.get('/Admin/GetReportImages', { rep_date: isoDate, rep_no: selectedRepNo, id: idParam, proj_type_id: projectId })
                     .done(function (images) {
                         var container = $('#image-container');
                         container.empty(); // Clear the container first
+
                         $.each(images, function (index, path) {
                             var img = $('<img>').attr('src', '/ReportImg/' + path).addClass('report-img');
                             var link = $('<a>').attr('href', '/ReportImg/' + path).addClass('fancybox').append(img);
 
                             // Create a div to hold the img_date and append it to the link
-
-
                             container.append(link);
                         });
+
+                        // Initialize FancyBox after the images have been added to the container
                         $('.fancybox').fancybox();
+
 
 
                     });
@@ -2631,6 +2619,75 @@ $.ajax({
                 console.log(xhr.responseText);
             }
         });
+
+
+        // Fetch data from the AdminController endpoint
+        fetch(`/Admin/GetManpowers?repno=${repNoParam}`)
+            .then(response => response.json())
+            .then(data => {
+                // Get the table body element
+                const tableBody = document.getElementById('tableBody');
+
+                // Clear any existing content in the table body
+                tableBody.innerHTML = '';
+
+                // Iterate over the data and create table rows
+                data.forEach(manpower => {
+                    // Create a new table row
+                    const row = document.createElement('tr');
+
+                    // Create table cells and populate them with data
+                    const nameCell = document.createElement('td');
+                    nameCell.innerHTML = `<b>${manpower.man_name}</b>`;
+                    row.appendChild(nameCell);
+
+                    const timeInCell = document.createElement('td');
+                    timeInCell.textContent = manpower.atte_timein;
+                    row.appendChild(timeInCell);
+
+                    const timeOutCell = document.createElement('td');
+                    timeOutCell.textContent = manpower.atte_timeout;
+                    row.appendChild(timeOutCell);
+
+                    const buttonCell = document.createElement('td');
+                    if (!manpower.atte_timeout) {
+                        const button = document.createElement('button');
+                        button.className = 'out';
+                        button.textContent = 'CLOCK OUT';
+                        button.addEventListener('click', () => updateAttendance(manpower.atte_id, button));
+                        buttonCell.appendChild(button);
+                    }
+                    row.appendChild(buttonCell);
+
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        function updateAttendance(atteId, button) {
+            // Send the HTTP request to update the attendance
+            fetch(`/Admin/UpdateAttendance?atteId=${atteId}`, {
+                method: 'PUT',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Update the button text and disable it
+                        button.textContent = 'CLOCKED OUT';
+                        button.disabled = true;
+
+                        // Reload the page
+                        location.reload();
+                    } else {
+                        throw new Error('Failed to update attendance.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
     }
 
 

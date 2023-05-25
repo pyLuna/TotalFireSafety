@@ -2045,7 +2045,7 @@ namespace TotalFireSafety.Controllers
 
 
         [HttpPost]
-        public ActionResult SaveReport(string rep_scope, string rep_date, string rep_stats, string rep_proj_id, string rep_description)
+        public ActionResult SaveReport( string rep_date, string rep_stats, string rep_proj_id, string rep_description)
         {
             // convert string values to their corresponding data types
             DateTime date = DateTime.Parse(rep_date);
@@ -2057,7 +2057,7 @@ namespace TotalFireSafety.Controllers
                 rep_id = Guid.NewGuid(),
                 rep_emp_no = (int)Session["emp_no"],
                 rep_proj_id = projectId,
-                rep_scope = rep_scope,
+                rep_scope = "",
                 rep_stats = rep_stats,
                 rep_date = date,
                 rep_description = rep_description

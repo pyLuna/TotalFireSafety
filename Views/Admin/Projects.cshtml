@@ -157,13 +157,13 @@
                     <input type="text" value="@sessionUserPosition" hidden />
 
 
-                    @if (sessionUserPosition != "Project Lead")
+                    @if (sessionUserPosition != "Project Lead" && sessionUserPosition != "Foreman")
                     {
                         <a onclick="openAddNewContainer()">
                             <button class="add-btn" title="ADD NEW ITEM">NEW PROJECT</button>
                         </a>
                     }
-                    @if (sessionUserPosition != "Engineer" && sessionUserPosition != "Project Lead")
+                    @if (sessionUserPosition != "Engineer" && sessionUserPosition != "Project Lead" && sessionUserPosition != "Foreman")
                     {
                         <select id="select-engineers" required>
                             <option value="All" disabled selected>Engineer</option>
@@ -171,7 +171,7 @@
                             <!-- Add more engineer options as needed -->
                         </select>
                     }
-                    @if (sessionUserPosition != "Project Lead")
+                    @if (sessionUserPosition != "Project Lead" && sessionUserPosition != "Foreman")
                     { 
                         <select id="select-leads" required>
                             <option value="All" disabled selected>Project Lead</option>

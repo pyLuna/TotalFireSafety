@@ -1181,7 +1181,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <td>MANPOWER</td>
-                                                                <td>POSITION</td>
+                                                               
                                                                 <td>Time-In</td>
                                                                 <td>Time-Out</td>
                                                             </tr>
@@ -1287,7 +1287,7 @@
                                                 </div>
                                             </div>
                                         </div>*@
-                                    <!--</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1318,12 +1318,7 @@
                                     data.push(row);
                                 });
 
-                                var scopeList = document.getElementById("scope-list");
-                                var scopes = "";
-                                for (var i = 0; i < scopeList.children.length; i++) {
-                                    var scope = scopeList.children[i].children[1].textContent;
-                                    scopes += scope + ", ";
-                                }
+                              
 
                                 var description = document.getElementById("rep_description").value;
                                 var status = document.getElementById("rep_status").value;
@@ -1351,7 +1346,7 @@
                                     type: "POST",
                                     url: "/Admin/SaveReport",
                                     data: {
-                                        rep_scope: scopes,
+                                       
                                         rep_date: repDate,
                                         rep_stats: status,
                                         rep_proj_id: repProjId,
@@ -1394,7 +1389,7 @@
                             }
                         </script>
 
-                    </div>-->
+                    </div>
                 </div>
             </div>
 
@@ -1843,9 +1838,9 @@
         </center>
     </div>*@
 
-@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>*@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 
 <script>

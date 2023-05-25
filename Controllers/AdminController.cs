@@ -618,6 +618,16 @@ namespace TotalFireSafety.Controllers
                         subtask_name = subtask,
                         isDone = 0
                     };
+                    var task = _context.TaskLists.Where(x => x.guid == parse).SingleOrDefault();
+                    // Calculate progress
+                    var numSubtasks = _context.Subtasks.Count(x => x.task_id == parse);
+                    var numCompletedSubtasks = _context.Subtasks.Count(x => x.task_id == parse && x.isDone == 1);
+                    var progress = (numCompletedSubtasks / (double)numSubtasks) * 100;
+
+                    task.progress = (int)progress;
+
+                    _context.Entry(task);
+                    //await _context.SaveChangesAsync();
                     _context.Subtasks.Add(tl);
                     await _context.SaveChangesAsync();
                     await SendNotif("notification");

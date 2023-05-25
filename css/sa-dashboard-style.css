@@ -10084,9 +10084,8 @@ acc-form-table .view-request-form-table-style table thead td {
         }
 
             .report-new-container .report-new-main .border .left,
-            .report-new-container .report-new-main .border .mid,
-            .report-new-container .report-new-main .border .right {
-                width: 32%;
+            .report-new-container .report-new-main .border .mid {
+                width: 48%;
                 height: 100%;
             }
 
@@ -10205,10 +10204,85 @@ acc-form-table .view-request-form-table-style table thead td {
     padding-left: 30px;
 }
 
+.report-new-main .border .mid .mid-content .upper {
+    display: flex;
+    justify-content: space-between;
+}
+
     .report-new-main .border .mid .mid-content label {
         font-size: 1.5rem;
         font-weight: 800;
     }
+
+/* ASDJAHKSDKLAS */
+
+    .report-new-main .border .mid .mid-content .upper .right {
+        display: flex;
+    }
+
+    .report-new-main .border .mid .mid-content .upper .date {
+        width: 150px;
+        height: 50px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-right: 5px;
+    }
+
+        .report-new-main .border .mid .mid-content .upper .date input {
+            width: 100%;
+            height: 100%;
+            box-shadow: 4px 4px 3px #B2B2B2;
+            border: 1px solid #B2B2B2;
+            border-radius: 10px;
+            margin-top: 0px;
+            font-size: 1rem;
+            font-weight: 600;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+    .report-new-main .border .mid .mid-content .upper .status {
+        width: 150px;
+        height: 50px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+        .report-new-main .border .mid .mid-content .upper .status select {
+            width: 100%;
+            height: 100%;
+            box-shadow: 4px 4px 3px #B2B2B2;
+            border: 1px solid #B2B2B2;
+            border-radius: 10px;
+            margin-top: 0px;
+            font-size: 1rem;
+            font-weight: 600;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+.report-new-main .border .mid .button {
+    position: absolute;
+    margin-left: 500px;
+    padding-top: 10px;
+}
+
+    .report-new-main .border .mid .button button {
+        width: 150px;
+        height: 50px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        background-color: #16215B;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+        .report-new-main .border .mid .button button:hover {
+            background-color: #fff;
+            color: #16215B;
+        }
+
+/* END */
 
     .report-new-main .border .mid .mid-content .mid {
         width: 100%;
@@ -10245,8 +10319,9 @@ acc-form-table .view-request-form-table-style table thead td {
             }
 
         .report-new-main .border .mid .mid-content .mid .mid-container .attach {
-            margin-left: 375px;
             margin-top: -5px;
+            display: flex;
+            justify-content: space-between;
         }
 
             .report-new-main .border .mid .mid-content .mid .mid-container .attach i {
@@ -10261,7 +10336,7 @@ acc-form-table .view-request-form-table-style table thead td {
 
     .report-new-main .border .mid .mid-content .lower {
         width: 100%;
-        height: 312px;
+        height: 290px;
         box-shadow: 4px 4px 3px #B2B2B2;
         border: 1px solid #B2B2B2;
         border-radius: 10px;
@@ -10361,9 +10436,9 @@ acc-form-table .view-request-form-table-style table thead td {
 
     .report-new-main .border .right .right-content .mid {
         width: 100%;
-        height: 50px;
-        box-shadow: 4px 4px 3px #B2B2B2;
-        border: 1px solid #B2B2B2;
+        height: 50px;/*
+        box-shadow: 4px 4px 3px #B2B2B2;*/
+        border: 0;
         border-radius: 10px;
         margin-top: 15px;
         margin-bottom: 5px;
@@ -10404,9 +10479,9 @@ acc-form-table .view-request-form-table-style table thead td {
 
     .report-new-main .border .right .right-content .lower {
         width: 100%;
-        height: 397px;
-        box-shadow: 4px 4px 3px #B2B2B2;
-        border: 1px solid #B2B2B2;
+        height: 397px;/*
+        box-shadow: 4px 4px 3px #B2B2B2;*/
+        border: 0;
         border-radius: 10px;
         margin-top: 15px;
         margin-bottom: 5px;
@@ -10446,7 +10521,7 @@ acc-form-table .view-request-form-table-style table thead td {
             }
 
 .report-new-main .border .right .button {
-    display: absolute;
+    position: absolute;
     margin-left: 300px;
     padding-top: 10px;
 }
@@ -11574,14 +11649,14 @@ acc-form-table .view-request-form-table-style table thead td {
 
 .input-mem-container {
     display: none;
-    width: 700px;
-    height: 400px;
+    width: 1000px;
+    height: 500px;
     background-color: #fff;
     box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
     z-index: 100;
     position: fixed;
     top: 20%;
-    right: 30%;
+    right: 25%;
     border-radius: 5px;
 }
 
@@ -12382,14 +12457,14 @@ acc-form-table .view-request-form-table-style table thead td {
 
 .input-mem-container {
     display: none;
-    width: 700px;
-    height: 400px;
+    width: 1000px;
+    height: 600px;
     background-color: #fff;
     box-shadow: 0 0px 30px rgba(0, 0, 0, .3);
     z-index: 100;
     position: fixed;
     top: 20%;
-    right: 30%;
+    right: 25%;
     border-radius: 5px;
 }
 
@@ -12403,7 +12478,7 @@ acc-form-table .view-request-form-table-style table thead td {
 
 .input-mems {
     margin-top: 10px;
-    height: 240px;
+    height: 440px;
     overflow: auto;
     margin-bottom: -20px;
     box-shadow: 3px 5px 5px 3px #B2B2B2;

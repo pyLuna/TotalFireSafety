@@ -440,6 +440,30 @@
             }
             return bool;
         }*/
+
+    //function ProgressBar() {
+    //    fetch('/Admin/Remarks', {
+    //        method: 'POST',
+    //        headers: {
+    //            'Content-Type': 'application/json'
+    //        },
+    //        body: JSON.stringify(data)
+    //    })
+    //        .then(response => {
+    //            if (response.ok) {
+    //                return response.json();
+    //            }
+    //            throw new Error('Network response was not ok.');
+    //        })
+    //        .then(data => {
+    //            //addCheckList(taskInp);
+    //        })
+    //        .catch(error => {
+    //            // Handle any errors
+    //            console.error('Error:', error);
+    //        });
+    //}
+
 $(document).ready(function () {
   var projects = JSON.parse('@Html.Raw(ViewBag.Projects)');
   var tableBody = $('#projectTable tbody');
@@ -468,7 +492,7 @@ $(document).ready(function () {
       row.append($('<td>').text(project.proj_endDate));
       row.append($('<td>').addClass('status-column').text(project.proj_status));
       row.append($('<td>').addClass('progress-column'));
-      row.append($('<td>').addClass('icon-column').append(linkElement))
+    
 
       // Calculate the percentage completion of the project
       var startDate = new Date(project.proj_strDate);
@@ -543,7 +567,7 @@ row.append($('<td>').text(project.proj_strDate));
 row.append($('<td>').text(project.proj_endDate));
 row.append($('<td>').addClass('status-column').text(project.proj_status));
 row.append($('<td>').addClass('progress-column'));
-row.append($('<td>').addClass('icon-column').append(linkElement))
+
 
       // Calculate the percentage completion of the project
       var startDate = new Date(project.proj_strDate);

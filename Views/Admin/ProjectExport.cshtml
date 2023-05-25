@@ -111,7 +111,7 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <h2 class="font-weight-bold">Daily Report # @ViewBag.ReportNo</h2>
+                                    <h2 class="font-weight-bold">Report # @ViewBag.ReportNo</h2>
                                 </tr>
                             </thead>
                             <tbody>
@@ -187,7 +187,7 @@
                         </tbody>
                     </table>
                     <br>
-                    <div class="d-flex justify-content-between">
+                    <!--<div class="d-flex justify-content-between">
                         <table id="pe-table" class="table table-sm pe-table mr-2">
                             <thead>
                                 <tr>
@@ -201,18 +201,18 @@
                                     <th>Manpower</th>
                                     <th>time - in</th>
                                     <th>Time - out</th>
-                                </tr>
-                                @foreach (var attendance in ViewBag.AttendanceList)
+                                </tr>-->
+                               @* @foreach (var attendance in ViewBag.AttendanceList)
                                 {
                                     <tr>
                                         <td>@attendance.NewManpower.man_name</td>
                                         <td>@attendance.atte_timein</td>
                                         <td>@attendance.atte_timeout</td>
                                     </tr>
-                                }
+                                }*@
 
-                            </tbody>
-                        </table>
+                            <!--</tbody>
+                        </table>-->
 
                         <table id="pe-table" class="table table-sm pe-table ml-2">
                             <thead>
@@ -229,7 +229,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
+                    @*</div>*@
                     <h3>IMAGES</h3>
                 </div>
                 <hr class="hr-solid">

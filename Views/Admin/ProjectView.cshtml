@@ -2963,7 +2963,7 @@ $.ajax({
                                      </td>
                                      <td onclick=addCheckList('${data[i].task_id}')>${data[i].remarks}</td>
                                      <td onclick="assignOpenForm('${data[i].task_id}')">${emp}</td>
-                                     <td><a>export</a></td>
+                                    <td onclick="window.location.href='/Admin/ProjectExport?id=${id}'"><a>export</a></td>
                                 </tr>`;
                     tableCont.innerHTML += row;
                 }

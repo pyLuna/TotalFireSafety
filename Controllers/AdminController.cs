@@ -1021,7 +1021,7 @@ namespace TotalFireSafety.Controllers
             return Json(new { success = false });
         }
 
-        public async Task<ActionResult> ProjectExport(int? rep_no)
+        public async Task<ActionResult> ProjectExport(int? id)
         {
             nwTFSEntity db = new nwTFSEntity();
             var empId = Session["emp_no"]?.ToString();
@@ -1031,8 +1031,9 @@ namespace TotalFireSafety.Controllers
             }
             ViewBag.ProfilePath = GetPath(int.Parse(empId));
 
-            var report = db.NewReports.FirstOrDefault(r => r.rep_no == rep_no);
-           
+            var report = db.NewReports.FirstOrDefault(r => r.rep_proj_id == id);
+            var project = db.NewProjects.FirstOrDefault(p => p.proj_type_id == id);
+
 
 
             ViewBag.ReportDescription = report?.rep_description;
@@ -1042,14 +1043,14 @@ namespace TotalFireSafety.Controllers
             ViewBag.ReportNo = report?.rep_no;
 
 
-            ViewBag.ProjectName = report?.NewProject.proj_name;
-            ViewBag.ProjectSubject = report?.NewProject.proj_subject;
-            ViewBag.ProjectClient = report?.NewProject.proj_client;
-            ViewBag.ProjectLead = report?.NewProject.proj_lead;
-            ViewBag.ProjectLocation = report?.NewProject.proj_location;
-            ViewBag.StartDate = report?.NewProject.proj_strDate;
-            ViewBag.EndDate = report?.NewProject.proj_endDate;
-            ViewBag.Status = report?.NewProject.proj_status;
+            ViewBag.ProjectName = project?.proj_name;
+            ViewBag.ProjectSubject = project?.proj_subject;
+            ViewBag.ProjectClient = project?.proj_client;
+            ViewBag.ProjectLead = project?.proj_lead;
+            ViewBag.ProjectLocation = project?.proj_location;
+            ViewBag.StartDate = project?.proj_strDate;
+            ViewBag.EndDate = project?.proj_endDate;
+            ViewBag.Status = project?.proj_status;
 
             var reportImages = db.ReportImages
          .Where(r => !string.IsNullOrEmpty(r.img_image) && r.img_date == report.rep_date && r.img_rep_no == report.rep_no) // Filter out null or empty image paths and match the image date with the report date
@@ -1057,17 +1058,17 @@ namespace TotalFireSafety.Controllers
          .ToList();
 
             ViewBag.ImagePaths = reportImages;
+            /*
+                      var attendanceList = db.Attendances
+                .Include(a => a.NewManpower)
+                .Where(a => a.NewManpower.man_proj_id == report.rep_proj_id && 
+                       (a.atte_timein != null || a.atte_timein == null) && 
+                       a.NewManpower.man_date == report.rep_date && a.NewManpower.man_rep_no == report.rep_no)
+                .ToList();
 
-          var attendanceList = db.Attendances
-    .Include(a => a.NewManpower)
-    .Where(a => a.NewManpower.man_proj_id == report.rep_proj_id && 
-           (a.atte_timein != null || a.atte_timein == null) && 
-           a.NewManpower.man_date == report.rep_date && a.NewManpower.man_rep_no == report.rep_no)
-    .ToList();
+            ViewBag.AttendanceList = attendanceList;*/
 
-ViewBag.AttendanceList = attendanceList;
 
-            
 
             return View();
         }

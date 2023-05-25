@@ -45,6 +45,13 @@ $(document).ready(function () {
             /*alert("not allow more than 3 character");*/
         }
     });
+    $("#quantVal").keypress(function (e) {
+        var length = this.value.length;
+        if (length >= 3) {
+            e.preventDefault();
+            /*alert("not allow more than 3 character");*/
+        }
+    });
 });
 
 /*$(document).ready(function () {

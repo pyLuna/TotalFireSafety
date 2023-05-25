@@ -294,6 +294,7 @@
                                 <div class="header-right">
 
                                     <select required id="remarksSelect">
+                                        <option class="" value="" disabled selected>Select Remarks</option>
                                         <option class="orange" value="Completed">Completed</option>
                                         <option class="green" value="Delayed">Delayed</option>
                                         <option class="red" value="Unfinished">Unfinished</option>
@@ -3152,7 +3153,7 @@ $.ajax({
             // For example, you can update the 'isDone' property of the corresponding subtask
 
             // Find the subtask in the 'allTasks' array
-            for (var j = 0; j < allTasks.length; j++) {
+            for (var j = 0; j < allTasks[0].length; j++) {
                 for (var k = 0; k < allTasks[0][j].Subtasks.length; k++) {
                     if (allTasks[0][j].Subtasks[k].guid === checkboxId) {
                         res = allTasks[0][j].Subtasks[k].isDone = isChecked ? 1 : 0;
@@ -3200,9 +3201,19 @@ $.ajax({
         taskInp.value = id;
         var checked = "";
         container.innerHTML = "";
-        for (var i = 0; i < allTasks.length; i++) {
+        for (var i = 0; i < allTasks[0].length; i++) {
             if (allTasks[0][i].task_id == id) {
-                $('#reportrange span').html(allTasks[0][i].start + ' - ' + allTasks[0][i].end);
+                var start = "";
+                var end = "";
+                if (allTasks[0][i].start == null && allTasks[0][i].end == null) {
+                    start = moment().subtract(29, 'days').format('MMMM D, YYYY');
+                    end = moment().format('MMMM D, YYYY');
+                }
+                else {
+                    start = allTasks[0][i].start;
+                    end = allTasks[0][i].end;
+                }
+                $('#reportrange span').html(start + ' - ' + end);
                 remarksSelect2.value = allTasks[0][i].remarks;
                 for (var ii = 0; ii < allTasks[0][i].Subtasks.length; ii++) {
                     var row = "";

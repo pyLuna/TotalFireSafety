@@ -1775,26 +1775,31 @@ namespace TotalFireSafety.Controllers
             {
 
                 var projects = (
-       from p in db.NewProjects
-       join e1 in db.Employees on p.proj_emp_no equals e1.emp_no
-       join e2 in db.Employees on p.proj_engineer_no equals e2.emp_no
-       select new
-       {
-           proj_type_id = p.proj_type_id,
-           proj_name = p.proj_name,
-           emp_fname_lead = e1.emp_fname,
-           emp_lname_lead = e1.emp_lname,
-           emp_fname_engineer = e2.emp_fname,
-           emp_lname_engineer = e2.emp_lname,
-           proj_strDate = p.proj_strDate,
-           proj_endDate = p.proj_endDate,
-           proj_status = p.proj_status,
-           proj_lead = p.proj_lead,
-           proj_lead_id = p.proj_emp_no,
-           proj_engineer_no = p.proj_engineer_no,
-            proj_engineer_id = p.proj_engineer_no
-       }
-   ).ToList();
+      from p in db.NewProjects
+      join e1 in db.Employees on p.proj_emp_no equals e1.emp_no
+      join e2 in db.Employees on p.proj_engineer_no equals e2.emp_no
+      join tl in db.TaskLists on p.proj_type_id equals tl.proj_type_id // Joining based on proj_type_id
+    select new
+      {
+          proj_type_id = p.proj_type_id,
+          proj_name = p.proj_name,
+          emp_no = tl.emp_no,
+          emp_id = tl.emp_no,
+          emp_fname = tl.Employee.emp_fname,
+          emp_lname = tl.Employee.emp_lname,
+          emp_fname_lead = e1.emp_fname,
+          emp_lname_lead = e1.emp_lname,
+          emp_fname_engineer = e2.emp_fname,
+          emp_lname_engineer = e2.emp_lname,
+          proj_strDate = p.proj_strDate,
+          proj_endDate = p.proj_endDate,
+          proj_status = p.proj_status,
+          proj_lead = p.proj_lead,
+          proj_lead_id = p.proj_emp_no,
+          proj_engineer_no = p.proj_engineer_no,
+          proj_engineer_id = p.proj_engineer_no
+      }
+  ).ToList();
 
                 var jsonProjects = projects.Select(p => new
                 {
@@ -1807,7 +1812,9 @@ namespace TotalFireSafety.Controllers
                     project_leads = p.emp_fname_lead + ' ' + p.emp_lname_lead,
                     proj_lead_id = p.proj_lead_id,
                     proj_engineer_no = p.emp_fname_engineer + ' ' + p.emp_lname_engineer,
-                    proj_engineer_id = p.proj_engineer_no
+                    proj_engineer_id = p.proj_engineer_no,
+                    emp_no = p.emp_fname + ' ' + p.emp_lname,
+                    emp_id = p.emp_id
                 });
 
                 var serialize = JsonConvert.SerializeObject(jsonProjects);
@@ -1896,102 +1903,114 @@ namespace TotalFireSafety.Controllers
             return Json(employees, JsonRequestBehavior.AllowGet);
         }
 
-       /* [HttpPost]
-        public ActionResult SaveDataAndReports(List<Dictionary<string, string>> data, List<string> images, string rep_scope, string rep_date, string rep_stats, int rep_proj_id, string rep_description)
+        public JsonResult GetEmployeesess()
         {
             nwTFSEntity db = new nwTFSEntity();
 
-            foreach (var row in data)
-            {
-                // Create a new NewManpower object
-                var manpower = new NewManpower();
-                manpower.man_emp_no = (int?)Session["emp_no"];
-                manpower.man_id = Guid.NewGuid();
-                manpower.man_name = row["man_name"];
-                manpower.man_postition = row["man_position"];
-                manpower.man_proj_id = rep_proj_id; // Set the man_proj_id property to the provided value
-                manpower.man_date = DateTime.Parse(rep_date);
+            var employees = db.Employees
+                .Where(e => e.emp_position == "Foreman")
+                .Select(e => new { e.emp_no, e.emp_fname, e.emp_lname })
+                .ToList();
 
-                // Save the NewManpower object to the database
-                db.NewManpowers.Add(manpower);
-                db.SaveChanges();
+            return Json(employees, JsonRequestBehavior.AllowGet);
+        }
 
-                // Create a new Attendance object
-                var attendance = new Attendance();
-                attendance.atte_id = Guid.NewGuid();
-                attendance.atte_proj_id = rep_proj_id;
-                attendance.atte_timein = DateTime.Parse(row["atte_timein"].ToString());
-                attendance.atte_timeout = attendance.atte_timeout;
-                attendance.NewManpower = manpower;
+        /* [HttpPost]
+         public ActionResult SaveDataAndReports(List<Dictionary<string, string>> data, List<string> images, string rep_scope, string rep_date, string rep_stats, int rep_proj_id, string rep_description)
+         {
+             nwTFSEntity db = new nwTFSEntity();
 
-                // Save the Attendance object to the database
-                db.Attendances.Add(attendance);
-                db.SaveChanges();
-            }
+             foreach (var row in data)
+             {
+                 // Create a new NewManpower object
+                 var manpower = new NewManpower();
+                 manpower.man_emp_no = (int?)Session["emp_no"];
+                 manpower.man_id = Guid.NewGuid();
+                 manpower.man_name = row["man_name"];
+                 manpower.man_postition = row["man_position"];
+                 manpower.man_proj_id = rep_proj_id; // Set the man_proj_id property to the provided value
+                 manpower.man_date = DateTime.Parse(rep_date);
 
-            foreach (var image in images)
-            {
-                var reportImage = new ReportImage
-                {
-                    img_id = Guid.NewGuid(),
-                    img_proj_id = rep_proj_id,
-                    img_date = DateTime.Parse(rep_date)
-                };
+                 // Save the NewManpower object to the database
+                 db.NewManpowers.Add(manpower);
+                 db.SaveChanges();
 
-                // get the filename from the base64 string
-                var base64Data = Regex.Match(image, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
-                var fileName = $"{reportImage.img_id}.jpg";
-                var filePath = Path.Combine(Server.MapPath("~/ReportImg"), fileName);
+                 // Create a new Attendance object
+                 var attendance = new Attendance();
+                 attendance.atte_id = Guid.NewGuid();
+                 attendance.atte_proj_id = rep_proj_id;
+                 attendance.atte_timein = DateTime.Parse(row["atte_timein"].ToString());
+                 attendance.atte_timeout = attendance.atte_timeout;
+                 attendance.NewManpower = manpower;
 
-                // convert base64 string to byte array and save to server
-                var imageData = Convert.FromBase64String(base64Data);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    stream.Write(imageData, 0, imageData.Length);
-                }
+                 // Save the Attendance object to the database
+                 db.Attendances.Add(attendance);
+                 db.SaveChanges();
+             }
 
-                // assign filename to img_image property and save to database
-                reportImage.img_image = fileName;
-                db.ReportImages.Add(reportImage);
-                db.SaveChanges();
-            }
+             foreach (var image in images)
+             {
+                 var reportImage = new ReportImage
+                 {
+                     img_id = Guid.NewGuid(),
+                     img_proj_id = rep_proj_id,
+                     img_date = DateTime.Parse(rep_date)
+                 };
 
-            // convert string values to their corresponding data types
-            DateTime date = DateTime.Parse(rep_date);
+                 // get the filename from the base64 string
+                 var base64Data = Regex.Match(image, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+                 var fileName = $"{reportImage.img_id}.jpg";
+                 var filePath = Path.Combine(Server.MapPath("~/ReportImg"), fileName);
 
-            // create a new report object
-            NewReport report = new NewReport
-            {
-                rep_id = Guid.NewGuid(),
-                rep_emp_no = (int)Session["emp_no"],
-                rep_proj_id = rep_proj_id,
-                rep_scope = rep_scope,
-                rep_stats = rep_stats,
-                rep_date = date,
-                rep_description = rep_description
-            };
+                 // convert base64 string to byte array and save to server
+                 var imageData = Convert.FromBase64String(base64Data);
+                 using (var stream = new FileStream(filePath, FileMode.Create))
+                 {
+                     stream.Write(imageData, 0, imageData.Length);
+                 }
 
-            try
-            {
-                using (var context = new nwTFSEntity())
-                {
-                    context.NewReports.Add(report);
-                    context.SaveChanges();
-                }
-                return Json(new { success = true });
-            }
-            catch (DbEntityValidationException ex)
-            {
-                foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                {
-                    foreach (var validationError in entityValidationErrors.ValidationErrors)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                    }
-                }
-                return Json(new { success = false, message = "Validation failed." });
-            }
-        }*/
+                 // assign filename to img_image property and save to database
+                 reportImage.img_image = fileName;
+                 db.ReportImages.Add(reportImage);
+                 db.SaveChanges();
+             }
+
+             // convert string values to their corresponding data types
+             DateTime date = DateTime.Parse(rep_date);
+
+             // create a new report object
+             NewReport report = new NewReport
+             {
+                 rep_id = Guid.NewGuid(),
+                 rep_emp_no = (int)Session["emp_no"],
+                 rep_proj_id = rep_proj_id,
+                 rep_scope = rep_scope,
+                 rep_stats = rep_stats,
+                 rep_date = date,
+                 rep_description = rep_description
+             };
+
+             try
+             {
+                 using (var context = new nwTFSEntity())
+                 {
+                     context.NewReports.Add(report);
+                     context.SaveChanges();
+                 }
+                 return Json(new { success = true });
+             }
+             catch (DbEntityValidationException ex)
+             {
+                 foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                 {
+                     foreach (var validationError in entityValidationErrors.ValidationErrors)
+                     {
+                         System.Diagnostics.Debug.WriteLine("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                     }
+                 }
+                 return Json(new { success = false, message = "Validation failed." });
+             }
+         }*/
 
         [HttpPost]
         public JsonResult SaveProject(List<NewProject> projectList)

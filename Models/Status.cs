@@ -17,6 +17,7 @@ namespace TotalFireSafety.Models
         public int emp_no { get; set; }
         public int IsActive { get; set; }
         public int IsLocked { get; set; }
+        public int IsUser { get; set; }
     
         public virtual Employee Employee { get; set; }
     }

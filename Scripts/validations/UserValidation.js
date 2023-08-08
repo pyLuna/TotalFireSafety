@@ -1,15 +1,76 @@
 $(document).ready(function () {
+	$("#emp_id").keypress(function (e) {
+		var length = this.value.length;
+		if (length >= 8) {
+			e.preventDefault();
+			/*alert("not allow more than 11 character");*/
+		}
+	});
+
+});
+
+$(document).ready(function () {
+	$("#emp_contact").keypress(function (e) {
+		var length = this.value.length;
+		if (length >= 11) {
+			e.preventDefault();
+			/*alert("not allow more than 11 character");*/
+		}
+	});
+
+});
+
+$(document).on('keypress', '#emp_Sname', function (event) {
+	var regex = new RegExp("^[a-zA-Z ]+$");
+	var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+		event.preventDefault();
+		return false;
+	}
+});
+
+$(document).on('keypress', '#emp_Fname', function (event) {
+	var regex = new RegExp("^[a-zA-Z ]+$");
+	var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+		event.preventDefault();
+		return false;
+	}
+});
+
+$(document).on('keypress', '#emp_Mname', function (event) {
+	var regex = new RegExp("^[a-zA-Z ]+$");
+	var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+	if (!regex.test(key)) {
+		event.preventDefault();
+		return false;
+	}
+});
+
+$(document).ready(function () {
 	let username = document.getElementById("Credential.username");
+	/*$("#sel-roles").attr('name', 'sel_roles');*/
 	$('#formId').validate({
 		rules: {
-			emp_name: {
+			emp_lname: {
 				required: true,
-				minlength: 4
-				//lettersonly: true
+				minlength: 3,
+				maxlength: 30
+			},
+			emp_fname: {
+				required: true,
+				minlength: 3,
+				maxlength: 30
+			},
+			emp_name: {
+				//required: true,
+				minlength: 3,
+				maxlength: 30
 			},
 			emp_contact: {
 				required: true,
-				minlength: 11
+				minlength: 11,
+				maxlength: 11
 			},
 			emp_no: {
 				required: true,
@@ -21,44 +82,60 @@ $(document).ready(function () {
 			emp_position: {
 				required: true,
 				minlength: 5
-			}
-			//Credential.username: {
-			//	required: true,
-			//	minlength: 3
+			},
+			//sel_roles: {
+			//	required: true
+			//},
+			//sel_stats: {
+			//	required: true
 			//}
 		},
 		messages: {
+			emp_lname: {
+				required: "Surname is required.",
+				minlength: "Surname must be at least 3 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
+			},
+			emp_fname: {
+				required: "First name is required.",
+				minlength: "First name must be at least 3 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
+			},
 			emp_name: {
-				required: "Please enter name.",
-				minlength: "Name must be at least 4 characters long."
-				//lettersonly: "Name must be letters only"
+				//required: "Middle name is required.",
+				minlength: "Middle name must be at least 3 characters long.",
+				maxlength: "Maximum length of name is 30 characters only."
 			},
 			emp_contact: {
-				required: "Please enter contact number.",
-				minlength: "Contact number must be at least 11 characters long."
+				required: "contact number is required.",
+				minlength: "Contact number must be at least 11 numbers long.",
+				maxlength: "Contact number is 11 numbers long only."
 			},
 			emp_no: {
-				required: "Please enter employee ID",
+				required: "Employee ID is required",
 				minlength: "Employee ID must be at least 8 numbers."
 			},
 			emp_hiredDate: {
-				required: "This field is required.",
+				required: "Hired date is is required.",
 			},
 			emp_position: {
-				required: "Please enter position",
+				required: "Position is required.",
 				minlength: "Position must be at least 5 numbers."
-			}
-			//Credential.username: {
-			//required: "Please enter username.",
-			//minlength: "Your name must be at least 8 numbers."
+			},
+			//sel_roles: {
+			//	required: "Please enter roles"
+			//},
+			//sel_stats: {
+			//	required: "Please enter status"
 			//}
 		}
 	});
+
 	$('#Credential\\.username').rules('add', {
 		required: true,
 		minlength: 3,
 		messages: {
-			required: "Please enter username.",
+			required: "Username is required.",
 			minlength: "Username must be at least 3 characters."
 		}
 	});
@@ -69,16 +146,11 @@ $(document).ready(function () {
 		required: true,
 		minlength: 3,
 		messages: {
-			required: "Please enter password",
+			required: "Password is required.",
 			minlength: "Password must be at least 3 characters."
 		}
 	});
 	$('#Credential\\.password').on('keyup', function () {
 		$(this).valid();
 	});
-	//$("#emp_name").on('input',function(){
-	//	var expression = /[^a-za-z]/g;
-
-	//});
-	
 });

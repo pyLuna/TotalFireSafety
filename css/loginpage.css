@@ -1,5 +1,5 @@
 
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600&display=swap');
 
 
 /*//////////////////////////////////////////////////////////////////
@@ -23,6 +23,7 @@
 @font-face {
 	font-family: Montserrat-Bold;
 	src: url('../fonts/montserrat/Montserrat-Bold.ttf');
+
 }
 
 /*//////////////////////////////////////////////////////////////////
@@ -32,10 +33,10 @@
 	margin: 0px;
 	padding: 0px;
 	box-sizing: border-box;
+	font-family: 'Inter', sans-serif;
 }
 
 body, html {
-	font-family: Poppins-Regular, sans-serif;
 	background-image: url("../images/bg001.jpg");
 	background-size: cover;
 	background-position: 50% 50%;

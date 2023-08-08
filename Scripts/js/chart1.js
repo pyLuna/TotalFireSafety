@@ -1,87 +1,176 @@
 //Global Options
+var allItems = [];
+var basecounts = [];
+var ItemLabels = [];
+var itemQuantity = [];
+var itemSize = [];
 
-const ctx = document.getElementById('barchart').getContext('2d');
-const barchart = new Chart(ctx, {
-    type: 'bar',
-    data: {
+//get the date from the label
+function GetDate() {
+    var start = localStorage.getItem("start");
+    var end = localStorage.getItem("end");
+    var diff = localStorage.getItem("diff");
+    GetCounts(start,end,diff)
+    //console.log(`start = ${start},,, end = ${end},,, diff = ${diff} `)
+}
 
-        labels: ['Pipe', 'Fire Extinguisher', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: 'All Item Quantity',
-            data: [500, 420, 881, 100, 80, 700],
-            backgroundColor: function (context) {
-                var value = context.dataset.data[context.dataIndex];
-                if (value > 500) {
-                    return '#96BB7C';
-                }
-                else if (value > 100) {
-                    return '#FAD586';
-                }
-
-                else {
-                    return '#C64756';
-                }
-            }
-            ,
-            borderWidth: 1,
-            hoverBackgroundColor: '#fff',
-            hoverBorderWidth: 1,
-            hoverBorderColor: '#16215B',
-        },
-        {
-            label: 'Local Item Quantity',
-            data: [700, 20, 80, 600, 200, 200],
-            backgroundColor: function (context) {
-                var value = context.dataset.data[context.dataIndex];
-                if (value > 500) {
-                    return '#96BB7C';
-                }
-                else if (value > 100) {
-                    return '#FAD586';
-                }
-
-                else {
-                    return '#C64756';
-                }
-            },
-            borderWidth: 1,
-            hoverBackgroundColor: '#fff',
-            hoverBorderWidth: 1,
-            hoverBorderColor: '#16215B',
-        },
-        {
-            label: 'Imported Item Quantity',
-            data: [700, 20, 80, 600, 200, 200],
-            backgroundColor: function (context) {
-                var value = context.dataset.data[context.dataIndex];
-                if (value > 500) {
-                    return '#96BB7C';
-                }
-                else if (value > 100) {
-                    return '#FAD586';
-                }
-
-                else {
-                    return '#C64756';
-                }
-            },
-
-            borderWidth: 1,
-            hoverBackgroundColor: '#fff',
-            hoverBorderWidth: 1,
-            hoverBorderColor: '#16215B',
-        },
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        aspectRatio: 4 / 3,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        },
+function extractNum(value) {
+    let num = 0;
+    let units = '';
+    for (let i = 0; i < value?.length; i++) {
+        if (!isNaN(parseInt(value[i]))) {
+            num = num * 10 + parseInt(value[i]);
+        } else if (value[i] !== ' ') {
+            units += value[i];
+        }
     }
-});
+    return { num, units };
+}
+//all base count items
+function GetCounts(start,end,diff) {
+    fetch(`/Admin/BaseResult?end=${end}&diff=${diff}`)
+        .then(res => {
+            if (res.ok) {
+                // API request was successful
+                return res.json();
+            } else {
+                console.log(res.statusText);
+            }
+        })
+        .then(data => {
+            allItems.length = 0;
+            allItems.push(data);
+            var results = PopulateLabels(allItems, "all");
+            PopulateDropdown(allItems);
+            SetChart(results.label, results.quant);
+        })
+        .catch(error => {
+            //window.location.replace('/Error/InternalServerError');
+            console.error(error);
+        });
+}
 
+function PopulateLabels(array,typeOf) {
+    var label = [];
+    var quant = [];
+    if (typeOf === "all") {
+        for (var i = 0; i < array[0].length; i++) {
+            for (var ii = 0; ii < array[0][i].Items.length; ii++) {
+                var size = array[0][i].Items[ii].Size;
+
+                if (size == null || size == "null") {
+                    size = "";
+                }
+                label.push(array[0][i].Items[ii].Name + " " + size);
+                quant.push(extractNum(array[0][i].Items[ii].Quantity).num);
+            }
+        }
+    }
+    else if (typeOf === "other") {
+        for (var i = 0; i < array[0].length; i++) {
+                var size = array[0][i].Items.Size;
+
+                if (size == null || size == "null") {
+                    size = "";
+                }
+                label.push(array[0][i].Items.Name + " " + size);
+                quant.push(extractNum(array[0][i].Items.Quantity).num);
+        }
+    }
+    else {
+        for (var i = 0; i < array.length; i++) {
+                var size = array[i].Size;
+
+                if (size == null || size == "null") {
+                    size = "";
+                }
+                label.push(array[i].Name + " " + size);
+                quant.push(extractNum(array[i].Quantity).num);
+        }
+    }
+    return { label, quant };
+}
+
+function SetChart(labels,quantities) {
+    //const ctx = document.getElementById('barchart').getContext('2d');
+    const canvas = document.getElementById('barchart');
+    const ctx = canvas.getContext('2d');
+
+    // Get the chart instance
+    const instance = Chart.getChart(canvas);
+
+    // Check if the chart instance exists and destroy it
+    if (instance) {
+        instance.destroy();
+    }
+    // Check if labels and quantities are null
+    if (labels.length == 0 || quantities.length == 0) {
+        ctx.clearRect(0, 0, canvas.width / 2, canvas.height); // Clear the canvas
+        ctx.font = '20px Arial'; // Set font size and type
+        ctx.fillStyle = '#000000'; // Set text color
+        ctx.textAlign = 'center'; // Set text alignment to center
+        ctx.fillText('No data', canvas.width / 2, canvas.height / 2); // Display "No data" message in the center of the canvas
+        return;
+    }
+    const barchart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+
+            labels: labels,
+            datasets: [{
+                label: 'Quantity',
+                data: quantities,
+
+                backgroundColor: function (context) {
+                    var value = context.dataset.data[context.dataIndex];
+
+                    if (value >= 100) {
+                        return '#a80a7b';
+                    }
+                    else if (value <= 99 && value >= 50) {
+                        return '#000080';
+                    }
+                    else if (value <= 49 && value >= 30) {
+                        return '#09AF10';
+                    }
+                    else if (value <= 29 && value >= 10) {
+                        return '#FF932F';
+                    }
+                    else if (value <= 9) {
+                        return '#FF0000';
+                    }
+                }
+                ,
+                borderWidth: 1,
+                hoverBackgroundColor: '#fff',
+                hoverBorderWidth: 1,
+                hoverBorderColor: '#16215B',
+            },
+            ]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 4 / 3,
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    ticks: {
+                        autoSkip: true, // Prevent auto-skipping of labels
+                        //maxRotation: 90, // Rotate labels by 90 degrees
+                        //minRotation: 90, // Rotate labels by 90 degrees
+                        fontSize: 12, // Reduce font size of labels
+                        padding: 10 // Add padding to labels
+                    }
+                }
+            },
+        }
+    });
+}

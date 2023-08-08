@@ -17,20 +17,29 @@ namespace TotalFireSafety.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Employee()
         {
+            this.NewProjects = new HashSet<NewProject>();
+            this.Notifications = new HashSet<Notification>();
             this.Requests = new HashSet<Request>();
         }
     
         public int emp_no { get; set; }
-        public string emp_name { get; set; }
         public Nullable<System.DateTime> emp_hiredDate { get; set; }
         public long emp_contact { get; set; }
         public string emp_position { get; set; }
         public string ProfilePath { get; set; }
+        public string emp_fname { get; set; }
+        public string emp_lname { get; set; }
+        public string emp_name { get; set; }
+    
         public virtual Credential Credential { get; set; }
-        public virtual Role Role { get; set; }
-        public virtual Status Status { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<NewProject> NewProjects { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
+        public virtual Role Role { get; set; }
+        public virtual Status Status { get; set; }
         public string formType { get; set; }
         public string FormattedDate
         {

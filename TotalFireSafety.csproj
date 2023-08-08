@@ -46,11 +46,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdvancedStringBuilder, Version=0.1.0.0, Culture=neutral, PublicKeyToken=e818a2fc08933ddb, processorArchitecture=MSIL">
+      <HintPath>packages\AdvancedStringBuilder.0.1.0\lib\net45\AdvancedStringBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleTransformer.Core, Version=1.10.0.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>packages\BundleTransformer.Core.1.10.0\lib\net40\BundleTransformer.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BundleTransformer.NUglify, Version=1.13.4.0, Culture=neutral, PublicKeyToken=973c344c93aac60d, processorArchitecture=MSIL">
+      <HintPath>packages\BundleTransformer.NUglify.1.13.4\lib\net40\BundleTransformer.NUglify.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core, Version=4.4.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\FSharp.Core.4.2.3\lib\net45\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -71,14 +92,42 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NUglify, Version=1.20.6.0, Culture=neutral, PublicKeyToken=15bc7810aec21b5e, processorArchitecture=MSIL">
+      <HintPath>packages\NUglify.1.20.6\lib\net40\NUglify.dll</HintPath>
+    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Json.7.0.2\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
@@ -132,6 +181,9 @@
       <Private>True</Private>
       <HintPath>packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="Utf8Json, Version=1.3.7.0, Culture=neutral, PublicKeyToken=8a73d3ba7e392e27, processorArchitecture=MSIL">
+      <HintPath>packages\Utf8Json.1.3.7\lib\net47\Utf8Json.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -139,6 +191,36 @@
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.Collections, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.Control, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.Control.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.Core, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.Core.JavaScript, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.Core.JavaScript.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.InterfaceGenerator, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.InterfaceGenerator.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.JavaScript, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.JavaScript.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.JQuery, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.JQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.Main, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.Main.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.Sitelets, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.Sitelets.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSharper.Web, Version=4.7.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71, processorArchitecture=MSIL">
+      <HintPath>packages\WebSharper.4.7.2.445\lib\net461\WebSharper.Web.dll</HintPath>
     </Reference>
     <Reference Include="zxing, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>packages\ZXing.Net.0.16.8\lib\net47\zxing.dll</HintPath>
@@ -173,51 +255,85 @@
     <Compile Include="Controllers\APIController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\ProjectReportsViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\APIRequestHandler.cs" />
-    <Compile Include="Models\Credential.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+    <Compile Include="Models\Attendance.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Basecount.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Credential.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DashboardModel.cs" />
     <Compile Include="Models\Dictionary.cs" />
     <Compile Include="Models\Employee.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ErrorHandler.cs" />
     <Compile Include="Models\Inventory.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Inv_Limits.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Inv_Update.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LatestModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LatestModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LatestModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LatestModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LatestModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginCredential.cs" />
-    <Compile Include="Models\Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\NewEmployeeModel.cs" />
+    <Compile Include="Models\NewManpower.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NewProject.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NewProposal.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NewReport.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Notification.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProjectReportViewModel.cs" />
+    <Compile Include="Models\Proposal.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReportImage.cs">
+      <DependentUpon>LatestModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Request.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Status.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>LatestModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TokenCatcher.cs" />
+    <Compile Include="MyHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -231,9 +347,11 @@
     <Content Include="fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\font-awesome-4.7.0\HELP-US-OUT.txt" />
     <Content Include="fonts\montserrat\OFL.txt" />
+    <Content Include="images\barcode.png" />
     <Content Include="images\bg-logo.jpg" />
     <Content Include="images\bg001.jpg" />
     <Content Include="images\codepheuse.png" />
+    <Content Include="images\comment.png" />
     <Content Include="images\delete.png" />
     <Content Include="images\edit.png" />
     <Content Include="images\export.png" />
@@ -243,9 +361,11 @@
     <Content Include="images\printer.png" />
     <Content Include="images\profile.png" />
     <Content Include="images\remove.png" />
+    <Content Include="images\tfsti-logo-inventory.png" />
     <Content Include="images\tfsti-logo-name.png" />
     <Content Include="images\tfsti-logo-noname.png" />
     <Content Include="images\tfsti-logo.png" />
+    <Content Include="images\tfsti-new.png" />
     <Content Include="images\tick.png" />
     <Content Include="images\warning.png" />
     <Content Include="favicon.ico" />
@@ -320,18 +440,47 @@
     <Content Include="fonts\poppins\Poppins-SemiBoldItalic.ttf" />
     <Content Include="fonts\poppins\Poppins-Thin.ttf" />
     <Content Include="fonts\poppins\Poppins-ThinItalic.ttf" />
-    <Content Include="Models\Model1.Context.tt">
+    <Content Include="Models\LatestModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+      <DependentUpon>LatestModel.edmx</DependentUpon>
+      <LastGenOutput>LatestModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Model1.tt">
+    <Content Include="Models\LatestModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
+      <DependentUpon>LatestModel.edmx</DependentUpon>
+      <LastGenOutput>LatestModel.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\Dashboard.js" />
+    <Content Include="Scripts\DashboardAPI.js" />
+    <Content Include="Scripts\InventoryExport.js" />
+    <Content Include="Scripts\inv_bak.js" />
+    <EntityDeploy Include="Models\LatestModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>LatestModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\LatestModel.edmx.diagram">
+      <DependentUpon>LatestModel.edmx</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\somee.pubxml" />
+    <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.3.min.js" />
+    <Content Include="Scripts\js\barchart.js" />
+    <Content Include="Scripts\js\chart1.js" />
+    <Content Include="Scripts\js\chart2_bak.js" />
+    <Content Include="Scripts\js\chart3.js" />
+    <Content Include="Scripts\js\mainchart1.js" />
+    <Content Include="Scripts\Reorder.js" />
+    <Content Include="Scripts\reportinventory.js" />
+    <Content Include="Scripts\reportInvs.js" />
+    <Content Include="Scripts\Requisition.js" />
+    <Content Include="Scripts\signalR.js" />
     <Content Include="Scripts\validations\InventoryValidation.js" />
+    <Content Include="Scripts\validations\ProjectViewValidation.js" />
     <Content Include="Scripts\validations\RequisitionValidation.js" />
+    <Content Include="Scripts\validations\ProjectValidation.js" />
     <Content Include="Scripts\validations\UserValidation.js" />
     <Content Include="Scripts\chart.js" />
     <Content Include="Scripts\chart.min.js" />
@@ -339,13 +488,11 @@
     <Content Include="Scripts\InvArchive.js" />
     <Content Include="Scripts\InvReport.js" />
     <Content Include="Scripts\js\app.js" />
-    <Content Include="Scripts\js\chart1.js" />
     <Content Include="Scripts\js\chart2.js" />
-    <Content Include="Scripts\js\chart3.js" />
     <Content Include="Scripts\js\main.js" />
     <Content Include="Scripts\js\user.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\Requisition.js" />
+    <Content Include="Scripts\Requisition_bak.js" />
     <Content Include="Scripts\user.js" />
     <Content Include="Scripts\vendor\animate\animate.css" />
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap-grid.css" />
@@ -376,19 +523,17 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Admin\InventorylistExport.cshtml" />
+    <Content Include="Views\Admin\ExportReportNew.cshtml" />
+    <Content Include="Views\Admin\ProjectExport.cshtml" />
+    <Content Include="Views\Admin\ProjectProposal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ReportImg\" />
     <Folder Include="Uploads\Images\" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <None Include="packages.config" />
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap-grid.css.map" />
     <Content Include="Scripts\vendor\bootstrap\css\bootstrap-grid.min.css.map" />
@@ -417,6 +562,11 @@
     <Content Include="Views\Admin\ProjectView.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
+    <Content Include="Views\Error\Unauthorize.cshtml" />
+    <Content Include="Views\Admin\Inventory_bak.cshtml" />
+    <Content Include="Views\Admin\InvReportExport.cshtml" />
+    <Content Include="Views\Admin\InvReportPrint.cshtml" />
+    <Content Include="Views\Admin\InvReorder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

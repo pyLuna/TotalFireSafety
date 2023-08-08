@@ -16,24 +16,7 @@ namespace TotalFireSafety.Models
     {
         public int emp_no { get; set; }
         public int role1 { get; set; }
-        public string status { get; set; }
-        public string date { get; set; }
-        public string user_role {
-            get
-            {
-                switch (role1)
-                {
-                    case 1:
-                        return "admin";
-                    case 2:
-                        return "warehouse";
-                    case 3:
-                        return "office";
-                }
-                return "";
-            }
-        }
-
+    
         public virtual Employee Employee { get; set; }
     }
 }

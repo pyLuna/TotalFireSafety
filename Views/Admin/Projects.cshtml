@@ -1,24 +1,41 @@
-﻿
+﻿@using Newtonsoft.Json
+@using TotalFireSafety.Models
+
 @{
     ViewBag.Title = "Projects";
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Proj = "active";
+    var projectsJson = ViewBag.Projects;
+    dynamic projects = JsonConvert.DeserializeObject(projectsJson.ToString());
 }
 
+
+
 <div class="main-content">
+
     <header>
         <h2>
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            Employee
+            Project Lists
         </h2>
+
+        <right>
+            <button class="create-req-btn" title="CREATE ORDER">
+                <a onclick="openForm()">
+                    Notification
+                    <span class="las la-bell"></span>
+                    <label class="notif-badge">5</label>
+                </a>
+            </button>
+        </right>
     </header>
     <main>
 
-        
 
-        <div class="proj-sum">
+
+        <!--<div class="proj-sum">
             <h3>Project Summary</h3>
         </div>
         <div class="proj-sum-btns">
@@ -38,152 +55,1028 @@
                 </select>
             </div>
 
+        </div>-->
+        <!-- Project Summary -->
+        <!--<div class="dash-proj">
+                    <div class="dash">
+                        <div class="dash-body">
+                            <div class="table-responsive" style="overflow-x: auto;">
+                                <table width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td>Project Name</td>
+                                            <td>Project Lead</td>
+                                            <td>Start Date</td>
+                                            <td>Status</td>
+                                            <td>Tracker</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><a href="@Url.Action("ProjectView","Admin")">Makati Global</a></td>
+                                            <td>Jewell Mayrena</td>
+                                            <td>Feb 27, 2023</td>
+                                            <td><label class="stat-pen">In-Line</label></td>
+                                            <td>
+                                                <div class="progress-bar">
+                                                    <div class="progress-complete">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><a href="@Url.Action("ProjectView","Admin")">Mang Inasal QCU</a></td>
+                                            <td>Fernan Yuki</td>
+                                            <td>Feb 12, 2023</td>
+                                            <td><label class="stat-appr">On-Going</label></td>
+                                            <td>
+                                                <div class="progress-bar">
+                                                    <div class="progress-half">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><a href="@Url.Action("ProjectView","Admin")">Golden Disk</a></td>
+                                            <td>Carlo Millonte</td>
+                                            <td>Jan 27, 2023</td>
+                                            <td><label class="stat-appr">On-Going</label></td>
+                                            <td>
+                                                <div class="progress-bar">
+                                                    <div class="progress-halfhalf">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><a href="@Url.Action("ProjectView","Admin")">Jollibee South Branch</a></td>
+                                            <td>Clark Steven Arcilla</td>
+                                            <td>Feb 23, 2023</td>
+                                            <td><label class="stat-dec">Declined</label></td>
+                                            <td>
+                                                <div class="progress-bar">
+                                                    <div class="progress-nothalf">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>-->
+        <!-- NEW UPDATE -->
+
+        <div class="upper-section">
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="text" placeholder="Search here">
+            </div>
+            &nbsp;
+            <div class="drp-wrapper">
+
+
+            </div>
         </div>
 
+        <div class="proj-grid">
+            <div class="proj-header">
+                <h3>PROJECT LISTS</h3>
+                <div class="proj-buttons-style">
 
-        <!-- Project Summary -->
+                    <!--NEW UPDATE -->
+                    @{ var sessionUserPosition = ViewBag.SessionUserPosition; }
 
-        <div class="dash-proj">
-            <div class="dash">
-                <div class="dash-body">
-                    <div class="table-responsive" style="overflow-x: auto;">
-                        <table width="100%">
-                            <thead>
-                                <tr>
-                                    <td>Project Name</td>
-                                    <td>Project Lead</td>
-                                    <td>Start Date</td>
-                                    <td>Status</td>
-                                    <td>Tracker</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a href="../projects/sa-proj-details.html">Makati Global</a></td>
-                                    <td>Jewell Mayrena</td>
-                                    <td>Feb 27, 2023</td>
-                                    <td><label class="stat-pen">In-Line</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-complete">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td><a href="../projects/sa-proj-details.html">Mang Inasal QCU</a></td>
-                                    <td>Fernan Yuki</td>
-                                    <td>Feb 12, 2023</td>
-                                    <td><label class="stat-appr">On-Going</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-half">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td><a href="../projects/sa-proj-details.html">Golden Disk</a></td>
-                                    <td>Carlo Millonte</td>
-                                    <td>Jan 27, 2023</td>
-                                    <td><label class="stat-appr">On-Going</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-halfhalf">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td><a href="../projects/sa-proj-details.html">Jollibee South Branch</a></td>
-                                    <td>Clark Steven Arcilla</td>
-                                    <td>Feb 23, 2023</td>
-                                    <td><label class="stat-dec">Declined</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-nothalf">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                    <input type="text" value="@sessionUserPosition" hidden />
 
 
-                            </tbody>
-                        </table>
+                    @if (sessionUserPosition != "Project Lead")
+                    {
+                        <a onclick="openAddNewContainer()">
+                            <button class="add-btn" title="ADD NEW ITEM">NEW PROJECT</button>
+                        </a>
+                    }
+                    @if (sessionUserPosition != "Engineer" && sessionUserPosition != "Project Lead")
+                    {
+                        <select id="select-engineers" required>
+                            <option value="All" disabled selected>Engineer</option>
+                            <option value="All">All</option>
+                            <!-- Add more engineer options as needed -->
+                        </select>
+                    }
+                    @if (sessionUserPosition != "Project Lead")
+                    { 
+                        <select id="select-leads" required>
+                            <option value="All" disabled selected>Project Lead</option>
+                            <option value="All">All</option>
+
+                        </select>
+
+
+                    <select id="status" required>
+                        <option value="All" disabled selected>Project Status</option>
+                        <option value="All">All</option>
+                        <option value="On-Going">On-Going</option>
+                        <option value="In-Line">Upcoming</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    }
+                    <!--NEW UPDATE -->
+                    @*<a href="@Url.Action("ProjectProposal","Admin")">
+            <button class="add-btn" title="ADD NEW ITEM" href="">MANPOWER</button>
+        </a>*@
+
+                    <!-- END -->
+
+                </div>
+
+            </div>
+            <div class="proj-projects">
+                <div class="proj">
+                    <div class="proj-body">
+                        <div class="table-responsive" style="overflow-x: auto;">
+                            <table id="projectTable" width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>Project Name</td>
+                                        <td>Engineer</td>
+                                        <td>Project Lead</td>
+                                        <td>Start Date</td>
+                                        <td>Baseline Finish</td>
+                                        <td>Status</td>
+                                        <td>Tracker</td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-</div>
 
-<div class="can-pop-container" id="can-popup">
-    <img src="~/images/warning.png">
-    <h2>System Warning!</h2>
-    <p>Do you want to remove the user on the list?</p>
-    <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
-    <button type="button" onclick="canClosePopup()">Cancel</button>
-</div>
+        <!-- ADD NEW PROJECT - NEW LAYOUT - 04-05 -->
 
-<div class="rem-pop-container" id="rem-popup">
-    <img src="~/images/remove.png">
-    <h2>Deleted!</h2>
-    <p>User removed in the list successfully!</p>
-    <button type="button" onclick="remClosePopup()">OK</button>
-</div>
+        <div class="add-new-container" id="add-new-container">
+            @*<form id="NewProForm">*@
+            <div class="add-new-header">
+                @*<span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>*@
+                <button type="reset" style="border: none;">
+                    <span class="las la-long-arrow-alt-left" onclick="closeAddNewContainer()"></span>
+                </button>
+                <center>
+                    <h3>NEW PROJECT <i class="las la-rocket"></i></h3>
+                </center>
+
+            </div>
+
+            <div class="add-new-main">
+                <div class="add-new-left">
+                    <div class="input-fields">
+                        <Label>Client</Label>
+                        <br>
+                        <input type="text" name="projClient" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Project Name</Label>
+                        <br>
+                        <input type="text" name="projName" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Subject</Label>
+                        <br>
+                        <input type="text" name="projSubject" placeholder="Enter here..">
+                    </div>
+                    <div class="input-fields">
+                        <Label>Location Site</Label>
+                        <br>
+                        <input type="text" name="projLocation" placeholder="Enter here..">
+                    </div>
+                    <div class="grp">
+                        <div class="input-fields left">
+                            <label for="">Project Lead</label>
+                            <br>
+                            <select id="select-lead" name="projLead" required>
+                                <option disabled selected>Select Lead</option>
+                            </select>
+
+                        </div>
+                        <div class="input-fields right">
+                            <label for="">Engineer</label>
+                            <br>
+                            <select id="select-engineer" name="projEngineer" required>
+                                <option disabled selected>Select Engineer</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="grp date">
+                        <div class="input-fields left">
+                            <Label>Start Date</Label>
+                            <br>
+                            <input type="date" id="projStartDate" name="projStartDate" required>
+                        </div>
+                        <div class="input-fields mid">
+                            <Label>Baseline Finish</Label>
+                            <br>
+                            <input type="date" id="projEndDate" name="projEndDate" required>
+                        </div>
+
+                        <div class="input-fields right">
+                            <Label>Status</Label>
+                            <br>
+                            <select name="projStatus" required>
+                                <option disabled selected>Select Status</option>
+                                <option>On-going</option>
+                                <option>Upcoming</option>
+                                <option>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="emErrP" style="margin-top: 5px; color: red; font-weight: bold;"></p>
+                </div>
+                <script>
+                    // Disable past dates in projStartDate
+                    var projStartDate = document.getElementById('projStartDate');
+                    var today = new Date().toISOString().split('T')[0];
+                    projStartDate.setAttribute('min', today);
+
+                    // Disable today and past dates in projEndDate
+                    var projEndDate = document.getElementById('projEndDate');
+                    projEndDate.setAttribute('min', today);
+                </script>
+
+                @*<div class="add-new-right">
+                        <div class="add-new-header">
+                            <h3>MANPOWER <a onclick="openInputMemForm()"><i class="las la-plus-circle"></i></a></h3>
+                        </div>
+
+                        <div class="add-new-power">
+                            <div class="mems-list">
+                                <div class="mems-grid">
+                                    <div class="mems-projects">
+                                        <div class="mems">
+                                            <div class="mems-body">
+                                                <div class="table-responsive" style="overflow-x: auto;">
+                                                    <table width="100%" id="outputTable">
+                                                        <tbody>
+
+                                                            <tr>
+                                                                <td><b></b></td>
+                                                                <td></label></td>
+                                                            </tr>
+
+
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+            </div>
+
+            <div class="add-new-footer">
+                <button id="save-button" onclick="savePro()">CREATE PROJECT</button>
+                @*savePro()*@
+            </div>
+            <!--<div class="add-new-footer">
+                <button id="save-button" onclick="CreateProjectValidation">CREATE PROJECT</button>-->
+            @*savePro()*@
+            <!--</div>-->
+            @*</form>*@
+
+        </div>
+
+        <div class="input-mem-container" id="input-mem-container">
+            <div class="input-mems-main">
+                <div class="input-mems-title">
+                    <h3>MANPOWER</h3>
+
+                </div>
+                <div class="input-mems-list">
+                    <div class="input-mems-grid">
+                        <div class="input-mems-projects">
+                            <div class="input-mems">
+                                <div class="input-mems-body">
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table id="myTable" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Position</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td contenteditable="true"><b></b></td>
+                                                    <td contenteditable="true"></label></td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <center>
+                    <button onclick="closeInputMemForm() + saveData1()">Save</button>
+                    <button onclick="closeInputMemForm()">Cancel</button>
+                </center>
+            </div>
+        </div>
+
+        <!-- END -->
+
+        <div class="can-pop-container" id="can-popup">
+            <img src="~/images/warning.png">
+            <h2>System Warning!</h2>
+            <p>Do you want to remove the user on the list?</p>
+            <button type="button" onclick="remOpenPopup() + canClosePopup()">Yes</button>
+            <button type="button" onclick="canClosePopup()">Cancel</button>
+        </div>
+
+        <div class="rem-pop-container" id="rem-popup">
+            <img src="~/images/remove.png">
+            <h2>Deleted!</h2>
+            <p>User removed in the list successfully!</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
+        </div>
 
     </main>
-
+    @*<script src='@Url.Content("~/Scripts/validations/ProjectValidation.js")'></script>*@
 <script>
-    function userFiltFunction() {
-        document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.user-filter-btn')) {
-            var myDropdown = document.getElementById("userFiltDropdown");
-            if (myDropdown.classList.contains('user-filter-show')) {
-                myDropdown.classList.remove('user-filter-show');
+        /*savePro()*/
+       /* function submitFormVali() {
+            var bool = CreateProjectValidation();
+            if (bool) {
+                form.submit();
             }
         }
-    }
-
-    function userSortFunction() {
-        document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (e) {
-        if (!e.target.matches('.user-sort-btn')) {
-            var myDropdown = document.getElementById("userSortDropdown");
-            if (myDropdown.classList.contains('user-sort-show')) {
-                myDropdown.classList.remove('user-sort-show');
+        function CreateProjectValidation() {
+            var bool = $('#NewProForm').valid();
+            if (bool) {
+                savePro()
             }
-        }
+            return bool;
+        }*/
+$(document).ready(function () {
+  var projects = JSON.parse('@Html.Raw(ViewBag.Projects)');
+  var tableBody = $('#projectTable tbody');
+  var sessionEmpNo = @Session["emp_no"];
+
+  // Loop through each project and create a new row in the table
+  projects.forEach(function (project) {
+    var isEngineerOrLead = sessionEmpNo === project.proj_engineer_id || sessionEmpNo === project.proj_lead_id;
+
+    if (isEngineerOrLead) {
+      // Create row and append data
+      var row = $('<tr>');
+      var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+      var linkIcon = $('<i>').addClass('fas fa-link');
+      var linkElement = $('<a>').addClass('icon-link').append(linkIcon) .attr('href', '@Url.Action("ProjectsReport", "Admin")?Id=' + project.proj_type_id );
+        linkElement.on('click', function (e) {
+            e.stopPropagation(); // Stop event propagation to prevent triggering the parent link's click event
+            window.location.href = $(this).attr('href');
+        });
+      var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
+      link.text(projectName);
+      row.append($('<td>').append(link));
+      row.append($('<td>').text(project.proj_engineer_no).addClass('hidden').attr('data-proj-engineer-id', project.proj_engineer_id));
+      row.append($('<td>').text(project.proj_lead).addClass('hidden').attr('data-proj-lead-id', project.proj_lead_id));
+      row.append($('<td>').text(project.proj_strDate));
+      row.append($('<td>').text(project.proj_endDate));
+      row.append($('<td>').addClass('status-column').text(project.proj_status));
+      row.append($('<td>').addClass('progress-column'));
+      row.append($('<td>').addClass('icon-column').append(linkElement))
+
+      // Calculate the percentage completion of the project
+      var startDate = new Date(project.proj_strDate);
+      var endDate = new Date(project.proj_endDate);
+      var now = new Date();
+      var percentage = 0; // Default to 0%
+
+      // Set the progress bar fill to 100% if the project status is "Cancelled"
+      if (project.proj_status === 'Cancelled') {
+        percentage = 100;
+      }
+      // Set the progress bar fill to 0% if the project status is "Upcoming"
+      else if (project.proj_status === 'Upcoming') {
+        percentage = 0;
+      }
+      // Check if the current date matches the start date
+      else if (now.getTime() === startDate.getTime()) {
+        percentage = 100;
+      }
+      else if (now > startDate && now < endDate) {
+        percentage = ((now - startDate) / (endDate - startDate)) * 100;
+      }
+
+      var progressBar = $('<div>').addClass('progress-bar');
+      var progressBarFill = $('<div>').addClass('progress-halfhalf');
+      var progressBarText = $('<span>').addClass('progress-text').text(Math.round(percentage) + '%');
+      progressBarFill.attr('role', 'progressbar');
+      progressBarFill.attr('aria-valuenow', percentage);
+      progressBarFill.attr('aria-valuemin', 0);
+      progressBarFill.attr('aria-valuemax', 100);
+      progressBarFill.css('width', percentage + '%');
+      progressBar.append(progressBarFill);
+      progressBar.append(progressBarText);
+
+      // Set the background color of the progress bar fill based on the project status
+      if (project.proj_status === 'Upcoming') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF6700');
+      } else if (project.proj_status === 'On-Going') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#09AF10');
+      } else if (project.proj_status === 'Cancelled') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF0000');
+      } else {
+        row.find('.progress-column').addClass('stat-appr');
+      }
+
+      row.find('.progress-column').append(progressBar);
+
+      tableBody.append(row);
     }
+  });
 
-    let canpopup = document.getElementById("can-popup");
+  if (tableBody.children().length === 0) {
+    projects.forEach(function (project) {
 
-    function canOpenPopup() {
-        canpopup.classList.add("can-popup-show")
-    }
+    var row = $('<tr>');
+var link = $('<a>').attr('href', '@Url.Action("ProjectView", "Admin")?Id=' + project.proj_type_id);
+var linkIcon = $('<i>').addClass('fas fa-link');
+var linkElement = $('<a>').addClass('icon-link').append(linkIcon) .attr('href', '@Url.Action("ProjectsReport", "Admin")?Id=' + project.proj_type_id );
+linkElement.on('click', function (e) {
+e.stopPropagation(); // Stop event propagation to prevent triggering the parent link's click event
+window.location.href = $(this).attr('href');
+});
+var projectName = project.proj_name.length > 20 ? project.proj_name.substring(0, 20) + "..." : project.proj_name;
+link.text(projectName);
+row.append($('<td>').append(link));
+row.append($('<td>').text(project.proj_engineer_no).addClass('hidden').attr('data-proj-engineer-id', project.proj_engineer_id));
+row.append($('<td>').text(project.proj_lead).addClass('hidden').attr('data-proj-lead-id', project.proj_lead_id));
+row.append($('<td>').text(project.proj_strDate));
+row.append($('<td>').text(project.proj_endDate));
+row.append($('<td>').addClass('status-column').text(project.proj_status));
+row.append($('<td>').addClass('progress-column'));
+row.append($('<td>').addClass('icon-column').append(linkElement))
 
-    function canClosePopup() {
-        canpopup.classList.remove("can-popup-show")
-    }
+      // Calculate the percentage completion of the project
+      var startDate = new Date(project.proj_strDate);
+      var endDate = new Date(project.proj_endDate);
+      var now = new Date();
+      var percentage = 0; // Default to 0%
 
-    let rempopup = document.getElementById("rem-popup");
+      // Set the progress bar fill to 100% if the project status is "Cancelled"
+      if (project.proj_status === 'Cancelled') {
+        percentage = 100;
+      }
+      // Set the progress bar fill to 0% if the project status is "Upcoming"
+      else if (project.proj_status === 'Upcoming') {
+        percentage = 0;
+      }
+      // Check if the current date matches the start date
+      else if (now.getTime() === startDate.getTime()) {
+        percentage = 100;
+      }
+      else if (now > startDate && now < endDate) {
+        percentage = ((now - startDate) / (endDate - startDate)) * 100;
+      }
 
-    function remOpenPopup() {
-        rempopup.classList.add("rem-popup-show")
-    }
+      var progressBar = $('<div>').addClass('progress-bar');
+      var progressBarFill = $('<div>').addClass('progress-halfhalf');
+      var progressBarText = $('<span>').addClass('progress-text').text(Math.round(percentage) + '%');
+      progressBarFill.attr('role', 'progressbar');
+      progressBarFill.attr('aria-valuenow', percentage);
+      progressBarFill.attr('aria-valuemin', 0);
+      progressBarFill.attr('aria-valuemax', 100);
+      progressBarFill.css('width', percentage + '%');
+      progressBar.append(progressBarFill);
+      progressBar.append(progressBarText);
 
-    function remClosePopup() {
-        rempopup.classList.remove("rem-popup-show")
-    }
+      // Set the background color of the progress bar fill based on the project status
+      if (project.proj_status === 'Upcoming') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF6700');
+      } else if (project.proj_status === 'On-Going') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#09AF10');
+      } else if (project.proj_status === 'Cancelled') {
+        row.find('.progress-column').addClass('stat-appr');
+        progressBarFill.css('background-color', '#FF0000');
+      } else {
+        row.find('.progress-column').addClass('stat-appr');
+      }
 
+      row.find('.progress-column').append(progressBar);
+
+      tableBody.append(row);
+
+    });
+  }
+
+  // Add search filtering functionality
+  $('.search-wrapper input').on('keyup', function () {
+    filterTable();
+  });
+
+  $('#select-leads').on('change', function () {
+    filterTable();
+  });
+
+  // Only attach change event to #select-engineers if it is visible
+  if ($('#select-engineers').is(':visible')) {
+    $('#select-engineers').on('change', function () {
+      filterTable();
+    });
+  }
+
+  // Filter table by project status
+  $('#status').on('change', function () {
+    filterTable();
+  });
+
+  function filterTable() {
+    var searchText = $('.search-wrapper input').val().toLowerCase();
+    var selectedLead = $('#select-leads').find('option:selected').text().toLowerCase();
+    var selectedEngineer = $('#select-engineers').find('option:selected').text().toLowerCase();
+    var selectedStatus = $('#status').find('option:selected').text().toLowerCase();
+
+    tableBody.find('tr').each(function () {
+      var name = $(this).find('td:first-child a').text().toLowerCase();
+      var lead = $(this).find('td:nth-child(3)').text().toLowerCase();
+      var engineer = $(this).find('td:nth-child(2)').text().toLowerCase();
+      var status = $(this).find('.status-column').text().toLowerCase();
+
+      var nameMatch = name.indexOf(searchText) !== -1;
+      var leadMatch = selectedLead === 'all' || selectedLead === 'project lead' || lead === selectedLead;
+      var engineerMatch = selectedEngineer === 'all' || selectedEngineer === 'engineer' || engineer === selectedEngineer;
+      var statusMatch = selectedStatus === 'all' || selectedStatus === 'project status' || status.startsWith(selectedStatus.toLowerCase());
+
+      if ((searchText === '' || nameMatch) && (selectedLead === 'all' || selectedLead === 'project lead' || leadMatch) && ((!$('#select-engineers').is(':visible')) || (selectedEngineer === 'all' || engineerMatch)) && (selectedStatus === 'all' || selectedStatus === 'project status' || statusMatch)) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  }
+
+  // Handle click event on icon links
+  $('.icon-link').on('click', function (e) {
+    e.preventDefault();
+    // Perform desired action
+  });
+
+});
 </script>
+
+    <script>
+        $.ajax({
+            url: '/Admin/GetActiveEmployees',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var select = $('select'); // Replace with your own selector
+                select.empty(); // Clear any existing options
+                select.append($('<option>', {
+                    disabled: true,
+                    selected: true,
+                    text: 'Project Lead'
+                }));
+                $.each(data, function (index, employee) {
+                    select.append($('<option>', {
+                        value: employee.emp_no,
+                        text: employee.emp_name
+                    }));
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    </script>
+
+    <script>
+      @*  const table = document.getElementById("myTable");
+
+        table.addEventListener("keydown", (event) => {
+            const target = event.target;
+
+            // Check if the target cell is editable and the user pressed "Enter"
+            if (target.contentEditable === "true" && event.key === "Enter") {
+                const row = target.parentNode;
+                const newRow = document.createElement("tr");
+
+                newRow.innerHTML = `
+                                                              <td contenteditable="true"></td>
+                                                              <td contenteditable="true"></td>
+                                                            `;
+
+                table.tBodies[0].insertBefore(newRow, row.nextSibling);
+                newRow.children[0].focus();
+
+                event.preventDefault();
+            }
+        });
+
+        function saveData1() {
+            const inputTable = document.getElementById("myTable");
+            const outputTable = document.getElementById("outputTable");
+
+            // Loop through rows of the input table
+            for (let i = 1; i < inputTable.rows.length; i++) {
+                const inputRow = inputTable.rows[i];
+                const outputRow = outputTable.insertRow();
+
+                // Loop through cells of the input row
+                for (let j = 0; j < inputRow.cells.length; j++) {
+                    const inputCell = inputRow.cells[j];
+                    const outputCell = outputRow.insertCell();
+                    outputCell.innerHTML = inputCell.innerHTML;
+                }
+            }
+        }
+
+*@
+    </script>
+
+    <script>
+       @* function saveData() {
+            var manpowerList = [];
+            $("#outputTable tbody tr").each(function () {
+                var manpower = {
+                    man_id: null,
+                    man_emp_no: null,
+                    man_proj_id: null,
+                    man_name: $(this).find("td:eq(0)").text(),
+                    man_postition: $(this).find("td:eq(1)").text()
+                };
+                manpowerList.push(manpower);
+            });
+            $.ajax({
+                url: "/Admin/SaveManpower",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(manpowerList),
+                success: function (response) {
+                    if (response.success) {
+                        alert("Data saved successfully.");
+                        location.reload();
+                    }
+                    else {
+                        alert("Error: " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Error: An error occurred while saving the data.");
+                }
+            });
+        }
+
+
+*@
+    </script>
+
+    <script>
+        /*function savePro() {
+            // Disable the button to prevent multiple clicks
+            $("#save-button").prop("disabled", true);
+
+            // Get the form data
+            var projName = $("input[name=projName]").val();
+            var projSubject = $("input[name=projSubject]").val();
+            var projClient = $("input[name=projClient]").val();
+            var projLocation = $("input[name=projLocation]").val();
+            var projLead = $("#select-lead").val();
+            var projStatus = $("select[name=projStatus]").val();
+            var projStartDate = $("input[name=projStartDate]").val();
+            var projEndDate = $("input[name=projEndDate]").val();
+
+            // Create a Project object with the form data
+            var project = {
+                proj_name: projName,
+                proj_subject: projSubject,
+                proj_client: projClient,
+                proj_location: projLocation,
+                proj_lead: projLead,
+                proj_status: projStatus,
+                proj_strDate: projStartDate,
+                proj_endDate: projEndDate
+            };
+
+            // Send a POST request to the server to save the project
+            $.ajax({
+                url: "/Admin/SaveProject",
+                type: "POST",
+                dataType: "json",
+                data: { projectList: [project] },
+                success: function (response) {
+                    if (response.success) {
+                        // Project saved successfully
+                        alert(response.message);
+
+                        // Close the add-new container and refresh the project list
+                        closeAddNewContainer();
+                        loadProjects();
+                        location.reload();
+                    } else {
+                        // An error occurred while saving the project
+                        alert(response.message);
+                    }
+
+                    // Enable the button
+                    $("#save-button").prop("disabled", false);
+                },
+                error: function (xhr, status, error) {
+                    // Display an error message
+                    alert("An error occurred while saving the project: " + error);
+
+                    // Enable the button
+                    $("#save-button").prop("disabled", false);
+                }
+            });
+        }*/
+        function savePro() {
+            // Disable the button to prevent multiple clicks
+            $("#save-button").prop("disabled", true);
+
+            // Get the form data
+            var projName = $("input[name=projName]").val();
+            var projSubject = $("input[name=projSubject]").val();
+            var projClient = $("input[name=projClient]").val();
+            var projLocation = $("input[name=projLocation]").val();
+            var projLead = $("#select-lead").val();
+            var projEngineer = $("#select-engineer").val();
+            var projStatus = $("select[name=projStatus]").val();
+            var projStartDate = $("input[name=projStartDate]").val();
+            var projEndDate = $("input[name=projEndDate]").val();
+
+            // Validate start date and baseline finish date
+            if (projStartDate === projEndDate) {
+                alert("Start date cannot be the same as the baseline finish date.");
+                $("#save-button").prop("disabled", false); // Enable the button
+                return;
+            }
+
+            // Create a Project object with the form data
+            var project = {
+                proj_name: projName,
+                proj_subject: projSubject,
+                proj_client: projClient,
+                proj_location: projLocation,
+                proj_lead: projLead,
+                proj_engineer_no: projEngineer,
+                proj_status: projStatus,
+                proj_strDate: projStartDate,
+                proj_endDate: projEndDate
+            };
+
+            // Send a POST request to the server to save the project
+            $.ajax({
+                url: "/Admin/SaveProject",
+                type: "POST",
+                dataType: "json",
+                data: { projectList: [project] },
+                success: function (response) {
+                    if (response.success) {
+                        // Project saved successfully
+                        alert(response.message);
+
+                        // Reload the page
+                        location.reload();
+                    } else {
+                        // An error occurred while saving the project
+                        alert(response.message);
+                    }
+
+                    // Enable the button
+                    $("#save-button").prop("disabled", false);
+                },
+                error: function (xhr, status, error) {
+                    // Display an error message
+                    alert("An error occurred while saving the project: " + error);
+
+                    // Enable the button
+                    $("#save-button").prop("disabled", false);
+                }
+            });
+        }
+    </script>
+
+
+
+    <script>
+        // Get the select element
+        const projectList = []; // Define projectList as an empty array
+
+        // Get the select element
+        const selectLead = document.querySelector("#select-lead");
+
+        // Add event listener to select element
+        selectLead.addEventListener("change", function () {
+            const selectedValue = selectLead.value;
+            // Update the value of proj_emp_no for each project in projectList
+            projectList.forEach(project => {
+                project.proj_emp_no = parseInt(selectedValue);
+            });
+        });
+
+        // Fetch the employees from the server
+        fetch(`/Admin/GetEmployees`)
+            .then(response => response.json())
+            .then(employees => {
+                employees.forEach(employee => {
+                    const option = document.createElement("option");
+                    option.value = employee.emp_no;
+                    option.text = `${employee.emp_fname} ${employee.emp_lname}`;
+
+                    console.log('projectCount:', employee.projectCount);
+                    console.log('proj_status:', employee.proj_status);
+
+                    // Check if the employee has three or more ongoing projects
+                    if (employee.projectCount >= 3 && employee.proj_status === 'On-going') {
+                        option.disabled = true;
+                    }
+
+                    selectLead.appendChild(option);
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+
+    <script>
+        // Get the select element
+        const selectEngineer = document.querySelector("#select-engineer");
+
+        // Add event listener to select element
+        selectEngineer.addEventListener("change", function () {
+            const selectedValue = selectEngineer.value;
+            // Update the value of proj_emp_no for each project in projectList
+            projectList.forEach(project => {
+                project.proj_engineer_no = parseInt(selectedValue);
+            });
+        });
+
+        // Fetch the employees from the server
+        fetch(`/Admin/GetEngineer`)
+            .then(response => response.json())
+            .then(employees => {
+                // Iterate over the employees and add an option for each one
+                employees.forEach(employee => {
+                    const option = document.createElement("option");
+                    option.value = employee.emp_no;
+                    option.text = `${employee.emp_fname} ${employee.emp_lname}`;
+
+                    // Set the option as selected if it matches the session emp_no
+                    if (employee.selected) {
+                        option.selected = true;
+                    }
+
+                    selectEngineer.appendChild(option);
+                });
+
+                // Disable the select element if a matching engineer is selected
+                if (employees.some(employee => employee.selected)) {
+                    selectEngineer.disabled = true;
+                }
+            })
+            .catch(error => console.error(error));
+    </script>
+
+    <script>
+        // Get the select element
+        const selectLeads = document.querySelector("#select-leads");
+
+        // Fetch the employees from the server
+        fetch(`/Admin/GetEmployeeses`)
+            .then(response => response.json())
+            .then(employees => {
+                // Iterate over the employees and add an option for each one
+                employees.forEach(employee => {
+                    const option = document.createElement("option");
+                    option.value = employee.emp_no;
+                    option.text = `${employee.emp_fname} ${employee.emp_lname}`;
+                    selectLeads.appendChild(option);
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+
+    <script>
+        // Get the select element
+        const selectEngineers = document.querySelector("#select-engineers");
+
+        // Fetch the employees from the server
+        fetch(`/Admin/GetEngineers`)
+            .then(response => response.json())
+            .then(employees => {
+                // Iterate over the employees and add an option for each one
+                employees.forEach(employee => {
+                    const option = document.createElement("option");
+                    option.value = employee.emp_no;
+                    option.text = `${employee.emp_fname} ${employee.emp_lname}`;
+                    selectEngineers.appendChild(option);
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+
+
+    <script>
+
+        function OnLoad() {
+
+        }
+
+        function userFiltFunction() {
+            document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.user-filter-btn')) {
+                var myDropdown = document.getElementById("userFiltDropdown");
+                if (myDropdown.classList.contains('user-filter-show')) {
+                    myDropdown.classList.remove('user-filter-show');
+                }
+            }
+        }
+
+        function userSortFunction() {
+            document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.user-sort-btn')) {
+                var myDropdown = document.getElementById("userSortDropdown");
+                if (myDropdown.classList.contains('user-sort-show')) {
+                    myDropdown.classList.remove('user-sort-show');
+                }
+            }
+        }
+
+        let canpopup = document.getElementById("can-popup");
+
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
+
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
+
+        let rempopup = document.getElementById("rem-popup");
+
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
+
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+
+        function openAddNewContainer() {
+            document.getElementById("add-new-container").style.display = "block";
+        }
+
+        function closeAddNewContainer() {
+            document.getElementById("add-new-container").style.display = "none";
+            $('#NewProForm').validate().resetForm();
+            $(".emErrP").html("");
+        }
+
+        function openInputMemForm() {
+            document.getElementById("input-mem-container").style.display = "block";
+        }
+
+        function closeInputMemForm() {
+            document.getElementById("input-mem-container").style.display = "none";
+        }
+
+    </script>
 

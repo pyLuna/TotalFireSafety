@@ -2,6 +2,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace TotalFireSafety.Models
@@ -31,7 +32,7 @@ namespace TotalFireSafety.Models
                 return domain;
         }
 
-        public string GetAllMethod(string uri, string Token)
+        public async Task<string> GetAllMethod(string uri, string Token)
         {
             //  Set Base Domain
             if (_client.BaseAddress == null) // to prevent error, check if the base address if empty
@@ -72,11 +73,11 @@ namespace TotalFireSafety.Models
             postTask.Wait(); // wait for result
 
             var result = postTask.Result;
-            if (result.IsSuccessStatusCode)
-            {
+            //if (result.IsSuccessStatusCode)
+            //{
+            //    return result.Content.ReadAsStringAsync().Result;
+            //}
                 return result.Content.ReadAsStringAsync().Result;
-            }
-            return result.StatusCode.ToString();
         }
 
         public string BarcodeGenerator(string token, string itemCode)

@@ -12,770 +12,384 @@
                 <span class="las la-bars"></span>
             </label>
             Overview
-
         </h2>
-
         <right>
-            <h4>View Summary In:</h4>
-
-            <select id="year" required>
-                <option disabled selected>Year</option>
-            </select>
-
-            <select id="month" required>
-                <option disabled selected>Month</option>
-            </select>
-
-
+            <button class="create-req-btn" title="CREATE ORDER">
+                <a onclick="openForm()">
+                    Notification
+                    <span class="las la-bell"></span>
+                    <label class="notif-badge" id="badge">0</label>
+                </a>
+            </button>
         </right>
     </header>
 
     <main>
 
-        <!-- REMOVE CIRCLES -->
-        @*<div class="summary">
-            <center>
-                <div class="summary-title">
-                    <b>
-                        Total Fire Safety Technologies Inc. Performance
-                    </b>
-                </div>
+        <div class="dashboard-content">
+            <div class="left">
+                <!-- CHARTS -->
+                <div class="recent-grid">
+                    <div class="inventory-sum">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Item Summary</h3>
 
-                <div class="sum-chart-card">
-                    <div class="sum-cards">
-                        <div class="sum-card-title">
-                            <div class="sum-card-single">
-                                <div class="sum-card-container">
-                                    <div class="sum-card-details">
-                                        <div class="cicle">
-                                            <div class="circle-container">
-                                                <div class="inv-circle-wrap">
-                                                    <div class="inv-circle">
-                                                        <div class="inv-mask inv-half">
-                                                            <div class="inv">
+                                <div class="cat-grp">
 
-                                                            </div>
-                                                        </div>
+                                    <!-- NEW UPDATE - DATE PICKER 04-16 -->
 
-                                                        <div class="inv-mask inv-full">
-                                                            <div class="inv">
-
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="inv-inside-circle">
-                                                        <label id="Inventory"></label>
-                                                        <script>
-                                                            var inventoryCount = @ViewBag.Inventory;
-                                                            document.getElementById("Inventory").textContent = inventoryCount;
-                                                        </script>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="date-drp" id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; width: auto;">
+                                        <i class="lar la-calendar-alt"></i>&nbsp;
+                                        <span></span> <i class="las la-sort-down"></i>
                                     </div>
-                                    <h3>INVENTORY</h3>
+
+                                    <!-- END -->
+                                    <select id="selcat" title="Select Category">
+                                        <option disabled selected>Category</option>
+                                        <option>All</option>
+                                    </select>
+
+                                    <select id="selclass" title="Select Class">
+                                        <option disabled selected>Class</option>
+                                        <option>All</option>
+                                    </select>
+
+                                    <select id="seltype" title="Select Type">
+                                        <option disabled selected>Type</option>
+                                        <option>All</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="chart-border">
+                                <div class="chart">
+                                    <canvas id="barchart" width="1200" height="300"></canvas>
+
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="sum-card-title">
-                            <div class="sum-card-single">
-                                <div class="sum-card-container">
-                                    <div class="sum-card-details">
-                                        <div class="cicle">
-                                            <div class="circle-container">
-                                                <div class="inv-circle-wrap">
-                                                    <div class="inv-circle">
-                                                        <div class="inv-mask inv-half">
-                                                            <div class="inv">
+                            <div class="card-headers">
+                                <a href="@Url.Action("Inventory","Admin")"><button> See more <span class="las la-arrow-right"></span></button></a>
 
-                                                            </div>
-                                                        </div>
+                                <div class="legend-grp">
+                                    <div class="legend-content">
 
-                                                        <div class="inv-mask inv-full">
-                                                            <div class="inv">
+                                        <div class="legend-content-1">
+                                            <div class="legend-color">
 
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="inv-inside-circle"> 170 </div>
-
-                                                </div>
                                             </div>
+                                            <label> Overstock </label>
+                                        </div>
+
+                                        <div class="legend-content-2">
+                                            <div class="legend-color">
+
+                                            </div>
+                                            <label> Standard </label>
+                                        </div>
+
+                                        <div class="legend-content-3">
+                                            <div class="legend-color">
+
+                                            </div>
+                                            <label> Average </label>
+                                        </div>
+                                        <div class="legend-content-4">
+                                            <div class="legend-color">
+
+                                            </div>
+                                            <label> Reorder </label>
+                                        </div>
+                                        <div class="legend-content-5">
+                                            <div class="legend-color">
+
+                                            </div>
+                                            <label> Critical </label>
                                         </div>
                                     </div>
-                                    <h3>NUMBER OF PROJECTS</h3>
                                 </div>
                             </div>
+
                         </div>
+                    </div>
 
+                    <div class="inventory-sum">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Item Supplies</h3>
 
+                                <div class="fst-grp">
 
+                                    <div class="radio-container">
+                                        <div class="radio-list">
+                                            <input type="radio" name="list" value="all" checked/>
+                                            <label for=""><h3>All</h3></label>
+                                        </div>
 
+                                        <div class="radio-list">
+                                            <input type="radio" name="list" value="fast"/>
+                                            <label for=""><h3>Fast Paced Items</h3></label>
+                                        </div>
+
+                                        <div class="radio-list">
+                                            <input type="radio" name="list" value="slow"/>
+                                            <label for=""><h3>Slow Paced Items</h3></label>
+                                        </div>
+                                    </div>
+
+                                    @*<select required>
+                                        <option disabled selected>Item Class</option>
+                                        <option>Imported</option>
+                                        <option>Local</option>
+                                    </select>*@
+                                </div>
+
+                            </div>
+
+                            <div class="chart-borders">
+                                <div class="chart">
+                                    <div class="scatter">
+                                        <canvas id="barcharthori" name="barcharthori" width="auto" height="auto"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-headers">
+                                <div class="fst-legend-content">
+                                    <div class="fst-content-1">
+
+                                    </div>
+                                    <label> Quantity </label>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </center>
-        </div>*@
-
-        <div class="cards">
-            <div class="card-title">
-                <a href="@Url.Action("Users","Admin")">
-                    <h3>Users</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Employee</h3>
-                            <div class="card-details">
-                                <label id="dataCountLabel"></label><span>Total Employees</span>
-                                <script>
-                             var dataCount = @ViewBag.DataCount;
-                             document.getElementById("dataCountLabel").textContent = dataCount;
-                                </script>
-                                <p></p>
-                                <label id="dataCountLabel1" class="card-active"></label><span class="card-active">Active Employees</span>
-                                <script>
-                             var Active = @ViewBag.Active;
-                             document.getElementById("dataCountLabel1").textContent = Active;
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Requisition</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Purchase Request</h3>
-                            <div class="card-details">
-                                <label id="purchase"></label><span>Total Entries</span>
-                                <script>
-                                    var purchase = @ViewBag.Purchase;
-                                    document.getElementById("purchase").textContent = purchase;
-                                </script>
-                                <p></p>
-                                <label class="card-active" id="entries"></label><span class="card-active">Pending Entries</span>
-                                <script>
-                                    var entries = @ViewBag.Entries;
-                                    document.getElementById("entries").textContent = entries;
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Deploy</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Deployment Request</h3>
-                            <div class="card-details">
-                                <label id="deployment"></label><span>Total Entries</span>
-                                <script>
-                                    var deployment = @ViewBag.Deployment;
-                                    document.getElementById("deployment").textContent = deployment;
-                                </script>
-                                <p></p>
-                                <label class="card-active" id="entrieses"></label><span class="card-active">Pending Entries</span>
-                                <script>
-                                    var entrieses = @ViewBag.Entrieses;
-                                    document.getElementById("entrieses").textContent = entrieses;
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </a>
             </div>
 
-            <!-- NEW ADD CARD -->
-            <div class="card-title">
-                <a href="@Url.Action("Requisition","Admin")">
-                    <h3>Supply</h3>
-                    <div class="card-single">
-                        <div class="card-container">
-                            <h3>Supply Request</h3>
-                            <div class="card-details">
-                                <label id="supply"></label><span>Total Entries</span>
-                                <script>
-                                    var supply = @ViewBag.Supply;
-                                    document.getElementById("supply").textContent = supply;
-                                </script>
-                                <p></p>
-                                <label class="card-active" id="Sup"></label><span class="card-active">Pending Entries</span>
-                                <script>
-                                    var Sup = @ViewBag.Sup;
-                                    document.getElementById("Sup").textContent = Sup;
-                                </script>
+            <div class="right">
+                <!-- CARDS -->
+                <div class="cards">
+                    <div class="card-title">
+                        <a href="@Url.Action("Users","Admin")">
+                            <h3>Users</h3>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Users</h3>
+                                    <div class="card-details">
+                                        <label id="userLabel"></label><span>Total Employees</span>
+                                        <p></p>
+                                        <label class="card-active" id="actLabel"></label><span class="card-active">Active Users</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
+                    <div class="card-title">
+                        <a href="@Url.Action("Requisition","Admin")">
+                            <h3>Purchase</h3>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Purchase Request</h3>
+                                    <div class="card-details">
+                                        <label id="purLabel"></label><span>Total Entries</span>
+                                        <p></p>
+                                        <label class="card-active" id="actpurLabel" style="color: #FF0000 !important;"></label><span class="card-active" style="color: #FF0000 !important;">Pending Entries</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="card-title">
+                        <a href="@Url.Action("Requisition","Admin")">
+                            <h3>Deploy</h3>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Deployment Request</h3>
+                                    <div class="card-details">
+                                        <label id="depLabel"></label><span>Total Entries</span>
+                                        <p></p>
+                                        <label class="card-active" id="actdepLabel" style="color: #FF0000 !important;"></label><span class="card-active" style="color: #FF0000 !important;">Pending Entries</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
 
+                    <div class="card-title">
+                        <a href="@Url.Action("Requisition","Admin")">
+                            <h3>Supply</h3>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Supply Request</h3>
+                                    <div class="card-details">
+                                        <label id="supLabel"></label><span>Total Entries</span>
+                                        <p></p>
+                                        <label class="card-active" id="actsupLabel" style="color: #FF0000 !important;"></label><span class="card-active" style="color: #FF0000 !important;">Pending Entries</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card-title">
+                        <a href="@Url.Action("Inventory","Admin")">
+                            <h3>Inventory</h3>
+                            <div class="card-single">
+                                <div class="card-container">
+                                    <h3>Inventory</h3>
+                                    <div class="card-details">
+                                        <label id="itemLabel"></label><span>Total Items</span>
+                                        <p></p>
+                                        <label class="card-active" id="critLabel" style="color: #FF0000 !important;"></label><span class="card-active" style="color: #FF0000 !important;">Critical Items</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+
+                    @*<div class="card-title">
+                        <a href="../super-admin/operations/requisition/sa-deploy_requi.html">
+                            <h3>Supply</h3>
+                            <div class="card-sPurchingle">
+                                <div class="card-container">
+                                    <h3>Supply Request</h3>
+                                    <div class="card-details">
+                                        <label>30</label><span>Total Entries</span>
+                                        <p></p>
+                                        <label class="card-active">5</label><span class="card-active">New Entries</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>*@
+
+                </div>
+
+            </div>
         </div>
 
-        <div class="recent-grid">
 
-            <div class="inventory-sum">
-                <h3>Inventories</h3>
-                <div class="card">
-                    <div class="card-header">
-                        
 
-                        <h3>Item Categories Summary</h3>
 
-                        <select id="itemCategory" required>
-                            <option disabled selected>Item Category</option>
-                            <option value="Fire Extinguisher">Fire Extinguisher</option>
-                            <option value="Power Tools">Power Tools</option>
-                            <option value="Fittings">Fittings</option>
-                            <option value="Scaffolding">Scaffolding</option>
-                            <option value="Clear">Clear</option>
-                        </select>
+
+
+
+
+
+        <!-- Project Summary -->
+
+        <div class="dsh-proj-grid">
+            <div class="dsh-proj-sum">
+                <div class="dsh-proj">
+                    <div class="dsh-proj-header">
+                        <h3>On-going Projects</h3>
+
+                        @*<div class="dsh-proj-grp">
+                            <select required>
+                                <option disabled selected>Project Lead</option>
+                                <option>Juan Dela Cruz</option>
+                            </select>
+                        </div>*@
 
                     </div>
                     <div class="chart-border">
                         <div class="chart">
-                            <canvas id="barchart1" width="250" height="300"></canvas>
-                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                            <script>
-                            var data = @Html.Raw(Json.Encode(ViewBag.Data));
-
-                                   
-                                var labels = data.map(function (item) {
-
-                                    return item.Name
-                                });
-
-
-                                // Get references to the select element and chart canvas
-                                var select = document.getElementById('itemCategory');
-
-                                var canvas = document.getElementById('barchart1');
-
-
-                                select.addEventListener('change', function () {
-                                    // Get the selected option value
-                                    var selectedCategory = select.value;
-
-
-                                    // Filter the data array based on the selected option
-                                    var filteredData = data.filter(function (item) {
-                                        if (select.value === "Clear") {
-                                            return item.Name;
-                                        } else {
-                                            return item.Category === selectedCategory;
-                                        }
-
-
-                                    });
-
-                                    var importedValues = filteredData.map(function (item) {
-                                        if (item.Class === 'Import') {
-                                            if (item.Quantity < 250) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255,0,0)' // red color
-                                                };
-                                            } else if (item.Quantity < 500) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255, 165, 0)' // orange color
-                                                };
-                                            } else {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(0,128,0)' // default blue color
-                                                };
-                                            }
-                                        } else {
-                                            return { value: 0, color: 'rgba(0,128,0)' };
-                                        }
-                                    });
-
-                                    var localValues = filteredData.map(function (item) {
-                                        if (item.Class === 'Local') {
-                                            if (item.Quantity < 250) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255,0,0)'
-                                                };
-                                            } else if (item.Quantity < 500) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255, 165, 0)'
-                                                };
-                                            } else {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(0,128,0)'
-                                                };
-                                            }
-                                        } else {
-                                            return { value: 0, color: 'rgba(0,128,0)' };
-                                        }
-                                    });
-
-                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
-                                    chart.data.labels = filteredData.map(function (item) { return item.Name; });
-                                    chart.update();
-                                });
-
-
-
-                                var selectYear = document.getElementById('year');
-                               
-
-                                selectYear.addEventListener('change', function () {
-                                    var selectedYear = selectYear.value;
-
-                                    var filteredData1 = data.filter(function (item) {
-
-                                        return item.Date == selectedYear;
-                                    });
-              
-                                    // Same code as before for updating the chart with the filtered data
-                                    var importedValues = filteredData1.map(function (item) {
-                                        if (item.Quantity < 250) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)' // red color
-                                            };
-                                        } else if (item.Quantity < 500) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)' // orange color
-                                            };
-                                        } else {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0)' // default blue color
-                                            };
-                                        }
-                                   
-                                    });
-
-                                    var localValues = filteredData1.map(function (item) {
-                                        if (item.Class === 'Local') {
-                                            if (item.Quantity < 250) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255,0,0)'
-                                                };
-                                            } else if (item.Quantity < 500) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255, 165, 0)'
-                                                };
-                                            } else {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(0,128,0)'
-                                                };
-                                            }
-                                        } else {
-                                            return { value: 0, color: 'rgba(0,128,0)' };
-                                        }
-                                    });
-
-                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
-                                    chart.data.labels = filteredData1.map(function (item) { return item.Name; });
-                                    chart.update();
-                                });
-
-                                var selectMonth = document.getElementById('month');
-
-                                selectMonth.addEventListener('change', function () {
-                                    var selectedMonth = selectMonth.value;
-
-                                    var filteredData2 = data.filter(function (item) {
-
-                                        return item.Date1 == selectedMonth;
-                                    });
-
-                                    // Same code as before for updating the chart with the filtered data
-                                    var importedValues = filteredData2.map(function (item) {
-                                        if (item.Quantity < 250) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)' // red color
-                                            };
-                                        } else if (item.Quantity < 500) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)' // orange color
-                                            };
-                                        } else {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0)' // default blue color
-                                            };
-                                        }
-
-                                    });
-
-                                    var localValues = filteredData2.map(function (item) {
-                                        if (item.Class === 'Local') {
-                                            if (item.Quantity < 250) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255,0,0)'
-                                                };
-                                            } else if (item.Quantity < 500) {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(255, 165, 0)'
-                                                };
-                                            } else {
-                                                return {
-                                                    value: item.Quantity,
-                                                    color: 'rgba(0,128,0)'
-                                                };
-                                            }
-                                        } else {
-                                            return { value: 0, color: 'rgba(0,128,0)' };
-                                        }
-                                    });
-
-                                    chart.data.datasets[0].data = importedValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[0].backgroundColor = importedValues.map(function (item) { return item.color; });
-                                    chart.data.datasets[1].data = localValues.map(function (item) { return item.value; });
-                                    chart.data.datasets[1].backgroundColor = localValues.map(function (item) { return item.color; });
-                                    chart.data.labels = filteredData2.map(function (item) { return item.Name; });
-                                    chart.update();
-                                });
-
-
-
-
-
-                                var importedValues = data.map(function (item) {
-                                    if (item.Class === 'Import') {
-                                        if (item.Quantity < 250) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)' // red color
-                                            };
-                                        } else if (item.Quantity < 500) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)' // orange color
-                                            };
-                                        } else {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0)' // default blue color
-                                            };
-                                        }
-                                    } else {
-                                        return { value: 0, color: 'rgba(0,128,0)' };
-                                    }
-                                });
-
-                                var localValues = data.map(function (item) {
-                                    if (item.Class === 'Local') {
-                                        if (item.Quantity < 250) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255,0,0)'
-                                            };
-                                        } else if (item.Quantity < 500) {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(255, 165, 0)'
-                                            };
-                                        } else {
-                                            return {
-                                                value: item.Quantity,
-                                                color: 'rgba(0,128,0)'
-                                            };
-                                        }
-                                    } else {
-                                        return { value: 0, color: 'rgba(0,128,0)' };
-                                    }
-                                });
-
-
-
-
-                                var ctx = canvas.getContext('2d');
-                                var chart = new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: labels,
-                                        datasets: [{
-                                            label: 'Imported',
-                                            data: importedValues.map(function (item) { return item.value; }),
-                                            backgroundColor: importedValues.map(function (item) { return item.color; }),
-                                            borderColor: 'rgba(54, 162, 235, 1)',
-                                            borderWidth: 1
-                                        }, {
-                                            label: 'Local',
-                                            data: localValues.map(function (item) { return item.value; }),
-                                            backgroundColor: localValues.map(function (item) { return item.color; }),
-                                            borderColor: 'rgba(255, 99, 132, 1)',
-                                            borderWidth: 1
-                                        }]
-
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        maintainAspectRatio: false,
-                                        aspectRatio: 4 / 4,
-                                        scales: {
-                                            yAxes: [{
-                                                ticks: {
-                                                    beginAtZero: true
-                                                }
-                                            }]
-                                        }
-                                    }
-                                });
-                                chart.update();
-
-                            </script>
+                            <canvas id="barcharthorii" width="300" height="300"></canvas>
 
                         </div>
                     </div>
 
                     <div class="card-headers">
-                        <a href="@Url.Action("Inventory","Admin")"><button> See more <span class="las la-arrow-right"></span></button></a>
                     </div>
+
                 </div>
             </div>
 
-            <div class="inventory-sum">
-                <h3>&nbsp;</h3>
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Most Requested Item</h3>
+            <div class="dsh-proj-sum">
+                <div class="dsh-proj">
+                    <div class="dsh-proj-header">
+                        <h3>Project Insights</h3>
+
+                        <div class="date" style="display:none">
+                            @*<h3>Year</h3>
+                            <select required>
+                                <option disabled selected></option>
+                                <option>2019</option>
+                                <option>2020</option>
+                                <option>2021</option>
+                                <option>2022</option>
+                                <option>2023</option>
+                            </select>*@
+                        </div>
                     </div>
 
                     <div class="chart-borders">
                         <div class="chart">
                             <div class="scatter">
-                                <canvas id="barcharthori1" width="auto" height="auto"></canvas>
+                                <div class="proj-insight-container">
 
-                                <script>
-                                     var data1 = @Html.Raw(Json.Encode(ViewBag.Chart));
-                                    var labels1 = data1.map(function (item) {
-                                        return item.Name1;
-                                    });
+                                    <div class="proj-row">
+                                        <div class="proj-column-left left upper upper-left">
+                                            <label class="top">Project Performance</label>
+                                            <h3 id="perc"></h3>
+                                            <label class="bottom">Tasks achieved <i class="las la-caret-up"></i></label>
+                                        </div>
+                                        <div class="proj-column-right upper">
+                                            <h3 id="upcoming"></h3>
+                                            <label>Total Upcoming <br> Projects</label>
+                                        </div>
+                                    </div>
+                                    <div class="proj-row">
+                                        <div class="proj-column-left mid-left">
+                                            <h3 id="finished"></h3>
+                                            <label>Finished <br> Projects</label>
+                                        </div>
+                                        <div class="proj-column-right mid-right">
+                                            <h3 id="cancelled"></h3>
+                                            <label>Cancelled<br> Projects</label>
+                                        </div>
+                                    </div>
+                                    <div class="proj-row">
+                                        <div class="proj-column-left title">
+                                            <h3 id="total"></h3>
+                                            <label>Total <br> Projects</label>
+                                        </div>
+                                        <div class="proj-column-right per">
+                                            <h3 class="Up"></h3>
+                                            <label> </label>
+                                        </div>
+                                    </div>
 
-                                    var values1 = data1.map(function (item) {
-                                        return item.Quantity1;
-                                    });
-
-
-                                    var ctx = document.getElementById('barcharthori1').getContext('2d');
-                                    var Chart = new Chart(ctx, {
-                                        type: 'bar',
-                                        data: {
-                                            labels: labels1,
-                                            datasets: [{
-                                                label: 'Quantity',
-
-                                                data: values1,
-                                                backgroundColor: 'rgba(37,109,133)',
-                                                borderColor: 'rgba(54, 162, 235, 1)',
-                                                borderWidth: 1
-                                            }]
-                                        },
-                                        options: {
-                                            indexAxis: 'y',
-                                            responsive: true,
-                                            maintainAspectRatio: false,
-                                            aspectRatio: 4 / 3,
-                                            scales: {
-                                                yAxes: [{
-                                                    ticks: {
-                                                        beginAtZero: true
-                                                    }
-                                                }]
-                                            }
-                                        }
-                                    });
-                                </script>
+                                </div>
                             </div>
-
                         </div>
                     </div>
+                    <div class="card-headers">
 
-                </div>
-            </div>
-
-
-        </div>
-
-        <!-- Project Summary -->
-
-        <br>
-
-        <div class="project-sum">
-        
-                <div class="project-sum-btns">
-                    <div class="drp-wrapper">
-
-                        <select required>
-                            <option disabled selected>Status</option>
-                            <option>On-going</option>
-                            <option>In-line</option>
-                            <option>Delayed</option>
-                        </select>
-                        <select required>
-                            <option disabled selected>Proj. Lead</option>
-                            <option>Clarisse Vasquez</option>
-                        </select>
-                    </div>
-
-                </div>
-        </div>
-
-        <div class="dsh-projects">
-            <div class="dsh">
-                <div class="dsh-body">
-                    <div class="table-responsive" style="overflow-x: auto;">
-                        <table width="100%">
-                            <thead>
-                                <tr>
-                                    <td>Project Name</td>
-                                    <td>Project Lead</td>
-                                    <td>Start Date</td>
-                                    <td>Status</td>
-                                    <td>Tracker</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Makati Global</td>
-                                    <td>Jewell Mayrena</td>
-                                    <td>Feb 27, 2023</td>
-                                    <td><label class="stat-pen">In-Line</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-complete">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Mang Inasal QCU</td>
-                                    <td>Fernan Yuki</td>
-                                    <td>Feb 12, 2023</td>
-                                    <td><label class="stat-appr">On-Going</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-half">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Golden Disk</td>
-                                    <td>Carlo Millonte</td>
-                                    <td>Jan 27, 2023</td>
-                                    <td><label class="stat-appr">On-Going</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-halfhalf">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Jollibee South Branch</td>
-                                    <td>Clark Steven Arcilla</td>
-                                    <td>Feb 23, 2023</td>
-                                    <td><label class="stat-dec">Declined</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-nothalf">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Jollibee South Branch</td>
-                                    <td>Clark Steven Arcilla</td>
-                                    <td>Feb 23, 2023</td>
-                                    <td><label class="stat-dec">Declined</label></td>
-                                    <td>
-                                        <div class="progress-bar">
-                                            <div class="progress-nothalf">
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
         </div>
-
-
+        <!-- END -->
     </main>
 </div>
-
-@*<script src="../js/chart1.js"></script>
-    <script src="../js/chart3.js"></script>*@
-@Scripts.Render("~/script/admin")
-
+<script src="~/Scripts/js/chart1.js"></script>
+<script src="~/Scripts/js/chart2.js"></script>
+<script src="~/Scripts/js/chart3.js"></script>
+<script src="~/Scripts/Dashboard.js"></script>
 <script>
-    // Get current year and month
-    var currentYear = new Date().getFullYear();
-    var currentMonth = new Date().getMonth() + 1;
 
-    // Populate year dropdown with 4 years
-    for (var i = -5; i < 0; i++) {
-        var yearOption = document.createElement("option");
-        yearOption.value = currentYear + i;
-        yearOption.text = currentYear + i;
-        document.getElementById("year").appendChild(yearOption);
+    async function OnLoad() {
+        GetAll();
+        //GetItems();
+        GetDate();
+        GetSupplies();
+        await GetProjects();
     }
 
-    // Add an option for the current year
-    var currentYearOption = document.createElement("option");
-    currentYearOption.value = currentYear;
-    currentYearOption.text = currentYear;
-    document.getElementById("year").appendChild(currentYearOption);
-
-    // Populate month dropdown with all months
-    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-    for (var i = 1; i <= 12; i++) {
-        var monthOption = document.createElement("option");
-        monthOption.value = i; // set the value to the integer value of the month
-        monthOption.textContent = monthNames[i - 1]; // set the text to the month name
-        document.getElementById("month").appendChild(monthOption);
-    }
-   
-
-    // Set default selected values to current year and month
-    document.getElementById("year").value = currentYear;
-    document.getElementById("month").value = currentMonth < 10 ? "0" + currentMonth : currentMonth;
-</script>
-
-<script>
     `use strict`;
     //function refreshTime() {
     //    const timeDisplay = document.getElementById("dt");
@@ -801,8 +415,132 @@
         });
     }
 
+    // NEW UPDATE 03/04/23 - DATE CONTAINER IN DASHBOARD
+
+    function openInputQTYForm() {
+        document.getElementById("input-date-popup").style.display = "block";
+    }
+
+    function closeInputQTYForm() {
+        document.getElementById("input-date-popup").style.display = "none";
+    }
+
     /* When the user clicks on the button,
        toggle between hiding and showing the dropdown content */
-   
+    function yrFunction() {
+        document.getElementById("yrDropdown").classList.toggle("yr-show");
+    }
 
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.yr-drop-btn')) {
+            var myDropdown = document.getElementById("yrDropdown");
+            if (myDropdown.classList.contains('yr-show')) {
+                myDropdown.classList.remove('yr-show');
+            }
+        }
+    }
+
+    /* When the user clicks on the button,
+        toggle between hiding and showing the dropdown content */
+    function mFunction() {
+        document.getElementById("mDropdown").classList.toggle("m-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.m-drop-btn')) {
+            var myDropdown = document.getElementById("mDropdown");
+            if (myDropdown.classList.contains('m-show')) {
+                myDropdown.classList.remove('m-show');
+            }
+        }
+    }
+
+    /* When the user clicks on the button,
+       toggle between hiding and showing the dropdown content */
+    function dFunction() {
+        document.getElementById("dDropdown").classList.toggle("d-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (e) {
+        if (!e.target.matches('.d-drop-btn')) {
+            var myDropdown = document.getElementById("dDropdown");
+            if (myDropdown.classList.contains('d-show')) {
+                myDropdown.classList.remove('d-show');
+            }
+        }
+    }
+
+    // NEW UPDATE 03/04/23 - DATE CONTAINER IN DASHBOARD
+
+    function openInputQTYForm() {
+        document.getElementById("input-date-popup").style.display = "block";
+    }
+
+    function closeInputQTYForm() {
+        document.getElementById("input-date-popup").style.display = "none";
+    }
+
+
+    //window.addEventListener("load", function () {
+    //    setTimeout(
+    //        function open(event) {
+    //            document.querySelector('input-date-popup').style.display = "block";
+    //        },
+    //        1000
+    //    )
+    //});
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        //.subtract(29, 'days')
+        var start = moment();
+        var end = moment();
+
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            localStorage.setItem("start", start.format('MMMM D, YYYY'));
+            localStorage.setItem("end", end.format('MMMM D, YYYY'));
+            localStorage.setItem("diff", end.diff(start, 'days'));
+        }
+
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            yearSelect: true, // Enable year selection
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                'This Year': [moment().startOf('year'), moment().endOf('month')],
+                'Last Year': [moment().startOf('year').subtract(1, 'years'), moment().endOf('year').subtract(1, 'years')],
+            },
+            "showDropdowns": true,
+            "opens": "center",
+            "showCustomRangeLabel": true,
+        }, function (start, end, label) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            var diff = 0;
+            if (label == "Yesterday") {
+                diff = 1;
+            }
+            else {
+                diff = end.diff(start, 'days');
+            }
+            localStorage.setItem("start", start.format('MMMM D, YYYY'));
+            localStorage.setItem("end", end.format('MMMM D, YYYY'));
+            localStorage.setItem("diff", diff);
+        });
+
+        cb(start, end);
+        $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+            // Call your function here
+            GetDate();
+        });
+    });
 </script>

@@ -1,0 +1,300 @@
+﻿
+@{
+    ViewBag.Title = "ProjectReport";
+    Layout = "~/Views/AdminLayout.cshtml";
+    ViewBag.Proj = "active";
+
+}
+
+
+
+<div class="main-content">
+    <header>
+        <h2>
+            <label for="nav-toggle">
+                <span class="las la-bars"></span>
+            </label>
+            REPORT SUMMARY
+        </h2>
+        <right>
+            <button class="create-req-btn" title="CREATE ORDER">
+                <a onclick="openForm()">
+                    Notification
+                    <span class="las la-bell"></span>
+                    <label class="notif-badge">5</label>
+                </a>
+            </button>
+        </right>
+    </header>
+    <main>
+
+        <div class="report-main-content">
+
+            <div class="report-sum-header">
+                <div class="report-back-container">
+                    <div class="left">
+                        <a href="../projects/sa-projects-ongoing.html"><span class="las la-long-arrow-alt-left"></span> REPORT SUMMARY </a>
+                    </div>
+                </div>
+
+
+                <div class="datepick-container">
+                    <span class="lar la-calendar"></span>
+
+                    <div class="date-grp">
+                        <input type="date">
+                        <label for=""> - </label>
+                        <input type="date">
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-main-container">
+                <div class="report-task-list">
+                    <div class="task-header">
+
+                        <div class="report-right-container">
+                            <div class="report-incharge-container">
+                                <div class="incharge-report">
+                                    <div class="incharge-header-report">
+                                        <br>
+                                        <h2>DETAILS</h2>
+                                        <div class="Black_Line"><hr></div>
+
+                                    </div>
+                                    <table>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Project Name</td>
+                                            <td>@ViewBag.ProjectName</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Subject</td>
+                                            <td>@ViewBag.ProjectSubject</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Client</td>
+                                            <td>@ViewBag.ProjectClient</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Location Site</td>
+                                            <td>@ViewBag.ProjectLocation</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Engineer</td>
+                                            <td>@ViewBag.Engineer</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Project Lead</td>
+                                            <td>@ViewBag.ProjectLead</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Status</td>
+                                            <td class="ongoing">@ViewBag.Status</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Start Date</td>
+                                            <td>@ViewBag.StartDate</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="font-weight: bold;">Baseline Finish</td>
+                                            <td>@ViewBag.EndDate</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container">
+                            <div class="proj-progress-main">
+                                <div class="proj-progress">
+                                    <h2>Project Progress</h2>
+                                </div>
+                            </div>
+
+                            <div class="report-summary-bar">
+                                <div class="progress-bar">
+                                    <div class="progress-halfhalf">
+                                    </div>
+                                    <label> <b></b> </label>
+                                </div>
+                                <br>
+                                @if (ViewBag.Reports != null)
+                                {
+                                <h2>REPORTS</h2>
+                                <div class="Black_Line">
+                                    <hr>
+                                </div>
+
+                                foreach (var report in ViewBag.Reports)
+                                {
+                                if (report.rep_proj_id == ViewBag.ReportId) // Filter reports based on the 'id' parameter value
+                                {
+                                <div class="align-container">
+                                    <div class="align-item">
+                                        <p>@report.rep_date.ToString("MM/dd/yyyy")</p>
+                                    </div>
+                                    <div class="align-item">
+                                        <p>Scope of Works</p>
+                                    </div>
+                                    <div class="align-item">
+                                        <p>@report.rep_scope</p>
+                                    </div>
+                                </div>
+
+                                var imagePaths = ViewBag.ImagePaths as List<string>
+                                    ;
+                                    if (imagePaths != null)
+                                    {
+                                    foreach (var imagePath in imagePaths)
+                                    {
+                                    <div class="align-images">
+                                        <div class="align-image">
+                                            <img src="@Url.Content(" /ReportImg/" + imagePath)" alt="Report Image" class="small-image">
+                                        </div>
+                                    </div>
+                                    }
+                                    }
+
+                                    <div class="Black_Line">
+                                        <hr>
+                                    </div>
+                                    }
+                                    }
+                                    }
+
+</main>
+
+
+    <script>
+        // Get the start date and end date values
+var startDate = new Date('@ViewBag.StartDate');
+var endDate = new Date('@ViewBag.EndDate');
+var now = new Date();
+var percentage = 0; // Default to 0%
+
+// Calculate the percentage completion based on the current date
+if (now.getTime() < startDate.getTime()) {
+  // Project hasn't started yet
+  percentage = 0;
+} else if (now.getTime() >= endDate.getTime()) {
+  // Project is completed
+  percentage = 100;
+} else {
+  // Calculate the progress based on the current date's position between the start and end dates
+  percentage = ((now - startDate) / (endDate - startDate)) * 100;
+}
+
+// Update the progress bar fill on the ProjectReport page
+$('.report-summary-bar .progress-halfhalf').css('width', percentage + '%');
+$('.report-summary-bar label b').text(Math.round(percentage) + '%');
+    </script>
+
+    <script>
+
+
+        function userFiltFunction() {
+            document.getElementById("userFiltDropdown").classList.toggle("user-filter-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.user-filter-btn')) {
+                var myDropdown = document.getElementById("userFiltDropdown");
+                if (myDropdown.classList.contains('user-filter-show')) {
+                    myDropdown.classList.remove('user-filter-show');
+                }
+            }
+        }
+
+        function userSortFunction() {
+            document.getElementById("userSortDropdown").classList.toggle("user-sort-show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.user-sort-btn')) {
+                var myDropdown = document.getElementById("userSortDropdown");
+                if (myDropdown.classList.contains('user-sort-show')) {
+                    myDropdown.classList.remove('user-sort-show');
+                }
+            }
+        }
+
+        let canpopup = document.getElementById("can-popup");
+
+        function canOpenPopup() {
+            canpopup.classList.add("can-popup-show")
+        }
+
+        function canClosePopup() {
+            canpopup.classList.remove("can-popup-show")
+        }
+
+        let rempopup = document.getElementById("rem-popup");
+
+        function remOpenPopup() {
+            rempopup.classList.add("rem-popup-show")
+        }
+
+        function remClosePopup() {
+            rempopup.classList.remove("rem-popup-show")
+        }
+
+        function openAddNewContainer() {
+            document.getElementById("add-new-container").style.display = "block";
+        }
+
+        function closeAddNewContainer() {
+            document.getElementById("add-new-container").style.display = "none";
+        }
+
+        function openInputMemForm() {
+            document.getElementById("input-mem-container").style.display = "block";
+        }
+
+        function closeInputMemForm() {
+            document.getElementById("input-mem-container").style.display = "none";
+        }
+
+        function openReportForm() {
+            document.getElementById("report-container").style.display = "block";
+        }
+
+        function closeReportForm() {
+            document.getElementById("report-container").style.display = "none";
+        }
+
+        function openReportNewForm() {
+            document.getElementById("report-new-container").style.display = "block";
+        }
+
+        function closeReportNewForm() {
+            document.getElementById("report-new-container").style.display = "none";
+        }
+
+        function openInputManForm() {
+            document.getElementById("input-man-container").style.display = "block";
+        }
+
+        function closeInputManForm() {
+            document.getElementById("input-man-container").style.display = "none";
+        }
+
+        function openReportEditForm() {
+            document.getElementById("report-edit-container").style.display = "block";
+        }
+
+        function closeReportEditForm() {
+            document.getElementById("report-edit-container").style.display = "none";
+        }
+
+    </script>

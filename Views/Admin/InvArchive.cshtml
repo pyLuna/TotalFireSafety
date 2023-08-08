@@ -58,22 +58,13 @@
                                         <td>Quantity</td>
                                         <td>Class</td>
                                         <td>Date Archived</td>
-                                        <td>Action</td>
+                                        @if (Int32.Parse(Session["system_role"].ToString()) == 2)
+                                        {
+                                            <td>Action</td>
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @*<tr>
-                                            <td><label>00001</label></td>
-                                            <td><label>Clarisse C. Vaquez</label></td>
-                                            <td><label>Supervisor</label></td>
-                                            <td><label>0923758923</label></td>
-                                            <td><label>45674567474</label></td>
-                                            <td><label>123421345423</label></td>
-                                            <td><label>Local</label></td>
-                                            <td><label>00/00/00</label></td>
-                                            <td><label>00/00/00</label></td>
-                                            <td><button class="acc-btn" title="ACCEPT REQUEST"> <a href="#"><span class="las la-check-circle"></span></a></button></td>
-                                        </tr>*@
                                 </tbody>
                             </table>
                         </div>
@@ -91,11 +82,11 @@
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
-        <div class="save-pop-container" id="popup">
+        <div class="save-pop-container" id="save-popup">
             <img src="@Url.Content("~/images/tick.png")">
             <h2>Item Restored!</h2>
             <p>Item has been successfully restored!</p>
-            <button type="button" onclick="closePopup()">OK</button>
+            <button type="button" onclick="CloseSavePopup()">OK</button>
         </div>
 
         <div class="rem-pop-container" id="rem-popup">
@@ -121,13 +112,16 @@
     </main>
     <script src="@Url.Content("~/Scripts/InvArchive.js")"></script>
     <script>
-        window.onload = function () {
-            GetAll();
+        var sessionId = '@Session["emp_no"]';
+        function OnLoad() {
             var reload = localStorage.getItem("reload");
             if (reload == "true") {
-                openPopup();
+                OpenSavePopup();
+                localStorage.setItem("reload", "false");
             }
+            GetAll();
         }
+
         /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */
         function myFunction() {
@@ -166,6 +160,15 @@
 
         function addClosePopupInv() {
             addpopupinv.classList.remove("add-popup-inv-show")
+        }
+
+        let savepopup = document.getElementById("save-popup");
+        function OpenSavePopup() {
+            savepopup.classList.add("save-pop-container-show")
+        }
+
+        function CloseSavePopup() {
+            savepopup.classList.remove("save-pop-container-show")
         }
 
         let archpopup = document.getElementById("arch-popup");

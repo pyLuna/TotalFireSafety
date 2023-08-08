@@ -3,6 +3,8 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Routing;
 
 [assembly: OwinStartup(typeof(TotalFireSafety.AuthenticationStartup))]
 
@@ -24,10 +26,16 @@ namespace TotalFireSafety
                 Provider = myProvider
             };
             //set config on start up
+            app.MapSignalR();
             app.UseOAuthAuthorizationServer(options);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
+            // Register MVC routes
+            //RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            // Add global MVC authorization filter
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
     }
 }

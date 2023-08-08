@@ -6,7 +6,7 @@
     Layout = "~/Views/AdminLayout.cshtml";
     ViewBag.Users = "active";
 }
-<script src='@Url.Content("~/Scripts/validations/Uservalidation.js")'></script>
+
 <div class="main-content">
     <header>
 
@@ -14,7 +14,7 @@
             <label for="nav-toggle">
                 <span class="las la-bars"></span>
             </label>
-            Employee
+            Employee List
         </h2>
     </header>
     <main>
@@ -31,36 +31,53 @@
             <div class="user-grid">
                 <div class="user-header">
                     <h3>EMPLOYEE LIST</h3>
-                    <div class="user-buttons-style">
-                        @*onclick="addOpenPopup()"*@
-                        <button class="add-btn" title="ADD NEW ITEM" id="addBtn"><a><label>Add User</label></a></button>
-                        &nbsp;
-                        <button class="user-filter-btn" onclick="userFiltFunction()">
-                            <a>
-                                <span>Filter</span>
-                                <span class="las la-chevron-down"></span>
-                            </a>
-                        </button>
-                        <div class="user-filter-content" id="userFiltDropdown">
-                            <a id="selcat"> Select Category </a>
-                            <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
-                            <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
-                            <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
-                            <a href="#" onclick="SortByCategory('')">Clear</a>
+                    <!--<div class="user-buttons-style">-->
+                    @*onclick="addOpenPopup()"*@
+                    <!--<button class="add-btn" title="ADD NEW ITEM" id="addBtn"><a><label>Add User</label></a></button>
+                    &nbsp;
+                    <button class="user-filter-btn" onclick="userFiltFunction()">
+                        <a>
+                            <span>Filter</span>
+                            <span class="las la-chevron-down"></span>
+                        </a>
+                    </button>
+                    <div class="user-filter-content" id="userFiltDropdown">
+                        <a id="selcat"> Select Category </a>
+                        <a href="#" onclick="SortByCategory(this.innerHTML)">Office Manager</a>
+                        <a href="#" onclick="SortByCategory(this.innerHTML)">Warehouse Manager</a>
+                        <a href="#" onclick="SortByCategory(this.innerHTML)">Supervisor</a>
+                        <a href="#" onclick="SortByCategory('')">Clear</a>
 
-                        </div>
-                        &nbsp;
-                        <button class="user-sort-btn" onclick="userSortFunction()">
-                            <a>
-                                <span>Sort</span>
-                                <span class="las la-chevron-down"></span>
-                            </a>
-                        </button>
-                        <div class="user-sort-content" id="userSortDropdown">
-                            <a href="#" onclick="Ascend()">Ascending</a>
-                            <a href="#" onclick="Descend()">Descending</a>
-                        </div>
                     </div>
+                    &nbsp;
+                    <button class="user-sort-btn" onclick="userSortFunction()">
+                        <a>
+                            <span>Sort</span>
+                            <span class="las la-chevron-down"></span>
+                        </a>
+                    </button>
+                    <div class="user-sort-content" id="userSortDropdown">
+                        <a href="#" onclick="Ascend()">Ascending</a>
+                        <a href="#" onclick="Descend()">Descending</a>
+                    </div>
+                </div>-->
+
+                    <div class="user-buttons-style">
+                        <button class="add-btn" title="NEW EMPLOYEE" id="addBtn" onclick="addOpenPopup()">NEW EMPLOYEE</button>
+                        <select onchange="FilterFunc(this.options[this.selectedIndex].value.toLowerCase())">
+                            <option disabled selected>FILTER</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Locked">Locked</option>
+                        </select>
+                        @*<select required>
+                            <option disabled selected>SORT</option>
+                            <option>All</option>
+                            <option>Local</option>
+                            <option>Import</option>
+                        </select>*@
+                    </div>
+
                 </div>
                 <div class="user-projects">
                     <div class="users">
@@ -69,13 +86,16 @@
                                 <table width="100%" id="myTable">
                                     <thead>
                                         <tr>
-                                            <td>ID</td>
-                                            <td>Name</td>
-                                            <td>Date Hired</td>
-                                            <td>Contact Number</td>
-                                            <td>Position</td>
-                                            <td>Status</td>
-                                            <td>Action</td>
+                                            <td> <a onclick="Sort(this,'emp_no')"> Employee ID <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a onclick="Sort(this,'emp_lname')"> Surname <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a onclick="Sort(this,'emp_fname')"> First Name <i class="las la-sort-down"></i></a> </td>
+                                            <td> <a onclick="Sort(this,'emp_name')"> Middle Name <i class="las la-sort-down"></i></a> </td>
+                                            <td> Date Hired </td>
+                                            <td> Contact Number </td>
+                                            <td> Position  </td>
+                                            <td> Status </td>
+                                            <td><a onclick="Sort(this,'emp_role')"> Roles <i class="las la-sort-down"> </td>
+                                            <td> Action </td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -89,84 +109,93 @@
 
         </div>
 
+
+        <!--    ADD POPUP    -->
+
         <div class="add-popup" id="add-popup">
             <div class="add-container">
                 <div class="form-container">
-                    <form action="@Url.Action("Users", "Admin","add")" method="post" id="formId">
-                        <div class="details personal">
+                    <form action="@Url.Action("Users","Admin")" method="post" id="formId">
+                        <div class="details-personal">
                             <div class="form-header">
-                                ACCOUNT INFORMATION
+                                EMPLOYEE INFORMATION
                             </div>
+
                             <div class="form-contents">
                                 <div class="fields">
                                     <div class="input-field">
-                                        <label>Name</label>
-                                        <input type="text" placeholder="Enter your name" id="emp_name" name="emp_name" required>
+                                        <label>Surname</label>
+                                        <input type="text" placeholder="Enter Surname" id="emp_Sname" name="emp_lname" required>
                                     </div>
 
                                     <div class="input-field">
-                                        <label>Contact</label>
-                                        <input type="number" placeholder="Enter your contact" name="emp_contact" id="emp_contact" required>
+                                        <label>First Name</label>
+                                        <input type="text" placeholder="Enter First Name" id="emp_Fname" name="emp_fname" required>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Middle Name</label>
+                                        <input type="text" placeholder="Enter Middle Name" id="emp_Mname" name="emp_name">
                                     </div>
 
                                     <div class="input-field">
                                         <label>Employee ID</label>
-                                        <input type="number" placeholder="00000" id="emp_no" name="emp_no" required>
+                                        <input type="number" placeholder="Enter Employee ID" id="emp_id" name="emp_no" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Hired Date</label>
-                                        <input type="date" id="emp_hiredDate" name="emp_hiredDate">
-                                        @*<input type="text" id="dateHired" style="display:none;" readonly>*@
+                                        <input type="date" id="hiredDate" name="emp_hiredDate" required>
                                     </div>
-                                    <input type="text" id="formType" name="formType" style="display:none;" readonly>
+
+                                    <div class="input-field">
+                                        <label>Contact Number</label>
+                                        <input type="number" placeholder="Enter Contact Number" id="emp_contact" name="emp_contact" required>
+                                    </div>
 
                                     <div class="input-field">
                                         <label>Username</label>
-                                        <input type="text" placeholder="Enter username" id="Credential.username" name="Credential.username" required>
+                                        <input type="text" placeholder="Enter Username" id="Credential.username" name="Credential.username" required>
                                     </div>
-                                    <input type="text" placeholder="Enter username" id="credsid" name="Credential.emp_no" style="display:none;" required>
 
                                     <div class="input-field">
                                         <label>Password</label>
-                                        <input type="password" placeholder="Enter password" id="Credential.password" name="Credential.password" required>
+                                        <input type="password" placeholder="Enter Password" id="Credential.password" name="Credential.password" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Position</label>
-                                        @*<select id="sel-pos" required>
-                                                <option disabled selected>Select Position</option>
-                                                <option>Supervisor</option>
-                                                <option>Office Manager</option>
-                                                <option>Warehouse Manager</option>
-                                            </select>*@
-                                        <input type="text" placeholder="Enter Position" id="emp_position" name="emp_position" required>
+
+                                        <input type="text" placeholder="Enter Position" id="posi" name="emp_position" required>
                                     </div>
 
                                     <div class="input-field">
                                         <label>Roles</label>
-                                        <select id="sel-roles" name="sel-roles" required>
-                                            <option disabled selected value="">Select Position</option>
+                                        <select name="sel_roles" id="sel_roles">
+                                            <option disabled selected>Select Position</option>
                                             <option>Supervisor</option>
-                                            <option>Office Manager</option>
                                             <option>Warehouse Manager</option>
-                                            <option>Local Account</option>
+                                            <option>Office Manager</option>
                                         </select>
-                                        <input type="number" id="rolesid" name="Role.emp_no" style="display:none;" readonly>
-                                        <input type="number" id="roles" name="Role.role1" style="display:none;" readonly>
+                                        <input type="text" style="display:none;" id="emp_role" name="Role.role1">
                                     </div>
 
                                     <div class="input-field">
                                         <label>Status</label>
-                                        <select id="sel-stats" name="sel-stats" required>
+                                        <select name="sel_stats" id="sel_stats">
                                             <option disabled selected>Select Position</option>
-                                            <option value="Active">Active</option>
-                                            <option value="Inactive">Inactive</option>
-                                            <option value="Locked">Locked</option>
+                                            <option>Active</option>
+                                            <option>Inactive</option>
+                                            <option>Locked</option>
                                         </select>
-                                        <input type="number" id="statsid" name="Status.emp_no" style="display:none;" readonly>
-                                        <input type="number" id="stats" name="Status.isLocked" style="display:none;" readonly>
-                                        <input type="number" id="stats1" name="Status.isActive" style="display:none;" readonly>
+                                    <input type="text" style="display:none;" id="emp_act"  name="Status.IsActive">
+                                    <input type="text" style="display:none;" id="emp_lock" name="Status.IsLocked">
+                                    <input type="text" style="display:none;" id="emp_user" name="Status.IsUser">
+                                    <input type="text" style="display:none;" id="formType" name="formType">
+                                    </div>
+
+                                    <div class="input-field">
+
                                     </div>
 
                                 </div>
@@ -174,20 +203,19 @@
                         </div>
                         <center>
                             <div class="form-add-btns">
-
-                                <button class="save"onclick="checkForm()" id="saveBtn">
+                                <button class="save" id="saveBtn" onclick="checkForm() + SetHiddenRoles() + SetHiddenStatus()">
                                     <span class="btnText">Save</span>
                                     <i class="las la-check-square"></i>
                                 </button>
-                                <button class="save"  id="saveBtn11" style="display:none;"></button>
 
                                 <button class="cancel">
-                                    @*+ closeAddForm()*@
-                                    <span class="btnText" onclick="canOpenPopup() " id="canBtn">Cancel</span>
+                                    <span class="btnText" id="canBtn" onclick="canOpenPopup()">Cancel</span>
                                     <i class="las la-window-close"></i>
                                 </button>
                             </div>
                         </center>
+
+
                     </form>
                 </div>
             </div>
@@ -197,8 +225,7 @@
             <img src="~/images/information.png">
             <h2>System Warning!</h2>
             <p>Do you want to save the user on the list?</p>
-            @*onclick="openPopup() + infoClosePopup()"*@
-            <button type="button" onclick="submitForm()">Yes</button>
+            <button type="button" onclick="infoClosePopup() + submitForm()">Yes</button>
             <button type="button" onclick="infoClosePopup()">Cancel</button>
         </div>
 
@@ -206,30 +233,28 @@
             <img src="~/images/warning.png">
             <h2>System Warning!</h2>
             <p>Are you sure you don't want to save user on the list?</p>
-            <button type="button" onclick="canClosePopup() + addClosePopup() + ResetForm()">Yes</button>
+            <button type="button" onclick="remOpenPopup() + canClosePopup() + addClosePopup() + ResetForm()">Yes</button>
             <button type="button" onclick="canClosePopup()">Cancel</button>
         </div>
 
-        @if (ViewBag.Success != null)
-        {
-            <div class="save-pop-container open-popup-show" id="popup">
-                <img src="~/images/tick.png">
-                <h2>@ViewBag.Message</h2>
-                <p>User details has been added successfully!</p>
-                <button type="button" onclick="closePopup()">OK</button>
-            </div>
-        }
+        <div class="save-pop-container" id="popup">
+            <img src="~/images/tick.png">
+            <h2>Added!</h2>
+            <p id="succ">asdfasdfa</p>
+            <button type="button" onclick="closePopup()">OK</button>
+        </div>
 
         <div class="rem-pop-container" id="rem-popup">
             <img src="~/images/remove.png">
-            <h2>Cancel!</h2>
-            <p>User details has not added in the list!</p>
-            <button type="button" onclick="remClosePopup() + addClosePopup()">OK</button>
+            <h2 id="messType">Cancel!</h2>
+            <p id="erro">Employee details has been discarded</p>
+            <button type="button" onclick="remClosePopup()">OK</button>
         </div>
 
     </main>
-
     <script src="~/Scripts/user.js"></script>
+    <script src='@Url.Content("~/Scripts/validations/Uservalidation.js")'></script>
+
     <script>
         //$('#formId').validate();
         //document.getElementById("sel-stats").addEventListener("change", function () {
@@ -242,14 +267,32 @@
             if (bool) {
                 infoOpenPopup();
             }
+            return bool;
         }
 
         let addpopup = document.getElementById("add-popup");
-        window.onload = function () {
-            @*@if ( Session["editUser"] == null || int.Parse(Session["editUser"].ToString()) == 1 )
-            {
-                Session["editUser"] = 0;
-            }*@
+        //window.onload = function () {
+        function OnLoad() {
+            let suc = '@Session["success"]';
+            let err = '@Session["errorresp"]';
+            if (suc != "") {
+                openPopup();
+                document.getElementById('succ').innerText = suc;
+            }
+            if (err != "") {
+                remOpenPopup();
+                document.getElementById('erro').innerText = err;
+                document.getElementById('messType').innerText = "Error!";
+                err = "";
+            }
+            else {
+                document.getElementById('messType').innerText = "Cancel!";
+                document.getElementById('erro').innerText = "Employee details has been discarded";
+            }
+            @{
+                Session["success"] = null;
+                Session["errorresp"] = null;
+             }
             GetAllEmployeeInfo();
         }
         function userFiltFunction() {
@@ -260,11 +303,13 @@
 
             addpopup.classList.add("add-popup-show");
             document.getElementById("formType").value = "add";
+            document.getElementById("emp_id").removeAttribute("readonly");
         });
 
         function openEditForm(value) {
             addpopup.classList.add("add-popup-show");
             document.getElementById("formType").value = "edit";
+            document.getElementById("emp_id").setAttribute("readonly", true);
             //setSession("edit");
             setField(value);
         }
@@ -302,7 +347,7 @@
         }
 
         function addOpenPopup() {
-            addpopup.classList.add("add-popup-show")
+            addpopup.classList.add("add-popup-show");
         }
 
         function addClosePopup() {
@@ -322,17 +367,18 @@
         let popup = document.getElementById("popup");
 
         function openPopup() {
-            popup.classList.add("open-popup-show")
+            popup.classList.add("save-pop-show")
         }
 
         function closePopup() {
-            popup.classList.remove("open-popup-show")
+            popup.classList.remove("save-pop-show")
         }
 
         let canpopup = document.getElementById("can-popup");
 
         function canOpenPopup() {
             canpopup.classList.add("can-popup-show")
+            $('#formId').validate().resetForm();
         }
 
         function canClosePopup() {

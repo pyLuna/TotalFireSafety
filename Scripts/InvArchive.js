@@ -24,6 +24,9 @@ function GetAll() {
             }
         })
         .then(data => {
+            jsonArray.length = 0;
+            fixedArray.length = 0;
+            table.innerHTML = ' ';
             jsonArray.push(data);
             fixArray();
             if (table !== null) {
@@ -43,6 +46,7 @@ function fixArray() {
 
 function setTable(array) {
     table.innerHTML = '';
+    var emp_role = localStorage.getItem("emp_role");
     if (array.length != 0) {
         for (var i = 0; i < array.length; i++) {
 
@@ -67,10 +71,12 @@ function setTable(array) {
             row += `<td name="in_quantity"><label>${array[i].in_quantity}</label></td>`;
             row += `<td name="in_class"><label>${array[i].in_class}</label></td>`;
             row += `<td name="in_arch_date"><label>${array[i].FormattedDate}</label></td>`;
-            row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
-            row += `<button class="edit-btn" title="RESTORE ITEM" onclick="RestoreItem('${array[i].in_code}')"> <a href="#"><span class="las la-undo-alt"></span></a></button>`;
-            row += `</div></td>`;
-            row += `</tr>`;
+            if (emp_role == 2) {
+                row += `<td id="hideActionBtn"><div class="inventory-action-style">`;
+                row += `<button class="edit-btn" title="RESTORE ITEM" onclick="RestoreItem('${array[i].in_code}')"> <a href="#"><span class="las la-undo-alt"></span></a></button>`;
+                row += `</div>`;
+            }
+            row += `</td></tr>`;
             table.innerHTML += row;
         }
         filtered.length = 0;
@@ -81,7 +87,7 @@ function setTable(array) {
         const errorMessageRow = document.createElement('tr');
         errorMessageRow.style.textAlign = "center";
         errorMessageRow.style.fontStyle = "italic";
-        errorMessageRow.innerHTML = "<td colspan='9' style='text-align:center;'>Item Not found<td>";
+        errorMessageRow.innerHTML = "<td colspan='7' style='text-align:center;'>Item Not found<td>";
         //console.log(res.statusText);
         table.appendChild(errorMessageRow);
     }
@@ -119,6 +125,7 @@ function SortByCategory(value) {
 }
 
 function RestoreItem(value) {
+
     fetch('/Admin/RestoreItem?itemCode=' + value, {
         method: "POST"
     })
@@ -133,7 +140,7 @@ function RestoreItem(value) {
         .then(data => {
             console.log(data);
             window.location.reload();
-            localStorage.setItem("reload","true");
+            localStorage.setItem("reload", "true");
         })
         .catch(error => {
             console.error(error);

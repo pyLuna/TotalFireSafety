@@ -17,11 +17,12 @@ namespace TotalFireSafety.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Inventory()
         {
+            this.Basecounts = new HashSet<Basecount>();
             this.Inv_Update = new HashSet<Inv_Update>();
             this.Requests = new HashSet<Request>();
         }
     
-        public string formType { get; set; }
+        public System.Guid in_guid { get; set; }
         public string in_code { get; set; }
         public string in_name { get; set; }
         public string in_category { get; set; }
@@ -32,11 +33,16 @@ namespace TotalFireSafety.Models
         public string in_class { get; set; }
         public string in_dateAdded { get; set; }
         public Nullable<System.DateTime> in_arch_date { get; set; }
+        public string in_remarks { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Basecount> Basecounts { get; set; }
+        public virtual Inv_Limits Inv_Limits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Inv_Update> Inv_Update { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Request> Requests { get; set; }
+        public string formType { get; set; }
         public string FormattedDate
         {
             get { return in_arch_date?.ToString("MMMM dd, yyyy"); }
